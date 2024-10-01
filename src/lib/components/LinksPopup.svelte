@@ -140,6 +140,9 @@
 
     .links-popup__content {
         padding: 20px;
+        background-color: black;
+        border-radius: 20px;
+        z-index: 5;
     }
 
     .links-popup__row {
