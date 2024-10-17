@@ -3,7 +3,7 @@
 </script>
 
 <h2 class="panel-title">
-    {title}
+    {title} 
 </h2>
 
 <style>

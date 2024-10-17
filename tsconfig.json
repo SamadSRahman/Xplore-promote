@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
+    "jsx": "react",
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -13,11 +14,11 @@
      * of JS in `.svelte` files.
      */
     "allowJs": true,
-    "checkJs": true,
+    // "checkJs": true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "strict": true
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "rollup-typings.config.ts"],
+  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "rollup-typings.config.ts", "src/App.jsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

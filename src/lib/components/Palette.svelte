@@ -26,6 +26,7 @@
         errors
     });
 
+
     function add(): void {
         const id = state.genPaletteId();
 

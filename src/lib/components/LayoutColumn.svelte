@@ -2,10 +2,10 @@
     import { getContext, type ComponentType } from 'svelte';
     import type { LayoutItem } from '../../lib';
     import Canvas from './Canvas.svelte';
-    // import Components from './Components.svelte';
+    import Components from './Components.svelte';
     import NewComponent from './NewComponent.svelte';
-    // import Palette from './Palette.svelte';
-    // import Props from './Props.svelte';
+    import Palette from './Palette.svelte';
+    import Props from './Props.svelte';
     import SplitView from './SplitView.svelte';
     import TextEditor from './TextEditor.svelte';
     import PropsAndCode from './PropsAndCode.svelte';
@@ -15,6 +15,7 @@
     import Timers from './Timers.svelte';
     import { Truthy } from '../utils/truthy';
     import { APP_CTX, type AppContext } from '../ctx/appContext';
+  import ComponentsTree from './ComponentsTree.svelte';
 
     export let items: LayoutItem[];
 
@@ -23,10 +24,10 @@
 
     $: componentMap = {
         'new-component': $readOnly ? null : NewComponent,
-        'component-tree': "",
-        'component-props':"",
+        'component-tree': ComponentsTree,
+        'component-props':Props,
         preview: Canvas,
-        palette: "",
+        palette: Palette,
         code: TextEditor,
         'component-props:code': PropsAndCode,
         'tanker-overview': TankerOverview,

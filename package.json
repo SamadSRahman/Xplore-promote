@@ -3,11 +3,11 @@
   "version": "0.4.2",
   "description": "Visual editor for DivKit",
   "keywords": [
-      "server-driven-ui",
-      "web",
-      "divkit",
-      "editor",
-      "visual editor"
+    "server-driven-ui",
+    "web",
+    "divkit",
+    "editor",
+    "visual editor"
   ],
   "author": "",
   "repository": "github:divkit/divkit",
@@ -19,7 +19,7 @@
     "dist/*"
   ],
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "build-lib": "vite build --config vite-lib.config.ts && terser dist/divkit-editor.js -o dist/divkit-editor.js && terser dist/editor.js -o dist/editor.js && terser dist/lottieApi.js -o dist/lottieApi.js",
     "build-typings": "rollup --config rollup-typings.config.ts --configPlugin typescript",
@@ -57,5 +57,10 @@
     "typescript": "5.4.5",
     "vite": "5.2.12",
     "vitest": "2.0.2"
+  },
+  "dependencies": {
+    "monaco-editor": "0.52.0",
+    "react": "18.3.1",
+    "react-router-dom": "6.26.2"
   }
 }

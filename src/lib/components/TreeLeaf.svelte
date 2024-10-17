@@ -225,7 +225,8 @@
             style:background-image="url({encodeBackground(state.componentIcon(leaf.props.json.type, leaf.props.json))})"
         ></div>
     </div>
-    {getText(leaf)}
+    <!-- {getText(leaf)} -->
+     {leaf.props.json.type}
     <div class="tree-leaf__menu-spacer"></div>
     {#if errorType}
         <div

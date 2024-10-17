@@ -6,9 +6,9 @@ import { addTemplatesSuffix, removeTemplatesSuffix } from './lib/utils/renameTem
 
 const themeQuery = matchMedia('(prefers-color-scheme: dark)');
 
-themeQuery.addListener(() => {
-    editor.setTheme(themeQuery.matches ? 'dark' : 'light');
-});
+// themeQuery.addListener(() => {
+//     editor.setTheme(themeQuery.matches ? 'dark' : 'light');
+// });
 
 const AVAIL_LOCALES: Locale[] = ['ru', 'en'];
 const detectLocale = (): Locale => {
@@ -22,11 +22,11 @@ const detectLocale = (): Locale => {
     return 'en';
 };
 
-window.addEventListener('languagechange', () => {
-    if (editor) {
-        editor.setLocale(detectLocale());
-    }
-});
+// window.addEventListener('languagechange', () => {
+//     if (editor) {
+//         editor.setLocale(detectLocale());
+//     }
+// });
 
 declare global {
     interface Window {
@@ -150,22 +150,11 @@ const editor = window.editor = DivProEditor.init({
                 }
             }
         }),
-        // "meta": {
-        //     "tanker": {
-        //         "props.lottie_url": {
-        //             "ru": "Анимация",
-        //             "en": "Animation"
-        //         }
-        //     }
-        // }
+
     },
     theme: themeQuery.matches ? 'dark' : 'light',
     layout: [
         {
-            // items: ['tanker-overview'],
-            // items: ['sources-overview'],
-            // items: ['custom-variables'],
-            // items: ['timers'],
             items: ['new-component', 'component-tree', 'palette'],
             minWidth: 400
         },

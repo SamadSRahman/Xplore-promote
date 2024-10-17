@@ -58,7 +58,7 @@
         padding: 8px 16px;
         font-size: 14px;
         line-height: 20px;
-        /* transition: background-color .15s ease-in-out; */
+        transition: background-color .15s ease-in-out;
         color: var(--text-tertiary);
     }
 

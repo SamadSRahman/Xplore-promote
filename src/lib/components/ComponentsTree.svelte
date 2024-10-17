@@ -23,7 +23,8 @@
             rootNode.focus();
         }
     }
-
+    console.log("ComponentTree component triggered");
+    
     const { state, rendererApi } = getContext<AppContext>(APP_CTX);
     const { tree, copiedLeaf, selectedLeaf, readOnly } = state;
 
@@ -47,6 +48,7 @@
         const res: TreeLeaf[] = [];
 
         function proc(leaf: TreeLeaf | null): void {
+            console.log("leaf", leaf);
             if (!leaf) {
                 return;
             }
@@ -470,7 +472,7 @@
     {:else}
         {#each $tree.childs as leaf (leaf.id)}
             <TreeLeafView
-                {leaf}
+                {leaf} 
                 on:selected={onChildSelect}
                 on:hovered={onChildHover}
                 on:action={onChildAction}
@@ -485,7 +487,7 @@
         position: relative;
         flex: 1 1 auto;
         min-width: max-content;
-        padding-bottom: 24px;
+        /* padding-bottom: 24px; */
         outline: none;
     }
 </style>
