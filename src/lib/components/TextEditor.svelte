@@ -4,14 +4,18 @@
     import type { createEditor } from '../data/editor';
     import { APP_CTX, type AppContext } from '../ctx/appContext';
     import { SetJsonCommand } from '../data/commands/setJson';
+    import { writable } from 'svelte/store';
 
     let node: HTMLElement;
     let editor: ReturnType<typeof createEditor> | undefined;
     let isSelfClick = false;
     let prevVal = '';
 
-    const { editorFabric, shadowRoot, state } = getContext<AppContext>(APP_CTX);
+    // New: Create a writable store for the JSON content
+    const jsonContent = writable('');
 
+    const { editorFabric, shadowRoot, state } = getContext<AppContext>(APP_CTX);
+        
     const {
         divjsonStore,
         selectedLeaf,
@@ -26,6 +30,8 @@
 
     $: if (prevVal !== $divjsonStore.fullString && !editor?.isFocused()) {
         editor?.setValue($divjsonStore.fullString);
+        // New: Update the jsonContent store
+        jsonContent.set($divjsonStore.fullString);
     }
 
     $: editor?.setTheme($themeStore);
@@ -58,6 +64,8 @@
                     if (json) {
                         prevVal = value;
                         state.pushCommand(new SetJsonCommand(state, value));
+                        // New: Update the jsonContent store
+                        
                     }
                 }
             },
@@ -65,7 +73,6 @@
                 const leaf = offset === null ? null : state.findBestLeaf(offset);
                 const range = leaf?.props.range;
                 const node = leaf?.props.node;
-
                 if (range && node) {
                     highlightLeaf.set([leaf]);
                     highlightElem.set([node]);
@@ -83,6 +90,10 @@
                 selectedLeaf.set(leaf || null);
             }
         });
+
+        // New: Initialize the jsonContent store with the initial value
+        jsonContent.set($divjsonStore.fullString);
+        
     });
 
     onDestroy(() => {
@@ -91,6 +102,13 @@
             editor = undefined;
         }
     });
+
+    // New: Function to get the current JSON content
+    function getJsonContent() {
+        return $jsonContent;
+    }
+  
+  
 </script>
 
 <div class="text-editor" bind:this={node} />

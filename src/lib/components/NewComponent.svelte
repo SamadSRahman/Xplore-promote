@@ -8,7 +8,7 @@
     import { findLeaf } from '../utils/tree';
     import { APP_CTX, type AppContext } from '../ctx/appContext';
   import { encodeBackground } from '../utils/encodeBackground';
-
+    
     const { l10nString, lang } = getContext<LanguageContext>(LANGUAGE_CTX);
     const { state, rendererApi } = getContext<AppContext>(APP_CTX);
     const { userDefinedTemplates, selectedLeaf, tree } = state;
@@ -22,6 +22,8 @@
     });
 
     const additionalItems = additionalComponentsList.map(it => {
+        
+        
         return {
             name: it.name || it.nameKey && $l10nString(it.nameKey) || '<unknown>',
             type: it.type,

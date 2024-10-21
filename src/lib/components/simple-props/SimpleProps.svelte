@@ -30,7 +30,7 @@
         const props = type in namedTemplates ? [] : getTemplateProps(state, type);
 
         templateProps = undefined;
-
+        
         const mapped: ComponentProperty[] = props.map(it => {
             // todo
             const enableSources = it.editor.type !== 'background2' &&
@@ -57,6 +57,35 @@
     }
 
     $: selectedElemProps = json && rendererApi().selectedElemProps() || null;
+
+    const flattenArrayStructure = (inputArray) => {
+  return inputArray.map(element => {
+    if (element.type === "group" && element.list && element.list.length > 0) {
+      const firstListItem = element.list[0];
+      
+      if (firstListItem.type === "array" && firstListItem.fields) {
+        // Move fields to the list level and preserve some properties
+        const newList = firstListItem.fields.map(field => ({
+          ...field,
+          arrayProp: firstListItem.prop // Preserve the original array property name
+        }));
+
+        return {
+          ...element,
+          list: newList
+        };
+      }
+    }
+    // If it doesn't need modification, return as is
+    return element;
+  });
+};
+
+
+$: modifiedList = flattenArrayStructure(list)
+
+
+
 
     async function onChange(event: CustomEvent<{
         value: unknown;
@@ -176,8 +205,9 @@
 
 <div class="simple-props">
     {#if list && processedJson}
+    
         <SimplePropsList
-            propsList={[...list, ...(templateProps && [templateProps] || [])]}
+            propsList={[...modifiedList, ...(templateProps && [templateProps] || [])]}
             {processedJson}
             {parentProcessedJson}
             {evalJson}

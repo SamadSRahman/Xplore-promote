@@ -1,10 +1,16 @@
+/* eslint-disable no-console */
 import { get, type Unsubscriber } from 'svelte/store';
 import App from './App.svelte';
+
+
 import type { Loc } from './lib/utils/stringifyWithLoc';
 import type { TypedRange } from './lib/data/editor';
 import { type PaletteItem } from './lib/data/palette';
 import { type JsonVariable } from './lib/data/customVariables';
 import { State } from './lib/data/state';
+
+
+
 
 export type Theme = 'light' | 'dark';
 
@@ -89,7 +95,7 @@ export type GetTranslationKey = (key: string) => Promise<Record<string, string> 
 export interface DivProEditorApi {
     uploadFile?(file: File): Promise<string>;
     editorFabric?(opts: EditorOptions): EditorInstance;
-    onChange?(): void;
+    onChange?: (data: string) => void;
     getTranslationSuggest?: GetTranslationSuggest;
     getTranslationKey?: GetTranslationKey;
 }
@@ -181,7 +187,7 @@ export const DivProEditor = {
         }
 
         state.setDivJson(json);
-
+        console.log('Initial JSON set:', json);
         const app = new App({
             target: opts.renderTo,
             props: {
@@ -205,10 +211,12 @@ export const DivProEditor = {
         if (opts.api?.onChange) {
             let isFirst = true;
             unsubscribeStore = state.divjsonStore.subscribe(() => {
+                console.log('divjsonStore updated:', get(state.divjsonStore).fullString);
                 if (isFirst) {
                     isFirst = false;
                 } else {
-                    opts.api?.onChange?.();
+                    const updatedData = get(state.divjsonStore).fullString;
+                    opts.api?.onChange?.(updatedData);
                 }
             });
         }

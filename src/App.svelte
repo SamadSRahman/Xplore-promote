@@ -70,6 +70,8 @@
 
     export let rootConfigurable = false;
 
+    export const jsonContent = null;
+
     export let uploadFile: (file: File) => Promise<string> = loadFileAsBase64;
 
     export let editorFabric: (opts: EditorOptions) => EditorInstance =
@@ -381,9 +383,7 @@
     <Header />
     <main class="main">
         <SplitView {components} />
-    </main>
-
-    <ContextMenu />
+    </main>    <ContextMenu />
     <Background2Dialog bind:this={background2Dialog} />
     <Color2Dialog bind:this={color2Dialog} />
     <File2Dialog bind:this={file2Dialog} />

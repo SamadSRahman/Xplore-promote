@@ -14,6 +14,7 @@
     const dispatch = createEventDispatcher();
 
     export let propsList: ComponentProperty[];
+    
     export let processedJson: Record<string, unknown>;
     export let parentProcessedJson: Record<string, unknown> | null;
     export let parentEvalJson: Record<string, unknown> | null;

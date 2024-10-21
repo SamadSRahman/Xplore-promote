@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { getTypeBySchemaName, schema, translation } from './schema';
 import { namedTemplates } from './templates';
 
@@ -7,7 +8,8 @@ export const DEFAULT_ALLOWED_COMPONENTS = [
     'text',
     'container',
     'gallery',
-    'separator'
+    'separator',
+    // 'list',
 ];
 
 const MAP = (schema.div.anyOf || []).reduce((acc, item) => {
@@ -19,6 +21,8 @@ const MAP = (schema.div.anyOf || []).reduce((acc, item) => {
 
     return acc;
 }, {} as Record<string, Record<string, string>>);
+
+
 
 export interface ComponentListItem {
     name?: string;
@@ -40,9 +44,11 @@ export const additionalComponentsList: ComponentListItem[] = Object.keys(MAP)
         return {
             nameKey: `components.${type}`,
             type,
-            description: MAP[type]
+            description: MAP[type],
+            // name: MAP
         };
     });
+
 export const fullComponentsList: ComponentListItem[] = Object.keys(MAP).map(type => {
     return {
         nameKey: `components.${type}`,

@@ -23,7 +23,7 @@
             rootNode.focus();
         }
     }
-    console.log("ComponentTree component triggered");
+
     
     const { state, rendererApi } = getContext<AppContext>(APP_CTX);
     const { tree, copiedLeaf, selectedLeaf, readOnly } = state;
@@ -48,7 +48,7 @@
         const res: TreeLeaf[] = [];
 
         function proc(leaf: TreeLeaf | null): void {
-            console.log("leaf", leaf);
+           
             if (!leaf) {
                 return;
             }

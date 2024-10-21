@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable no-multi-spaces */
@@ -7,6 +8,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import styles from './EditorPage.module.css';
 import {
   addTemplatesSuffix,
   convertDictToPalette,
@@ -15,7 +19,14 @@ import {
   removeTemplatesSuffix,
 } from '../../lib'; // Adjust this import path as needed
 
+
+
 const EditorPage = () => {
+  const id = localStorage.getItem('adId');
+  const token = localStorage.getItem('accessToken');
+  const navigate = useNavigate();
+  const [jsonContent, setJsonContent] = React.useState(null);
+  const [editorData, setEditorData] = React.useState(null);
   React.useEffect(() => {
     const editor = (window.editor = DivProEditor.init({
       renderTo: document.getElementById('editor-container') as HTMLElement,
@@ -29,10 +40,7 @@ const EditorPage = () => {
               {
                 state_id: 0,
                 div: {
-                  items: [
-                
-                 
-                  ],
+                  items: [],
                   visibility_action: {
                     log_id: 'visible',
                   },
@@ -144,20 +152,21 @@ const EditorPage = () => {
       theme: 'dark',
       layout: [
         {
-          // items: ['tanker-overview'],
-          // items: ['sources-overview'],
-          // items: ['custom-variables'],
-          // items: ['timers'],
-          items: ['new-component', 'component-tree', 'palette', 'timers'],
-          minWidth: 400,
+          items: ['tanker-overview'],
+          items: ['sources-overview'],
+          items: ['custom-variables'],
+          items: ['timers'],
+          items: ['new-component', 'component-tree'],
+          minWidth: 420,
         },
         {
           items: ['preview'],
-          weight: 3,
+          weight: 5,
+          minWidth: 460,
         },
         {
           items: ['component-props:code'],
-          minWidth: 360,
+          minWidth: 375,
         },
       ],
       actionLogUrlVariable: 'on_click_log_url',
@@ -225,7 +234,7 @@ const EditorPage = () => {
       // readOnly: true,
       api: {
         getTranslationKey(key) {
-          return new Promise((resolve) => {
+          return new Promise(resolve => {
             setTimeout(() => {
               if (key in langAuto.ru) {
                 const res: Record<string, string> = {};
@@ -241,14 +250,14 @@ const EditorPage = () => {
           });
         },
         getTranslationSuggest(query, locale) {
-          return new Promise((resolve) => {
+          return new Promise(resolve => {
             setTimeout(() => {
               const obj = langAuto[locale as keyof typeof langAuto];
               const folders = [
                 ...new Set(
                   Object.keys(obj)
-                    .filter((key) => key.includes('.'))
-                    .map((key) => key.split('.')[0] + '.')
+                    .filter(key => key.includes('.'))
+                    .map(key => key.split('.')[0] + '.')
                 ),
               ];
 
@@ -256,11 +265,11 @@ const EditorPage = () => {
                 folders
                   .concat(Object.keys(obj))
                   .filter(
-                    (key) =>
+                    key =>
                       key.startsWith(query) &&
                       !(query.endsWith('.') && key === query)
                   )
-                  .map((key) => {
+                  .map(key => {
                     return {
                       key,
                       text: String(obj[key as keyof typeof obj]),
@@ -272,15 +281,72 @@ const EditorPage = () => {
         },
       },
     }));
+    console.log('editor', editor);
+    setEditorData(editor);
     return () => {
       // Clean up the editor if necessary
     };
   }, []);
+  React.useEffect(() => {
+    window.editorData = jsonContent;
+  }, [jsonContent]);
+
+  const handleLogJSON = () => {
+    if (editorData) {
+      console.log('line 294', editorData);
+      const currentJSON = editorData.getValue();
+      window.editorData = currentJSON;
+      setJsonContent(currentJSON);
+      postLayoutData(currentJSON);
+      console.log('Current JSON:', currentJSON);
+    } else {
+      console.log('Editor not initialized');
+    }
+  };
+
+  const postLayoutData = async jsonData => {
+    if (!token || !id) {
+      alert('Token or Id not available, please add valid details to continue');
+      navigate('/');
+    }
+    const url = `https://xplore-promote.vercel.app/api/v1/layout/create/${id}`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // Specify the content type
+          authorization: `${token}`, // Include the authorization token
+        },
+        body: JSON.stringify({ // Stringify the body content
+          name: 'Splash Screen',
+          layoutJSON: JSON.parse(jsonData) // Pass the JSON object here
+        }),
+      });
+  
+      // Check if the response is OK (status in the range 200-299)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json(); // Parse the JSON response
+      console.log('Response:', data); // Log the response data
+      alert('Layout published successfully!');
+    } catch (error) {
+      console.error('Error posting layout data:', error); // Log any errors
+    }
+  };
 
   return (
     <div id="editor-container" style={{ minWidth: '100%', height: '100vh' }}>
       {/* The editor will be rendered here */}
-      <span>Splash screen</span>
+      <div div >
+        <button
+        className={styles.publishBtn}
+          onClick={handleLogJSON}
+ >
+          Publish
+        </button>
+      </div>
     </div>
   );
 };

@@ -35,17 +35,43 @@ export const containerComponents = new Set([
     'custom'
 ]);
 
+export type PropertyType =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'radio'
+  | 'integer'
+  | 'select'
+  | 'percent'
+  | 'rotation'
+  | 'background2'
+  | 'color'
+  | 'actions2'
+  | 'video_sources'
+  | 'file'
+  | 'alignment'
+  | 'margins-paddings'
+  | 'text-align'
+  | 'text-styles'
+  | 'group'
+  | 'split'
+  | 'array';
+
 export interface BaseProperty {
     name?: string;
     rawName?: string;
     prop?: string;
     sizeValue?: 'width' | 'height';
     default?: unknown;
-    type: string;
+    type: PropertyType;
+    subtype?: string;
+    options?: Array<object>;
     siblings?: SiblingComponentProperty[];
     show?: ConditionObject;
     enabled?: ConditionObject | false;
     enableSources?: boolean;
+    min?:number;
+    max?:number;
 }
 
 export interface RadioProperty extends BaseProperty {
@@ -57,6 +83,13 @@ export interface RadioProperty extends BaseProperty {
         show?: ConditionObject;
     }[];
 }
+export interface ArrayProperty extends BaseProperty {
+    type: 'array';
+    arrayType:'object',
+    minItems: number,
+    maxItems:  number,
+    fields: BaseProperty[]; // Specify that each array contains other properties
+   }
 
 export interface IntegerProperty extends BaseProperty {
     type: 'integer';
@@ -160,7 +193,7 @@ export type ComponentProperty = RadioProperty | IntegerProperty | BooleanPropert
     PercentProperty | RotationProperty | StringProperty |
     ColorProperty | FileProperty | GroupProperty | SplitProperty | AlignmentProperty |
     MarginsPaddingsProperty | Background2Property | TextAlignProperty | TextStylesProperty |
-    Actions2Property | VideoSourcesProperty | NumberProperty;
+    Actions2Property | VideoSourcesProperty | NumberProperty |ArrayProperty;
 
 export type SiblingComponentProperty = ComponentProperty & {
     related?: {
