@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-trailing-spaces */
@@ -9,7 +10,7 @@
 
 import React from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './EditorPage.module.css';
 import {
   addTemplatesSuffix,
@@ -18,10 +19,14 @@ import {
   DivProEditor,
   removeTemplatesSuffix,
 } from '../../lib'; // Adjust this import path as needed
+import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
+import MobilePreview from '../../lib/components/MobilePreview/MobilePreview';
+import { blankBackgroundJSON, gradientBackgroundJSON, imageBackgroundJSON, solidBackgroundJSON } from '../../lib/utils/splashScreenData';
 
 
 
 const EditorPage = () => {
+  const { type } = useParams();
   const id = localStorage.getItem('adId');
   const token = localStorage.getItem('accessToken');
   const navigate = useNavigate();
@@ -33,113 +38,7 @@ const EditorPage = () => {
       locale: 'en',
       rootConfigurable: true,
       card: {
-        json: JSON.stringify({
-          card: {
-            log_id: 'div2_sample_card',
-            states: [
-              {
-                state_id: 0,
-                div: {
-                  items: [],
-                  visibility_action: {
-                    log_id: 'visible',
-                  },
-                  background: [
-                    {
-                      color:
-                        "@{getDictOptColor('#00ffffff', local_palette, 'bg_primary', theme)}",
-                      type: 'solid',
-                    },
-                  ],
-                  height: {
-                    type: 'match_parent',
-                  },
-                  orientation: 'overlap',
-                  type: 'container',
-                },
-              },
-            ],
-            variables: [
-              {
-                type: 'dict',
-                name: 'local_palette',
-                value: {
-                  bg_primary: {
-                    name: 'Primary background',
-                    light: '#fff',
-                    dark: '#000',
-                  },
-                  color0: {
-                    name: 'Secondary background',
-                    light: '#eeeeee',
-                    dark: '#000',
-                  },
-                },
-              },
-              {
-                type: 'string',
-                name: 'tanker_props_lottie_url',
-                value: '#{tanker/props.lottie_url}',
-              },
-              {
-                type: 'dict',
-                name: 'test',
-                value: {
-                  logged: 1,
-                  login: 'Vasya',
-                  mailCount: 123,
-                },
-              },
-            ],
-          },
-          templates: {
-            _template_lottie: {
-              type: 'gif',
-              scale: 'fit',
-              extensions: [
-                {
-                  id: 'lottie',
-                  $params: 'lottie_params',
-                },
-              ],
-              gif_url: 'https://yastatic.net/s3/home/divkit/empty2.png',
-            },
-            _template_button: {
-              type: 'text',
-              text_alignment_horizontal: 'center',
-              text_alignment_vertical: 'center',
-              border: {
-                $corner_radius: 'corners',
-              },
-              paddings: {
-                bottom: 24,
-                left: 28,
-                right: 28,
-                top: 22,
-              },
-              width: {
-                type: 'wrap_content',
-              },
-            },
-            _template_close: {
-              accessibility: {
-                description: 'Закрыть',
-                mode: 'merge',
-                type: 'button',
-              },
-              actions: [
-                {
-                  log_id: 'close_popup',
-                  url: 'div-screen://close',
-                },
-              ],
-              image_url:
-                'https://yastatic.net/s3/home/div/div_fullscreens/cross2.3.png',
-              tint_color: '#73000000',
-              type: 'image',
-            },
-          },
-        }),
+        json: JSON.stringify(type === 'gradient' ? gradientBackgroundJSON : type === 'solid' ? solidBackgroundJSON : type === 'image' ? imageBackgroundJSON : blankBackgroundJSON),
         // "meta": {
         //     "tanker": {
         //         "props.lottie_url": {
@@ -346,6 +245,10 @@ const EditorPage = () => {
  >
           Publish
         </button>
+
+        {/* <PreviewCard jsonData={solidBackgroundJSON} /> */}
+
+        {/* <MobilePreview jsonData={JSON.parse(imageBackgroundJSON)} /> */}
       </div>
     </div>
   );

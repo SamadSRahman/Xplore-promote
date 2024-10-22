@@ -10,8 +10,8 @@ import styles from "./LandingPage.module.css";
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const [token, setToken] = useState("");
-  const [id, setId] = useState("");
+  const [token, setToken] = useState("1234567890");
+  const [id, setId] = useState("1234567890");
 
   function handleOnSubmit(e) {
     e.preventDefault();
@@ -20,7 +20,7 @@ export default function LandingPage() {
     } else {
       localStorage.setItem('accessToken', token);
       localStorage.setItem('adId', id);
-      navigate('/editor');
+      navigate('/themeSelection');
     }
   }
   return (
@@ -42,7 +42,7 @@ export default function LandingPage() {
          name="id"
          placeholder="Advertisment Id"
         />
-        <button>Continue to Editor</button>
+        <button>Continue</button>
       </form>
     </div>
   );
