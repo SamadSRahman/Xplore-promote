@@ -2,7 +2,18 @@
 export {};
 
 declare global {
-  interface Window {
-    editorData?: any
+  interface Window
+  {
+      chrome: Chrome;
+  }
+
+  interface Chrome
+  {
+      webview: WebView2;
+  }
+
+  interface WebView2
+  {
+    
   }
 }

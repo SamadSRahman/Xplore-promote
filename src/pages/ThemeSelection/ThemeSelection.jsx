@@ -15,8 +15,16 @@ export default function ThemeSelection() {
   const navigate = useNavigate();
   const [selectedTheme, setSelectedTheme] = useState(null);
 
-  useEffect(()=>{
-    alert('Hi,');
+  const isInstagramWebView = () => {
+    return navigator.userAgent.includes('Instagram');
+  };
+
+  useEffect(() => {
+    if (isInstagramWebView()) {
+      alert('You are using Instagram Web View');
+    } else {
+      alert('You are using a regular browser');
+    }
   }, []);
   const themes = [
     {
