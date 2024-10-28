@@ -22,7 +22,7 @@ export default function ThemeSelection() {
   };
 
   useEffect(async() => {
-    if (!isInstagramWebView()) {
+    if (isInstagramWebView()) {
       // Show alert to the user with instructions
       alert('For the best experience, please open this link in Chrome or Safari.');
 
