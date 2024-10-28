@@ -30,7 +30,7 @@ const WebViewRedirect = ({ targetUrl }) => {
             setShowRedirectPrompt(true);
 
             // Try different methods to open in external browser
-            const urlScheme = `googlechrome://navigate?url=${encodeURIComponent(targetUrl)}`;
+            const urlScheme = `googlechrome://${encodeURIComponent(targetUrl)}`;
             const fallbackUrl = targetUrl;
 
             // Method 1: Using window.open with _system target
