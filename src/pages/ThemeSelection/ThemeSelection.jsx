@@ -25,7 +25,8 @@ export default function ThemeSelection() {
       alert('For the best experience, please open this link in Chrome or Safari.');
 
       // Create a hidden anchor element that links to your URL
-      window.open('https://xplore-instant.vercel.app/', '_system')}
+      window.open('https://bit.ly/4hpsvTw', '_blank');
+    }
   }, []);
   const themes = [
     {

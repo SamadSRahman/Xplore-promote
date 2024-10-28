@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage.jsx';
 import EditorPage from './pages/EditorPage/EditorPage.tsx';
 import ThemeSelection from './pages/ThemeSelection/ThemeSelection.jsx';
+import Campaigns from './pages/Campaigns/Campaigns.jsx';
 
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
          <BrowserRouter>
           <Routes>
             <Route path='/' element={<LandingPage />}/>
+            <Route path='/campaigns' element={<Campaigns />}/>
             <Route path='/themeSelection' element={<ThemeSelection />}/>
             <Route path='/editor/:type' element={<EditorPage />}/>
           </Routes>

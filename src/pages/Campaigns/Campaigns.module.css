@@ -1,0 +1,89 @@
+.container{
+    height: 100vh;
+    background-color: white;
+    color: black;
+    width: 100vw;
+    display: flex;
+    box-sizing: border-box;
+}
+.sideBar{
+    border-right: 0.5px solid #D9D9D9;
+    min-width: 25%;
+    box-sizing: border-box;
+    height: 100vh;
+}
+.header{
+    border-bottom: 0.5px solid #D9D9D9;
+}
+.sideBar img, .welcomeText{
+    padding: 15px 20px;
+
+}
+.welcomeText h4{
+    margin: 0px;
+
+}
+.noCampaigns{
+    /* border: 1px solid; */
+    color: #676767;
+text-align: center;
+font-family: "Open Sans", sans-serif;
+text-align: center;    height: 100%;
+}
+.mainBody{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 75%;
+    background: #FAFAFA;
+}
+.createNewCard{
+    border-radius: 10px;
+    border: 0.5px solid #E6E6E6;
+    background: #FFF;
+    font-family: "Open Sans", sans-serif;
+    box-shadow: 2px 2px 12px 0px rgba(191, 191, 191, 0.20);
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.leftSection{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+   
+}
+.imgSection{
+    display: flex;
+    align-items: flex-start;
+}
+.leftSection img{
+    box-shadow: 0px 1.371px 6.167px 0px rgba(0, 0, 0, 0.06);
+    padding: 3px;
+    width: 8rem;
+}
+.rightSection img{
+
+    padding: -10px;
+}
+.contentSection{
+    text-align: center;
+    padding: 10px 0;
+    max-width: 90%;
+}
+.contentSection h4{
+    margin: 0px;
+}
+.contentSection p{
+   color: #676767;
+   margin-top: 3px;
+}
+.contentSection button {
+    background-color: #896BF0;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+}
