@@ -1,3 +1,5 @@
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable indent */
 /* eslint-disable no-console */
 import { useEffect, useState } from 'react';
 
@@ -25,27 +27,31 @@ const detectWebView = () => {
 const WebViewRedirect = ({ targetUrl }) => {
   const [showRedirectPrompt, setShowRedirectPrompt] = useState(false);
 
-  const openInChrome = () => {
-    // Chrome custom URL scheme
-    const chromeUrl = `googlechrome://navigate?url=${encodeURIComponent(targetUrl)}`;
-    
-    // For iOS, we'll also try an alternative scheme
-    const iOSChromeUrl = `x-web-search://?url=${encodeURIComponent(targetUrl)}`;
-    
+  const openInBrowser = () => {
     const isIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
-    
+    const isAndroid = /android/i.test(window.navigator.userAgent);
+
     try {
-      // Try the appropriate URL scheme
-      window.location.href = isIOS ? iOSChromeUrl : chromeUrl;
-      
-      // Fallback to direct URL after a delay
-      setTimeout(() => {
-        if (document.hasFocus()) {
-          window.location.href = targetUrl;
-        }
-      }, 2000);
+      if (isIOS) {
+        // For iOS, directly use targetUrl without any URL scheme
+        window.location.href = targetUrl;
+      } else if (isAndroid) {
+        // For Android, try Chrome first
+        const chromeUrl = `googlechrome://navigate?url=${encodeURIComponent(targetUrl)}`;
+        window.location.href = chromeUrl;
+        
+        // Fallback to direct URL after a delay if Chrome doesn't open
+        setTimeout(() => {
+          if (document.hasFocus()) {
+            window.location.href = targetUrl;
+          }
+        }, 2000);
+      } else {
+        // For other platforms, just use the direct URL
+        window.location.href = targetUrl;
+      }
     } catch (e) {
-      console.log('Chrome redirect failed:', e);
+      console.log('Redirect failed:', e);
       window.location.href = targetUrl;
     }
   };
@@ -53,7 +59,7 @@ const WebViewRedirect = ({ targetUrl }) => {
   useEffect(() => {
     if (detectWebView()) {
       setShowRedirectPrompt(true);
-      openInChrome();
+      openInBrowser();
     }
   }, [targetUrl]);
 
@@ -63,14 +69,14 @@ const WebViewRedirect = ({ targetUrl }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg p-6 max-w-md w-full">
         <h2 className="text-xl font-bold mb-4">
-          Opening in Chrome...
+          Opening in Browser...
         </h2>
         <p className="mb-4">
-          If the page doesn't open automatically in Chrome, you can:
+          If the page doesn't open automatically, you can:
         </p>
         <ol className="list-decimal pl-5 mb-4">
           <li className="mb-2">Copy this link</li>
-          <li className="mb-2">Open Chrome</li>
+          <li className="mb-2">Open your browser</li>
           <li>Paste and go</li>
         </ol>
         <div className="bg-gray-100 p-2 rounded mb-4 break-all">
@@ -78,7 +84,7 @@ const WebViewRedirect = ({ targetUrl }) => {
         </div>
         <div className="flex gap-4">
           <button
-            onClick={openInChrome}
+            onClick={openInBrowser}
             className="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
           >
             Try Again
