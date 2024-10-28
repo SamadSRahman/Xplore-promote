@@ -27,54 +27,28 @@ const detectWebView = () => {
 const WebViewRedirect = ({ targetUrl }) => {
   const [showRedirectPrompt, setShowRedirectPrompt] = useState(false);
 
-  const openInBrowser = () => {
+  const openInChrome = () => {
+    // Chrome custom URL scheme
+    // const chromeUrl = `googlechrome://navigate?url=${encodeURIComponent(targetUrl)}`;
+    const chromeUrl = `googlechrome://${targetUrl.replace(/^https?:\/\//, '')}`;
+    
+    // For iOS, we'll also try an alternative scheme
+    const iOSChromeUrl = `x-web-search://?${encodeURIComponent(targetUrl)}`;
+    
     const isIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
-    const isAndroid = /android/i.test(window.navigator.userAgent);
-
+    
     try {
-      if (isIOS) {
-        // Try these schemes in sequence for iOS
-        const schemes = [
-          `safari-https://${targetUrl.replace('https://', '')}`,
-          `safari://${targetUrl}`,
-          targetUrl
-        ];
-        
-        // Try each scheme in sequence
-        let currentSchemeIndex = 0;
-        
-        const tryNextScheme = () => {
-          if (currentSchemeIndex < schemes.length) {
-            window.location.href = schemes[currentSchemeIndex];
-            currentSchemeIndex++;
-            
-            // Try next scheme after a delay if still in webview
-            setTimeout(() => {
-              if (document.hasFocus()) {
-                tryNextScheme();
-              }
-            }, 1000);
-          }
-        };
-        
-        tryNextScheme();
-      } else if (isAndroid) {
-        // For Android, try Chrome first
-        const chromeUrl = `googlechrome://navigate?url=${encodeURIComponent(targetUrl)}`;
-        window.location.href = chromeUrl;
-        
-        // Fallback to direct URL after a delay if Chrome doesn't open
-        setTimeout(() => {
-          if (document.hasFocus()) {
-            window.location.href = targetUrl;
-          }
-        }, 2000);
-      } else {
-        // For other platforms, just use the direct URL
-        window.location.href = targetUrl;
-      }
+      // Try the appropriate URL scheme
+      window.location.href = isIOS ? chromeUrl : chromeUrl;
+      
+      // Fallback to direct URL after a delay
+      setTimeout(() => {
+        if (document.hasFocus()) {
+          window.location.href = targetUrl;
+        }
+      }, 2000);
     } catch (e) {
-      console.log('Redirect failed:', e);
+      console.log('Chrome redirect failed:', e);
       window.location.href = targetUrl;
     }
   };
@@ -82,7 +56,7 @@ const WebViewRedirect = ({ targetUrl }) => {
   useEffect(() => {
     if (detectWebView()) {
       setShowRedirectPrompt(true);
-      openInBrowser();
+      openInChrome();
     }
   }, [targetUrl]);
 
@@ -92,14 +66,14 @@ const WebViewRedirect = ({ targetUrl }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg p-6 max-w-md w-full">
         <h2 className="text-xl font-bold mb-4">
-          Opening in Browser...
+          Opening in Chrome...
         </h2>
         <p className="mb-4">
-          If the page doesn't open automatically in Safari, you can:
+          If the page doesn't open automatically in Chrome, you can:
         </p>
         <ol className="list-decimal pl-5 mb-4">
           <li className="mb-2">Copy this link</li>
-          <li className="mb-2">Open Safari</li>
+          <li className="mb-2">Open Chrome</li>
           <li>Paste and go</li>
         </ol>
         <div className="bg-gray-100 p-2 rounded mb-4 break-all">
@@ -107,7 +81,7 @@ const WebViewRedirect = ({ targetUrl }) => {
         </div>
         <div className="flex gap-4">
           <button
-            onClick={openInBrowser}
+            onClick={openInChrome}
             className="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
           >
             Try Again
@@ -125,4 +99,5 @@ const WebViewRedirect = ({ targetUrl }) => {
 };
 
 export default WebViewRedirect;
+
 

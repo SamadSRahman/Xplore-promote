@@ -12,7 +12,6 @@ import {
   imageBackgroundJSON,
   solidBackgroundJSON,
 } from '../../lib/utils/splashScreenData';
-import WebViewRedirect from '../../lib/components/WebViewRedirect';
 
 
 export default function ThemeSelection() {
@@ -91,7 +90,7 @@ export default function ThemeSelection() {
 
   return (
     <div className={styles.container}>
-      <WebViewRedirect targetUrl={'https://bit.ly/4hpsvTw'} />
+
       <h1>Select Your Splash Screen</h1>
       <div className={styles.themeGrid}>
         {themes.map((theme, index) => (

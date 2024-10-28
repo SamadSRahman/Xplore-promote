@@ -7,6 +7,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./LandingPage.module.css";
+import WebViewRedirect from '../../lib/components/WebViewRedirect';
+
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ export default function LandingPage() {
   }
   return (
     <div className={styles.container}>
+      <WebViewRedirect targetUrl={'https://xplore-instant.vercel.app/'} />
    <form onSubmit={handleOnSubmit}>
         <label htmlFor="token">Enter token here:</label>
         <input
