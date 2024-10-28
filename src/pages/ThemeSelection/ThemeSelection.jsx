@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable indent */
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,6 +11,7 @@ import {
   imageBackgroundJSON,
   solidBackgroundJSON,
 } from '../../lib/utils/splashScreenData';
+import axios from 'axios';
 
 export default function ThemeSelection() {
   const navigate = useNavigate();
@@ -19,13 +21,20 @@ export default function ThemeSelection() {
     return navigator.userAgent.includes('Instagram');
   };
 
-  useEffect(() => {
-    if (isInstagramWebView()) {
+  useEffect(async() => {
+    if (!isInstagramWebView()) {
       // Show alert to the user with instructions
       alert('For the best experience, please open this link in Chrome or Safari.');
 
       // Create a hidden anchor element that links to your URL
-      window.open('https://bit.ly/4hpsvTw', '_blank');
+      // window.open('https://bit.ly/4hpsvTw', '_blank');
+try {
+  const response = await axios.get('https://pre.xplore.xircular.io/api/v1/user/redirect');
+  console.log(response);
+  alert('redirected');
+} catch (error) {
+  console.log(error);
+}
     }
   }, []);
   const themes = [
