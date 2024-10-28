@@ -19,6 +19,6 @@
     "esModuleInterop": true,
     "strict": true
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "rollup-typings.config.ts", "src/App.jsx"],
+  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "rollup-typings.config.ts", "src/App.jsx", "src/lib/components/WebViewRedirect.jsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable indent */
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './ThemeSelection.module.css';
@@ -11,7 +12,8 @@ import {
   imageBackgroundJSON,
   solidBackgroundJSON,
 } from '../../lib/utils/splashScreenData';
-import axios from 'axios';
+import WebViewRedirect from '../../lib/components/WebViewRedirect';
+
 
 export default function ThemeSelection() {
   const navigate = useNavigate();
@@ -28,13 +30,13 @@ export default function ThemeSelection() {
 
       // Create a hidden anchor element that links to your URL
       // window.open('https://bit.ly/4hpsvTw', '_blank');
-try {
-  const response = await axios.get('https://pre.xplore.xircular.io/api/v1/user/redirect');
-  console.log(response);
-  alert('redirected');
-} catch (error) {
-  console.log(error);
-}
+// try {
+//   const response = await axios.get('http://localhost:3000/redirect');
+//   console.log(response);
+//   alert('redirected');
+// } catch (error) {
+//   console.log(error);
+// }
     }
   }, []);
   const themes = [
@@ -89,6 +91,7 @@ try {
 
   return (
     <div className={styles.container}>
+      <WebViewRedirect targetUrl={'https://bit.ly/4hpsvTw'} />
       <h1>Select Your Splash Screen</h1>
       <div className={styles.themeGrid}>
         {themes.map((theme, index) => (
