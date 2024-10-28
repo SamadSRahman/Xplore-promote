@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './ThemeSelection.module.css';
 import solidBackground from '../../assets/SolidBackground.png';
@@ -15,6 +15,9 @@ export default function ThemeSelection() {
   const navigate = useNavigate();
   const [selectedTheme, setSelectedTheme] = useState(null);
 
+  useEffect(()=>{
+    alert('Hi,');
+  }, []);
   const themes = [
     {
       name: 'Gradient Background',
