@@ -33,8 +33,31 @@ const WebViewRedirect = ({ targetUrl }) => {
 
     try {
       if (isIOS) {
-        // For iOS, directly use targetUrl without any URL scheme
-        window.location.href = targetUrl;
+        // Try these schemes in sequence for iOS
+        const schemes = [
+          `safari-https://${targetUrl.replace('https://', '')}`,
+          `safari://${targetUrl}`,
+          targetUrl
+        ];
+        
+        // Try each scheme in sequence
+        let currentSchemeIndex = 0;
+        
+        const tryNextScheme = () => {
+          if (currentSchemeIndex < schemes.length) {
+            window.location.href = schemes[currentSchemeIndex];
+            currentSchemeIndex++;
+            
+            // Try next scheme after a delay if still in webview
+            setTimeout(() => {
+              if (document.hasFocus()) {
+                tryNextScheme();
+              }
+            }, 1000);
+          }
+        };
+        
+        tryNextScheme();
       } else if (isAndroid) {
         // For Android, try Chrome first
         const chromeUrl = `googlechrome://navigate?url=${encodeURIComponent(targetUrl)}`;
@@ -72,11 +95,11 @@ const WebViewRedirect = ({ targetUrl }) => {
           Opening in Browser...
         </h2>
         <p className="mb-4">
-          If the page doesn't open automatically, you can:
+          If the page doesn't open automatically in Safari, you can:
         </p>
         <ol className="list-decimal pl-5 mb-4">
           <li className="mb-2">Copy this link</li>
-          <li className="mb-2">Open your browser</li>
+          <li className="mb-2">Open Safari</li>
           <li>Paste and go</li>
         </ol>
         <div className="bg-gray-100 p-2 rounded mb-4 break-all">
@@ -102,3 +125,4 @@ const WebViewRedirect = ({ targetUrl }) => {
 };
 
 export default WebViewRedirect;
+
