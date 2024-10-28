@@ -234,6 +234,9 @@ const EditorPage = () => {
       console.error('Error posting layout data:', error); // Log any errors
     }
   };
+React.useEffect(()=>{
+  alert(!!window.chrome.webview?"Runnning in web view":"Running in Browser");
+}, []);
 
   return (
     <div id="editor-container" style={{ minWidth: '100%', height: '100vh' }}>
