@@ -21,9 +21,15 @@ export default function ThemeSelection() {
 
   useEffect(() => {
     if (isInstagramWebView()) {
-      alert('Please open this app in a regular browser for the best experience.');
-      // Redirect to the URL in a regular browser (e.g., the app's URL)
-      window.location.href = 'https://xplore-instant.vercel.app/';
+      // Show alert to the user with instructions
+      alert('For the best experience, please open this link in Chrome or Safari.');
+
+      // Create a hidden anchor element that links to your URL
+      const redirectLink = document.createElement('a');
+      redirectLink.href = 'https://xplore-instant.vercel.app/'; // Replace with your URL
+      redirectLink.target = '_blank';
+      redirectLink.rel = 'noopener noreferrer';
+      redirectLink.click();
     }
   }, []);
   const themes = [
