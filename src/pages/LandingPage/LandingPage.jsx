@@ -37,13 +37,13 @@ export default function LandingPage() {
           name="token"
           placeholder="Token"
         />
-         <label htmlFor="token">Enter Ad Id here:</label>
+         <label htmlFor="token">Enter Campaign Id here:</label>
         <input
          value={id}
          onChange={e => setId(e.target.value)}
          type="text"
          name="id"
-         placeholder="Advertisment Id"
+         placeholder="Campaign Id"
         />
         <button>Continue</button>
       </form>
