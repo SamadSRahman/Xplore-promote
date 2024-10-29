@@ -51,12 +51,8 @@ const EditorPage = () => {
       theme: 'dark',
       layout: [
         {
-          items: ['tanker-overview'],
-          items: ['sources-overview'],
-          items: ['custom-variables'],
-          items: ['timers'],
           items: ['new-component', 'component-tree'],
-          minWidth: 420,
+          minWidth: 360,
         },
         {
           items: ['preview'],
@@ -208,7 +204,7 @@ const EditorPage = () => {
       alert('Token or Id not available, please add valid details to continue');
       navigate('/');
     }
-    const url = `https://xplore-promote.vercel.app/api/v1/layout/create/${id}`;
+    const url = `https://pre.xplore.xircular.io/api/v1/layout/create/${id}`;
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -234,9 +230,7 @@ const EditorPage = () => {
       console.error('Error posting layout data:', error); // Log any errors
     }
   };
-React.useEffect(()=>{
-  alert(!!window.chrome.webview?"Runnning in web view":"Running in Browser");
-}, []);
+
 
 
   return (

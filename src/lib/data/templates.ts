@@ -526,60 +526,60 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       ],
     },
   },
-  _template_lottie: {
-    nameKey: 'templates.lottie',
-    visible: true,
-    inShortList: true,
-    icon: lottieIcon,
-    props: [
-      {
-        type: 'group',
-        title: 'lottieProps.title',
-        list: [
-          {
-            name: 'props.lottie_url',
-            prop: 'lottie_params.lottie_url',
-            type: 'file',
-            subtype: 'lottie',
-            enableSources: true,
-          },
-          {
-            name: 'props.preview',
-            prop: 'preview',
-            type: 'file',
-            subtype: 'image_preview',
-            enableSources: true,
-          },
-        ],
-      },
-    ],
-    newNode: {
-      lottie_params: {
-        lottie_url: '',
-        repeat_count: -1,
-        repeat_mode: 'restart',
-      },
-      width: {
-        type: 'fixed',
-        value: 100,
-      },
-      height: {
-        type: 'fixed',
-        value: 100,
-      },
-    },
-    template: {
-      type: 'gif',
-      scale: 'fit',
-      extensions: [
-        {
-          id: 'lottie',
-          $params: 'lottie_params',
-        },
-      ],
-      gif_url: 'https://yastatic.net/s3/home/divkit/empty2.png',
-    },
-  },
+  // _template_lottie: {
+  //   nameKey: 'templates.lottie',
+  //   visible: true,
+  //   inShortList: true,
+  //   icon: lottieIcon,
+  //   props: [
+  //     {
+  //       type: 'group',
+  //       title: 'lottieProps.title',
+  //       list: [
+  //         {
+  //           name: 'props.lottie_url',
+  //           prop: 'lottie_params.lottie_url',
+  //           type: 'file',
+  //           subtype: 'lottie',
+  //           enableSources: true,
+  //         },
+  //         {
+  //           name: 'props.preview',
+  //           prop: 'preview',
+  //           type: 'file',
+  //           subtype: 'image_preview',
+  //           enableSources: true,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  //   newNode: {
+  //     lottie_params: {
+  //       lottie_url: '',
+  //       repeat_count: -1,
+  //       repeat_mode: 'restart',
+  //     },
+  //     width: {
+  //       type: 'fixed',
+  //       value: 100,
+  //     },
+  //     height: {
+  //       type: 'fixed',
+  //       value: 100,
+  //     },
+  //   },
+  //   template: {
+  //     type: 'gif',
+  //     scale: 'fit',
+  //     extensions: [
+  //       {
+  //         id: 'lottie',
+  //         $params: 'lottie_params',
+  //       },
+  //     ],
+  //     gif_url: 'https://yastatic.net/s3/home/divkit/empty2.png',
+  //   },
+  // },
   _template_button: {
     nameKey: 'templates.button',
     visible: true,

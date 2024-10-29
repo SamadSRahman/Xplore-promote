@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable indent */
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './ThemeSelection.module.css';
@@ -18,26 +17,6 @@ export default function ThemeSelection() {
   const navigate = useNavigate();
   const [selectedTheme, setSelectedTheme] = useState(null);
 
-  const isInstagramWebView = () => {
-    return navigator.userAgent.includes('Instagram');
-  };
-
-  useEffect(async() => {
-    if (isInstagramWebView()) {
-      // Show alert to the user with instructions
-      alert('For the best experience, please open this link in Chrome or Safari.');
-
-      // Create a hidden anchor element that links to your URL
-      // window.open('https://bit.ly/4hpsvTw', '_blank');
-// try {
-//   const response = await axios.get('http://localhost:3000/redirect');
-//   console.log(response);
-//   alert('redirected');
-// } catch (error) {
-//   console.log(error);
-// }
-    }
-  }, []);
   const themes = [
     {
       name: 'Gradient Background',

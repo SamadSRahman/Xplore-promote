@@ -33,13 +33,23 @@ const WebViewRedirect = ({ targetUrl }) => {
     const chromeUrl = `googlechrome://${targetUrl.replace(/^https?:\/\//, '')}`;
     
     // For iOS, we'll also try an alternative scheme
-    const iOSChromeUrl = `x-web-search://?${encodeURIComponent(targetUrl)}`;
+    // const iOSChromeUrl = `com-apple-mobilesafari-tab://url= ${targetUrl}`;
+    console.log(`ftp://${window.location.origin}/bridge.html`);
+    
+    const iOSChromeUrl = `safari-extension://${targetUrl.replace(/^https?:\/\//, '')}`;
+
+    const safariFriendlyUrl = targetUrl.replace(/^https?:\/\//, '');
+
+  // Construct the Safari extension URL scheme
+  const safariUrl = `safari-extension://${safariFriendlyUrl}`;
+
     
     const isIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
     
     try {
       // Try the appropriate URL scheme
-      window.location.href = isIOS ? chromeUrl : chromeUrl;
+      window.open(safariUrl, '_blank');
+      window.location.href = isIOS ? iOSChromeUrl : chromeUrl;
       
       // Fallback to direct URL after a delay
       setTimeout(() => {
