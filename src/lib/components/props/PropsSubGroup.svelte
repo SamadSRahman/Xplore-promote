@@ -71,12 +71,12 @@
     >
         {#if item.type === 'group'}
             <div class="props-group__span-cell">
-                <Spoiler2
+                <!-- <Spoiler2
                     theme="straight-small"
                     mix="props-group__group-summary {filled ? 'props-group__filled' : ''} {deprecated ? 'props-group__deprecated' : ''}"
                     open={false}
-                >
-                    <div slot="title">
+                > -->
+                    <!-- <div slot="title">
                         {#if item.desc.platforms || item.desc.deprecated}
                             {@const warn = warnLabel($lang, item.desc)}
                             {#if warn}
@@ -87,7 +87,7 @@
                             {/if}
                         {/if}
                         {item.name} {'{'}{value?.type && ` ${value.type} ` || ' '}{'}'}
-                    </div>
+                    </div> -->
                     <ul class="props-group__content">
                         {#if item.options}
                             <li class="props-group__item" title="{item.name}: {item.description?.ru}">
@@ -170,7 +170,7 @@
                             {/if}
                         {/if}
                     </ul>
-                </Spoiler2>
+                <!-- </Spoiler2> -->
             </div>
         {:else if item.type === 'list'}
             <div class="props-group__span-cell">

@@ -157,15 +157,15 @@
         }
     }
 </script>
-
+<!-- 
 <Spoiler2
     theme="straight"
     mix="props-group"
     open
->
-    <div slot="title" class="props-group__summary">
+> -->
+    <!-- <div slot="title" class="props-group__summary">
         {capitalize(group)}
-    </div>
+    </div> -->
 
     <ul class="props-group__content">
         {#if list}
@@ -179,7 +179,7 @@
             />
         {/if}
     </ul>
-</Spoiler2>
+<!-- </Spoiler2> -->
 
 <style>
     :global(.props-group) {

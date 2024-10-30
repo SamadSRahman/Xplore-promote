@@ -580,6 +580,11 @@ export const namedTemplates: Record<string, TemplateDescription> = {
   //     gif_url: 'https://yastatic.net/s3/home/divkit/empty2.png',
   //   },
   // },
+  
+  
+  
+  
+  
   _template_button: {
     nameKey: 'templates.button',
     visible: true,
@@ -668,7 +673,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       },
     ],
     newNode: {
-      text: 'Hi',
+      text: 'Click me!',
       background: [
         {
           type: 'solid',
@@ -676,7 +681,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
         },
       ],
       text_color: '#fff',
-      corners: 4,
+      corners: 8,
     },
     template: {
       type: 'text',
@@ -684,14 +689,19 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       text_alignment_vertical: 'center',
       border: { $corner_radius: 'corners' },
       paddings: {
-        bottom: 24,
-        left: 28,
-        right: 28,
-        top: 22,
+        bottom: 15,
+        left: 22,
+        right: 22,
+        top: 15,
       },
       width: { type: 'wrap_content' },
     },
   },
+
+
+
+
+
   _template_close: {
     nameKey: 'templates.close',
     visible: true,

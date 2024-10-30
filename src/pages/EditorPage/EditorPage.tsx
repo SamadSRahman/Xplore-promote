@@ -1,3 +1,7 @@
+/* eslint-disable space-before-blocks */
+/* eslint-disable brace-style */
+/* eslint-disable semi */
+/* eslint-disable keyword-spacing */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -22,46 +26,57 @@ import {
 import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
 import MobilePreview from '../../lib/components/MobilePreview/MobilePreview';
 import { blankBackgroundJSON, gradientBackgroundJSON, imageBackgroundJSON, solidBackgroundJSON } from '../../lib/utils/splashScreenData';
+import useApi from '../../lib/utils/useApi';
 
 
 
 const EditorPage = () => {
-  const { type } = useParams();
-  const id = localStorage.getItem('adId');
+  const { getCampaignById, splashScreenLayout, isSplashScreenAvailable, updateLayout, layoutId, landingScreenLayout } = useApi();
+  const { type, campaignId, page } = useParams();
+  // const id = localStorage.getItem('adId');
   const token = localStorage.getItem('accessToken');
   const navigate = useNavigate();
-  const [jsonContent, setJsonContent] = React.useState(null);
   const [editorData, setEditorData] = React.useState(null);
+  const [editorKey, setEditorKey] = React.useState(0);
+  const [jsonContent, setJsonContent] = React.useState(null);
+  const [editorInstance, setEditorInstance] = React.useState(null);
+  const editorContainerRef = React.useRef(null);
+
   React.useEffect(() => {
+    if (campaignId) {
+      getCampaignById(campaignId);
+    }
+  }, [campaignId, getCampaignById]);
+
+
+  React.useEffect(() => {
+    getCampaignById(campaignId);
+    const screenWidth = window.innerWidth;
+    const leftRightWidth = 0.25 * screenWidth;
+    const middleWidth = 0.4 * screenWidth;
+    console.log('line 47', page, splashScreenLayout);
+    if (!editorContainerRef.current) return;
     const editor = (window.editor = DivProEditor.init({
-      renderTo: document.getElementById('editor-container') as HTMLElement,
+      renderTo: editorContainerRef.current,
       locale: 'en',
       rootConfigurable: true,
       card: {
-        json: JSON.stringify(type === 'gradient' ? gradientBackgroundJSON : type === 'solid' ? solidBackgroundJSON : type === 'image' ? imageBackgroundJSON : blankBackgroundJSON),
-        // "meta": {
-        //     "tanker": {
-        //         "props.lottie_url": {
-        //             "ru": "Анимация",
-        //             "en": "Animation"
-        //         }
-        //     }
-        // }
+        json: (page === 'splash_screen' ? splashScreenLayout : landingScreenLayout)       
       },
       theme: 'dark',
       layout: [
         {
           items: ['new-component', 'component-tree'],
-          minWidth: 360,
+          minWidth: leftRightWidth,
         },
         {
           items: ['preview'],
           weight: 5,
-          minWidth: 460,
+          minWidth: leftRightWidth,
         },
         {
           items: ['component-props:code'],
-          minWidth: 375,
+          minWidth: leftRightWidth,
         },
       ],
       actionLogUrlVariable: 'on_click_log_url',
@@ -178,70 +193,123 @@ const EditorPage = () => {
     }));
     console.log('editor', editor);
     setEditorData(editor);
+    setEditorInstance(editor);
     return () => {
       // Clean up the editor if necessary
+      if (editor && typeof editor.destroy === 'function') {
+        editor.destroy();
+      }
     };
-  }, []);
+  }, [splashScreenLayout, isSplashScreenAvailable]);
+
+  React.useEffect(() => {
+    if (editorInstance && splashScreenLayout) {
+      try {
+        editorInstance.setValue({
+          card: {
+            json: page === 'splash_screen' ? splashScreenLayout : landingScreenLayout
+          }
+        });
+      } catch (error) {
+        console.error('Error updating editor content:', error);
+      }
+    }
+  }, [editorInstance, splashScreenLayout, page]);
+
   React.useEffect(() => {
     window.editorData = jsonContent;
   }, [jsonContent]);
 
-  const handleLogJSON = () => {
-    if (editorData) {
-      console.log('line 294', editorData);
-      const currentJSON = editorData.getValue();
+  const handleLogJSON = async() => {
+    if (!editorInstance) {
+      console.log('Editor not initialized');
+      return;
+    }
+
+    try {
+      const currentJSON = editorInstance.getValue();
       window.editorData = currentJSON;
       setJsonContent(currentJSON);
-      postLayoutData(currentJSON);
-      console.log('Current JSON:', currentJSON);
-    } else {
-      console.log('Editor not initialized');
+
+      if (isSplashScreenAvailable) {
+        await updateLayout(layoutId, currentJSON, page);
+      } else {
+        await postLayoutData(currentJSON);
+      }
+    } catch (error) {
+      console.error('Error handling JSON:', error);
     }
   };
 
   const postLayoutData = async jsonData => {
-    if (!token || !id) {
+    if (!token) {
       alert('Token or Id not available, please add valid details to continue');
       navigate('/');
+      return;
     }
-    const url = `https://pre.xplore.xircular.io/api/v1/layout/create/${id}`;
+
     try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', // Specify the content type
-          authorization: `${token}`, // Include the authorization token
-        },
-        body: JSON.stringify({ // Stringify the body content
-          name: 'Splash Screen',
-          layoutJSON: JSON.parse(jsonData) // Pass the JSON object here
-        }),
-      });
-  
-      // Check if the response is OK (status in the range 200-299)
+      const response = await fetch(
+        `https://pre.xplore.xircular.io/api/v1/layout/create/${campaignId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: token,
+          },
+          body: JSON.stringify({
+            name: 'splash_screen',
+            layoutJSON: JSON.parse(jsonData)
+          }),
+        }
+      );
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
-      const data = await response.json(); // Parse the JSON response
-      console.log('Response:', data); // Log the response data
+
+      const data = await response.json();
+      console.log('Response:', data);
       alert('Layout published successfully!');
     } catch (error) {
-      console.error('Error posting layout data:', error); // Log any errors
+      console.error('Error posting layout data:', error);
+      alert('Failed to publish layout. Please try again.');
     }
   };
+
+const handleSave = ()=>{
+  const currentJSON = editorInstance.getValue();
+  window.editorData = currentJSON;
+  setJsonContent(currentJSON);
+  const layout = {
+    name: page,
+    layoutJSON: JSON.parse(currentJSON)
+  }
+  if(page === 'splash_screen'){
+    localStorage.setItem('splash_screen_layout', JSON.stringify(layout))
+  }
+  else{
+    localStorage.setItem('landing_screen_layout', JSON.stringify(layout))
+  }
+}
 
 
 
   return (
-    <div id="editor-container" style={{ minWidth: '100%', height: '100vh' }}>
+    <div ref={editorContainerRef}style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box', paddding: '20px' }}>
       {/* The editor will be rendered here */}
-      <div div >
+      <div>
         <button
-        className={styles.publishBtn}
+          className={styles.publishBtn}
           onClick={handleLogJSON}
- >
-          Publish
+        >
+          {isSplashScreenAvailable ? 'Update' : 'Publish' }
+        </button>
+        <button
+          className={styles.saveBtn}
+          onClick={handleSave}
+        >
+          Save
         </button>
 
         {/* <PreviewCard jsonData={solidBackgroundJSON} /> */}

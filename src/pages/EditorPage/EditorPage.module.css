@@ -3,7 +3,7 @@
     bottom: 2rem;
     right: 2rem;
     border-radius: 10px;
-    background-color: #5959e8;
+    background-color: #39A6F5;
     z-index: 3;
     border:none;
     padding: 12px;
@@ -13,13 +13,29 @@
 
 }
 .publishBtn:hover{
-    background-color: #545bd6;
+    /* background-color: #545bd6; */
 }
 .publishBtn:active{
-    background-color:#4e54c9;
+    /* background-color:#4e54c9; */
 }
 
 /* #5959e8
 
 h - #545bd6
 a - #4e54c9 */
+
+.saveBtn{
+    background-color: white;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 6px;
+    color: black;
+    cursor: pointer;
+    position: absolute;
+    z-index: 5;
+    right: 1rem;
+    top: 0.5rem;
+}
+.saveBtn:hover{
+    background-color: white;
+}

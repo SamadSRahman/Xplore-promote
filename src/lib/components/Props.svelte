@@ -52,7 +52,7 @@
 
 <div class="props">
     {#if showComplex}
-        <PanelTitle title={$l10n(showComplex ? 'complexComponentProperties' : 'componentProperties')} />
+        <!-- <PanelTitle title={$l10n(showComplex ? 'complexComponentProperties' : 'componentProperties')} /> -->
     {/if}
 
     {#if props}

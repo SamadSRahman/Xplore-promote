@@ -3,6 +3,7 @@
   import LanguageSelector from "./LanguageSelector.svelte";
   import { LANGUAGE_CTX, type LanguageContext } from "../ctx/languageContext";
   import LinksPopup from "./LinksPopup.svelte";
+  import ReactWrapper from './ReactWrapper.svelte';
 
   const { l10n, lang } = getContext<LanguageContext>(LANGUAGE_CTX);
 
@@ -21,6 +22,14 @@
       linksPopupShown = false;
     }
   }
+  let pathname: any;
+  onMount(() => {
+    pathname = window.location.pathname;
+    let campaignId = pathname.split('/')[2];
+    console.log('pathname', campaignId);
+  });
+
+
 
 </script>
 
@@ -51,7 +60,9 @@
     </header> -->
 
   <nav class="header__subnav">
-    <h3 style="color: black;">Splash screen</h3>
+    <ReactWrapper  />
+    <!-- <h3 class="page-tab {pathname?.includes('splash') ? 'page-tab-selected' : ''}">Splash screen</h3>
+    <h3 class="page-tab {pathname?.includes('landing') ? 'page-tab-selected' : ''}">Landing screen</h3> -->
     <!-- <div class="header__subnav-left">  -->
     <!--   <ul class="header__subnav-links">
                 <li class="header__subnav-item">
@@ -72,7 +83,7 @@
             </ul>
         </div> -->
 
-    <div class="header__subnav-right">
+    <!-- <div class="header__subnav-right">
       <ul class="header__subnav-links">
         <li class="header__subnav-item">
           <button
@@ -82,7 +93,7 @@
           >
           <button
             class="header__subnav-link"
-            on:click={() => console.log("save btn clicked", editorData)}
+            on:click={() => console.log("save btn clicked")}
             bind:this={linksButton}>{$l10n("save")}</button
           >
           {#if linksPopupShown}
@@ -95,16 +106,33 @@
           {/if}
         </li>
       </ul>
-    </div>
+    </div> -->
   </nav>
   <!-- </header> -->
 </div>
 
 <style>
+
+
+.page-tab{
+    color:black;
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+
+  } 
+  .page-tab-selected{
+    background-color: #39A6F5;
+    color:white;
+  }
+  
   .header__header {
     display: flex;
     align-items: center;
-    height: 80px;
+    height: 100px;
     padding: 0 19px;
   }
 
@@ -170,6 +198,8 @@
     height: 40px;
     padding: 0 19px;
     background: var(--bg-secondary);
+    padding: 5px;
+
   }
 
   .header__subnav-logo {

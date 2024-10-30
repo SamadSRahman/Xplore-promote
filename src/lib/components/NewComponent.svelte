@@ -170,11 +170,9 @@
     font-family: "Open Sans", sans-serif;
     justify-content: space-around;
     align-items: center;
-  }
-
-  .new-component__item {
+  }  .new-component__item {
     display: flex;
-    gap: 8px;
+    gap: 0px;
     align-items: center;
     border-radius: 12px;
     cursor: pointer;

@@ -26,6 +26,7 @@
         // Avoid TypeScript type infinite loop - manual bypass events
         dispatch(event.type, event.detail);
     }
+    console.log("propsList", propsList)
 </script>
 
 <div class="simple-props-group">
@@ -140,10 +141,12 @@
         margin: 0;
         padding: 0;
         list-style: none;
+        font-family: "Inter", sans-serif;
     }
 
     .simple-props-group__item {
         transition: opacity .15s ease-in-out;
+        /* border: 1px solid; */
     }
 
     .simple-props-group__item_disabled {
@@ -170,10 +173,12 @@
     .simple-props-group__split {
         display: flex;
         gap: 16px;
+      
     }
 
     .simple-props-group__split-item {
         flex: 1 0 0;
         min-width: 0;
+       
     }
 </style>

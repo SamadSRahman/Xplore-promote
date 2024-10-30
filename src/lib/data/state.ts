@@ -314,7 +314,9 @@ export class State {
         }
 
         if (!json.card?.states?.[0]?.div) {
-            throw new Error('Incorrect format');
+            console.log('line 317', json);
+            
+            // throw new Error('Incorrect format');
         }
 
         this.userTemplates.clear();

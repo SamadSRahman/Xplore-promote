@@ -1,0 +1,76 @@
+/* PublishAndPreview.module.css */
+.wrapper{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background: #FAFAFA;
+
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    font-size: 2rem;
+    color: #7654EE;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .qrContainer {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .subTitle {
+    font-size: 1.2rem;
+    color: #808080;
+    margin-bottom: 0.5rem;
+  }
+  
+  .publishButton {
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #7654EE;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .publishButton:disabled {
+    background-color: #808080;
+    cursor: not-allowed;
+  }
+  
+  .publishButton:hover:not(:disabled) {
+    background-color: #5a3fcc;
+  }
+  /* PublishAndPreview.module.css */
+
+.downloadButton {
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #808080;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .downloadButton:hover {
+    background-color: #666666;
+  }
+  

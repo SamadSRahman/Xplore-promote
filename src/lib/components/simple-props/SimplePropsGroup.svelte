@@ -13,8 +13,8 @@
     export let selectedElemProps: SelectedElemProps | null;
 </script>
 
-<Spoiler2 theme="props">
-    <div slot="title">{title}</div>
+<!-- <Spoiler2 theme="props">
+    <div slot="title">{title}</div> -->
 
     <SimplePropsList
         {propsList}
@@ -25,4 +25,4 @@
         {selectedElemProps}
         on:change
     />
-</Spoiler2>
+<!-- </Spoiler2> -->

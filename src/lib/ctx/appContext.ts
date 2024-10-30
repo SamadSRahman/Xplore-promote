@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Action } from '@divkitframework/divkit/typings/common';
 import type { CardLocale, EditorInstance, EditorOptions, GetTranslationKey, GetTranslationSuggest } from '../../lib';
 import type { State } from '../data/state';
@@ -74,6 +75,11 @@ export interface File2DialogValue {
 }
 
 export type File2DialogCallback = (opts: File2DialogValue) => void;
+
+export type UploadResponse = {
+    data: any;
+    // Add other response properties from your CDN
+};
 
 export interface File2DialogShowProps {
     value: File2DialogValue;

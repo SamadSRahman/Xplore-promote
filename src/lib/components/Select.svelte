@@ -182,6 +182,7 @@
     .select {
         position: relative;
         user-select: none;
+     
     }
 
     .select__arrow {
@@ -229,7 +230,8 @@
     .select_theme_normal .select__select {
         padding: 5px 39px 5px 15px;
         border-radius: 6px;
-        border: 1px solid var(--fill-transparent-3);
+        /* border: 1px solid var(--fill-transparent-3); */
+        background-color: #F5F5F5;
         transition: border-color .15s ease-in-out;
     }
 
@@ -327,7 +329,7 @@
         height: 28px;
         margin-right: 8px;
         border-radius: 6px;
-        background: var(--fill-accent-2);
+        /* background: var(--fill-accent-2); */
         overflow: hidden;
     }
 
