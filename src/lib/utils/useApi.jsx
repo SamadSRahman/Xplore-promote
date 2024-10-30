@@ -1,3 +1,4 @@
+/* eslint-disable brace-style */
 /* eslint-disable arrow-parens */
 /* eslint-disable keyword-spacing */
 /* eslint-disable space-before-blocks */
@@ -7,15 +8,18 @@
 /* eslint-disable indent */
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { blankBackgroundJSON } from "./splashScreenData";
 
+
 export default function useApi() {
+  const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState([]);
   const [name, setName] = useState("");
   const [splashScreenLayout, setSplashScreenLayout] = useState(
     JSON.stringify(blankBackgroundJSON)
   );
-  const [isSplashScreenAvailable, setIsSplashScreenAvailable] = useState(false)
+  const [isSplashScreenAvailable, setIsSplashScreenAvailable] = useState(false);
   const [landingScreenLayout, setLandingScreenLayout] = useState(
     JSON.stringify(blankBackgroundJSON)
   );
@@ -76,7 +80,7 @@ export default function useApi() {
       (ele) => ele.name === "landing_screen"
     );
    if(landingLayout){
-    console.log("splash", landingLayout);
+    console.log("landing", landingLayout);
     setLandingScreenLayout(
       JSON.stringify(landingLayout?.layoutJSON)
     );
@@ -84,7 +88,7 @@ export default function useApi() {
     setIsSplashScreenAvailable(true);
    }
   };
-  const updateLayout = async (id, layout, name) => {
+  const updateLayout = async (id, layout, name, campaignId) => {
     try {
       const response = await axios.put(
         `https://pre.xplore.xircular.io/api/v1/layout/update/${id}`,
@@ -100,23 +104,32 @@ export default function useApi() {
           },
         }
       );
-    
       console.log("Response:", response.data);
+      alert("Layout saved succssfully");
+      if(name === 'splash_screen'){
+        window.location.href = (`/editor/${campaignId}/landing_screen`);
+       }
+       else{
+        window.location.href = (`/publish/${campaignId}`);
+       }
     } catch (error) {
       console.error("Error updating layout:", error);
     }
+  };
 
-      // Check if the response is OK (status in the range 200-299)
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! Status: ${response.status}`);
-    //   }
-
-    //   const data = await response.json(); // Parse the JSON response
-    //   console.log("Response:", data); // Log the response data
-    //   alert("Layout published successfully!");
-    // } catch (error) {
-    //   console.error("Error posting layout data:", error); // Log any errors
-    // }
+  const deleteCampaign = async(id) =>{
+    try{
+      const response = await axios.delete(`https://pre.xplore.xircular.io/api/v1/campaign/delete/${id}`, {
+        headers: {
+          authorization: token
+        }
+      });
+      console.log("campaign deleted successfuly", response);
+      getCampaigns();
+    }
+    catch(error){
+      console.log(error);
+    }
   };
 
   return {
@@ -124,6 +137,7 @@ export default function useApi() {
     getUserDetails,
     getCampaignById,
     updateLayout,
+    deleteCampaign,
     name,
     campaigns,
     splashScreenLayout,

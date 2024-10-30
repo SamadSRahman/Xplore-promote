@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import styles from './PreviewCard.module.css';
 
@@ -10,33 +11,53 @@ const PreviewCard = ({ jsonData }) => {
         switch (item.type) {
             case 'text':
                 return (
-          <p
-            key={index}
-            style={{
-                fontSize: item.font_size,
-                color: item.text_color,
-                marginBottom: item.margins?.bottom,
-                marginLeft: item.margins?.left,
-                marginRight: item.margins?.right,
-                marginTop: item.margins?.top,
-                textAlign: item.alignment_horizontal,
-            }}
-          >
-            {item.text}
-          </p>
+                    <p
+                    key={index}
+                    style={{
+                        fontSize: item.font_size,
+                        color: item.text_color,
+                        marginBottom: item.margins?.bottom || 0,
+                        marginLeft: item.margins?.left || 0,
+                        marginRight: item.margins?.right || 0,
+                        marginTop: item.margins?.top || 0,
+                        textAlign: item.alignment_horizontal,
+                        margin: item.alignment_horizontal === 'center' ? 'auto' : undefined,
+                        position: 'absolute',
+                        top: item.alignment_vertical === 'center' ? '50%' : item.margins?.top,
+                        left: item.alignment_horizontal === 'center' ? '50%' : item.margins?.left,
+                        transform: `${item.alignment_horizontal === 'center' ? 'translateX(-50%)' : ''} ${item.alignment_vertical === 'center' ? 'translateY(-50%)' : ''}`.trim(),
+                    }}
+                  >
+                    {item.text}
+                  </p>
                 );
             case 'image':
                 return (
-          <img
+          <div
             key={index}
-            src={item.image_url}
-            alt="Image"
             style={{
+                position: 'absolute',
                 width: item.width?.value,
                 height: item.height?.value,
-                marginTop: item.margins?.top,
+                top: item.alignment_vertical === 'top' ? item.margins?.top || 0 : item.alignment_vertical === 'center' ? '50%' : 'auto',
+                left: item.alignment_horizontal === 'center' ? '50%' : item.alignment_horizontal === 'right' ? 'auto' : 0,
+                right: item.alignment_horizontal === 'right' ? item.margins?.right || 0 : 'auto',
+                bottom: item.alignment_vertical === 'bottom' ? item.margins?.bottom || 0 : 'auto',
+                transform: `translate(${item.alignment_horizontal === 'center' ? '-50%' : '0'}, ${item.alignment_vertical === 'center' ? '-50%' : '0'}) rotate(${item.transform?.rotation || 0}deg)`,
             }}
-          />
+          >
+            <img
+              src={item.image_url}
+              alt="Image"
+              style={{
+                  width: item.width.value,
+                  height: item.width.value,
+                  objectFit: item.scale === 'fit' ? 'contain' : 'cover',
+                  left: item.margins?.left,
+                  top: `${item.margins?.top}px`
+              }}
+            />
+          </div>
                 );
             default:
                 return null;
@@ -55,9 +76,7 @@ const PreviewCard = ({ jsonData }) => {
 
         if (background.type === 'gradient') {
             return {
-                background: `linear-gradient(${background.angle}deg, ${background.colors.join(
-                    ', '
-                )})`,
+                background: `linear-gradient(${background.angle}deg, ${background.colors.join(', ')})`,
             };
         }
 
@@ -78,22 +97,22 @@ const PreviewCard = ({ jsonData }) => {
         key={index}
         style={{
             display: 'flex',
-            flexDirection: div.orientation === 'overlap' ? 'column' : 'column',
-            justifyContent: div.alignment_vertical || 'center',
-            alignItems: div.alignment_horizontal || 'center',
+            flexDirection: div.orientation === 'overlap' ? 'row' : 'column',
+            // justifyContent: div.alignment_vertical || 'center',
+            // alignItems: div.alignment_horizontal || 'center',
             ...renderBackground(div.background[0]), // Assuming only 1 background per container
             width: '100%',
             height: '100vh', // Full screen preview
             position: 'relative',
         }}
       >
-        {div.items.map(renderItem)}
+        {div?.items?.map(renderItem)}
       </div>
         );
     };
 
     return (
-    <div className={styles.container}>
+    <div className={styles.wrapper}>
       {states.map((state, index) => renderContainer(state, index))}
     </div>
     );

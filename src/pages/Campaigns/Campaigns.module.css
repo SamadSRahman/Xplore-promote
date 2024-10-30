@@ -36,6 +36,7 @@ text-align: center;    height: 100%;
     justify-content: center;
     min-width: 75%;
     background: #FAFAFA;
+   
 }
 .createNewCard{
     border-radius: 10px;
@@ -94,5 +95,48 @@ text-align: center;    height: 100%;
     margin: 10px;
     box-shadow: 1px 1px 5px #0000002d;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
 
 }
+.body{
+    padding: 0px 10px;
+    box-sizing: border-box;
+}
+.iconWrapper{
+
+    padding: 3px 5px;
+    border-radius: 3px;
+    transition: background-color 0.2s linear;
+}
+.iconWrapper:hover{
+    background-color: #D9D9D9;
+}
+
+.popupMenu {
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    background-color: white;
+    border: 1px solid #D9D9D9;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+  
+  .popupItem {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-family: "Open Sans", sans-serif;
+  }
+  
+  .popupItem:hover {
+    background-color: #F0F0F0;
+  }
+
+  

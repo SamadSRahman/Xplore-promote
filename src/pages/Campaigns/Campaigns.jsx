@@ -1,9 +1,7 @@
-/* eslint-disable no-console */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable indent */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { BsThreeDots } from 'react-icons/bs';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa'; // Icons for edit and delete
 import styles from './Campaigns.module.css';
 import logo from '../../assets/xplore.svg';
 import example1 from '../../assets/Bottom sheet Image.svg';
@@ -11,16 +9,36 @@ import example2 from '../../assets/Frame 13822.svg';
 import example3 from '../../assets/Frame 13816.svg';
 import useApi from '../../lib/utils/useApi';
 
-
 export default function Campaigns() {
-const { name, campaigns, getCampaigns, getUserDetails } = useApi();
+    const { name, campaigns, getCampaigns, getUserDetails, deleteCampaign } = useApi();
     const navigate = useNavigate();
-  useEffect(()=>{
-    getUserDetails();
-     getCampaigns();
+    const [selectedCampaign, setSelectedCampaign] = useState(null);
+    const popupRef = useRef();
+
+    useEffect(() => {
+        getUserDetails();
+        getCampaigns();
+
+        const handleClickOutside = event => {
+            if (popupRef.current && !popupRef.current.contains(event.target)) {
+                setSelectedCampaign(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-  return (
+    const handleEdit = campaignId => {
+        navigate(`/editor/${campaignId}/splash_screen`);
+        setSelectedCampaign(null); // Close the popup after navigating
+    };
+
+    const handleDelete = campaignId => {
+        deleteCampaign(campaignId);
+        setSelectedCampaign(null); // Close the popup after deletion
+    };
+
+    return (
     <div className={styles.container}>
       <div className={styles.sideBar}>
         <div className={styles.header}>
@@ -31,20 +49,36 @@ const { name, campaigns, getCampaigns, getUserDetails } = useApi();
             <h4>Hi {name}, Welcome</h4>
           </div>
           {campaigns.length > 0 ? (
-            (
-              <div>
-                {campaigns.map(campaign=>(
-                  <div 
-                  onClick={()=>navigate(`/editor/${campaign.campaignID}/splash_screen`)}
-                  className={styles.campaignItem}>
-                    {campaign.name}
+          <div>
+              <p>Your campaigns:</p>
+            <div>
+              {campaigns.map(campaign => (
+                <div
+                  key={campaign.campaignID}
+                  className={styles.campaignItem}
+                  onClick={() => setSelectedCampaign(campaign.campaignID)}
+                >
+                  {campaign.name}
+                  <div className={styles.iconWrapper}>
+                    <BsThreeDots />
                   </div>
-                ))}
-              </div>
-            )
+                  {selectedCampaign === campaign.campaignID && (
+                    <div ref={popupRef} className={styles.popupMenu}>
+                      <div className={styles.popupItem} onClick={() => handleEdit(campaign.campaignID)}>
+                        <FaEdit /> Edit
+                      </div>
+                      <div className={styles.popupItem} onClick={() => handleDelete(campaign.campaignID)}>
+                        <FaTrashAlt /> Delete
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
           ) : (
             <div className={styles.noCampaigns}>
-              <p>No campaigns </p>
+              <p>No campaigns</p>
             </div>
           )}
         </div>
@@ -63,10 +97,10 @@ const { name, campaigns, getCampaigns, getUserDetails } = useApi();
           <div className={styles.contentSection}>
             <h4>Create campaign</h4>
             <p>Want to get more reach, create your event</p>
-            <button>Create your campaign</button>
+            <button onClick={()=>navigate('/createCampaign')}>Create your campaign</button>
           </div>
         </div>
       </div>
     </div>
-  );
+    );
 }

@@ -25,17 +25,23 @@ h - #545bd6
 a - #4e54c9 */
 
 .saveBtn{
-    background-color: white;
+    background-color: #39A6F5;
     border: none;
     padding: 8px 10px;
     border-radius: 6px;
-    color: black;
+    /* color: black; */
     cursor: pointer;
     position: absolute;
     z-index: 5;
     right: 1rem;
     top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.saveBtn img{
+    width: 12px;
 }
 .saveBtn:hover{
-    background-color: white;
+    /* background-color: white; */
 }

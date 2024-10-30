@@ -14,6 +14,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy.jsx';
 import TermsAndConditions from './pages/Terms/Terms.jsx';
 import CampaignsForm from './pages/CreateCampaign/CreateCampaign.jsx';
 import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
+import ContactUs from './pages/ContactUs/ContactUs.jsx';
+import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
 
 export default function App() {
   return (
@@ -21,15 +23,15 @@ export default function App() {
          <RecoilRoot>
          <BrowserRouter>
           <Routes>
-            <Route path='/' element={<LandingPage />}/>
             <Route path='/privacyPolicy' element={<PrivacyPolicy />}/>
             <Route path='/publish/:campaignId' element={<PublishAndPreview />}/>
+            <Route path='/campaign/:campaignId' element={<CampaignPreview />}/>
+            <Route path='/contactus' element={<ContactUs />}/>
             <Route path='/terms&conditions' element={<TermsAndConditions />}/>
-            <Route path='/code' element={<QRLogin />}/>
+            <Route path='/' element={<QRLogin />}/>
             <Route path='/campaigns' element={<Campaigns />}/>
             <Route path='/createCampaign' element={<CampaignsForm />}/>
             <Route path='/themeSelection' element={<ThemeSelection />}/>
-            {/* <Route path='/editor/:type' element={<EditorPage />}/> */}
             <Route path='/editor/:campaignId/:page' element={<EditorPage />}/>
           </Routes>
           </BrowserRouter>

@@ -15,6 +15,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { IoIosSave } from 'react-icons/io';
 import styles from './EditorPage.module.css';
 import {
   addTemplatesSuffix,
@@ -27,6 +28,7 @@ import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
 import MobilePreview from '../../lib/components/MobilePreview/MobilePreview';
 import { blankBackgroundJSON, gradientBackgroundJSON, imageBackgroundJSON, solidBackgroundJSON } from '../../lib/utils/splashScreenData';
 import useApi from '../../lib/utils/useApi';
+import saveIcon from '../../assets/save-icon.svg'
 
 
 
@@ -203,7 +205,7 @@ const EditorPage = () => {
   }, [splashScreenLayout, isSplashScreenAvailable]);
 
   React.useEffect(() => {
-    if (editorInstance && splashScreenLayout) {
+    if (editorInstance && (splashScreenLayout || landingScreenLayout)) {
       try {
         editorInstance.setValue({
           card: {
@@ -232,7 +234,7 @@ const EditorPage = () => {
       setJsonContent(currentJSON);
 
       if (isSplashScreenAvailable) {
-        await updateLayout(layoutId, currentJSON, page);
+        await updateLayout(layoutId, currentJSON, page, campaignId);
       } else {
         await postLayoutData(currentJSON);
       }
@@ -270,8 +272,14 @@ const EditorPage = () => {
 
       const data = await response.json();
       console.log('Response:', data);
-      alert('Layout published successfully!');
-    } catch (error) {
+      alert('Layout saved successfully!');
+     if(page === 'splash_screen'){
+      navigate(`/editor/${campaignId}/landing_screen`)
+     }
+     else{
+      navigate(`/publish/${campaignId}`)
+     }
+        } catch (error) {
       console.error('Error posting layout data:', error);
       alert('Failed to publish layout. Please try again.');
     }
@@ -299,17 +307,20 @@ const handleSave = ()=>{
     <div ref={editorContainerRef}style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box', paddding: '20px' }}>
       {/* The editor will be rendered here */}
       <div>
-        <button
+        {/* <button
           className={styles.publishBtn}
           onClick={handleLogJSON}
         >
           {isSplashScreenAvailable ? 'Update' : 'Publish' }
-        </button>
+        </button> */}
         <button
           className={styles.saveBtn}
-          onClick={handleSave}
+          onClick={handleLogJSON}
         >
+          {/* <img src={saveIcon} alt="" /> */}
+          <IoIosSave />
           Save
+
         </button>
 
         {/* <PreviewCard jsonData={solidBackgroundJSON} /> */}

@@ -162,6 +162,7 @@
 <style>
   .new-component__items {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     width: 100%;
     box-sizing: border-box;
@@ -177,7 +178,7 @@
     border-radius: 12px;
     cursor: pointer;
     transition: background-color 0.15s ease-in-out;
-    width: 45%;
+    width: 100%;
     background: var(--fill-transparent-1);
     /* border: 1px solid; */
   }
