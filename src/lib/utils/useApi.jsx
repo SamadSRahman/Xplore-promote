@@ -19,6 +19,7 @@ export default function useApi() {
   const [splashScreenLayout, setSplashScreenLayout] = useState(
     JSON.stringify(blankBackgroundJSON)
   );
+  const [campaignName, setCampaignName] = useState('');
   const [isSplashScreenAvailable, setIsSplashScreenAvailable] = useState(false);
   const [landingScreenLayout, setLandingScreenLayout] = useState(
     JSON.stringify(blankBackgroundJSON)
@@ -65,6 +66,7 @@ export default function useApi() {
     );
 
     console.log("response", response.data.data);
+    setCampaignName(response.data.data.name);
     const splashLayout = response.data.data.layouts.find(
       (ele) => ele.name === "splash_screen"
     );
@@ -143,6 +145,7 @@ export default function useApi() {
     splashScreenLayout,
     landingScreenLayout,
     layoutId,
-    isSplashScreenAvailable
+    isSplashScreenAvailable,
+    campaignName
   };
 }

@@ -3,7 +3,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-console */
 /* eslint-disable arrow-parens */
-// QRLogin.js
+
 import React, { useEffect, useState } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { io } from 'socket.io-client';

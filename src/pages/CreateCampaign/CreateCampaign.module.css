@@ -1,8 +1,8 @@
-.form-wrapper{
+.formWrapper {
 
 }
 
-.form-container {
+.formContainer  {
   background-color: #fff;
   width: 100vw;
   height: 100vh;
@@ -15,21 +15,22 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   
 }
-.form-container form{
+.formContainer  form{
   max-width: 50%;
 }
-.form-container input, textarea{
+.formContainer  input, textarea{
   background-color: #fff;
   color: black;
 }
-.form-container textarea{
+.formContainer  textarea{
   max-width: 94%;
+  font-family: inherit;
 }
-.form-container form{
+.formContainer  form{
     margin: auto;
 }
 
-.form-title {
+.formTitle  {
   text-align: center;
   color: #333;
   font-size: 1.8rem;
@@ -38,7 +39,7 @@
   color: #7654EE;
 }
 
-.input-label {
+.inputLabel  {
   color: #333;
   font-weight: 500;
   margin-bottom: 0.3rem;
@@ -47,7 +48,7 @@
   gap: 5px;
 }
 
-.input-field {
+.inputField  {
   width: 100%;
   padding: 0.8rem;
   margin-bottom: 1rem;
@@ -59,43 +60,48 @@
   height: 4rem;
 }
 
-.file-input {
+.fileInput {
   padding: 0.5rem;
   cursor: pointer;
 }
 
-.date-picker-container {
+.datePickerContainer  {
   display: flex;
   justify-content: space-between;
 }
-
-.social-media-section,
-.contact-info-section,
-.site-info-section {
+.dateInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.socialMediaSection,
+.contactInfoSection,
+.siteInfoSection  {
   margin-top: 1.5rem;
 }
 
-.social-media-grid,
-.contact-info-grid {
+.socialMediaGrid,
+.contactInfoGrid  {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
 }
 
-.social-media-input,
+.socialMediaInput,
 .contact-info-input {
   display: flex;
   align-items: center;
 
 }
 
-.social-icon {
+.socialIcon  {
   margin-right: 0.5rem;
   color: #7654EE;
   height: 30px;
 }
 
-.submit-button {
+.submitButton {
   width: 100%;
   padding: 0.8rem;
   background-color: #7654EE;
@@ -107,7 +113,7 @@
   margin-bottom: 2rem;
 }
 
-.checkbox-wrapper{
+.checkboxWrapper {
   color: #7654EE;
   font-weight: 500;
   margin-bottom: 0.3rem;
@@ -115,7 +121,7 @@
   align-items: center;
   gap: 10px;
 }
-.checkbox-wrapper >  input[type='checkbox']{
+.checkboxWrapper  >  input[type='checkbox']{
   width: fit-content;
   background-color: white !important;
   accent-color: #7654EE;

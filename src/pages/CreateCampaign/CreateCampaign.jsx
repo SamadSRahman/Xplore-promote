@@ -8,8 +8,8 @@ import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin, FaYoutube, FaTiktok, FaPinterest } from 'react-icons/fa';
 import { FiMail, FiPhone, FiGlobe, FiImage } from 'react-icons/fi';
-import './CreateCampaign.css';
 import { useNavigate } from 'react-router-dom';
+import styles from './CreateCampaign.module.css';
 
 const CampaignForm = () => {
     const navigate = useNavigate();
@@ -75,17 +75,17 @@ const CampaignForm = () => {
 
     return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <div className='form-wrapper'>
-      <div className="form-container">
-        <h2 className="form-title">Create Campaign</h2>
-        <form onSubmit={handleSubmit} className="form-content">
+      <div className={styles.formWrapper}>
+      <div className={styles.formContainer}>
+        <h2 className={styles.formTitle}>Create Campaign</h2>
+        <form onSubmit={handleSubmit} className={styles.formContent}>
 
           {/* Campaign Name */}
-          <label className="input-label">Campaign Name</label>
+          <label className={styles.inputLabel}>Campaign Name</label>
           <input
             type="text"
             name="name"
-            className="input-field"
+            className={styles.inputField}
             value={formData.name}
             onChange={handleChange}
             placeholder="Enter campaign name"
@@ -93,10 +93,10 @@ const CampaignForm = () => {
           />
 
           {/* Description */}
-          <label className="input-label">Description</label>
+          <label className={styles.inputLabel}>Description</label>
           <textarea
             name="description"
-            className="input-field textarea"
+           className={`${styles.inputField} ${styles.textarea}`}
             value={formData.description}
             onChange={handleChange}
             placeholder="Describe your campaign"
@@ -104,61 +104,61 @@ const CampaignForm = () => {
           />
 
           {/* Image Upload */}
-          <label className="input-label">Campaign Image <FiImage /></label>
+          <label className={styles.inputLabel}>Campaign Image <FiImage /></label>
           <input
             type="file"
             name="image"
-            className="input-field file-input"
+            className={`${styles.inputField} ${styles.fileInput}`}
             onChange={handleFileChange}
           />
 
           {/* Date Pickers */}
-          <div className="date-picker-container">
+          <div className={styles.datePickerContainer}>
             <div>
-              <label className="input-label">Start Date</label>
+              <label className={styles.inputLabel}>Start Date</label>
               <DateTimePicker
                 value={formData.timing.startDate}
                 onChange={date => handleNestedChange('timing', 'startDate', date)}
-                renderInput={params => <input {...params.inputProps} className="date-input" />}
+                renderInput={params => <input {...params.inputProps} className={styles.dateInput} />}
               />
             </div>
             <div>
-              <label className="input-label">End Date</label>
+              <label className={styles.inputLabel}>End Date</label>
               <DateTimePicker
                 value={formData.timing.endDate}
                 onChange={date => handleNestedChange('timing', 'endDate', date)}
-                renderInput={params => <input {...params.inputProps} className="date-input" />}
+                renderInput={params => <input {...params.inputProps} className={styles.dateInput} />}
               />
             </div>
           </div>
-       <div className='checkbox-wrapper'>
-        <label>Is Scheduled</label>
+          <div className={styles.checkboxWrapper}>
+          <label>Is Scheduled</label>
        <input onClick={()=>handleNestedChange('timing', 'isScheduled', !formData.timing.isScheduled)} type="checkbox" checked={formData.timing.isScheduled}/>
        </div>
-          <div className="date-picker-container">
+          <div className={styles.datePickerContainer}>
             <div>
-              <label className="input-label">Scheduled Start Date</label>
+              <label className={styles.inputLabel}>Scheduled Start Date</label>
               <DateTimePicker
                disabled={!formData.timing.isScheduled}
                 value={formData.timing.scheduledStartTime}
                 onChange={date => handleNestedChange('timing', 'scheduledStartTime', date)}
-                renderInput={params => <input {...params.inputProps} className="date-input" />}
+                renderInput={params => <input {...params.inputProps} className={styles.dateInput} />}
               />
             </div>
             <div>
-              <label className="input-label">Scheduled End Date</label>
+              <label className={styles.inputLabel}>Scheduled End Date</label>
               <DateTimePicker
                 disabled={!formData.timing.isScheduled}
                 value={formData.timing.scheduledEndTime}
                 onChange={date => handleNestedChange('timing', 'scheduledEndTime', date)}
-                renderInput={params => <input {...params.inputProps} className="date-input" />}
+                renderInput={params => <input {...params.inputProps} className={styles.dateInput} />}
               />
             </div>
           </div>
 
           {/* Social Media Links */}
-          <div className="social-media-section">
-            <label className="input-label">Social Media Links</label>
+          {/* <div className="social-media-section">
+            <label className={styles.inputLabel}>Social Media Links</label>
             <div className="social-media-grid">
               {Object.keys(formData.socialMediaLinks).map(platform => (
                 <div key={platform} className="social-media-input">
@@ -168,23 +168,23 @@ const CampaignForm = () => {
                     placeholder={`${platform.charAt(0).toUpperCase() + platform.slice(1)} Link`}
                     value={formData.socialMediaLinks[platform]}
                     onChange={e => handleNestedChange('socialMediaLinks', platform, e.target.value)}
-                    className="input-field"
+                    className={styles.inputField}
                   />
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Contact Info */}
-          <div className="contact-info-section">
-            <label className="input-label">Contact Information</label>
-            <div className="contact-info-grid">
+          <div className={styles.socialMediaSection}>
+            <label className={styles.inputLabel}>Contact Information</label>
+            <div className={styles.socialMediaGrid}>
               <div>
                 <FiMail />
                 <input
                   type="email"
                   name="email"
-                  className="input-field"
+                  className={styles.inputField}
                   value={formData.contactInfo.email}
                   onChange={e => handleNestedChange('contactInfo', 'email', e.target.value)}
                   placeholder="Email"
@@ -195,7 +195,7 @@ const CampaignForm = () => {
                 <input
                   type="tel"
                   name="phoneNumber"
-                  className="input-field"
+                  className={styles.inputField}
                   value={formData.contactInfo.phoneNumber}
                   onChange={e => handleNestedChange('contactInfo', 'phoneNumber', e.target.value)}
                   placeholder="Phone Number"
@@ -206,13 +206,13 @@ const CampaignForm = () => {
 
           {/* Site Info */}
           <div className="site-info-section">
-            <label className="input-label">Website Information</label>
+            <label className={styles.inputLabel}>Website Information</label>
             <div>
               <FiGlobe />
               <input
                 type="url"
                 name="siteURL"
-                className="input-field"
+                className={styles.inputField}
                 value={formData.siteInfo.siteURL}
                 onChange={e => handleNestedChange('siteInfo', 'siteURL', e.target.value)}
                 placeholder="Website URL"
@@ -222,7 +222,7 @@ const CampaignForm = () => {
               <input
                 type="text"
                 name="siteName"
-                className="input-field"
+                className={styles.inputField}
                 value={formData.siteInfo.siteName}
                 onChange={e => handleNestedChange('siteInfo', 'siteName', e.target.value)}
                 placeholder="Website Name"
@@ -231,7 +231,7 @@ const CampaignForm = () => {
           </div>
 
           {/* Submit Button */}
-          <button type="submit" className="submit-button">Create Campaign</button>
+          <button type="submit" className={styles.submitButton}>Create Campaign</button>
         </form>
       </div>
       </div>
