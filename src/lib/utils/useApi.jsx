@@ -11,7 +11,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { blankBackgroundJSON } from "./splashScreenData";
 
-
 export default function useApi() {
   const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState([]);
@@ -19,15 +18,16 @@ export default function useApi() {
   const [splashScreenLayout, setSplashScreenLayout] = useState(
     JSON.stringify(blankBackgroundJSON)
   );
-  const [campaignName, setCampaignName] = useState('');
+  const [campaignName, setCampaignName] = useState("");
   const [isSplashScreenAvailable, setIsSplashScreenAvailable] = useState(false);
-  const [isLandingScreenAvailable, setIsLandingScreenAvailable] = useState(false);
+  const [isLandingScreenAvailable, setIsLandingScreenAvailable] =
+    useState(false);
   const [landingScreenLayout, setLandingScreenLayout] = useState(
     JSON.stringify(blankBackgroundJSON)
   );
   // const [layoutId, setLayoutId] = useState('');
-  const [splashScreenId, setSplashScreenId] = useState('')
-  const [landingScreenId, setLandingScreenId] = useState('')
+  const [splashScreenId, setSplashScreenId] = useState("");
+  const [landingScreenId, setLandingScreenId] = useState("");
   const token = localStorage.getItem("accessToken");
   const getUserDetails = async () => {
     const token = localStorage.getItem("accessToken");
@@ -46,17 +46,25 @@ export default function useApi() {
   };
   const getCampaigns = async () => {
     const token = localStorage.getItem("accessToken");
-    const response = await axios.get(
-      "https://pre.xplore.xircular.io/api/v1/campaign/getAll?page=0&size=20",
-      {
-        headers: {
-          authorization: token,
-        },
-      }
-    );
+    try {
+      const response = await axios.get(
+        "https://pre.xplore.xircular.io/api/v1/campaign/getAll?page=0&size=20",
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
 
-    console.log("response", response);
-    setCampaigns(response.data.campaigns);
+      console.log("response", response);
+      setCampaigns(response.data.campaigns);
+    } catch (error) {
+      console.log(error);
+      if(error.message === 'Session expired, Please login again'){
+        localStorage.removeItem("accessToken");
+        navigate('/');
+      }
+    }
   };
   const getCampaignById = async (id) => {
     const response = await axios.get(
@@ -73,25 +81,21 @@ export default function useApi() {
     const splashLayout = response.data.data.layouts.find(
       (ele) => ele.name === "splash_screen"
     );
-   if(splashLayout){
-    console.log("splash", splashLayout);
-    setSplashScreenLayout(
-      JSON.stringify(splashLayout?.layoutJSON)
-    );
-    setSplashScreenId(splashLayout?.layoutID);
-    setIsSplashScreenAvailable(true);
-   }
+    if (splashLayout) {
+      console.log("splash", splashLayout);
+      setSplashScreenLayout(JSON.stringify(splashLayout?.layoutJSON));
+      setSplashScreenId(splashLayout?.layoutID);
+      setIsSplashScreenAvailable(true);
+    }
     const landingLayout = response.data.data.layouts.find(
       (ele) => ele.name === "landing_screen"
     );
-   if(landingLayout){
-    console.log("landing", landingLayout);
-    setLandingScreenLayout(
-      JSON.stringify(landingLayout?.layoutJSON)
-    );
-    setLandingScreenId(landingLayout?.layoutID);
-    setIsLandingScreenAvailable(true);
-   }
+    if (landingLayout) {
+      console.log("landing", landingLayout);
+      setLandingScreenLayout(JSON.stringify(landingLayout?.layoutJSON));
+      setLandingScreenId(landingLayout?.layoutID);
+      setIsLandingScreenAvailable(true);
+    }
   };
   const updateLayout = async (id, layout, name, campaignId) => {
     try {
@@ -111,28 +115,29 @@ export default function useApi() {
       );
       console.log("Response:", response.data);
       alert("Layout saved succssfully");
-      if(name === 'splash_screen'){
-        window.location.href = (`/editor/${campaignId}/landing_screen`);
-       }
-       else{
-        window.location.href = (`/publish/${campaignId}`);
-       }
+      if (name === "splash_screen") {
+        window.location.href = `/editor/${campaignId}/landing_screen`;
+      } else {
+        window.location.href = `/publish/${campaignId}`;
+      }
     } catch (error) {
       console.error("Error updating layout:", error);
     }
   };
 
-  const deleteCampaign = async(id) =>{
-    try{
-      const response = await axios.delete(`https://pre.xplore.xircular.io/api/v1/campaign/delete/${id}`, {
-        headers: {
-          authorization: token
+  const deleteCampaign = async (id) => {
+    try {
+      const response = await axios.delete(
+        `https://pre.xplore.xircular.io/api/v1/campaign/delete/${id}`,
+        {
+          headers: {
+            authorization: token,
+          },
         }
-      });
+      );
       console.log("campaign deleted successfuly", response);
       getCampaigns();
-    }
-    catch(error){
+    } catch (error) {
       console.log(error);
     }
   };
@@ -151,6 +156,6 @@ export default function useApi() {
     landingScreenId,
     isSplashScreenAvailable,
     isLandingScreenAvailable,
-    campaignName
+    campaignName,
   };
 }

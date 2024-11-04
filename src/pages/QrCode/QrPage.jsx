@@ -23,6 +23,10 @@ const QRLogin = () => {
     const API_BASE_URL = 'https://pre.xplore.xircular.io/api';
 
     useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            navigate('/campaigns');
+        }
         // Initialize socket connection
         const socketInstance = io('https://pre.xplore.xircular.io', {
             path: '/socket.io/',

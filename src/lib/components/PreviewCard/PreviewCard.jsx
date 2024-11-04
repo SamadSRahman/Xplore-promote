@@ -7,9 +7,9 @@ const PreviewCard = ({ jsonData }) => {
     const { states } = card;
 
 
-    const getColorValue = (str) => {
-      const match = str.match(/#([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})/);
-      return match ? match[0] : null;
+    const getColorValue = str => {
+        const match = str.match(/#([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})/);
+        return match ? match[0] : null;
     };
 
     // Handle rendering individual items like images and text
@@ -36,6 +36,35 @@ const PreviewCard = ({ jsonData }) => {
                   >
                     {item.text}
                   </p>
+                );
+            case 'video' :
+                return (
+                  <div
+                  key={index}
+                  style={{
+                      maxWidth: '50%',
+                      position: 'absolute',
+                      width: item.width?.type === 'wrap_content' ? 'min-content' : '',
+                      height: item.height?.value,
+                      top: item.alignment_vertical === 'top' ? item.margins?.top || 0 : item.alignment_vertical === 'center' ? '50%' : 'auto',
+                      left: item.alignment_horizontal === 'center' ? '50%' : item.alignment_horizontal === 'right' ? 'auto' : 0,
+                      right: item.alignment_horizontal === 'right' ? item.margins?.right || 0 : 'auto',
+                      bottom: item.alignment_vertical === 'bottom' ? item.margins?.bottom || 0 : 'auto',
+                      transform: `translate(${item.alignment_horizontal === 'center' ? '-50%' : '0'}, ${item.alignment_vertical === 'center' ? '-50%' : '0'}) rotate(${item.transform?.rotation || 0}deg)`,
+                  }}
+                  >
+                      <video src={item.video_sources[0].url}
+                       style={{
+                           width: item.width?.type === 'wrap_content' ? 'min-content' : '',
+                           height: item.width.value,
+                           //  objectFit: item.scale === 'fit' ? 'contain' : 'cover',
+                           objectFit: 'contain',
+                           left: item.margins?.left,
+                           top: `${item.margins?.top}px`
+                       }}
+
+                      />
+                  </div>
                 );
             case 'image':
                 return (
