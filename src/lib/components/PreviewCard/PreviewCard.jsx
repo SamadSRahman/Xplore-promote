@@ -6,6 +6,12 @@ const PreviewCard = ({ jsonData }) => {
     const { card } = jsonData;
     const { states } = card;
 
+
+    const getColorValue = (str) => {
+      const match = str.match(/#([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})/);
+      return match ? match[0] : null;
+    };
+
     // Handle rendering individual items like images and text
     const renderItem = (item, index) => {
         switch (item.type) {
@@ -70,7 +76,7 @@ const PreviewCard = ({ jsonData }) => {
 
         if (background.type === 'solid') {
             return {
-                backgroundColor: background.color,
+                backgroundColor: getColorValue(background.color),
             };
         }
 

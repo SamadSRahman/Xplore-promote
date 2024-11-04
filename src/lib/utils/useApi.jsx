@@ -21,10 +21,13 @@ export default function useApi() {
   );
   const [campaignName, setCampaignName] = useState('');
   const [isSplashScreenAvailable, setIsSplashScreenAvailable] = useState(false);
+  const [isLandingScreenAvailable, setIsLandingScreenAvailable] = useState(false);
   const [landingScreenLayout, setLandingScreenLayout] = useState(
     JSON.stringify(blankBackgroundJSON)
   );
-  const [layoutId, setLayoutId] = useState('');
+  // const [layoutId, setLayoutId] = useState('');
+  const [splashScreenId, setSplashScreenId] = useState('')
+  const [landingScreenId, setLandingScreenId] = useState('')
   const token = localStorage.getItem("accessToken");
   const getUserDetails = async () => {
     const token = localStorage.getItem("accessToken");
@@ -75,7 +78,7 @@ export default function useApi() {
     setSplashScreenLayout(
       JSON.stringify(splashLayout?.layoutJSON)
     );
-    setLayoutId(splashLayout?.layoutID);
+    setSplashScreenId(splashLayout?.layoutID);
     setIsSplashScreenAvailable(true);
    }
     const landingLayout = response.data.data.layouts.find(
@@ -86,8 +89,8 @@ export default function useApi() {
     setLandingScreenLayout(
       JSON.stringify(landingLayout?.layoutJSON)
     );
-    setLayoutId(landingLayout?.layoutID);
-    setIsSplashScreenAvailable(true);
+    setLandingScreenId(landingLayout?.layoutID);
+    setIsLandingScreenAvailable(true);
    }
   };
   const updateLayout = async (id, layout, name, campaignId) => {
@@ -144,8 +147,10 @@ export default function useApi() {
     campaigns,
     splashScreenLayout,
     landingScreenLayout,
-    layoutId,
+    splashScreenId,
+    landingScreenId,
     isSplashScreenAvailable,
+    isLandingScreenAvailable,
     campaignName
   };
 }

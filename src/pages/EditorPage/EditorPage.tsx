@@ -33,7 +33,8 @@ import saveIcon from '../../assets/save-icon.svg'
 
 
 const EditorPage = () => {
-  const { getCampaignById, splashScreenLayout, isSplashScreenAvailable, updateLayout, layoutId, landingScreenLayout } = useApi();
+  const { getCampaignById, splashScreenLayout, isLandingScreenAvailable, 
+    isSplashScreenAvailable, updateLayout, splashScreenId, landingScreenId, landingScreenLayout } = useApi();
   const { type, campaignId, page } = useParams();
   // const id = localStorage.getItem('adId');
   const token = localStorage.getItem('accessToken');
@@ -63,7 +64,7 @@ const EditorPage = () => {
       locale: 'en',
       rootConfigurable: true,
       card: {
-        json: (page === 'splash_screen' ? splashScreenLayout : landingScreenLayout)       
+        json: (page === 'splash_screen' ? splashScreenLayout : landingScreenLayout)
       },
       theme: 'dark',
       layout: [
@@ -222,7 +223,7 @@ const EditorPage = () => {
     window.editorData = jsonContent;
   }, [jsonContent]);
 
-  const handleLogJSON = async() => {
+  const handleLogJSON = async () => {
     if (!editorInstance) {
       console.log('Editor not initialized');
       return;
@@ -232,10 +233,16 @@ const EditorPage = () => {
       const currentJSON = editorInstance.getValue();
       window.editorData = currentJSON;
       setJsonContent(currentJSON);
+      if (page === 'splash_screen' && isSplashScreenAvailable) {
+        // Execute code if page is 'splash_screen' and splash screen is available
+        await updateLayout(splashScreenId, currentJSON, page, campaignId);
+      } else if (page !== 'splash_screen' && isLandingScreenAvailable) {
+        console.log('Landing screen update');
 
-      if (isSplashScreenAvailable) {
-        await updateLayout(layoutId, currentJSON, page, campaignId);
+        // Execute code if page is not 'splash_screen' and landing screen is available
+        await updateLayout(landingScreenId, currentJSON, page, campaignId);
       } else {
+        // Post layout data if the respective screen is not available
         await postLayoutData(currentJSON);
       }
     } catch (error) {
@@ -260,7 +267,7 @@ const EditorPage = () => {
             authorization: token,
           },
           body: JSON.stringify({
-            name: 'splash_screen',
+            name: page,
             layoutJSON: JSON.parse(jsonData)
           }),
         }
@@ -273,38 +280,38 @@ const EditorPage = () => {
       const data = await response.json();
       console.log('Response:', data);
       alert('Layout saved successfully!');
-     if(page === 'splash_screen'){
-      navigate(`/editor/${campaignId}/landing_screen`)
-     }
-     else{
-      navigate(`/publish/${campaignId}`)
-     }
-        } catch (error) {
+      if (page === 'splash_screen') {
+        navigate(`/editor/${campaignId}/landing_screen`)
+      }
+      else {
+        navigate(`/publish/${campaignId}`)
+      }
+    } catch (error) {
       console.error('Error posting layout data:', error);
       alert('Failed to publish layout. Please try again.');
     }
   };
 
-const handleSave = ()=>{
-  const currentJSON = editorInstance.getValue();
-  window.editorData = currentJSON;
-  setJsonContent(currentJSON);
-  const layout = {
-    name: page,
-    layoutJSON: JSON.parse(currentJSON)
+  const handleSave = () => {
+    const currentJSON = editorInstance.getValue();
+    window.editorData = currentJSON;
+    setJsonContent(currentJSON);
+    const layout = {
+      name: page,
+      layoutJSON: JSON.parse(currentJSON)
+    }
+    if (page === 'splash_screen') {
+      localStorage.setItem('splash_screen_layout', JSON.stringify(layout))
+    }
+    else {
+      localStorage.setItem('landing_screen_layout', JSON.stringify(layout))
+    }
   }
-  if(page === 'splash_screen'){
-    localStorage.setItem('splash_screen_layout', JSON.stringify(layout))
-  }
-  else{
-    localStorage.setItem('landing_screen_layout', JSON.stringify(layout))
-  }
-}
 
 
 
   return (
-    <div ref={editorContainerRef}style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box', paddding: '20px' }}>
+    <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box', paddding: '20px' }}>
       {/* The editor will be rendered here */}
       <div>
         {/* <button
