@@ -251,12 +251,12 @@ const EditorPage = () => {
   };
 
   const postLayoutData = async jsonData => {
- 
     if (!token) {
       alert('Token or Id not available, please add valid details to continue');
       navigate('/');
       return;
     }
+    // 
     const channel = localStorage.getItem('channel');
     try {
       const response = await fetch(

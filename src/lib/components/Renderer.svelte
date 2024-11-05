@@ -328,18 +328,7 @@
       .map((elem) => {
         const props = components.get(elem);
         const processedJson = props?.processedJson;
-        if (processedJson?.type === "video") {
-      // If elem is a span, create a video element as a placeholder
-      if (elem.tagName !== "VIDEO") {
-        const videoElem = document.createElement("video");
-        videoElem.src = processedJson.video_url || ""; // Set the video URL if available
-        videoElem.setAttribute("controls", "true"); // Add controls if needed
-        videoElem.style.width = elem.style.width; // Preserve width
-        videoElem.style.height = elem.style.height; // Preserve height
-        elem.replaceWith(videoElem); // Replace the span with the video element
-        elem = videoElem; // Update elem reference to the new video element
-      }
-    }
+
         const computedStyle = getComputedStyle(elem);
         const margin = computedStyle.margin;
         const marginTop = parseInt(computedStyle.marginTop);
@@ -401,7 +390,6 @@
               "video" /*  && processedJson.gif_url === EMPTY_IMAGE */
             ) {
               emptyFileType = "video";
-              elem.setAttribute("controls", "true");
             }
           }
         }

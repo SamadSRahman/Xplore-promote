@@ -1,7 +1,5 @@
 /* eslint-disable indent */
 /* eslint-disable import/no-extraneous-dependencies */
-// PublishAndPreview.jsx
-
 import React, { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { QRCodeCanvas } from 'qrcode.react';
@@ -12,13 +10,13 @@ const PublishAndPreview = () => {
   const { campaignId } = useParams();
   const navigate = useNavigate();
   const qrRef = useRef();
-  const {getCampaignById, campaignName} = useApi();
+  const { getCampaignById, campaignName } = useApi();
 
   useEffect(() => {
     if (!campaignId) {
       navigate('/error');
     } else {
-      getCampaignById(campaignId)
+      getCampaignById(campaignId);
     }
   }, [campaignId, navigate]);
 
@@ -36,7 +34,7 @@ const PublishAndPreview = () => {
     <div className={styles.wrapper}>
       <div
         onClick={() =>
-          (window.location.href = `/editor/${campaignId}/landing_screen`)
+          (navigate('/campaigns'))
         }
         className={styles.svgWrapper}
       >
