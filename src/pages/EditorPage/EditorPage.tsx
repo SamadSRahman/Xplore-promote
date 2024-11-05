@@ -251,12 +251,13 @@ const EditorPage = () => {
   };
 
   const postLayoutData = async jsonData => {
+ 
     if (!token) {
       alert('Token or Id not available, please add valid details to continue');
       navigate('/');
       return;
     }
-
+    const channel = localStorage.getItem('channel');
     try {
       const response = await fetch(
         `https://pre.xplore.xircular.io/api/v1/layout/create/${campaignId}`,
@@ -265,6 +266,7 @@ const EditorPage = () => {
           headers: {
             'Content-Type': 'application/json',
             authorization: token,
+            session: channel
           },
           body: JSON.stringify({
             name: page,

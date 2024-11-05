@@ -58,12 +58,12 @@ const CampaignForm = () => {
         const data = new FormData();
         data.append('files', image);
         data.append('data', JSON.stringify(formData));
-
+        const channel = localStorage.getItem('channel');
         try {
             const response = await axios.post(
                 'https://pre.xplore.xircular.io/api/v1/campaign/create',
                 data,
-                { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
+                { headers: { Authorization: `Bearer ${token}`, session: channel, 'Content-Type': 'multipart/form-data' } }
             );
             console.log('Campaign created successfully:', response.data);
             alert('Campaign created successfully');

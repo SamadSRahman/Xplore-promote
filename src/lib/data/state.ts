@@ -314,9 +314,7 @@ export class State {
         }
 
         if (!json.card?.states?.[0]?.div) {
-            console.log('line 317', json);
-            
-            // throw new Error('Incorrect format');
+            throw new Error('Incorrect format');
         }
 
         this.userTemplates.clear();
@@ -644,6 +642,34 @@ export class State {
                     value: 100
                 },
                 preload_required: true
+            };
+        } else if (type === 'video') {
+            json = {
+                type: 'video',
+                video_sources: [{
+                    type: 'video_source',
+                    mime_type: 'mp4',
+                    url: 'https://www.w3schools.com/tags/mov_bbb.mp4'
+                }],
+                width: {
+                    type: 'fixed',
+                    value: 200
+                },
+                height: {
+                    type: 'fixed',
+                    value: 100
+                },
+                background: [
+                    {
+                        type: 'solid',
+                        color: '#000'
+                    }
+                ],
+                preview: EMPTY_IMAGE,
+                alignment_horizontal: 'center',
+                alignment_vertical: 'center',
+                autostart: true,
+                scale: 'fit',
             };
         } else if (type === 'gif') {
             json = {

@@ -18,7 +18,8 @@ const MAP = {
     gif: gifIcon,
     image: imageIcon,
     indicator: indicatorIcon,
-    separator: separatorIcon
+    separator: separatorIcon,
+    video: imageIcon
 };
 
 const MAP_BY_ORIENTATION = {

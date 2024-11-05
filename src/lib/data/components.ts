@@ -9,6 +9,7 @@ export const DEFAULT_ALLOWED_COMPONENTS = [
     'container',
     'gallery',
     'separator',
+    'video'
     // 'list',
 ];
 

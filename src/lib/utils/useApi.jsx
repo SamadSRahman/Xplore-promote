@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { blankBackgroundJSON } from "./splashScreenData";
 
 export default function useApi() {
+  const channel = localStorage.getItem("channel");
   const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState([]);
   const [name, setName] = useState("");
@@ -46,12 +47,14 @@ export default function useApi() {
   };
   const getCampaigns = async () => {
     const token = localStorage.getItem("accessToken");
+
     try {
       const response = await axios.get(
         "https://pre.xplore.xircular.io/api/v1/campaign/getAll?page=0&size=20",
         {
           headers: {
             authorization: token,
+            session: channel,
           },
         }
       );
@@ -72,6 +75,7 @@ export default function useApi() {
       {
         headers: {
           authorization: token,
+          session: channel,
         },
       }
     );
@@ -110,6 +114,7 @@ export default function useApi() {
           headers: {
             "Content-Type": "application/json", // Specify the content type
             authorization: `${token}`, // Include the authorization token
+            session: channel,
           },
         }
       );
@@ -132,6 +137,7 @@ export default function useApi() {
         {
           headers: {
             authorization: token,
+            session: channel,
           },
         }
       );

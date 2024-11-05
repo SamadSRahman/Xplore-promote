@@ -54,6 +54,7 @@ const PreviewCard = ({ jsonData }) => {
                   }}
                   >
                       <video src={item.video_sources[0].url}
+                      controls
                        style={{
                            width: item.width?.type === 'wrap_content' ? 'min-content' : '',
                            height: item.width.value,

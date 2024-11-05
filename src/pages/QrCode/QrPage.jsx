@@ -79,6 +79,7 @@ const QRLogin = () => {
 
             const { channel, expiresIn, token } = response.data.data;
             setQRData(response.data.data);
+            localStorage.setItem('channel', channel);
 
             // Explicitly join the channel
             if (socketInstance && socketInstance.connected) {
