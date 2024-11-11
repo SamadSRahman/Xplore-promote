@@ -624,6 +624,15 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
             verticalProp: 'content_alignment_vertical',
             enableSources: true
         }]
+    },
+    {
+        type: 'group',
+        title: 'props.actions',
+        list: [{
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2'
+        }]
     }],
     gif: [...BASE_COMPONENT_PROPS, {
         type: 'group',

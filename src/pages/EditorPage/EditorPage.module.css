@@ -24,8 +24,9 @@
 h - #545bd6
 a - #4e54c9 */
 
-.saveBtn{
-    background-color: #39A6F5;
+.saveBtn, .finishBtn{
+    background-color: rgb(76, 175, 80);
+
     border: none;
     padding: 8px 10px;
     border-radius: 6px;
@@ -39,9 +40,18 @@ a - #4e54c9 */
     align-items: center;
     gap: 6px;
 }
+.saveBtn{
+    background-color: #39A6F5;
+    right: 5.5rem;
+}
 .saveBtn img{
     width: 12px;
 }
 .saveBtn:hover{
     /* background-color: white; */
+    background-color: #308ed1;
+}
+.finishBtn:hover{
+    /* background-color: white; */
+    background-color: rgb(61, 142, 64);
 }

@@ -323,6 +323,11 @@ function refreshScreenNames(){
           <IoIosSave />
           Save
         </button>
+        <button className={styles.finishBtn}
+        onClick={()=>navigate(`/publish/${campaignId}`)}
+        >
+          Finish
+        </button>
       </div>
     </div>
   );

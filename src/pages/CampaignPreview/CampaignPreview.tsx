@@ -12,10 +12,15 @@ export default function CampaignPreview() {
     
     const [layout, setLayout] = useState({ layoutJSON: (blankBackgroundJSON) });
     const { campaignId } = useParams();
+    const [inputValues, setInputValues] = useState({});
 
     function handleBtnClick(action) {
         console.log("action clicked", action);
-        const btnAction = action.url.split("://")[1].split("?")[0]; // Extracts 'open'
+        if( action.url === 'submit-form'){
+            console.log("Form submit with data:", inputValues);
+            return;
+        }
+        const btnAction = action.url?.split("://")[1].split("?")[0]; // Extracts 'open'
         const id = new URLSearchParams(action.url.split("?")[1]).get("id");
         if (btnAction === 'open') {
             const foundLayout = layouts.find(ele => ele.name === id);
@@ -25,8 +30,15 @@ export default function CampaignPreview() {
                 console.log(`screen ${id} not found`);
             }
         }
+      
     }
-
+    const handleInputChange = (hintText: string, value: string) => {
+        setInputValues(prevValues => ({
+            ...prevValues,
+            [hintText.toLowerCase().replace(/ /g, "_")]: value,
+        }));
+    };
+    
     useEffect(() => {
         if (layouts.length > 0) {
             const splashLayout = layouts.find((ele) => ele.name === 'splash_screen');
@@ -63,7 +75,7 @@ export default function CampaignPreview() {
         <div className={styles.container}>
             <div className={styles.cardWrapper}>
                 {layout?.layoutJSON && (
-                    <PreviewCard handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
+                    <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
                 )}
             </div>
         </div>
