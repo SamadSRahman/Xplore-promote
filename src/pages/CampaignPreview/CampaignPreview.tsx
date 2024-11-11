@@ -1,21 +1,28 @@
 /* eslint-disable no-console */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { PreviewCanvasWrapper } from '../../lib/components/PreviewCanvasWrapper/PreviewCanvasWrapper';
 import { useParams } from 'react-router-dom';
-import { solidBackgroundJSON } from '../../lib/utils/splashScreenData';
-import MobilePreview from '../../lib/components/MobilePreview/MobilePreview';
 import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
 import styles from './CampaignPreview.module.css';
 import useApi from '../../lib/utils/useApi';
 
 export default function CampaignPreview() {
-    const { getCampaignById, splashScreenLayout } = useApi();
+    const { getCampaignById, splashScreenLayout, landingScreenLayout } = useApi();
+    const [layout, setLayout] = useState(splashScreenLayout);
     const { campaignId } = useParams();
+
     useEffect(()=>{
         getCampaignById(campaignId);
     }, []);
     useEffect(()=>{
-        console.log('line 20', JSON.parse(splashScreenLayout));
+        if (splashScreenLayout) {
+            setLayout(splashScreenLayout);
+            setTimeout(()=>{ setLayout(landingScreenLayout) }, 2000);
+        }
+    }
+    , [splashScreenLayout, landingScreenLayout]);
+    useEffect(()=>{
+        console.log('line 20', JSON.parse(layout));
     }, [splashScreenLayout]);
 
 
@@ -23,7 +30,7 @@ export default function CampaignPreview() {
     <div className={styles.container}>
         {/* <MobilePreview jsonData={(blankBackgroundJSON)} /> */}
        <div className={styles.cardWrapper}>
-       <PreviewCard jsonData={JSON.parse(splashScreenLayout)} />
+       <PreviewCard jsonData={JSON.parse(layout)} />
        </div>
     </div>
     );

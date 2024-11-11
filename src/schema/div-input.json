@@ -201,7 +201,6 @@
     }
   ],
   "required": [
-    "type",
-    "text_variable"
+    "type"
   ]
 }

@@ -10,7 +10,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable indent */
 // @ts-nocheck
-/* eslint-disable import/no-extraneous-dependencies */
+
 
 import React from 'react';
 import axios from 'axios';
@@ -28,14 +28,20 @@ import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
 import MobilePreview from '../../lib/components/MobilePreview/MobilePreview';
 import { blankBackgroundJSON, gradientBackgroundJSON, imageBackgroundJSON, solidBackgroundJSON } from '../../lib/utils/splashScreenData';
 import useApi from '../../lib/utils/useApi';
+import useCampaign from '../../lib/utils/useCampaign'
 import saveIcon from '../../assets/save-icon.svg'
+import useLayout from '../../lib/utils/useLayout';
+import ReactHeader from '../../lib/components/ReactHeader';
+
 
 
 
 const EditorPage = () => {
-  const { getCampaignById, splashScreenLayout, isLandingScreenAvailable, 
-    isSplashScreenAvailable, updateLayout, splashScreenId, landingScreenId, landingScreenLayout } = useApi();
+  const { splashScreenLayout, isLandingScreenAvailable, 
+    isSplashScreenAvailable,  splashScreenId, landingScreenId, landingScreenLayout } = useApi();
   const { type, campaignId, page } = useParams();
+  const { getCampaignById, currentLayout, layoutId, screens } = useCampaign();
+  const { updateLayout } = useLayout();
   // const id = localStorage.getItem('adId');
   const token = localStorage.getItem('accessToken');
   const navigate = useNavigate();
@@ -47,13 +53,12 @@ const EditorPage = () => {
 
   React.useEffect(() => {
     if (campaignId) {
-      getCampaignById(campaignId);
+      getCampaignById(campaignId, page);
     }
-  }, [campaignId, getCampaignById]);
+  }, [campaignId, page]);
 
 
   React.useEffect(() => {
-    getCampaignById(campaignId);
     const screenWidth = window.innerWidth;
     const leftRightWidth = 0.25 * screenWidth;
     const middleWidth = 0.4 * screenWidth;
@@ -64,12 +69,12 @@ const EditorPage = () => {
       locale: 'en',
       rootConfigurable: true,
       card: {
-        json: (page === 'splash_screen' ? splashScreenLayout : landingScreenLayout)
+        json: currentLayout
       },
       theme: 'dark',
       layout: [
         {
-          items: ['new-component', 'component-tree'],
+          items: ['new-component', 'component-tree', 'custom-variables'],
           minWidth: leftRightWidth,
         },
         {
@@ -203,27 +208,29 @@ const EditorPage = () => {
         editor.destroy();
       }
     };
-  }, [splashScreenLayout, isSplashScreenAvailable]);
+  }, [currentLayout, page]);
 
-  React.useEffect(() => {
-    if (editorInstance && (splashScreenLayout || landingScreenLayout)) {
-      try {
-        editorInstance.setValue({
-          card: {
-            json: page === 'splash_screen' ? splashScreenLayout : landingScreenLayout
-          }
-        });
-      } catch (error) {
-        console.error('Error updating editor content:', error);
-      }
-    }
-  }, [editorInstance, splashScreenLayout, page]);
+  // React.useEffect(() => {
+  //   if (editorInstance) {
+  //     console.log('line 211', JSON.parse(currentLayout), editorInstance);
+      
+  //     try {
+  //       editorInstance.setValue({
+  //         card: {
+  //           json: currentLayout
+  //         }
+  //       });
+  //     } catch (error) {
+  //       console.error('Error updating editor content:', error);
+  //     }
+  //   }
+  // }, [currentLayout, editorInstance]);
 
   React.useEffect(() => {
     window.editorData = jsonContent;
   }, [jsonContent]);
 
-  const handleLogJSON = async () => {
+  const handleLogJSON = async() => {
     if (!editorInstance) {
       console.log('Editor not initialized');
       return;
@@ -233,18 +240,9 @@ const EditorPage = () => {
       const currentJSON = editorInstance.getValue();
       window.editorData = currentJSON;
       setJsonContent(currentJSON);
-      if (page === 'splash_screen' && isSplashScreenAvailable) {
-        // Execute code if page is 'splash_screen' and splash screen is available
-        await updateLayout(splashScreenId, currentJSON, page, campaignId);
-      } else if (page !== 'splash_screen' && isLandingScreenAvailable) {
-        console.log('Landing screen update');
-
-        // Execute code if page is not 'splash_screen' and landing screen is available
-        await updateLayout(landingScreenId, currentJSON, page, campaignId);
-      } else {
-        // Post layout data if the respective screen is not available
-        await postLayoutData(currentJSON);
-      }
+      console.log("line 243", layoutId);
+      
+await updateLayout(layoutId, currentJSON, page, campaignId);
     } catch (error) {
       console.error('Error handling JSON:', error);
     }
@@ -310,31 +308,21 @@ const EditorPage = () => {
     }
   }
 
-
+function refreshScreenNames(){
+  getCampaignById(campaignId, page)
+}
 
   return (
     <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box', paddding: '20px' }}>
-      {/* The editor will be rendered here */}
+     <ReactHeader screens={screens} refreshScreenNames={refreshScreenNames} />
       <div>
-        {/* <button
-          className={styles.publishBtn}
-          onClick={handleLogJSON}
-        >
-          {isSplashScreenAvailable ? 'Update' : 'Publish' }
-        </button> */}
         <button
           className={styles.saveBtn}
           onClick={handleLogJSON}
         >
-          {/* <img src={saveIcon} alt="" /> */}
           <IoIosSave />
           Save
-
         </button>
-
-        {/* <PreviewCard jsonData={solidBackgroundJSON} /> */}
-
-        {/* <MobilePreview jsonData={JSON.parse(imageBackgroundJSON)} /> */}
       </div>
     </div>
   );

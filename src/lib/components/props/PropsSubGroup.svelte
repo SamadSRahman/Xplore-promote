@@ -125,6 +125,7 @@
                                     class="props-group__item"
                                     title="{key}"
                                 >
+                             
                                     <div
                                         {...{ autocomplete: 'off' }}
                                         class="props-group__name"
@@ -137,6 +138,7 @@
                                         {key}
                                     </div>
                                     <div class="props-group__value">
+                                        asd
                                         <TextProp
                                             value={value[key]}
                                             {id}

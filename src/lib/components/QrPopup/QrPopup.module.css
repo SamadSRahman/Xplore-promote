@@ -27,7 +27,8 @@
   }
   .headers > span{
     font-size: 16px;
-    font-weight: 600;;
+    font-weight: 600;
+    color: black;
   }
   
   .closeButton {
@@ -51,7 +52,10 @@
     align-items: center;
     gap: 2rem;
   }
-  
+  .content input{
+    background-color: white;
+    color: black;
+  }
   .qrContainer {
     display: flex;
     flex-direction: column;
@@ -105,3 +109,5 @@
       cursor: not-allowed;
     }
   }
+
+  

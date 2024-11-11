@@ -81,6 +81,7 @@
         flex-direction: column;
         flex: 1 1 auto;
         overflow: auto;
+        padding-bottom: 6rem;
     }
 
     .props__empty {

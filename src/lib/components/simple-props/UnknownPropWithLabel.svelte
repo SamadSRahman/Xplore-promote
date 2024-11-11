@@ -35,7 +35,8 @@
         item.type === 'string' && item.enableTanker ||
         item.type === 'video_sources' ||
         item.type === 'alignment' ||
-        item.type === 'margins-paddings'
+        item.type === 'margins-paddings'||
+        item.type === 'controls'
     );
 
     $: hasLabel = 'name' in item && item.name || 'rawName' in item && item.rawName;
@@ -138,6 +139,7 @@
             on:click={onSourceClick}
         />
     {:else}
+    
         <UnknownProp
             {item}
             {value}

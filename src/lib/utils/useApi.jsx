@@ -10,6 +10,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { blankBackgroundJSON } from "./splashScreenData";
+import { getScreenName } from "./services";
 
 export default function useApi() {
   const channel = localStorage.getItem("channel");
@@ -92,7 +93,7 @@ export default function useApi() {
       setIsSplashScreenAvailable(true);
     }
     const landingLayout = response.data.data.layouts.find(
-      (ele) => ele.name === "landing_screen"
+      (ele) => ele.name === "explore_screen"
     );
     if (landingLayout) {
       console.log("landing", landingLayout);
@@ -101,13 +102,49 @@ export default function useApi() {
       setIsLandingScreenAvailable(true);
     }
   };
+
+
+
+  const createLayout = async (jsonData, campaignId, page) => {
+    try {
+      const response = await fetch(
+        `https://pre.xplore.xircular.io/api/v1/layout/create/${campaignId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: token,
+            session: channel
+          },
+          body: JSON.stringify({
+            name: page,
+            layoutJSON: JSON.parse(jsonData)
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Layout created successfully', data);
+    } catch (error) {
+      console.error('Error posting layout data:', error);
+      alert('Failed to publish layout. Please try again.');
+    }
+  };
+
+
+
+
   const updateLayout = async (id, layout, name, campaignId) => {
     try {
       const response = await axios.put(
         `https://pre.xplore.xircular.io/api/v1/layout/update/${id}`,
         {
           // Pass the body content as a JavaScript object
-          name: name,
+          name: getScreenName(name),
           layoutJSON: JSON.parse(layout), // Parse `layout` to a JSON object
         },
         {
@@ -154,6 +191,7 @@ export default function useApi() {
     getCampaignById,
     updateLayout,
     deleteCampaign,
+    createLayout,
     name,
     campaigns,
     splashScreenLayout,

@@ -19,6 +19,12 @@
         }
         callback(value);
     }
+   const screens = JSON.parse(localStorage.getItem('screens') || '[]');
+   const updatedScreens = screens.map(screen => ({
+    text: screen.name,
+    value: screen.path
+}));
+
 
     export function show(props: Actions2DialogShowProps): void {
         callback = props.callback;
@@ -76,12 +82,19 @@
     }
 
     function onArgChange(): void {
+        console.log('line 79', customDesc, actionArgs, customActionToUrl(customDesc, actionArgs));
+        
         if (!customDesc) {
             return;
         }
 
         value.url = customActionToUrl(customDesc, actionArgs);
     }
+
+    // $: types = [{
+    //     value: 'url',
+    //     text: $l10n('actions-url')
+    // }]  // Action list removed 
 
     $: types = [{
         value: 'url',
@@ -120,23 +133,37 @@
                     </label>
                 </div>
             {:else if actionArgs.length}
-                {#each actionArgs as arg}
-                    <div>
-                        <!-- svelte-ignore a11y-label-has-associated-control -->
-                        <label>
-                            <div class="actions2-dialog__label">
-                                {arg.desc.text[$lang] || arg.desc.name}
-                            </div>
-                            <Text
-                                bind:value={arg.value}
-                                disabled={readOnly}
-                                on:change={onArgChange}
-                            />
-                        </label>
-                    </div>
-                {/each}
+            {#each actionArgs as arg, index}
+    <div>
+        <!-- svelte-ignore a11y-label-has-associated-control -->
+        <label>
+            <div class="actions2-dialog__label">
+                {(arg.desc.text[$lang] || arg.desc.name) === 'ID' ? 'Select screen to open' : arg.desc.text[$lang] || arg.desc.name}
+            </div>
+            
+            <!-- Conditional Select or Text Input based on argument type -->
+            {#if (arg.desc.text[$lang] || arg.desc.name) === 'ID'}
+                <!-- Dropdown for selecting screen names when argument is 'ID' -->
+                <Select
+                    items={updatedScreens}
+                    bind:value={arg.value} 
+                    theme="normal"
+                    size="medium"
+                    disabled={readOnly}
+                    on:change={() => onArgChange(index)}
+                />
+            {:else}
+                <!-- Text input for other types of arguments -->
+                <Text
+                    bind:value={arg.value}
+                    disabled={readOnly}
+                    on:change={() => onArgChange(index)}
+                />
             {/if}
-
+        </label>
+    </div>
+{/each}
+            {/if}
             <div>
                 <!-- svelte-ignore a11y-label-has-associated-control -->
                 <label>

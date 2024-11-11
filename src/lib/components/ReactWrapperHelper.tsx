@@ -6,7 +6,7 @@ import ReactHeader from './ReactHeader';
 
 
 export function renderReactHeader(container: HTMLDivElement) {
-  ReactDOM.render(<BrowserRouter><ReactHeader /></BrowserRouter>, container);
+  // ReactDOM.render(<BrowserRouter><ReactHeader /></BrowserRouter>, container);
 }
 
 export function unmountReactHeader(container: HTMLDivElement) {

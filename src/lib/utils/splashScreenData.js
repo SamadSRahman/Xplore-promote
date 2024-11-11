@@ -475,6 +475,11 @@ export const blankBackgroundJSON = {
       },
     ],
     variables: [
+    //   {
+    //     name: "my_borderless_text",
+    //     type: "string",
+    //     value: "Samad"
+    // },
       {
         type: "dict",
         name: "local_palette",
@@ -494,6 +499,76 @@ export const blankBackgroundJSON = {
     ],
   },
   templates: {
+    input_text: {
+    type: "input",
+    text_variable: 'my_borderless_text',
+  width: {
+    type: "match_parent"
+  },
+  height: {
+    type: "wrap_content"
+  },
+  text_alignment_horizontal: "left",
+  margins: {
+    left: 16,
+    top: 20,
+    right: 16,
+    bottom: 16
+  },
+  paddings: {
+    left: 16,
+    top: 10,
+    right: 16,
+    bottom: 10
+  },
+  alignment_horizontal: "center",
+  alignment_vertical: "center",
+  font_size: 16,
+  font_weight: "medium",
+  text_color: "#000000",
+  hint_color: "#888888",
+  highlight_color: "#e0bae3",
+  line_height: 22,
+  accessibility: {
+    description: "Enter text here",
+    hint: "Type your response",
+    state_description: "Active input field"
+  },
+  autocapitalization: "sentences",
+  keyboard_type: "default",
+  background: [
+    {
+      type: 'solid',
+      color: "#f8f8f8"
+    }
+  ],
+  border: {
+    corner_radius: 8,
+    stroke: {
+      color: "#cccccc",
+      width: 1
+    }
+  },
+
+
+  enter_key_type: "done",
+  on_focus: [
+    {
+      type: "highlight",
+      highlight_color: "#d3d3d3"
+    }
+  ],
+  visibility: "visible",
+  max_length: 100,
+  mask: {
+    type: "text",
+    pattern: "[A-Za-z0-9 ]*"
+  },
+  text_alignment_horizontal: "left",
+  text_alignment_vertical: "center"
+  },
+ 
+
     _template_lottie: {
       type: "gif",
       scale: "fit",

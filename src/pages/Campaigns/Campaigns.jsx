@@ -10,10 +10,11 @@ import example2 from '../../assets/Frame 13822.svg';
 import example3 from '../../assets/Frame 13816.svg';
 import useApi from '../../lib/utils/useApi';
 import QrPopup from '../../lib/components/QrPopup/QrPopup';
+import useCampaign from '../../lib/utils/useCampaign';
 
 export default function Campaigns() {
-    const { name, campaigns, getCampaigns, getUserDetails, deleteCampaign } =
-    useApi();
+    const { name, getUserDetails, } = useApi();
+    const { campaigns, getCampaigns, deleteCampaign } = useCampaign();
     const navigate = useNavigate();
     const [selectedCampaign, setSelectedCampaign] = useState(null);
     const popupRef = useRef();
@@ -22,10 +23,10 @@ export default function Campaigns() {
     const [selectedCampaignName, setSelectedCampaignName] = useState('');
     const [isLogoutPopupVisible, setIsLogoutPopupVisible] = useState(false);
 
+
     useEffect(() => {
         getUserDetails();
         getCampaigns();
-
         const handleClickOutside = event => {
             if (popupRef.current && !popupRef.current.contains(event.target)) {
                 setSelectedCampaign(null);
@@ -40,11 +41,13 @@ export default function Campaigns() {
         navigate(`/editor/${campaignId}/splash_screen`);
         setSelectedCampaign(null); // Close the popup after navigating
     };
-
-    const handleDelete = campaignId => {
-        deleteCampaign(campaignId);
-        setSelectedCampaign(null); // Close the popup after deletion
-    };
+    const handleDelete = (campaignId) => {
+      const isConfirmed = window.confirm("Are you sure you want to delete this campaign?");
+      if (isConfirmed) {
+          deleteCampaign(campaignId);
+          setSelectedCampaign(null); // Close the popup after deletion
+      }
+  };
     const handleGetQr = campaign => {
         setSelectedId(campaign.campaignID);
         setSelectedCampaignName(campaign.name);

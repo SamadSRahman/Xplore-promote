@@ -59,8 +59,8 @@
   <!-- </div>
     </header> -->
 
-  <nav class="header__subnav">
-    <ReactWrapper  />
+  <!-- <nav class="header__subnav">
+    <ReactWrapper  /> -->
     <!-- <h3 class="page-tab {pathname?.includes('splash') ? 'page-tab-selected' : ''}">Splash screen</h3>
     <h3 class="page-tab {pathname?.includes('landing') ? 'page-tab-selected' : ''}">Landing screen</h3> -->
     <!-- <div class="header__subnav-left">  -->
@@ -107,7 +107,7 @@
         </li>
       </ul>
     </div> -->
-  </nav>
+  <!-- </nav> -->
   <!-- </header> -->
 </div>
 

@@ -6,13 +6,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin, FaYoutube, FaTiktok, FaPinterest } from 'react-icons/fa';
 import { FiMail, FiPhone, FiGlobe, FiImage } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import styles from './CreateCampaign.module.css';
+import useLayout from '../../lib/utils/useLayout';
+import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
 
 const CampaignForm = () => {
     const navigate = useNavigate();
+    const { createLayout } = useLayout()
     const [image, setImage] = useState('');
     const [formData, setFormData] = useState({
         name: '',
@@ -66,6 +68,8 @@ const CampaignForm = () => {
                 { headers: { Authorization: `Bearer ${token}`, session: channel, 'Content-Type': 'multipart/form-data' } }
             );
             console.log('Campaign created successfully:', response.data);
+            createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Splash Screen');
+            createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Landing Screen');
             alert('Campaign created successfully');
             navigate(`/editor/${response.data.data.campaignID}/splash_screen`);
         } catch (error) {
@@ -162,7 +166,9 @@ const CampaignForm = () => {
             <div className="social-media-grid">
               {Object.keys(formData.socialMediaLinks).map(platform => (
                 <div key={platform} className="social-media-input">
-                  <span className="social-icon">{React.createElement({ facebook: FaFacebook, instagram: FaInstagram, twitter: FaTwitter, linkedin: FaLinkedin, youtube: FaYoutube, tiktok: FaTiktok, pinterest: FaPinterest }[platform])}</span>
+                  <span className="social-icon">{React.createElement({ facebook:
+                  FaFacebook, instagram: FaInstagram, twitter: FaTwitter, linkedin:
+                  FaLinkedin, youtube: FaYoutube, tiktok: FaTiktok, pinterest: FaPinterest }[platform])}</span>
                   <input
                     type="url"
                     placeholder={`${platform.charAt(0).toUpperCase() + platform.slice(1)} Link`}
