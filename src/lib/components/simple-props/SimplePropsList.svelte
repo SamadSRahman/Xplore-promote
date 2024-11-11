@@ -134,7 +134,8 @@
 </div>
 
 <style>
-    .simple-props-group__list {
+
+.simple-props-group__list {
         display: flex;
         flex-direction: column;
         /* margin: 0 16px; */

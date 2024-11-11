@@ -9,6 +9,7 @@ import closeIcon from '../../assets/components/close.svg?url';
 import listItemIcon from '../../assets/components/list-item.svg?url';
 import listIcon from '../../assets/list.svg.svg';
 import { type ComponentProperty } from './componentProps';
+import { EMPTY_IMAGE } from './doc';
 
 interface TemplateDescription {
   nameKey: string;
@@ -20,8 +21,8 @@ interface TemplateDescription {
   props: ComponentProperty[];
   newNode: object;
   template: Record<string, unknown>;
-
   baseType?: string | undefined;
+
 }
 
 interface TemplateProps {
@@ -112,108 +113,8 @@ const props: TemplateProps = {
   };
 
 export const namedTemplates: Record<string, TemplateDescription> = {
-  // horizontal_grid: {
-  //     nameKey: 'templates.horizontal_grid',
-  //     visible: true,
-  //     inShortList: true,
-  //     icon: gridIcon, // You'll need to create this icon
-  //     description: { en: 'Horizontal grid with 50% width items' },
-  //     props: [
-  //         {
-  //             type: 'group',
-  //             title: 'gridProps.title',
-  //             list: [
-  //                 {
-  //                     name: 'props.item_count',
-  //                     prop: 'item_count',
-  //                     type: 'integer',
-  //                     min: 2,
-  //                     max: 10,
-  //                     default: 2
-  //                 },
-  //                 {
-  //                     type: 'group',
-  //                     title: 'gridProps.items',
-  //                     // list: Array.from({ length: 10 }, (_, i) => [
-  //                     //     {
-  //                     //         name: `props.item_${i + 1}_background`,
-  //                     //         prop: `item_${i + 1}_background`,
-  //                     //         type: 'file',
-  //                     //         subtype: 'image',
-  //                     //         enableSources: true,
-  //                     //         show: { prop: 'item_count', condition: 'gte', value: i + 1 }
-  //                     //     },
-  //                     //     {
-  //                     //         name: `props.item_${i + 1}_text`,
-  //                     //         prop: `item_${i + 1}_text`,
-  //                     //         type: 'string',
-  //                     //         enableTanker: true,
-  //                     //         enableSources: true,
-  //                     //         show: { prop: 'item_count', condition: 'gte', value: i + 1 }
-  //                     //     }
-  //                     // ]).flat()
-  //                     list: [
-  //                         {
-  //                                 name: `props.item_${1}_background`,
-  //                                 prop: `item_${1}_background`,
-  //                                 type: 'file',
-  //                                 subtype: 'image',
-  //                                 enableSources: true,
-  //                             },
-  //                         {
-  //                                 name: `props.item_${1}_background`,
-  //                                 prop: `item_${1}_background`,
-  //                                 type: 'string',
-  //                                 enableSources: true,
 
-  //                             }
-  //                         ]
-  //                 }
-  //             ]
-  //         }
-  //     ],
-  //     newNode: {
-  //         type: 'horizontal_grid',
-  //         item_count: 2,
-  //         item_1_background: 'https://example.com/placeholder1.jpg',
-  //         item_1_text: 'Item 1',
-  //         item_2_background: 'https://example.com/placeholder2.jpg',
-  //         item_2_text: 'Item 2'
-  //     },
-  //     template: {
-  //         type: 'container',
-  //         orientation: 'horizontal',
-  //         width: { type: 'match_parent' },
-  //         height: { type: 'wrap_content' },
-  //         items: {
-  //             type: 'repeat',
-  //             count: '$item_count',
-  //             item: {
-  //                 type: 'container',
-  //                 width: { type: 'fixed', value: '50%' },
-  //                 height: { type: 'wrap_content' },
-  //                 background: [
-  //                     {
-  //                         type: 'image',
-  //                         $image_url: '${"item_" + (index + 1) + "_background"}',
-  //                         scale: 'fill'
-  //                     }
-  //                 ],
-  //                 items: [
-  //                     {
-  //                         type: 'text',
-  //                         $text: '${"item_" + (index + 1) + "_text"}',
-  //                         font_size: 16,
-  //                         font_weight: 'medium',
-  //                         text_color: '#FFFFFF',
-  //                         max_lines: 2,
-  //                         margins: { all: 16 }
-  //                     }
-  //                 ]
-  //             }
-  //         }
-  //     }
-  // },
+
   _template_gallery: {
     nameKey: 'templates.gallery',
     visible: true,
@@ -315,6 +216,10 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       text_color: '#000000',
       font_size: 22,
     },
+ 
+
+
+
     template: {
       type: 'gallery',
       $orientation: 'orientation',
@@ -526,65 +431,60 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       ],
     },
   },
-  // _template_lottie: {
-  //   nameKey: 'templates.lottie',
-  //   visible: true,
-  //   inShortList: true,
-  //   icon: lottieIcon,
-  //   props: [
-  //     {
-  //       type: 'group',
-  //       title: 'lottieProps.title',
-  //       list: [
-  //         {
-  //           name: 'props.lottie_url',
-  //           prop: 'lottie_params.lottie_url',
-  //           type: 'file',
-  //           subtype: 'lottie',
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.preview',
-  //           prop: 'preview',
-  //           type: 'file',
-  //           subtype: 'image_preview',
-  //           enableSources: true,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   newNode: {
-  //     lottie_params: {
-  //       lottie_url: '',
-  //       repeat_count: -1,
-  //       repeat_mode: 'restart',
-  //     },
-  //     width: {
-  //       type: 'fixed',
-  //       value: 100,
-  //     },
-  //     height: {
-  //       type: 'fixed',
-  //       value: 100,
-  //     },
-  //   },
-  //   template: {
-  //     type: 'gif',
-  //     scale: 'fit',
-  //     extensions: [
-  //       {
-  //         id: 'lottie',
-  //         $params: 'lottie_params',
-  //       },
-  //     ],
-  //     gif_url: 'https://yastatic.net/s3/home/divkit/empty2.png',
-  //   },
-  // },
-  
-  
-  
-  
-  
+  _template_lottie: {
+    nameKey: 'templates.lottie',
+    visible: true,
+    inShortList: true,
+    icon: lottieIcon,
+    props: [
+      {
+        type: 'group',
+        title: 'lottieProps.title',
+        list: [
+          {
+            name: 'props.lottie_url',
+            prop: 'lottie_params.lottie_url',
+            type: 'file',
+            subtype: 'lottie',
+            enableSources: true,
+          },
+          {
+            name: 'props.preview',
+            prop: 'preview',
+            type: 'file',
+            subtype: 'image_preview',
+            enableSources: true,
+          },
+        ],
+      },
+    ],
+    newNode: {
+      lottie_params: {
+        lottie_url: '',
+        repeat_count: -1,
+        repeat_mode: 'restart',
+      },
+      width: {
+        type: 'fixed',
+        value: 100,
+      },
+      height: {
+        type: 'fixed',
+        value: 100,
+      },
+    },
+    template: {
+      type: 'gif',
+      scale: 'fit',
+      extensions: [
+        {
+          id: 'lottie',
+          $params: 'lottie_params',
+        },
+      ],
+      gif_url: 'https://yastatic.net/s3/home/divkit/empty2.png',
+    },
+  },
   _template_button: {
     nameKey: 'templates.button',
     visible: true,
@@ -697,11 +597,6 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       width: { type: 'wrap_content' },
     },
   },
-
-
-
-
-
   _template_close: {
     nameKey: 'templates.close',
     visible: true,
@@ -860,157 +755,272 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       ],
     },
   },
-  _template_list_new: {
-    nameKey: 'templates.list_item',
+//   _template_list_new: {
+//     nameKey: 'templates.list_item',
+//   visible: true,
+//   icon: listItemIcon,
+//   props: [
+//     {
+//         type: 'group',
+//         title: 'listProps.title',
+//         list: [
+//           {
+//             name: 'listItemProps.title',
+//             prop: 'list_items',
+//             type: 'array',
+//             arrayType: 'object',
+//             minItems: 1,
+//             maxItems: 10, // You can adjust this as needed
+//             fields: [
+//               {
+//                 name: 'props.image',
+//                 prop: 'image_url',
+//                 type: 'file',
+//                 subtype: 'image',
+//                 enableSources: true
+//               },
+//               {
+//                 name: 'props.text',
+//                 prop: 'list_text',
+//                 type: 'string',
+//                 default: 'List Item',
+//                 enableSources: true
+//               },
+//               {
+//                 name: 'props.font_size',
+//                 prop: 'list_text_size',
+//                 type: 'integer',
+//                 min: 1,
+//                 max: 1000,
+//                 default: 16,
+//                 enableSources: true
+//               },
+//               {
+//                 name: 'props.font_weight',
+//                 prop: 'list_font_weight',
+//                 type: 'select',
+//                 options: [
+//                   { name: 'props.font_weight_light', value: 'light' },
+//                   { name: 'props.font_weight_normal', value: 'regular' },
+//                   { name: 'props.font_weight_medium', value: 'medium' },
+//                   { name: 'props.font_weight_bold', value: 'bold' }
+//                 ],
+//                 default: 'regular',
+//                 enableSources: true
+//               },
+//               {
+//                 name: 'props.text_color',
+//                 prop: 'list_color',
+//                 type: 'color',
+//                 default: '#000000',
+//                 enableSources: true
+//               }
+//             ]
+//           }
+//         ]
+//       }
+//     ],
+//     newNode: {
+//       list_items: [
+//         {
+//           list_text: 'Item 1',
+//           list_color: '#000000',
+//           list_text_size: 16,
+//           list_font_weight: 'regular',
+//           image_url: 'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png'
+//         },
+//         {
+//           list_text: 'Item 2',
+//           list_color: '#000000',
+//           list_text_size: 16,
+//           list_font_weight: 'regular',
+//           image_url: 'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png'
+//         },
+//         {
+//           list_text: 'Item 3',
+//           list_color: '#000000',
+//           list_text_size: 16,
+//           list_font_weight: 'regular',
+//           image_url: 'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png'
+//         }
+//       ]
+//     },
+//     template: {
+//         type: 'container',
+//         orientation: 'vertical',
+//         items: {
+//           type: 'array',
+//           value: {
+//             $ref: 'list_items'
+//           },
+//           itemTemplate: {
+//             type: 'container',
+//             orientation: 'horizontal',
+//             items: [
+//               {
+//                 type: 'image',
+//                 $image_url: {
+//                   $ref: 'image_url'
+//                 },
+//                 $tint_color: {
+//                   $ref: 'list_color'
+//                 },
+//                 width: {
+//                   type: 'fixed',
+//                   value: 28,
+//                   unit: 'sp',
+//                 },
+//                 height: {
+//                   type: 'fixed',
+//                   value: 28,
+//                   unit: 'sp',
+//                 },
+//                 margins: {
+//                   top: 2,
+//                   right: 12,
+//                   bottom: 2,
+//                 },
+//               },
+//               {
+//                 type: 'text',
+//                 $text: {
+//                   $ref: 'list_text'
+//                 },
+//                 $text_color: {
+//                   $ref: 'list_color'
+//                 },
+//                 $font_size: {
+//                   $ref: 'list_text_size'
+//                 },
+//                 line_height: 32,
+//                 $font_weight: {
+//                   $ref: 'list_font_weight'
+//                 },
+//                 width: {
+//                   type: 'wrap_content',
+//                   constrained: true,
+//                 },
+//               },
+//             ],
+//           },
+//         },
+//       },
+// }
+ _template_add_image : {
+  nameKey: 'templates.add_image',
+  description: {en:'Component to take image inputs'},
   visible: true,
-  icon: listItemIcon,
+  icon: listItemIcon, // replace with the appropriate icon for this template
   props: [
     {
-        type: 'group',
-        title: 'listProps.title',
-        list: [
-          {
-            name: 'listItemProps.title',
-            prop: 'list_items',
-            type: 'array',
-            arrayType: 'object',
-            minItems: 1,
-            maxItems: 10, // You can adjust this as needed
-            fields: [
-              {
-                name: 'props.image',
-                prop: 'image_url',
-                type: 'file',
-                subtype: 'image',
-                enableSources: true
-              },
-              {
-                name: 'props.text',
-                prop: 'list_text',
-                type: 'string',
-                default: 'List Item',
-                enableSources: true
-              },
-              {
-                name: 'props.font_size',
-                prop: 'list_text_size',
-                type: 'integer',
-                min: 1,
-                max: 1000,
-                default: 16,
-                enableSources: true
-              },
-              {
-                name: 'props.font_weight',
-                prop: 'list_font_weight',
-                type: 'select',
-                options: [
-                  { name: 'props.font_weight_light', value: 'light' },
-                  { name: 'props.font_weight_normal', value: 'regular' },
-                  { name: 'props.font_weight_medium', value: 'medium' },
-                  { name: 'props.font_weight_bold', value: 'bold' }
-                ],
-                default: 'regular',
-                enableSources: true
-              },
-              {
-                name: 'props.text_color',
-                prop: 'list_color',
-                type: 'color',
-                default: '#000000',
-                enableSources: true
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    newNode: {
-      list_items: [
+      type: 'group',
+      title: 'addImageProps.title',
+      list: [
         {
-          list_text: 'Item 1',
-          list_color: '#000000',
-          list_text_size: 16,
-          list_font_weight: 'regular',
-          image_url: 'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png'
+          name: 'props.image',
+          prop: 'image_url',
+          type: 'file',
+          subtype: 'image',
+          enableSources: true,
         },
         {
-          list_text: 'Item 2',
-          list_color: '#000000',
-          list_text_size: 16,
-          list_font_weight: 'regular',
-          image_url: 'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png'
+          name: 'props.text',
+          prop: 'text',
+          type: 'string',
+          enableTanker: true,
+          default: 'Text',
+          enableSources: true,
         },
         {
-          list_text: 'Item 3',
-          list_color: '#000000',
-          list_text_size: 16,
-          list_font_weight: 'regular',
-          image_url: 'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png'
-        }
-      ]
+          name: 'props.font_size',
+          prop: 'text_size',
+          type: 'integer',
+          min: 1,
+          max: 1000,
+          enableSources: true,
+        },
+        {
+          name: 'props.font_weight',
+          prop: 'font_weight',
+          type: 'select',
+          options: [
+            {
+              name: 'props.font_weight_light',
+              value: 'light',
+            },
+            {
+              name: 'props.font_weight_normal',
+              value: 'regular',
+            },
+            {
+              name: 'props.font_weight_medium',
+              value: 'medium',
+            },
+            {
+              name: 'props.font_weight_bold',
+              value: 'bold',
+            },
+          ],
+          enableSources: true,
+        },
+        {
+          name: 'props.text_color',
+          prop: 'text_color',
+          type: 'color',
+          enableSources: true,
+        },
+        {
+          name: 'props.actions',
+          prop: 'actions',
+          type: 'actions2',
+        },
+      ],
     },
-    template: {
-        type: 'container',
-        orientation: 'vertical',
-        items: {
-          type: 'array',
-          value: {
-            $ref: 'list_items'
-          },
-          itemTemplate: {
-            type: 'container',
-            orientation: 'horizontal',
-            items: [
-              {
-                type: 'image',
-                $image_url: {
-                  $ref: 'image_url'
-                },
-                $tint_color: {
-                  $ref: 'list_color'
-                },
-                width: {
-                  type: 'fixed',
-                  value: 28,
-                  unit: 'sp',
-                },
-                height: {
-                  type: 'fixed',
-                  value: 28,
-                  unit: 'sp',
-                },
-                margins: {
-                  top: 2,
-                  right: 12,
-                  bottom: 2,
-                },
-              },
-              {
-                type: 'text',
-                $text: {
-                  $ref: 'list_text'
-                },
-                $text_color: {
-                  $ref: 'list_color'
-                },
-                $font_size: {
-                  $ref: 'list_text_size'
-                },
-                line_height: 32,
-                $font_weight: {
-                  $ref: 'list_font_weight'
-                },
-                width: {
-                  type: 'wrap_content',
-                  constrained: true,
-                },
-              },
-            ],
-          },
+  ],
+  newNode: {
+    text: 'Sample Text',
+    text_color: '#000',
+    text_size: 24,
+    font_weight: 'medium',
+  },
+  template: {
+    type: 'container',
+    orientation: 'vertical', // Aligns items vertically
+    items: [
+      {
+        type: 'image',
+        image_url: 'image_url', // Placeholder for actual image URL
+        width: {
+          type: 'fixed',
+          value: 100,
+          unit: 'sp',
+        },
+        height: {
+          type: 'fixed',
+          value: 100,
+          unit: 'sp',
+        },
+        margins: {
+          bottom: 8,
         },
       },
+      {
+        type: 'text',
+        $text: 'text',
+        $text_color: 'text_color',
+        $font_size: 'text_size',
+        line_height: 32,
+        $font_weight: 'font_weight',
+        width: {
+          type: 'wrap_content',
+          constrained: true,
+        },
+      },
+    ],
+  },
 }
+
+
 };
 
 export function isTemplate(name: string): boolean {

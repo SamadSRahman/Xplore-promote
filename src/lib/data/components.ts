@@ -9,8 +9,8 @@ export const DEFAULT_ALLOWED_COMPONENTS = [
     'container',
     'gallery',
     'separator',
-    'video'
-    // 'list',
+    'video',
+    'lottie'
 ];
 
 const MAP = (schema.div.anyOf || []).reduce((acc, item) => {

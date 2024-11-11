@@ -471,6 +471,118 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
             type: 'actions2'
         }]
     }],
+    input: [...BASE_COMPONENT_PROPS, {
+        type: 'group',
+        title: 'textProps.title',
+        list: [{
+            type: 'split',
+            list: [{
+                name: 'props.font_size',
+                prop: 'font_size',
+                type: 'integer',
+                min: 1,
+                max: 1000,
+                enableSources: true
+            }, {
+                name: 'props.line_height',
+                prop: 'line_height',
+                type: 'integer',
+                min: 0,
+                max: 1000,
+                enableSources: true
+            }]
+        }, {
+            type: 'split',
+            list: [{
+                name: 'props.text_alignment_horizontal',
+                prop: 'text_alignment_horizontal',
+                type: 'text-align',
+                enableSources: true
+            }, {
+                name: 'textStyle',
+                type: 'text-styles'
+            }]
+        }, {
+            name: 'props.font_weight',
+            prop: 'font_weight',
+            type: 'select',
+            options: [{
+                name: 'props.font_weight_light',
+                value: 'light'
+            }, {
+                name: 'props.font_weight_normal',
+                value: 'regular'
+            }, {
+                name: 'props.font_weight_medium',
+                value: 'medium'
+            }, {
+                name: 'props.font_weight_bold',
+                value: 'bold'
+            }],
+            enableSources: true
+        },    {
+            name: 'props.corners',
+            prop: 'corners',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
+          },{
+            name: 'props.text_color',
+            prop: 'text_color',
+            type: 'color',
+            enableSources: true
+        }],
+    },
+    {
+        name: 'props.keyboard_type',
+        prop: 'keyboard_type',
+        type: 'select',
+        default: {
+            name: 'props.single_line_text',
+            value: 'single_line_text'
+        },
+        options: [{
+            name: 'props.single_line_text',
+            value: 'single_line_text'
+        }, {
+            name: 'props.multi_line_text',
+            value: 'multi_line_text'
+        }, {
+            name: 'props.phone',
+            value: 'phone'
+        }, 
+        {
+            name: 'props.number',
+            value: 'number'
+        },
+        {
+            name: 'props.email',
+            value: 'email'
+        },
+        {
+            name: 'props.uri',
+            value: 'uri'
+        },
+        {
+            name: 'props.password',
+            value: 'password'
+        },
+    
+    ],
+        enableSources: true
+    }, 
+    {
+        name: 'props.hint_text',
+        prop: 'hint_text',
+        type: 'string',
+        enableTanker: true,
+        enableSources: true,
+        default: '\0'
+    }
+
+
+],
     image: [...BASE_COMPONENT_PROPS, {
         type: 'group',
         title: 'imageProps.title',

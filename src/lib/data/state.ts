@@ -651,6 +651,7 @@ export class State {
                     mime_type: 'mp4',
                     url: 'https://www.w3schools.com/tags/mov_bbb.mp4'
                 }],
+                controls: true,
                 width: {
                     type: 'fixed',
                     value: 200

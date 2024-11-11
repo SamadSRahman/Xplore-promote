@@ -9,6 +9,7 @@
     evalExpression,
     type DivkitDebugInstance,
   } from "@divkitframework/divkit/client-devtool";
+  import type { VideoSource } from "../utils/video";
   import type {
     DivExtensionClass,
     DivJson,
@@ -90,6 +91,7 @@
     setRendererApi,
     inplaceEditor,
     file2Dialog,
+    videoSource2Dialog
   } = getContext<AppContext>(APP_CTX);
 
   const {
@@ -3419,7 +3421,37 @@
     } else {
       return;
     }
+    if (processedJson.type === "video") {
+        videoSource2Dialog().show({
+          target: elem,
+          value: {
+            url,
+          },
+          callback(value) {
+        let property;
+        if (subtype === "image") {
+          property = "image_url";
+        } else if (subtype === "gif") {
+          property = "gif_url";
+        } else if (subtype === "lottie") {
+          property = "lottie_params.lottie_url";
+        }
 
+        if (property) {
+          state.pushCommand(
+            new SetPropertyCommand($tree, [
+              {
+                leafId: leaf.id,
+                property,
+                value: value.url,
+              },
+            ])
+          );
+        }
+      },
+        });
+    }
+else{
     file2Dialog().show({
       target: elem,
       title,
@@ -3451,6 +3483,7 @@
         }
       },
     });
+  }
   }
 
   function onWindowResize(): void {
@@ -4645,3 +4678,5 @@
     pointer-events: auto;
   }
 </style>
+
+

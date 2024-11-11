@@ -31,6 +31,18 @@
       description: it.description,
     };
   });
+  
+  const extraItems = additionalComponentsList
+  .filter(it => it.type === "input" || it.type === "_template_add_image") // Filter items with type 'input'
+  .map(it => {
+    return {
+      name: it.name || (it.nameKey && $l10nString(it.nameKey)) || "<unknown>",
+      type: it.type,
+      description: it.description,
+    };
+  });
+  console.log('extraItems', basicItems, extraItems)
+  basicItems.concat(extraItems);
 
   function onDragStart(event: DragEvent, type: string): void {
     if (event.dataTransfer) {
@@ -130,11 +142,11 @@
         {$l10nString("userDefinedComponents")}
       </div> -->
 
-      <!-- <div class="new-component__items"> -->
-        <!-- {#each $userDefinedTemplates as item} -->
+      <div class="new-component__items">
+        {#each $userDefinedTemplates as item}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-static-element-interactions -->
-          <!-- <div
+         <div
             class="new-component__item"
             draggable="true"
             on:dragstart={(event) => onDragStart(event, item)}
@@ -154,7 +166,7 @@
             </div>
           </div>
         {/each}
-      </div> -->
+      </div>
     <!-- </Spoiler2> -->
   <!-- {/if} -->
 </div>

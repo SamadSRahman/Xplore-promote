@@ -163,12 +163,14 @@
     formData.append('files', file);
     const url = 'https://pre.xplore.xircular.io/api/v1/content/uploadContent';
     let token = localStorage.getItem('accessToken')
+    let session = localStorage.getItem('channel')
 
     try {
         const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'authorization': `${token}`
+                'authorization': `${token}`,
+                'session': `${session}`
             },
             body: formData
         });
