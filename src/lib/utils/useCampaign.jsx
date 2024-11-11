@@ -67,6 +67,7 @@ export default function useCampaign() {
         console.log(formattedScreens, page);
         
         setScreens(formattedScreens);
+        localStorage.setItem('screens', JSON.stringify(formattedScreens))
 
         const splashLayout = response.data.data.layouts.find(
             ele => ele.name === page

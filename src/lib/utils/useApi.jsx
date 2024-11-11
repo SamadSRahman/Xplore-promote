@@ -30,6 +30,7 @@ export default function useApi() {
   // const [layoutId, setLayoutId] = useState('');
   const [splashScreenId, setSplashScreenId] = useState("");
   const [landingScreenId, setLandingScreenId] = useState("");
+  const [layouts, setLayouts] = useState([])
   const token = localStorage.getItem("accessToken");
   const getUserDetails = async () => {
     const token = localStorage.getItem("accessToken");
@@ -83,6 +84,7 @@ export default function useApi() {
 
     console.log("response", response.data.data);
     setCampaignName(response.data.data.name);
+    setLayouts(response.data.data.layouts);
     const splashLayout = response.data.data.layouts.find(
       (ele) => ele.name === "splash_screen"
     );
@@ -93,7 +95,7 @@ export default function useApi() {
       setIsSplashScreenAvailable(true);
     }
     const landingLayout = response.data.data.layouts.find(
-      (ele) => ele.name === "explore_screen"
+      (ele) => ele.name === "landing_screen"
     );
     if (landingLayout) {
       console.log("landing", landingLayout);
@@ -201,5 +203,6 @@ export default function useApi() {
     isSplashScreenAvailable,
     isLandingScreenAvailable,
     campaignName,
+    layouts,
   };
 }

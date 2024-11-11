@@ -2,11 +2,12 @@
 import React from 'react';
 import styles from './PreviewCard.module.css';
 
-const PreviewCard = ({ jsonData }) => {
-    const { card, templates } = jsonData;
-    const { states } = card;
 
-    console.log('teplates', templates.input_text.background[templates.input_text.background.length - 1].color);
+const PreviewCard = ({ jsonData, handleOnClick,  }) => {
+    const { card, templates } = jsonData;
+    console.log('card:',jsonData, card);
+    
+    const { states } = card;
     //templates.input_text.background
     const getColorValue = str => {
         const match = str.match(/#([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6})/);
@@ -22,14 +23,14 @@ const PreviewCard = ({ jsonData }) => {
                         key={index}
                         style={{
                             textAlign: item.text_alignment_horizontal ? item.text_alignment_horizontal : 'left',
-                            width: item.width.type === 'match_parent' ? '100%' : '',
+                            width: item.width.type === 'match_parent' ? '100%' : item.width.type==='fixed'? item.width.value : item.width.type==='wrap_content'?'max-content':'',
                             fontSize: item.font_size,
                             backgroundColor: item?.background ? item?.background[0]?.color : '',
                             color: item.text_color ? item.text_color : 'black',
                             marginBottom: item.margins?.bottom || 0,
                             marginLeft: item.margins?.left || 0,
                             marginRight: item.margins?.right || 0,
-                            marginTop: item.margins?.top || 0,
+                            // marginTop: item.margins?.top || 0,
                             margin: item.alignment_horizontal === 'center' ? 'auto' : undefined,
                             position: 'absolute',
                             top: item.alignment_vertical === 'center' ? '50%' : item.margins?.top,
@@ -76,6 +77,7 @@ const PreviewCard = ({ jsonData }) => {
                     <input type={item.keyboard_type?.includes('text') ? 'text' : item.keyboard_type === 'phone'? 'number' : item?.keyboard_type}
                         placeholder={item.hint_text}
                         style={{
+                            cursor:'text',
                             position: 'absolute',
                             accentColor:'black',
                             color: item.text_color? item.text_color:'black',
@@ -93,7 +95,6 @@ const PreviewCard = ({ jsonData }) => {
                             paddingRight: item?.paddings?.right,
                             paddingBottom: item?.paddings?.bottom,
                             border: 'none',
-                            cursor: 'pointer',
                             fontSize: item?.font_size ? item?.font_size : '',
                         }}
                     />
@@ -101,12 +102,13 @@ const PreviewCard = ({ jsonData }) => {
             case '_template_button':
                 return (
                     <button
+                    onClick={item.actions? ()=>handleOnClick(item.actions[0]): ''}
                         style={{
                             position: 'absolute',
                             backgroundColor: item.background[0].color,
                             color: item.text_color,
                             borderRadius: item.corners,
-                            width: item.width?.type === 'wrap_content' ? 'min-content' : '',
+                            width: item.width?.type === 'wrap_content' ? 'max-content' : item.width.type==='fixed'? item.width.value:'',
                             height: item.height ? item.height?.value : 'fit-content',
                             top: item.alignment_vertical === 'top' ? item.margins?.top || 0 : item.alignment_vertical === 'center' ? '50%' : 'auto',
                             left: item.alignment_horizontal === 'center' ? '50%' : item.alignment_horizontal === 'right' ? 'auto' : 0,
@@ -120,6 +122,10 @@ const PreviewCard = ({ jsonData }) => {
                             border: 'none',
                             cursor: 'pointer',
                             fontSize: item?.font_size ? item?.font_size : '',
+                            marginBottom: item.margins?.bottom || 0,
+                            marginLeft: item.margins?.left || 0,
+                            marginRight: item.margins?.right || 0,
+                            // marginTop: item.margins?.top || 0,
                         }}
                     >{item.text}</button>
                 );
@@ -168,7 +174,7 @@ const PreviewCard = ({ jsonData }) => {
 
         if (background.type === 'gradient') {
             return {
-                background: `linear-gradient(${background.angle ? background.angle : 0}deg, ${background.colors.join(', ')})`,
+                background: `linear-gradient(${background.angle ? background.angle-90 : 90}deg, ${background.colors.join(', ')})`,
             };
         }
 

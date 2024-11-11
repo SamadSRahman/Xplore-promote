@@ -1,38 +1,72 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-// import { PreviewCanvasWrapper } from '../../lib/components/PreviewCanvasWrapper/PreviewCanvasWrapper';
 import { useParams } from 'react-router-dom';
 import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
 import styles from './CampaignPreview.module.css';
 import useApi from '../../lib/utils/useApi';
+import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
 
 export default function CampaignPreview() {
-    const { getCampaignById, splashScreenLayout, landingScreenLayout } = useApi();
-    const [layout, setLayout] = useState(splashScreenLayout);
+    const { getCampaignById, landingScreenLayout, layouts } = useApi();
+    
+    const [layout, setLayout] = useState({ layoutJSON: (blankBackgroundJSON) });
     const { campaignId } = useParams();
 
-    useEffect(()=>{
-        getCampaignById(campaignId);
-    }, []);
-    useEffect(()=>{
-        if (splashScreenLayout) {
-            setLayout(splashScreenLayout);
-            setTimeout(()=>{ setLayout(landingScreenLayout) }, 2000);
+    function handleBtnClick(action) {
+        console.log("action clicked", action);
+        const btnAction = action.url.split("://")[1].split("?")[0]; // Extracts 'open'
+        const id = new URLSearchParams(action.url.split("?")[1]).get("id");
+        if (btnAction === 'open') {
+            const foundLayout = layouts.find(ele => ele.name === id);
+            if (foundLayout) {
+                setLayout(foundLayout);
+            } else {
+                console.log(`screen ${id} not found`);
+            }
         }
     }
-    , [splashScreenLayout, landingScreenLayout]);
-    useEffect(()=>{
-        console.log('line 20', JSON.parse(layout));
-    }, [splashScreenLayout]);
 
+    useEffect(() => {
+        if (layouts.length > 0) {
+            const splashLayout = layouts.find((ele) => ele.name === 'splash_screen');
+            console.log('line 20', splashLayout);
+            if (splashLayout) {
+                // setLayout({ layoutJSON: JSON.stringify(splashLayout) });
+                setLayout(splashLayout);
+            }
+        }
+    }, [layouts]);
+
+    useEffect(() => {
+        console.log('line 41', layout);
+        if (layout.name === "splash_screen") {
+            console.log("Changing to landing screen");
+            const landingLayout = layouts.find((ele) => ele.name === 'landing_screen');
+           if(landingLayout){
+            setTimeout(() => { setLayout(landingLayout) }, 2000);
+           }
+        }
+    }, [layout]);
+
+    useEffect(() => {
+        getCampaignById(campaignId);
+    }, []);
+
+    useEffect(() => {
+        if (landingScreenLayout) {
+            setTimeout(() => {}, 2000);
+        }
+    }, [landingScreenLayout]);
 
     return (
-    <div className={styles.container}>
-        {/* <MobilePreview jsonData={(blankBackgroundJSON)} /> */}
-       <div className={styles.cardWrapper}>
-       <PreviewCard jsonData={JSON.parse(layout)} />
-       </div>
-    </div>
+        <div className={styles.container}>
+            <div className={styles.cardWrapper}>
+                {layout?.layoutJSON && (
+                    <PreviewCard handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
+                )}
+            </div>
+        </div>
     );
 }
 
