@@ -326,6 +326,7 @@
         "props.uri": "uri",
         "props.password": "password",
         "props.keyboard_type": "Keyboard type",
+        "props.font_family": "Font family",
         "props.font_size": "Text size",
         "props.font_size_small": "Small",
         "props.font_size_medium": "Medium",

@@ -25,7 +25,7 @@ export default function App() {
           <Routes>
             <Route path='/privacyPolicy' element={<PrivacyPolicy />}/>
             <Route path='/publish/:campaignId' element={<PublishAndPreview />}/>
-            <Route path='/campaign/:campaignId' element={<CampaignPreview />}/>
+            <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />}/>
             <Route path='/contactus' element={<ContactUs />}/>
             <Route path='/terms&conditions' element={<TermsAndConditions />}/>
             <Route path='/' element={<QRLogin />}/>
