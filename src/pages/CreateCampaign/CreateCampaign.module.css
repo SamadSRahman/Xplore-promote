@@ -35,6 +35,7 @@
   color: #333;
   font-size: 1.8rem;
   font-weight: bold;
+  /* margin-top: 4rem; */
   margin-bottom: 1rem;
   color: #7654EE;
 }
@@ -116,7 +117,8 @@
 .checkboxWrapper {
   color: #7654EE;
   font-weight: 500;
-  margin-bottom: 0.3rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   gap: 10px;

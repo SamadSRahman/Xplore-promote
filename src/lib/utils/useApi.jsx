@@ -32,6 +32,9 @@ export default function useApi() {
   const [landingScreenId, setLandingScreenId] = useState("");
   const [layouts, setLayouts] = useState([])
   const token = localStorage.getItem("accessToken");
+  const session = localStorage.getItem('channel')
+
+
   const getUserDetails = async () => {
     const token = localStorage.getItem("accessToken");
     const response = await axios.get(
@@ -39,6 +42,7 @@ export default function useApi() {
       {
         headers: {
           authorization: token,
+          session: session,
         },
       }
     );

@@ -14,7 +14,7 @@ import useCampaign from '../../lib/utils/useCampaign';
 
 export default function Campaigns() {
     const { name, getUserDetails, } = useApi();
-    const { campaigns, getCampaigns, deleteCampaign } = useCampaign();
+    const { campaigns, getCampaigns, deleteCampaign, } = useCampaign();
     const navigate = useNavigate();
     const [selectedCampaign, setSelectedCampaign] = useState(null);
     const popupRef = useRef();
@@ -25,6 +25,11 @@ export default function Campaigns() {
 
 
     useEffect(() => {
+      let token = localStorage.getItem('accessToken')
+      if(!token){
+        alert("Please login to access your campaigns")
+        navigate('/')
+      }
         getUserDetails();
         getCampaigns();
         const handleClickOutside = event => {

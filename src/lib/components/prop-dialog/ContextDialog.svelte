@@ -78,9 +78,10 @@
     function calcStyles(): [number, number] {
         let left = 0;
         let top = 0;
-
-        const dialogBbox = dialog.getBoundingClientRect();
-        const targetBbox = target.getBoundingClientRect();
+        console.log('dialog', dialog, target);
+        
+           const dialogBbox = dialog?.getBoundingClientRect();
+        const targetBbox = target?.getBoundingClientRect();
         let dir = direction;
 
         if (dir === 'auto') {

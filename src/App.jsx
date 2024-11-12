@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable indent */
-// @ts-nocheck
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -23,9 +19,9 @@ export default function App() {
          <RecoilRoot>
          <BrowserRouter>
           <Routes>
-            <Route path='/privacyPolicy' element={<PrivacyPolicy />}/>
+            <Route path='/privacyPolicy' element={<PrivacyPolicy />}/>           
             <Route path='/publish/:campaignId' element={<PublishAndPreview />}/>
-            <Route path='/campaign/:campaignId' element={<CampaignPreview />}/>
+            <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />}/>
             <Route path='/contactus' element={<ContactUs />}/>
             <Route path='/terms&conditions' element={<TermsAndConditions />}/>
             <Route path='/' element={<QRLogin />}/>

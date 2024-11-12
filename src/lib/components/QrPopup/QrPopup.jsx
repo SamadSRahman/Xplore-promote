@@ -19,7 +19,7 @@ const QrPopup = ({ campaignId, onClose, campaignName }) => {
         const qrDataUrl = qrCanvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = qrDataUrl;
-        link.download = `campaign_${campaignId}_QR.png`;
+        link.download = `${campaignName.toLowerCase().replace(/ /g, "_")}_QR.png`;
         link.click();
     };
 
@@ -39,7 +39,7 @@ const QrPopup = ({ campaignId, onClose, campaignName }) => {
               value={`https://pre.xplore.xircular.io/campaign/${campaignId}`}
               size={150}
               bgColor="white"
-              fgColor="#808080"
+              fgColor="#000"
             />
           </div>
           <div className={styles.linkWrapper}>

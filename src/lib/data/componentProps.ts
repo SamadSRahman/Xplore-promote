@@ -456,7 +456,16 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
                 value: 'bold'
             }],
             enableSources: true
-        }, {
+        }, 
+        // {
+        //     name: 'props.font_family',
+        //     prop: 'font_family',
+        //     type: 'string',
+        //     enableTanker: true,
+        //     enableSources: true,
+        //     default: '\0'
+        // },
+        {
             name: 'props.text_color',
             prop: 'text_color',
             type: 'color',
@@ -583,7 +592,9 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
 
 
 ],
-    image: [...BASE_COMPONENT_PROPS, {
+    
+image: [...BASE_COMPONENT_PROPS, 
+    {
         type: 'group',
         title: 'imageProps.title',
         list: [{
@@ -623,6 +634,15 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
             horizontalProp: 'content_alignment_horizontal',
             verticalProp: 'content_alignment_vertical',
             enableSources: true
+        }]
+    },
+    {
+        type: 'group',
+        title: 'props.actions',
+        list: [{
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2'
         }]
     }],
     gif: [...BASE_COMPONENT_PROPS, {

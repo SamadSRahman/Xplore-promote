@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getContext } from 'svelte';
+    import { getContext, onMount  } from 'svelte';
     import PropsGroup from './props/PropsGroup.svelte';
     import { getSchemaByType, getSchemaNameByType } from '../data/schema';
     import SimpleProps from './simple-props/SimpleProps.svelte';
@@ -15,6 +15,16 @@
     const { state } = getContext<AppContext>(APP_CTX);
     const { selectedLeaf } = state;
 
+    onMount(() => {
+        // console.log("state", state);
+        if (!selectedLeaf) {
+            console.log("state", state);
+            
+            // setSelectedLeaf(state.rootElement);  // Ensure `rootElement` represents the container or initial element
+        }
+    });
+    // $: console.log("state", state.el);
+    
     $: selectedType = $selectedLeaf?.props.processedJson?.type || null;
     $: baseType = state.getBaseType(selectedType);
 

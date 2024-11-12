@@ -17,6 +17,8 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosSave } from 'react-icons/io';
 import styles from './EditorPage.module.css';
+import { MdPublish } from "react-icons/md";
+
 import {
   addTemplatesSuffix,
   convertDictToPalette,
@@ -52,6 +54,11 @@ const EditorPage = () => {
   const editorContainerRef = React.useRef(null);
 
   React.useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    if(!token){
+      alert("Please login to access your campaigns")
+      navigate('/')
+    }
     if (campaignId) {
       getCampaignById(campaignId, page);
     }
@@ -62,7 +69,6 @@ const EditorPage = () => {
     const screenWidth = window.innerWidth;
     const leftRightWidth = 0.25 * screenWidth;
     const middleWidth = 0.4 * screenWidth;
-    console.log('line 47', page, splashScreenLayout);
     if (!editorContainerRef.current) return;
     const editor = (window.editor = DivProEditor.init({
       renderTo: editorContainerRef.current,
@@ -74,7 +80,7 @@ const EditorPage = () => {
       theme: 'dark',
       layout: [
         {
-          items: ['new-component', 'component-tree', 'custom-variables'],
+          items: ['new-component', 'component-tree'],
           minWidth: leftRightWidth,
         },
         {
@@ -322,6 +328,12 @@ function refreshScreenNames(){
         >
           <IoIosSave />
           Save
+        </button>
+        <button className={styles.finishBtn}
+        onClick={()=>navigate(`/publish/${campaignId}`)}
+        >
+          <MdPublish/>
+          Publish
         </button>
       </div>
     </div>
