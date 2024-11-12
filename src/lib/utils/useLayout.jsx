@@ -12,7 +12,7 @@ import {  getScreenPath } from "./services";
 
 export default function useLayout() {
     const channel = localStorage.getItem("channel");
-
+    const [layouts, setLayouts] = useState([])
     const token = localStorage.getItem("accessToken");
     const [isLayoutCreated, setIsLayoutCreated] = useState(false)
 
@@ -81,9 +81,21 @@ export default function useLayout() {
             console.error("Error updating layout:", error);
         }
     };
+
+    const getAllLayout = async (id)=>{
+        try {
+            const response = await axios.get(`https://pre.xplore.xircular.io/api/v1/layout/getAll/${id}`)
+            console.log(response)
+            setLayouts(response.data.layouts)
+        } catch (error) {
+            console(error)
+        }
+    }
     return {
         updateLayout,
         createLayout,
+        getAllLayout,
+        layouts,
         isLayoutCreated,
     };
 }

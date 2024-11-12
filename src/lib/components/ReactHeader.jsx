@@ -77,7 +77,8 @@ console.log(screens);
                     cursor: 'pointer',
                     backgroundColor: screen.path === currentScreen?.path ? '#e9f5ff' : '#fff',
                     color: screen.path === currentScreen?.path ? '#39A6F5' : '#000',
-                    fontWeight: screen.path === currentScreen?.path ? '600' : 'normal'
+                    fontWeight: screen.path === currentScreen?.path ? '600' : 'normal',
+                    fontSize:'15px'
                 }}
               >
                 {screen?.name}
@@ -87,7 +88,7 @@ console.log(screens);
         )}
       </div>
 
-      <button
+      {/* <button
         onClick={() => setIsNewScreenPopupVisible(true)}
         style={{
             backgroundColor: '#4CAF50',
@@ -101,7 +102,7 @@ console.log(screens);
         }}
       >
         Add Screen
-      </button>
+      </button> */}
     </div>
     );
 }

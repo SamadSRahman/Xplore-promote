@@ -228,6 +228,7 @@
         emptyFileType: string;
         insets?: string;
         visibleText?: string;
+        fontFamily: string;
         grid?: {
           columns: number[];
           rows: number[];
@@ -1483,6 +1484,8 @@
     root.focus({
       preventScroll: true,
     });
+
+    
     selectedLeaf.set(leaf);
     selectedElem.set(node);
     highlightLeaf.set(null);
@@ -3083,6 +3086,8 @@
   }
 
   function onRootClick(event: MouseEvent): void {
+    console.log('event', event.target);
+    
     const dist =
       (event.pageX - mousedownX) * (event.pageX - mousedownX) +
       (event.pageY - mousedownY) * (event.pageY - mousedownY);
@@ -3117,7 +3122,7 @@
           namedTemplates[json.type].inlineTextEditorProp)
       )
     ) {
-      return;
+        return;
     }
 
     const node = leaf.props.node;
@@ -3244,6 +3249,8 @@
     }
 
     const text = value.text;
+    console.log("text line 3247", text);
+    
     const ranges = value.ranges;
     const images = value.images;
     const textAlign = value.textAlign;
@@ -3259,7 +3266,8 @@
         : namedTemplates[json.type].inlineTextEditorProp;
 
     node.style.opacity = "";
-
+    console.log("line 3264");
+    
     if ($readOnly || !prop) {
       return;
     }
@@ -3831,6 +3839,7 @@ else{
                 style:height="{highlight.heightNum}px"
                 style:margin-top="{-scrollY}px"
                 style:margin-left="{-scrollX}px"
+                style:font-family = "{highlight.fontFamily?highlight.fontFamily:"inherit"}"
               >
                 <div
                   class="renderer__highlight-border"
@@ -3968,6 +3977,7 @@ else{
 
                   {#if highlight.visibleText}
                     <div class="renderer__highlight-text">
+                      
                       {highlight.visibleText}
                     </div>
                   {/if}

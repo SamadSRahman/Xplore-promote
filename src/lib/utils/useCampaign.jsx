@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { blankBackgroundJSON } from './splashScreenData';
 import { getScreenName, getScreenPath } from './services';
 
@@ -9,7 +9,7 @@ import { getScreenName, getScreenPath } from './services';
 
 export default function useCampaign() {
     const navigate = useNavigate();
-    // const { page } = useParams();
+    // const [name, setName] = useState("");
     const channel = localStorage.getItem('channel');
     const token = localStorage.getItem('accessToken');
     const [campaignName, setCampaignName] = useState('');

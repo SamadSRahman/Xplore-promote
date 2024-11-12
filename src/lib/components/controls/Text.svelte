@@ -106,6 +106,7 @@
     {#if type === 'text'}
         <input
             type="text"
+            
             pattern={resultPattern}
             class="text__input"
             class:text__input_percent={subtype === 'percent'}

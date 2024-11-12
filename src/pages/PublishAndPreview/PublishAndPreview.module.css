@@ -57,7 +57,11 @@
 }
 /* PublishAndPreview.module.css */
 
-.downloadButton {
+.btnDiv{
+  display: flex;
+  gap: 20px;
+}
+.downloadButton, .homeButton {
   font-size: 1rem;
   padding: 0.8rem 1.5rem;
   background-color: #808080;
@@ -68,9 +72,17 @@
   margin-top: 1rem;
   transition: background-color 0.3s ease;
 }
+.homeButton{
+  color: #808080;
+  background-color: white;
+  border: 1px solid;
+}
 
 .downloadButton:hover {
   background-color: #666666;
+}
+.homeButton:hover {
+  background-color: #fff;
 }
 
 .svgWrapper {
@@ -79,7 +91,7 @@
   top: 1rem;
   cursor: pointer;
   /* border: 1px solid rgb(0, 0, 0, 0.3); */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
   padding: 8px 10px;
   display: flex;
   align-items: center;

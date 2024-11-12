@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable indent */
-// @ts-nocheck
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -16,7 +12,6 @@ import CampaignsForm from './pages/CreateCampaign/CreateCampaign.jsx';
 import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
-import WellKnown from './pages/WellKnown/WellKnown.jsx'
 
 export default function App() {
   return (
@@ -24,9 +19,7 @@ export default function App() {
          <RecoilRoot>
          <BrowserRouter>
           <Routes>
-            <Route path='/privacyPolicy' element={<PrivacyPolicy />}/>
-            <Route path='/apple-app-site-association' element={<WellKnown />}/>
-            
+            <Route path='/privacyPolicy' element={<PrivacyPolicy />}/>           
             <Route path='/publish/:campaignId' element={<PublishAndPreview />}/>
             <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />}/>
             <Route path='/contactus' element={<ContactUs />}/>

@@ -6,14 +6,15 @@ import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
 import styles from './CampaignPreview.module.css';
 import useApi from '../../lib/utils/useApi';
 import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
+import useLayout from '../../lib/utils/useLayout';
 
 export default function CampaignPreview() {
-    const { getCampaignById, landingScreenLayout, layouts } = useApi();
+    const { getCampaignById, landingScreenLayout } = useApi();
+    const {getAllLayout, layouts} = useLayout()
     const navigate = useNavigate()
     const [layout, setLayout] = useState({ layoutJSON: (blankBackgroundJSON) });
     const { campaignId, screen } = useParams();
     const [inputValues, setInputValues] = useState({});
-
 
     useEffect(()=>{
         if(screen===undefined){
@@ -66,7 +67,8 @@ export default function CampaignPreview() {
     }, [layout]);
 
     useEffect(() => {
-        getCampaignById(campaignId);
+        // getCampaignById(campaignId);
+        getAllLayout(campaignId);
     }, []);
 
     useEffect(() => {
