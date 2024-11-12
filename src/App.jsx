@@ -16,6 +16,7 @@ import CampaignsForm from './pages/CreateCampaign/CreateCampaign.jsx';
 import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
+import WellKnown from './pages/WellKnown/WellKnown.jsx'
 
 export default function App() {
   return (
@@ -24,6 +25,8 @@ export default function App() {
          <BrowserRouter>
           <Routes>
             <Route path='/privacyPolicy' element={<PrivacyPolicy />}/>
+            <Route path='/apple-app-site-association' element={<WellKnown />}/>
+            
             <Route path='/publish/:campaignId' element={<PublishAndPreview />}/>
             <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />}/>
             <Route path='/contactus' element={<ContactUs />}/>
