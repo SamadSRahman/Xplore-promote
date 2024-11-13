@@ -24,7 +24,7 @@ const PreviewCard = ({ jsonData, handleOnClick, handleInputChange }) => {
     const renderItemStyles = item => ({
         ...defaultAlignmentStyles(item),
         color: item.text_color || 'black',
-        backgroundColor: item?.background ? item.background[0]?.color : '',
+        backgroundColor: item?.background ? item.background[0]?.type==='solid'? item.background[0].color : "": '',
         fontSize: item.font_size,
         width: item.width?.type === 'match_parent' ? '100%' : item.width?.type === 'fixed' ? item.width.value : 'max-content',
         height: item.height?.type === 'fixed' ? item.height.value : 'fit-content',
@@ -74,6 +74,8 @@ const PreviewCard = ({ jsonData, handleOnClick, handleInputChange }) => {
                             ...renderItemStyles(item),
                             border: 'none',
                             cursor: 'pointer',
+                            // transform:' translate(0px, 50%)',
+                            ...renderBackground(item.background[0])
                         }}
                     >
                         {item.text}
@@ -112,6 +114,7 @@ const PreviewCard = ({ jsonData, handleOnClick, handleInputChange }) => {
         return (
             <div
                 key={index}
+                className={styles.container}
                 style={{
                     display: 'flex',
                     flexDirection: div.orientation === 'overlap' ? 'row' : 'column',
@@ -119,6 +122,7 @@ const PreviewCard = ({ jsonData, handleOnClick, handleInputChange }) => {
                     width: '100%',
                     height: '100vh',
                     position: 'relative',
+                    overflowY:'scroll'
                 }}
             >
                 {div?.items?.map(renderItem)}

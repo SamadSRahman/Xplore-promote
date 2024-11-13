@@ -297,6 +297,7 @@
         "inset_content": "content",
         "props.width": "Width",
         "props.height": "Height",
+        "props.clip_to_bounds": "Clip to bounds",
         "props.heading": "Heading",
         "props.subheading": "Sub Heading",
         "props.size_fixed": "Fixed",
