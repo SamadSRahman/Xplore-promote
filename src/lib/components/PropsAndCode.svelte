@@ -13,7 +13,7 @@
     let panel = 'props';
 </script>
 
-<!-- <div class="props-and-code">
+<div class="props-and-code">
     <RadioSelector bind:value={panel} name="props-code" options={[{
         text: $l10n('componentProperties'),
         value: 'props',
@@ -27,7 +27,7 @@
         value: 'code',
         icon: codeIcon
     }]} theme="normal" />
-</div> -->
+</div>
 
 {#if panel === 'props' || panel === 'complexProps'}
     <Props showComplex={panel === 'complexProps'} />

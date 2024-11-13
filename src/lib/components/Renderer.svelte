@@ -4067,8 +4067,9 @@ else{
     position: relative;
     width: 100%;
     height: 100%;
+    margin-bottom:5rem;
     outline: none;
-
+    
     --resizer-size: 16px;
   }
 

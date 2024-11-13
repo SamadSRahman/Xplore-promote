@@ -752,15 +752,25 @@ image: [...BASE_COMPONENT_PROPS,
                 value: 'overlap'
             }],
             enableSources: true
-        }, {
+        }, 
+        {
             name: 'props.content_alignment',
             type: 'alignment',
             horizontalProp: 'content_alignment_horizontal',
             verticalProp: 'content_alignment_vertical',
             orientationProp: 'orientation',
             isContent: true
-        }]
-    }],
+        },
+       
+    
+    ],
+    }
+, {
+    name: 'props.clip_to_bounds',
+    prop:'clip_to_bounds',
+    type: 'boolean',
+    default:true,
+},],
     grid: [...BASE_COMPONENT_PROPS, {
         type: 'group',
         title: 'gridProps.title',

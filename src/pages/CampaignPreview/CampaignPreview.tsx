@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
+import DivkitRenderer from '../../lib/components/PreviewCard/DivkitRenderer';
 import styles from './CampaignPreview.module.css';
 import useApi from '../../lib/utils/useApi';
 import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
@@ -17,7 +18,7 @@ export default function CampaignPreview() {
     const [inputValues, setInputValues] = useState({});
 
     useEffect(()=>{
-        if(screen===undefined){
+        if(screen===undefined||screen==='splash_screen'){
             const splashLayout = layouts.find((ele) => ele.name === 'splash_screen');
             if (splashLayout) {
                 setLayout(splashLayout);
@@ -61,7 +62,7 @@ export default function CampaignPreview() {
             console.log("Changing to landing screen");
             const landingLayout = layouts.find((ele) => ele.name === 'landing_screen');
            if(landingLayout){
-            setTimeout(() => { navigate(`/campaign/${campaignId}/landing_screen`) }, 2000);
+            // setTimeout(() => { navigate(`/campaign/${campaignId}/landing_screen`) }, 2000);
            }
         }
     }, [layout]);
@@ -81,8 +82,9 @@ export default function CampaignPreview() {
         <div className={styles.container}>
             <div className={styles.cardWrapper}>
                 {layout?.layoutJSON && (
-                    <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
-                )}
+                    // <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
+               <DivkitRenderer onClick={handleBtnClick} divkitJson={layout.layoutJSON} />
+               )}
             </div>
         </div>
     );
