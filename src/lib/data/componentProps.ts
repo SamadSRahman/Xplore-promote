@@ -853,7 +853,9 @@ image: [...BASE_COMPONENT_PROPS,
             default: '#000',
             enableSources: true
         }]
-    }]
+    }],
+    list: [...BASE_COMPONENT_PROPS]
+
 };
 
 export const ROOT_PROPS: ComponentProperty[] = [{

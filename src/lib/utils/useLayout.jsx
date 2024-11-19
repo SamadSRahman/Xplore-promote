@@ -50,7 +50,19 @@ export default function useLayout() {
         }
     };
 
-
+    const deleteLayout = async (id)=>{
+        try {
+            const response = await axios.delete(`https://pre.xplore.xircular.io/api/v1/layout/delete/${id}`,{
+                headers: {
+                    authorization: token,
+                    session: channel
+                }
+            })
+            console.log('Response:', response);
+        } catch (error) {
+            console.log('Error deleting layout:', error);
+        }
+    }
 
 
     const updateLayout = async (id, layout, name) => {
@@ -95,6 +107,7 @@ export default function useLayout() {
         updateLayout,
         createLayout,
         getAllLayout,
+        deleteLayout,
         layouts,
         isLayoutCreated,
     };

@@ -1,0 +1,41 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: scroll;
+  }
+  
+  .popup-content {
+    /* background-color: white; */
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .popup-content form > div {
+    margin-bottom: 16px;
+  }
+  
+  .answer-input{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+  .answer-input label{
+   width: fit-content;
+  }
+  
+  .popup-content input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+  }

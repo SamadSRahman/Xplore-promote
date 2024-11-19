@@ -3,6 +3,10 @@
   "generate_case_for_templates_typescript": true,
   "anyOf": [
     {
+      "$ref": "div-list.json"
+    },
+
+    {
       "$ref": "div-image.json",
       "$description": "translations.json#/div_image_short"
     },
