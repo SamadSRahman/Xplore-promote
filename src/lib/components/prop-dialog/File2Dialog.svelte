@@ -333,12 +333,12 @@
                 </div>
 
                 {#if showError}
-                    <div
+                    <!-- <div
                         class="file2-dialog__error"
                         class:file2-dialog__error_warn={showError === 'big-warn'}
                     >
                         {$l10nString((showError === 'big' || showError === 'big-warn') ? 'file.too_big' : `file.${commonSubtype}_error`)}
-                    </div>
+                    </div> -->
                 {/if}
 
                 <Text
