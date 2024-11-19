@@ -1106,6 +1106,7 @@
   }
 
   function onDrop(event: DragEvent): void {
+    console.log('onDrop', event);
     if ($readOnly) {
       return;
     }
@@ -3087,7 +3088,7 @@
 
   function onRootClick(event: MouseEvent): void {
     console.log('event', event.target);
-    
+    console.log("highlights", highlights);
     const dist =
       (event.pageX - mousedownX) * (event.pageX - mousedownX) +
       (event.pageY - mousedownY) * (event.pageY - mousedownY);
@@ -3839,7 +3840,7 @@ else{
                 style:height="{highlight.heightNum}px"
                 style:margin-top="{-scrollY}px"
                 style:margin-left="{-scrollX}px"
-                style:font-family = "{highlight.fontFamily?highlight.fontFamily:"inherit"}"
+                style:font-family = "{highlight.fontFamily?highlight.fontFamily==="Times"?'"Times New Roman", serif': "" :"inherit"}"
               >
                 <div
                   class="renderer__highlight-border"

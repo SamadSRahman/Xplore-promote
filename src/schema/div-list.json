@@ -1,0 +1,61 @@
+{
+  "java_extends": "DivBlockWithId",
+  "$description": "A component that allows users to create a dynamic list of items",
+  "codegen": {
+    "swift": {
+      "generate_optional_arguments": false
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "div-base.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["list"]
+        },
+        "orientation": {
+          "type": "string",
+          "default_value": "vertical",
+          "enum": ["horizontal", "vertical"],
+          "$description": "Orientation of the list - vertical or horizontal"
+        },
+        "item_spacing": {
+          "$ref": "common.json#/non_negative_integer",
+          "default_value": "8",
+          "$description": "Spacing between list items"
+        },
+        "cross_content_alignment": {
+          "type": "string",
+          "enum": ["start", "center", "end"],
+          "default_value": "start",
+          "$description": "Alignment of items along the cross axis"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "div.json"
+          },
+       
+          "$description": "Array of items in the list"
+        },
+        "scrollbar": {
+          "type": "string",
+          "enum": ["none", "auto"],
+          "default_value": "none",
+          "$description": "Scrollbar visibility setting",
+          "platforms": ["web", "android"]
+        },
+        "restrict_parent_scroll": {
+          "$ref": "common.json#/boolean_int",
+          "default_value": "false",
+          "$description": "Whether the list should prevent parent scrolling when interacted with",
+          "platforms": ["android", "web"]
+        }
+      },
+      "required": ["type"]
+    }
+  ]
+}

@@ -34,8 +34,12 @@ export type SchemaModule = Schema & {
 const jsons = import.meta.glob('../../schema//*.json', {
     eager: true
 });
+console.log('Loading jsons:', jsons);
+// console.log('Initial schema object:', schema);
 export const schema = Object.keys(jsons).reduce((acc, item) => {
+    console.log('Processing schema item:', item);
     acc[item.replace('../../schema/', '').replace(/\.json$/, '')] = jsons[item] as SchemaModule;
+    // debugSchemaLoading();
     return acc;
 }, {} as Record<string, SchemaModule>);
 
@@ -49,20 +53,23 @@ const editors = new Map([
     ['common.json#/url', 'file'],
     ['div-background.json', '__background-item'],
     ['div-action.json', '__action-item'],
-    ['div-video-source.json', '__video-source-item']
+    ['div-video-source.json', '__video-source-item'],
+    ['div-list.json', '__list-item'], 
 ]);
 
 const arrayEditors = new Map([
     ['__background-item', 'background2'],
     ['__action-item', 'actions2'],
     ['__video-source-item', 'video_sources'],
+    ['list-items', 'list'],
+    ['__list-item', 'list'],
 ]);
 
 const resolveLinkCache = new Map<string, any>();
 const resolveObjectCache = new Map<string, any>();
 
 function getSchemaItem(name: string) {
-    const res = { ...schema[name].default };
+    const res = { ...schema[name]?.default };
 
     if (name === 'div') {
         res.__isDiv = true;
@@ -371,6 +378,7 @@ export function resolveAllOf(prop: any): Schema {
 }
 
 export function getPropsElement(name: string, prop: Schema, componentJson: any, subpath = ''): PropItem | undefined {
+    console.log('Resolving props for:', name, prop, componentJson);
     if (!prop) {
         return;
     }
@@ -590,8 +598,20 @@ export const resolveEditor = (root: any, schemaItem: Schema): ComponentProperty 
         }
         obj = resolveLink(root, schemaItem.$ref, 0);
     }
+    if (obj.type === 'array' && obj.items) {
+        let items = obj.items;
+        if (items?.$ref) {
+            items = resolveLink(root, items.$ref, 0);
+        }
+        // Check if this is a list component
+        if (items?.__editor === '__list-item') {
+            return {
+                type: 'list'
+            };
+        }
+    }
 
-    if (obj.type === 'string' && Array.isArray(obj.enum) && obj.enum.length > 1) {
+   else if (obj.type === 'string' && Array.isArray(obj.enum) && obj.enum.length > 1) {
         return {
             type: 'select',
             options: obj.enum.map(it => ({
@@ -627,11 +647,16 @@ export const resolveEditor = (root: any, schemaItem: Schema): ComponentProperty 
 
 export const componentTypeToSchema = new Map<string, string>();
 export const schemaToComponentType = new Map<string, string>();
+// console.log('Available component types:', Array.from(componentTypeToSchema.keys()));
+// console.log('Schema to component mapping:', Array.from(schemaToComponentType.entries()));
 const SIMPLE_TYPES: Set<string> = new Set();
 (getSchemaItem('div').anyOf || []).forEach(it => {
+    console.log('Processing div anyOf item:', it);
     const resolved = resolveAllOf(resolveObject(it));
+    console.log('Resolved schema:', resolved);
     const type = resolved?.properties?.type?.enum?.[0];
     const schemaName = it.$ref?.replace(/\.json$/, '');
+    console.log('Found type:', type, 'for schema:', schemaName);
 
     if (type && schemaName) {
         componentTypeToSchema.set(type, schemaName);
@@ -711,4 +736,13 @@ for (const key in namedTemplates) {
     } else {
         console.error('unknown base type', key);
     }
+}
+
+export function debugSchemaLoading() {
+    console.log('=== Schema Loading Debug ===');
+    console.log('Available schemas:', Object.keys(schema));
+    console.log('Div schema anyOf:', getSchemaItem('div').anyOf);
+    console.log('List schema:', schema['div-list']);
+    console.log('Component types:', Array.from(componentTypeToSchema.entries()));
+    console.log('=== End Schema Loading Debug ===');
 }

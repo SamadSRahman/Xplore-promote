@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import '../styleSheets/header.css';
 import NewScreenPopup from './QrPopup/NewScreenPopup';
 import logo from '../../assets/xplore.svg';
+import { MdDeleteOutline } from 'react-icons/md';
+import useLayout from '../utils/useLayout';
 
 
 export default function ReactHeader({ screens, refreshScreenNames }) {
@@ -12,8 +14,8 @@ export default function ReactHeader({ screens, refreshScreenNames }) {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [isNewScreenPopupVisible, setIsNewScreenPopupVisible] = useState(false);
     const popupRef = useRef();
-console.log(screens);
-
+    const { deleteLayout, } = useLayout();
+  console.log('screens', screens);
 
     const currentScreen = screens.find(screen =>
         location.pathname.includes(screen?.path)
@@ -71,17 +73,21 @@ console.log(screens);
             {screens.map(screen => (
               <div
                 key={screen.path}
-                onClick={() => handleScreenSelect(screen.path)}
+                
                 style={{
                     padding: '10px',
                     cursor: 'pointer',
                     backgroundColor: screen.path === currentScreen?.path ? '#e9f5ff' : '#fff',
                     color: screen.path === currentScreen?.path ? '#39A6F5' : '#000',
                     fontWeight: screen.path === currentScreen?.path ? '600' : 'normal',
-                    fontSize:'15px'
+                    fontSize:'13px',
+                    display:'flex',
+                    alignItems:'center',
+                    justifyContent:'space-between'
                 }}
               >
-                {screen?.name}
+                <span onClick={() => handleScreenSelect(screen.path)}>{screen?.name}</span>
+                <MdDeleteOutline size={20} onClick={()=>deleteLayout(screen.id)}/>
               </div>
             ))}
           </div>

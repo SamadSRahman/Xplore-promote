@@ -24,7 +24,7 @@
 h - #545bd6
 a - #4e54c9 */
 
-.saveBtn, .finishBtn{
+.saveBtn, .finishBtn, .addQuestionBtn{
     background-color: rgb(76, 175, 80);
     color: white;
     border: none;
@@ -43,6 +43,10 @@ a - #4e54c9 */
 .saveBtn{
     background-color: #39A6F5;
     right: 7rem;
+}
+.addQuestionBtn{
+    background-color: #308ed1;
+    right: 14rem;
 }
 .saveBtn img{
     width: 12px;

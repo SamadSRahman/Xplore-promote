@@ -12,10 +12,10 @@
 // @ts-nocheck
 
 
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IoIosSave } from 'react-icons/io';
+import { IoIosAdd, IoIosSave } from 'react-icons/io';
 import styles from './EditorPage.module.css';
 import { MdPublish } from "react-icons/md";
 
@@ -28,23 +28,20 @@ import {
 } from '../../lib'; // Adjust this import path as needed
 import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
 import MobilePreview from '../../lib/components/MobilePreview/MobilePreview';
-import { blankBackgroundJSON, gradientBackgroundJSON, imageBackgroundJSON, solidBackgroundJSON } from '../../lib/utils/splashScreenData';
+import { blankBackgroundJSON, gradientBackgroundJSON, imageBackgroundJSON, quizJSON, solidBackgroundJSON } from '../../lib/utils/splashScreenData';
 import useApi from '../../lib/utils/useApi';
 import useCampaign from '../../lib/utils/useCampaign'
 import saveIcon from '../../assets/save-icon.svg'
 import useLayout from '../../lib/utils/useLayout';
 import ReactHeader from '../../lib/components/ReactHeader';
-
-
-
+import QuizInputPopup from '../../components/QuizInputPopup';
 
 const EditorPage = () => {
-  const { splashScreenLayout, isLandingScreenAvailable, 
-    isSplashScreenAvailable,  splashScreenId, landingScreenId, landingScreenLayout } = useApi();
+  const { splashScreenLayout, isLandingScreenAvailable,
+    isSplashScreenAvailable, splashScreenId, landingScreenId, landingScreenLayout } = useApi();
   const { type, campaignId, page } = useParams();
   const { getCampaignById, currentLayout, layoutId, screens } = useCampaign();
-  const { updateLayout } = useLayout();
-  // const id = localStorage.getItem('adId');
+  const { updateLayout, createLayout } = useLayout();
   const token = localStorage.getItem('accessToken');
   const navigate = useNavigate();
   const [editorData, setEditorData] = React.useState(null);
@@ -52,15 +49,21 @@ const EditorPage = () => {
   const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
   const editorContainerRef = React.useRef(null);
+  const [showQuizPopup, setShowQuizPopup] = useState(false);
+  const [questionCount, setQuestionCount] = useState(0);
+
 
   React.useEffect(() => {
     const token = localStorage.getItem('accessToken')
-    if(!token){
+    if (!token) {
       alert("Please login to access your campaigns")
       navigate('/')
     }
     if (campaignId) {
       getCampaignById(campaignId, page);
+      if (page === "quiz_screen") {
+        handleAddQuestion();
+      }
     }
   }, [campaignId, page]);
 
@@ -75,8 +78,10 @@ const EditorPage = () => {
       locale: 'en',
       rootConfigurable: true,
       card: {
-        json: currentLayout
+        json: currentLayout,
+
       },
+
       theme: 'dark',
       layout: [
         {
@@ -155,8 +160,10 @@ const EditorPage = () => {
           },
         },
       ],
+
       // readOnly: true,
       api: {
+        onChange: (newJson) => handleQuiz(newJson),
         getTranslationKey(key) {
           return new Promise(resolve => {
             setTimeout(() => {
@@ -215,28 +222,30 @@ const EditorPage = () => {
       }
     };
   }, [currentLayout, page]);
-
-  // React.useEffect(() => {
-  //   if (editorInstance) {
-  //     console.log('line 211', JSON.parse(currentLayout), editorInstance);
-      
-  //     try {
-  //       editorInstance.setValue({
-  //         card: {
-  //           json: currentLayout
-  //         }
-  //       });
-  //     } catch (error) {
-  //       console.error('Error updating editor content:', error);
-  //     }
-  //   }
-  // }, [currentLayout, editorInstance]);
+  function handleQuiz(json) {
+    const jsonData = JSON.parse(json);
+    const quizComponent = jsonData?.card?.states[0]?.div?.items?.find(ele => ele.type === "_quiz");
+    console.log('quizComponent', quizComponent);
+    console.log('screens', screens);
+    if (screens.find(ele => ele.path === "quiz_screen")===undefined) {
+      createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
+      navigate(`/editor/${campaignId}/quiz_screen`);
+    }
+  }
+  React.useEffect(() => {
+    try {
+      const currentJSON = editorInstance.getValue();
+      console.log('currentJSON', currentJSON);
+    } catch (error) {
+      console.error('Error getting editor value:', error);
+    }
+  }, [editorInstance, jsonContent]);
 
   React.useEffect(() => {
     window.editorData = jsonContent;
   }, [jsonContent]);
 
-  const handleLogJSON = async() => {
+  const handleLogJSON = async () => {
     if (!editorInstance) {
       console.log('Editor not initialized');
       return;
@@ -247,8 +256,8 @@ const EditorPage = () => {
       window.editorData = currentJSON;
       setJsonContent(currentJSON);
       console.log("line 243", layoutId);
-      
-await updateLayout(layoutId, currentJSON, page, campaignId);
+
+      await updateLayout(layoutId, currentJSON, page, campaignId);
     } catch (error) {
       console.error('Error handling JSON:', error);
     }
@@ -314,14 +323,109 @@ await updateLayout(layoutId, currentJSON, page, campaignId);
     }
   }
 
-function refreshScreenNames(){
-  getCampaignById(campaignId, page)
-}
+  function refreshScreenNames() {
+    getCampaignById(campaignId, page)
+  }
+  const handleQuizSubmit = (quizData: QuizQuestion) => {
+    const currentJson = JSON.parse(editorInstance.getValue());
+    
+    // Create quiz component structure
+    const quizComponent = {
+      type: "container",
+      margins: { top: 20 },
+      items: [
+        {
+          type: "container",
+          items: [
+            {
+              type: "text",
+              text: `Question ${quizData.questionNumber}: ${quizData.question}`,
+              font_size: 22,
+              font_weight: "bold",
+              margin: { bottom: 16, top:20 },
+              text_alignment_horizontal: "center"
+            }
+          ],
+          orientation: "overlap"
+        },
+        {
+          type: "gallery",
+          width: { type: "match_parent" },
+          height: { type: "fixed", value: 61 },
+          alignment_horizontal: "left",
+          alignment_vertical: "top",
+          margins: { top: 47, right: 7, left: 7 },
+          items: quizData.answers.map((answer, index) => ({
+            type: "_template_button",
+            text: answer,
+            margin: { bottom: 8 },
+            actions: [
+              {
+                question: quizData.question,
+                options: quizData.answers,
+                selected: answer,
+                correct: quizData.answers[quizData.correctAnswer],
+                log_id: `answer_${index}`,
+                url: `quiz://answer?selected=${index}&correct=${quizData.correctAnswer}`
+              }
+            ],
+            paddings: {
+              top: 12,
+              right: 15,
+              bottom: 12,
+              left: 15
+            },
+            text_alignment_horizontal: "center"
+          })),
+          cross_content_alignment: "center",
+          item_spacing: 20,
+          orientation: "horizontal",
+          background: [
+            {
+              type: "solid",
+              color: "#edc7c7"
+            }
+          ]
+        }
+      ]
+    };
+
+    // Get the current items or initialize empty array
+    const currentItems = currentJson.card.states[0].div.items || [];
+    
+    // Update the div structure with the new quiz component
+    currentJson.card.states[0].div = {
+      ...currentJson.card.states[0].div,
+      items: [...currentItems, quizComponent]
+    };
+
+    // Update the card
+
+    updateLayout(layoutId, JSON.stringify(currentJson), page, campaignId);
+    getCampaignById(campaignId, page);
+  
+    const card = editorInstance.getCard();
+    if (card) {
+      card.json = currentJson;
+    }
+  };
+
+  const handleAddQuestion = () => {
+    setQuestionCount(prev => prev + 1);
+    setShowQuizPopup(true);
+  };
 
   return (
     <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box', paddding: '20px' }}>
-     <ReactHeader screens={screens} refreshScreenNames={refreshScreenNames} />
+      <ReactHeader  layoutId={layoutId} screens={screens} refreshScreenNames={refreshScreenNames} />
       <div>
+        {showQuizPopup && (
+          <QuizInputPopup
+            questionNumber={questionCount}
+            onSubmit={handleQuizSubmit}
+            onClose={() => setShowQuizPopup(false)}
+          />
+        )}
         <button
           className={styles.saveBtn}
           onClick={handleLogJSON}
@@ -329,10 +433,17 @@ function refreshScreenNames(){
           <IoIosSave />
           Save
         </button>
-        <button className={styles.finishBtn}
-        onClick={()=>navigate(`/publish/${campaignId}`)}
+        {/* <button
+          className={styles.addQuestionBtn}
+          onClick={handleAddQuestion}
         >
-          <MdPublish/>
+          <IoIosAdd />
+          Add Question
+        </button> */}
+        <button className={styles.finishBtn}
+          onClick={() => navigate(`/publish/${campaignId}`)}
+        >
+          <MdPublish />
           Publish
         </button>
       </div>

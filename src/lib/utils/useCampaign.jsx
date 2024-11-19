@@ -58,11 +58,12 @@ export default function useCampaign() {
         console.log('response', response.data.data, getScreenName(page));
         setCampaignName(response.data.data.name, );
 
-        const campaignScreens = response.data.data.layouts.map(ele=>ele.name);
+        const campaignScreens = response.data.data.layouts.map(ele=>ele);
 
         const formattedScreens = campaignScreens.map(screen => ({
-            name: getScreenName(screen),
-            path: getScreenPath(screen),
+            name: getScreenName(screen.name),
+            path: getScreenPath(screen.name),
+            id: screen.layoutID
         }));
         console.log(formattedScreens, page);
         

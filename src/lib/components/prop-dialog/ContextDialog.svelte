@@ -91,7 +91,7 @@
         if (dir === 'left') {
             left = Math.max(16, targetBbox.left - offset - dialogBbox.width);
         } else if (dir === 'down') {
-            left = targetBbox.left + targetBbox.width / 2 - dialogBbox.width / 2;
+            // left = targetBbox.left + targetBbox.width / 2 - dialogBbox.width / 2;
         } else {
             left = targetBbox.right + offset;
         }
@@ -107,7 +107,7 @@
                 top = window.scrollY + window.innerHeight - (dialogBbox.height + Y_GAP);
             }
         } else {
-            top = window.scrollY + targetBbox.bottom + offsetY;
+            top = window.scrollY + offsetY;
         }
         top = Math.max(top, 0);
 

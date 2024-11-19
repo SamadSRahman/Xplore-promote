@@ -211,7 +211,7 @@ export const DivProEditor = {
         if (opts.api?.onChange) {
             let isFirst = true;
             unsubscribeStore = state.divjsonStore.subscribe(() => {
-                console.log('divjsonStore updated:', get(state.divjsonStore).fullString);
+                // console.log('divjsonStore updated:', get(state.divjsonStore).fullString);
                 if (isFirst) {
                     isFirst = false;
                 } else {

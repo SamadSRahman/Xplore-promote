@@ -475,11 +475,6 @@ export const blankBackgroundJSON = {
       },
     ],
     variables: [
-    //   {
-    //     name: "my_borderless_text",
-    //     type: "string",
-    //     value: "Samad"
-    // },
       {
         type: "dict",
         name: "local_palette",
@@ -614,5 +609,109 @@ export const blankBackgroundJSON = {
       tint_color: "#73000000",
       type: "image",
     },
+    _template_list_text_only: {
+      type: 'container',
+      orientation: 'vertical',
+      items: [
+        {
+          type: 'foreach', // Allows dynamic rendering based on list_items
+          in: 'list_items',
+          template: {
+            type: 'text',
+            $text: 'list_item_text',
+            $text_color: 'list_item_color',
+            $font_size: 'list_item_size',
+            line_height: 32,
+            $font_weight: 'list_item_weight',
+            width: {
+              type: 'wrap_content',
+              constrained: true,
+            },
+          },
+        },
+      ],
+}
   },
 };
+
+
+export const quizJSON = {
+ card: {
+  log_id: "quiz_card",
+  states: [
+    {
+      state_id: 0,
+      div: {
+        visibility_action: {
+          log_id: "visible",
+        },
+        background: [
+          {
+            color: '#fff',
+            type: "solid"
+          },
+        ],
+        height: {
+          type: "match_parent",
+        },
+        orientation: "vertical",
+        type: "container",
+        variables: [
+          {
+            type: "dict",
+            name: "local_palette",
+            value: {
+              bg_primary: {
+                name: "Primary background",
+                light: "#fff",
+                dark: "#000",
+              },
+              color0: {
+                name: "Secondary background",
+                light: "#eeeeee",
+                dark: "#000",
+              },
+            },
+          },
+        ] ,
+        templates: {
+          _template_button: {
+            type: "text",
+            text_alignment_horizontal: "center",
+            text_alignment_vertical: "center",
+            border: {
+              $corner_radius: "corners",
+            },
+            paddings: {
+              bottom: 24,
+              left: 28,
+              right: 28,
+              top: 22,
+            },
+            width: {
+              type: "wrap_content",
+            },
+          },
+          _template_close: {
+            accessibility: {
+              description: "Закрыть",
+              mode: "merge",
+              type: "button",
+            },
+            actions: [
+              {
+                log_id: "close_popup",
+                url: "div-screen://close",
+              },
+            ],
+            image_url:
+              "https://yastatic.net/s3/home/div/div_fullscreens/cross2.3.png",
+            tint_color: "#73000000",
+            type: "image",
+          },
+        } 
+      } 
+    }
+  ] 
+ }  
+} 
