@@ -264,7 +264,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
   _quiz: {
     nameKey: 'templates.quiz',
     visible: true,
-    inShortList: true,
+    inShortList: false,
     icon: listIcon,
     description: { en: 'Quiz component' },
     props: [],

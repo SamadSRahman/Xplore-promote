@@ -182,8 +182,7 @@
         
         const data: UploadResponse = await response.json();
         console.log("data", data);
-        
-        return data?.data[0]?.cdnUrl;
+        return data?.data.newUploads[0]?.cdnUrl;
     } catch (error) {
         console.error('Upload error:', error);
         throw error;
