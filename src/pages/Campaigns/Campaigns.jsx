@@ -129,9 +129,6 @@ export default function Campaigns() {
                         >
                           <FaTrashAlt /> Delete
                         </div>
-                        {/* <div className={styles.popupItem} onClick={() => handleDelete(campaign.campaignID)}>
-                        <FaTrashAlt /> Delete
-                      </div> */}
                       </div>
                     )}
                   </div>

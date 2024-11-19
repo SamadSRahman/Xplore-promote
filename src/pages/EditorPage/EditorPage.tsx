@@ -228,8 +228,8 @@ const EditorPage = () => {
     console.log('quizComponent', quizComponent);
     console.log('screens', screens);
     if (screens.find(ele => ele.path === "quiz_screen")===undefined) {
-      createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
-      navigate(`/editor/${campaignId}/quiz_screen`);
+      // createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
+      // navigate(`/editor/${campaignId}/quiz_screen`);
     }
   }
   React.useEffect(() => {
@@ -411,8 +411,8 @@ const EditorPage = () => {
   };
 
   const handleAddQuestion = () => {
-    setQuestionCount(prev => prev + 1);
-    setShowQuizPopup(true);
+    // setQuestionCount(prev => prev + 1);
+    // setShowQuizPopup(true);
   };
 
   return (
