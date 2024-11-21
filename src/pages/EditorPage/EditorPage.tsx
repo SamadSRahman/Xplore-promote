@@ -229,9 +229,9 @@ const EditorPage = () => {
     const quizComponent = jsonData?.card?.states[0]?.div?.items?.find(ele => ele.type === "_quiz");
     if (screens.find(ele => ele.path === "quiz_screen") === undefined) {
       try {
-        await handleLogJSON();
-        await createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
-        refreshScreenNames();
+        // await handleLogJSON();
+        // await createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
+        // refreshScreenNames();
         // navigate(`/editor/${campaignId}/quiz_screen`);
       } catch (error) {
         console.error('Error handling quiz:', error);
@@ -417,8 +417,8 @@ const EditorPage = () => {
   };
 
   const handleAddQuestion = () => {
-    setQuestionCount(prev => prev + 1);
-    setShowQuizPopup(true);
+    // setQuestionCount(prev => prev + 1);
+    // setShowQuizPopup(true);
   };
 
   return (
