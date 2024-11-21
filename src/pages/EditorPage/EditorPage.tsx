@@ -34,7 +34,8 @@ import useCampaign from '../../lib/utils/useCampaign'
 import saveIcon from '../../assets/save-icon.svg'
 import useLayout from '../../lib/utils/useLayout';
 import ReactHeader from '../../lib/components/ReactHeader';
-import QuizInputPopup from '../../components/QuizInputPopup';
+import QuizStyleInputPopup from '../../components/QuizStyleInputPopup';
+import { FaHandMiddleFinger } from 'react-icons/fa';
 
 const EditorPage = () => {
   const { splashScreenLayout, isLandingScreenAvailable,
@@ -222,14 +223,19 @@ const EditorPage = () => {
       }
     };
   }, [currentLayout, page]);
-  function handleQuiz(json) {
+
+  async function handleQuiz(json) {
     const jsonData = JSON.parse(json);
     const quizComponent = jsonData?.card?.states[0]?.div?.items?.find(ele => ele.type === "_quiz");
-    console.log('quizComponent', quizComponent);
-    console.log('screens', screens);
-    if (screens.find(ele => ele.path === "quiz_screen")===undefined) {
-      // createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
-      // navigate(`/editor/${campaignId}/quiz_screen`);
+    if (screens.find(ele => ele.path === "quiz_screen") === undefined) {
+      try {
+        await handleLogJSON();
+        await createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
+        refreshScreenNames();
+        // navigate(`/editor/${campaignId}/quiz_screen`);
+      } catch (error) {
+        console.error('Error handling quiz:', error);
+      }
     }
   }
   React.useEffect(() => {
@@ -411,8 +417,8 @@ const EditorPage = () => {
   };
 
   const handleAddQuestion = () => {
-    // setQuestionCount(prev => prev + 1);
-    // setShowQuizPopup(true);
+    setQuestionCount(prev => prev + 1);
+    setShowQuizPopup(true);
   };
 
   return (
@@ -420,7 +426,7 @@ const EditorPage = () => {
       <ReactHeader  layoutId={layoutId} screens={screens} refreshScreenNames={refreshScreenNames} />
       <div>
         {showQuizPopup && (
-          <QuizInputPopup
+          <QuizStyleInputPopup
             questionNumber={questionCount}
             onSubmit={handleQuizSubmit}
             onClose={() => setShowQuizPopup(false)}

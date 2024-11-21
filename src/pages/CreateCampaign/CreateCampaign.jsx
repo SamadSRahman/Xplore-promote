@@ -1,6 +1,3 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-console */
-/* eslint-disable import/no-extraneous-dependencies */
 // CampaignForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -11,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './CreateCampaign.module.css';
 import useLayout from '../../lib/utils/useLayout';
 import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
+
 
 const CampaignForm = () => {
     const navigate = useNavigate();
@@ -56,6 +54,13 @@ const CampaignForm = () => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+
+        // Check if start date or end date is empty
+        if (!formData.timing.startDate || !formData.timing.endDate) {
+            alert('Please select both start and end dates');
+            return;
+        }
+
         const token = localStorage.getItem('accessToken');
         const data = new FormData();
         data.append('files', image);
@@ -67,13 +72,13 @@ const CampaignForm = () => {
                 data,
                 { headers: { Authorization: `Bearer ${token}`, session: channel, 'Content-Type': 'multipart/form-data' } }
             );
-            console.log('Campaign created successfully:', response.data);
             createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Splash Screen');
             createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Landing Screen');
             alert('Campaign created successfully');
             navigate(`/editor/${response.data.data.campaignID}/splash_screen`);
         } catch (error) {
             console.error('Error creating campaign:', error);
+            alert(error.response.data.message)
         }
     };
 
@@ -85,7 +90,7 @@ const CampaignForm = () => {
         <form onSubmit={handleSubmit} className={styles.formContent}>
 
           {/* Campaign Name */}
-          <label className={styles.inputLabel}>Campaign Name</label>
+          <label className={styles.inputLabel}>Campaign Name*</label>
           <input
             type="text"
             name="name"
@@ -97,7 +102,7 @@ const CampaignForm = () => {
           />
 
           {/* Description */}
-          <label className={styles.inputLabel}>Description</label>
+          <label className={styles.inputLabel}>Description*</label>
           <textarea
             name="description"
            className={`${styles.inputField} ${styles.textarea}`}
@@ -108,9 +113,10 @@ const CampaignForm = () => {
           />
 
           {/* Image Upload */}
-          <label className={styles.inputLabel}>Campaign Image <FiImage /></label>
+          <label className={styles.inputLabel}>Campaign Image* <FiImage /></label>
           <input
             type="file"
+            accept="image/*"
             name="image"
             className={`${styles.inputField} ${styles.fileInput}`}
             onChange={handleFileChange}
@@ -119,25 +125,28 @@ const CampaignForm = () => {
           {/* Date Pickers */}
           <div className={styles.datePickerContainer}>
             <div>
-              <label className={styles.inputLabel}>Start Date</label>
+              <label className={styles.inputLabel}>Start Date*</label>
               <DateTimePicker
+              minDateTime={new Date()}
                 value={formData.timing.startDate}
                 onChange={date => handleNestedChange('timing', 'startDate', date)}
                 renderInput={params => <input {...params.inputProps} className={styles.dateInput} />}
               />
             </div>
             <div>
-              <label className={styles.inputLabel}>End Date</label>
+              <label className={styles.inputLabel}>End Date*</label>
               <DateTimePicker
+                required
                 value={formData.timing.endDate}
                 onChange={date => handleNestedChange('timing', 'endDate', date)}
                 renderInput={params => <input {...params.inputProps} className={styles.dateInput} />}
               />
             </div>
           </div>
-          <div className={styles.checkboxWrapper}>
+          {/* <div className={styles.checkboxWrapper}>
           <label>Is Scheduled</label>
-       <input onClick={()=>handleNestedChange('timing', 'isScheduled', !formData.timing.isScheduled)} type="checkbox" checked={formData.timing.isScheduled}/>
+       <input onClick={()=>handleNestedChange('timing', 'isScheduled', 
+       !formData.timing.isScheduled)} type="checkbox" checked={formData.timing.isScheduled}/>
        </div>
           <div className={styles.datePickerContainer}>
             <div>
@@ -158,7 +167,7 @@ const CampaignForm = () => {
                 renderInput={params => <input {...params.inputProps} className={styles.dateInput} />}
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Social Media Links */}
           {/* <div className="social-media-section">

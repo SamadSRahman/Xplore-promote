@@ -267,11 +267,128 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     inShortList: false,
     icon: listIcon,
     description: { en: 'Quiz component' },
-    props: [],
-    newNode: {},
+    props: [
+      {
+        type: 'group',
+        title: ' ',
+        list: [
+          {
+            name: 'props.button_text',
+            prop: 'button_text', 
+            type: 'string',
+            enableTanker: true,
+            enableSources: true,
+            default: 'Start quiz',
+          },
+          {
+            type: 'split',
+            list: [
+              {
+                name: 'props.font_size',
+                prop: 'font_size',
+                type: 'integer',
+                min: 1,
+                max: 1000,
+                enableSources: true,
+              },
+              {
+                name: 'props.line_height',
+                prop: 'line_height',
+                type: 'integer',
+                min: 0,
+                max: 1000,
+                enableSources: true,
+              },
+            ],
+          },
+          {
+            name: 'props.font_weight',
+            prop: 'font_weight',
+            type: 'select',
+            options: [
+              {
+                name: 'props.font_weight_light',
+                value: 'light',
+              },
+              {
+                name: 'props.font_weight_normal',
+                value: 'regular',
+              },
+              {
+                name: 'props.font_weight_medium',
+                value: 'medium',
+              },
+              {
+                name: 'props.font_weight_bold',
+                value: 'bold',
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: 'props.text_color',
+            prop: 'text_color',
+            type: 'color',
+            enableSources: true,
+          },
+          {
+            name: 'props.corners',
+            prop: 'corners',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+          },
+        ],
+      },
+    ],
+    newNode: {
+      text: 'Click me!',
+      background: [
+        {
+          type: 'solid',
+          color: '#000',
+        },
+      ],
+      text_color: '#fff',
+      corners: 8,
+      actions: [
+                {
+                  log_id: "action_id",
+                  url: "div-screen://open?id=quiz_screen",
+                  log_url: "@{on_click_log_url}"
+                }
+              ]
+    },
     template: {
       type: 'container',
-
+      width: { type: 'match_parent' },
+      height: { type: 'wrap_content' },
+      items: [
+        {
+          type: '_template_button',
+          width: { type: 'wrap_content' },
+          height: { type: 'wrap_content' },
+          text_color: '#ffffff',
+          background_color: '#4CAF50',
+          font_size: 16,
+          text: 'Start quiz',
+          padding: {
+            left: 16,
+            right: 16,
+            top: 8,
+            bottom: 8
+          },
+          border_radius: 4
+        }
+      ],
+      alignment_horizontal: 'center',
+      alignment_vertical: 'center'
     },
   },
   // _template_text_list: {

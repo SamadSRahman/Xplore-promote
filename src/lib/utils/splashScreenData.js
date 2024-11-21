@@ -609,28 +609,28 @@ export const blankBackgroundJSON = {
       tint_color: "#73000000",
       type: "image",
     },
-    _template_list_text_only: {
-      type: 'container',
-      orientation: 'vertical',
-      items: [
-        {
-          type: 'foreach', // Allows dynamic rendering based on list_items
-          in: 'list_items',
-          template: {
-            type: 'text',
-            $text: 'list_item_text',
-            $text_color: 'list_item_color',
-            $font_size: 'list_item_size',
-            line_height: 32,
-            $font_weight: 'list_item_weight',
-            width: {
-              type: 'wrap_content',
-              constrained: true,
-            },
-          },
-        },
-      ],
-}
+//     _template_list_text_only: {
+//       type: 'container',
+//       orientation: 'vertical',
+//       items: [
+//         {
+//           type: 'foreach', // Allows dynamic rendering based on list_items
+//           in: 'list_items',
+//           template: {
+//             type: 'text',
+//             $text: 'list_item_text',
+//             $text_color: 'list_item_color',
+//             $font_size: 'list_item_size',
+//             line_height: 32,
+//             $font_weight: 'list_item_weight',
+//             width: {
+//               type: 'wrap_content',
+//               constrained: true,
+//             },
+//           },
+//         },
+//       ],
+// }
   },
 };
 
