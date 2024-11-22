@@ -10,7 +10,8 @@
 
     export let values: object[] | undefined;
     export let itemView: ComponentType;
-    export let readOnly = false;
+    export let readOnly: boolean | undefined;
+    
 
     $: list = values as Item[] | undefined;
 

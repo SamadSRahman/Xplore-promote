@@ -1,21 +1,9 @@
-/* eslint-disable space-before-blocks */
-/* eslint-disable brace-style */
-/* eslint-disable semi */
-/* eslint-disable keyword-spacing */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable no-multi-spaces */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable indent */
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IoIosAdd, IoIosSave } from 'react-icons/io';
+import { IoIosSave } from 'react-icons/io';
 import styles from './EditorPage.module.css';
 import { MdPublish } from "react-icons/md";
 
@@ -26,32 +14,20 @@ import {
   DivProEditor,
   removeTemplatesSuffix,
 } from '../../lib'; // Adjust this import path as needed
-import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
-import MobilePreview from '../../lib/components/MobilePreview/MobilePreview';
-import { blankBackgroundJSON, gradientBackgroundJSON, imageBackgroundJSON, quizJSON, solidBackgroundJSON } from '../../lib/utils/splashScreenData';
-import useApi from '../../lib/utils/useApi';
 import useCampaign from '../../lib/utils/useCampaign'
-import saveIcon from '../../assets/save-icon.svg'
 import useLayout from '../../lib/utils/useLayout';
 import ReactHeader from '../../lib/components/ReactHeader';
 import QuizStyleInputPopup from '../../components/QuizStyleInputPopup';
-import { FaHandMiddleFinger } from 'react-icons/fa';
 
 const EditorPage = () => {
-  const { splashScreenLayout, isLandingScreenAvailable,
-    isSplashScreenAvailable, splashScreenId, landingScreenId, landingScreenLayout } = useApi();
-  const { type, campaignId, page } = useParams();
+  const { campaignId, page } = useParams();
   const { getCampaignById, currentLayout, layoutId, screens } = useCampaign();
-  const { updateLayout, createLayout } = useLayout();
-  const token = localStorage.getItem('accessToken');
+  const { updateLayout } = useLayout();
   const navigate = useNavigate();
-  const [editorData, setEditorData] = React.useState(null);
-  const [editorKey, setEditorKey] = React.useState(0);
   const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
   const editorContainerRef = React.useRef(null);
   const [showQuizPopup, setShowQuizPopup] = useState(false);
-  const [questionCount, setQuestionCount] = useState(0);
 
 
   React.useEffect(() => {
@@ -95,7 +71,7 @@ const EditorPage = () => {
           minWidth: leftRightWidth,
         },
         {
-          items: ['component-props:code'],
+          items: ['component-props:code', 'custom-variables'],
           minWidth: leftRightWidth,
         },
       ],
@@ -167,24 +143,13 @@ const EditorPage = () => {
         onChange: (newJson) => handleQuiz(newJson),
         getTranslationKey(key) {
           return new Promise(resolve => {
-            setTimeout(() => {
-              if (key in langAuto.ru) {
-                const res: Record<string, string> = {};
-
-                res.ru = String(langAuto.ru[key as keyof typeof langAuto.ru]);
-                res.en = String(langAuto.en[key as keyof typeof langAuto.en]);
-
-                resolve(res);
-              } else {
-                resolve(undefined);
-              }
-            }, Math.random() * 500);
+            console.log("key", key, resolve);
           });
         },
-        getTranslationSuggest(query, locale) {
+        getTranslationSuggest(query) {
           return new Promise(resolve => {
             setTimeout(() => {
-              const obj = langAuto[locale as keyof typeof langAuto];
+              const obj = {};
               const folders = [
                 ...new Set(
                   Object.keys(obj)
@@ -214,7 +179,6 @@ const EditorPage = () => {
       },
     }));
     console.log('editor', editor);
-    setEditorData(editor);
     setEditorInstance(editor);
     return () => {
       // Clean up the editor if necessary
@@ -224,10 +188,12 @@ const EditorPage = () => {
     };
   }, [currentLayout, page]);
 
-  async function handleQuiz(json) {
+  async function handleQuiz(json: string) {
     const jsonData = JSON.parse(json);
-    const quizComponent = jsonData?.card?.states[0]?.div?.items?.find(ele => ele.type === "_quiz");
-    if (screens.find(ele => ele.path === "quiz_screen") === undefined) {
+    console.log("line 193", jsonData.card.variables);
+    localStorage.setItem("variables", JSON.stringify(jsonData.card.variables));
+    const quizComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_quiz");
+    if (screens.find((ele: { path: string }) => ele.path === "quiz_screen") === undefined) {
       try {
         // await handleLogJSON();
         // await createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
@@ -238,18 +204,8 @@ const EditorPage = () => {
       }
     }
   }
-  React.useEffect(() => {
-    try {
-      const currentJSON = editorInstance.getValue();
-      console.log('currentJSON', currentJSON);
-    } catch (error) {
-      console.error('Error getting editor value:', error);
-    }
-  }, [editorInstance, jsonContent]);
 
-  React.useEffect(() => {
-    window.editorData = jsonContent;
-  }, [jsonContent]);
+
 
   const handleLogJSON = async () => {
     if (!editorInstance) {
@@ -259,7 +215,6 @@ const EditorPage = () => {
 
     try {
       const currentJSON = editorInstance.getValue();
-      window.editorData = currentJSON;
       setJsonContent(currentJSON);
       console.log("line 243", layoutId);
 
@@ -269,70 +224,11 @@ const EditorPage = () => {
     }
   };
 
-  const postLayoutData = async jsonData => {
-    if (!token) {
-      alert('Token or Id not available, please add valid details to continue');
-      navigate('/');
-      return;
-    }
-    // 
-    const channel = localStorage.getItem('channel');
-    try {
-      const response = await fetch(
-        `https://pre.xplore.xircular.io/api/v1/layout/create/${campaignId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: token,
-            session: channel
-          },
-          body: JSON.stringify({
-            name: page,
-            layoutJSON: JSON.parse(jsonData)
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('Response:', data);
-      alert('Layout saved successfully!');
-      if (page === 'splash_screen') {
-        navigate(`/editor/${campaignId}/landing_screen`)
-      }
-      else {
-        navigate(`/publish/${campaignId}`)
-      }
-    } catch (error) {
-      console.error('Error posting layout data:', error);
-      alert('Failed to publish layout. Please try again.');
-    }
-  };
-
-  const handleSave = () => {
-    const currentJSON = editorInstance.getValue();
-    window.editorData = currentJSON;
-    setJsonContent(currentJSON);
-    const layout = {
-      name: page,
-      layoutJSON: JSON.parse(currentJSON)
-    }
-    if (page === 'splash_screen') {
-      localStorage.setItem('splash_screen_layout', JSON.stringify(layout))
-    }
-    else {
-      localStorage.setItem('landing_screen_layout', JSON.stringify(layout))
-    }
-  }
 
   function refreshScreenNames() {
     getCampaignById(campaignId, page)
   }
-  const handleQuizSubmit = (quizData: QuizQuestion) => {
+  const handleQuizSubmit = (quizData: any) => {
     const currentJson = JSON.parse(editorInstance.getValue());
     
     // Create quiz component structure
@@ -361,7 +257,7 @@ const EditorPage = () => {
           alignment_horizontal: "left",
           alignment_vertical: "top",
           margins: { top: 47, right: 7, left: 7 },
-          items: quizData.answers.map((answer, index) => ({
+          items: quizData.answers.map((answer: string, index: number) => ({
             type: "_template_button",
             text: answer,
             margin: { bottom: 8 },
@@ -422,12 +318,12 @@ const EditorPage = () => {
   };
 
   return (
-    <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box', paddding: '20px' }}>
-      <ReactHeader  layoutId={layoutId} screens={screens} refreshScreenNames={refreshScreenNames} />
+    <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box',  }}>
+      <ReactHeader screens={screens} refreshScreenNames={refreshScreenNames} />
       <div>
         {showQuizPopup && (
           <QuizStyleInputPopup
-            questionNumber={questionCount}
+            questionNumber={1}
             onSubmit={handleQuizSubmit}
             onClose={() => setShowQuizPopup(false)}
           />

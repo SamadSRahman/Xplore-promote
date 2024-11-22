@@ -144,6 +144,7 @@ export interface ColorProperty extends BaseProperty {
 
 export interface Actions2Property extends BaseProperty {
     type: 'actions2';
+    _template_map?: boolean;
 }
 
 export interface VideoSourcesProperty extends BaseProperty {
@@ -153,6 +154,11 @@ export interface VideoSourcesProperty extends BaseProperty {
 export interface FileProperty extends BaseProperty {
     type: 'file';
     subtype: 'image' | 'gif' | 'lottie' | 'image_preview';
+}
+
+export interface MapProperty extends BaseProperty {
+    type: 'boolean';
+    _template_map: boolean;
 }
 
 export interface AlignmentProperty extends BaseProperty {
@@ -177,23 +183,24 @@ export interface TextStylesProperty extends BaseProperty {
     type: 'text-styles';
 }
 
-export interface GroupProperty {
+export interface GroupProperty extends BaseProperty {
     type: 'group';
     title?: string;
     rawTitle?: string;
     list: ComponentProperty[];
 }
 
-export interface SplitProperty {
+export interface SplitProperty extends BaseProperty {
     type: 'split';
     list: [ComponentProperty, ComponentProperty];
 }
+
 
 export type ComponentProperty = RadioProperty | IntegerProperty | BooleanProperty | SelectProperty |
     PercentProperty | RotationProperty | StringProperty |
     ColorProperty | FileProperty | GroupProperty | SplitProperty | AlignmentProperty |
     MarginsPaddingsProperty | Background2Property | TextAlignProperty | TextStylesProperty |
-    Actions2Property | VideoSourcesProperty | NumberProperty |ArrayProperty;
+    Actions2Property | VideoSourcesProperty | NumberProperty | ArrayProperty | MapProperty;
 
 export type SiblingComponentProperty = ComponentProperty & {
     related?: {
@@ -477,7 +484,8 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
         list: [{
             name: 'props.actions',
             prop: 'actions',
-            type: 'actions2'
+            type: 'actions2',
+            _template_map: true
         }]
     }],
     input: [...BASE_COMPONENT_PROPS, {

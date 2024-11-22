@@ -31,15 +31,21 @@ export default function CampaignPreview() {
             }
         }
     },[screen, layouts])
-    function handleBtnClick(action: { url: string; }) {
+    function handleBtnClick(action: { url: string; log_url?: string; latitude?: string; longitude?: string }) {
         console.log("action clicked", action);
-        if( action.url === 'submit-form'){
+        if (action.url === 'submit-form') {
             console.log("Form submit with data:", inputValues);
             return;
         }
-        const btnAction = action.url?.split("://")[1].split("?")[0]; // Extracts 'open'
-        const id = new URLSearchParams(action.url.split("?")[1]).get("id");
+        const btnAction = action.url?.split("://")[1].split("?")[0];
+        if (btnAction === 'map' && action.latitude && action.longitude) {
+            // Open Google Maps in new tab with coordinates
+            const mapsUrl = `https://www.google.com/maps?q=${action.latitude},${action.longitude}`;
+            window.open(mapsUrl, '_blank');
+            return;
+        }
         if (btnAction === 'open') {
+            const id = new URLSearchParams(action.url.split("?")[1]).get("id");
             const foundLayout = layouts.find(ele => ele.name === id);
             if (foundLayout) {
                 navigate(`/campaign/${campaignId}/${id}`);
@@ -47,7 +53,6 @@ export default function CampaignPreview() {
                 console.log(`screen ${id} not found`);
             }
         }
-      
     }
     const handleInputChange = (hintText: string, value: string) => {
         setInputValues(prevValues => ({

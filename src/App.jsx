@@ -14,6 +14,35 @@ import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
 
 export default function App() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const path = window.location.pathname;
+      const isCampaignPreview = path.startsWith('/campaign/');
+      setIsMobile(mobile && !isCampaignPreview);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div style={{
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        textAlign: 'center'
+      }}>
+        <h2>Please access this application from a desktop or laptop computer for the best experience.</h2>
+      </div>
+    );
+  }
   return (
     <div>
          <RecoilRoot>

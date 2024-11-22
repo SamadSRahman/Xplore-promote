@@ -27,10 +27,14 @@
     callback(value);
   }
   let updatedScreens = [];
+  interface screen{
+    name: string;
+    path: string;
+  }
 
 $: {
     const screens = JSON.parse(localStorage.getItem("screens") || "[]");
-    updatedScreens = screens.map((screen) => ({
+    updatedScreens = screens.map((screen: screen) => ({
         text: screen.name,
         value: screen.path,
     }));
@@ -65,6 +69,10 @@ $: {
     isShown = false;
   }
 
+  interface variables {
+    value: string;
+    text: string;
+  }
   function customActionToUrl(desc: ActionDesc, args: ArgResult[]): string {
     const searchParams = new URLSearchParams();
     for (const arg of args) {
@@ -81,6 +89,13 @@ $: {
 function onSubtypeChange(): void {
     if (subtype === "submit-form") {
         value.url = "submit-form";
+        if (!value.selected_variables) {
+            value.selected_variables = [];
+        }
+    } else if (subtype === "map") {
+        value.url = "xplore-promote://map";  // Default map URL
+        value.latitude = "";
+        value.longitude = "";
     } else {
         customDesc = subtype.startsWith("custom:")
             ? $customActions[Number(subtype.split(":")[1])]
@@ -115,7 +130,7 @@ function onSubtypeChange(): void {
 
     value.url = customActionToUrl(customDesc, actionArgs);
   }
-
+let selectedVariables: string[] = [];
   // $: types = [{
   //     value: 'url',
   //     text: $l10n('actions-url')
@@ -127,14 +142,50 @@ function onSubtypeChange(): void {
       text: $l10n("actions-url"),
     },
     { value: "submit-form", text: "Submit" },
+    { value: "map", text: "Open Map" },  // Add map option
   ].concat(
-    $customActions.map((actionDesc, i) => {
-      return {
-        value: `custom:${i}`,
-        text: actionDesc.text[$lang] || actionDesc.baseUrl,
-      };
-    })
+    $customActions.map((actionDesc, i) => ({
+      value: `custom:${i}`,
+      text: actionDesc.text[$lang] || actionDesc.baseUrl,
+    }))
   );
+
+  interface Variable {
+    name: string;
+  }
+
+  let variables: variables[] = [];
+  $: {
+    const storedVars = JSON.parse(localStorage.getItem("variables") || "[]") as Variable[];
+    console.log("line 153", storedVars);
+    if (storedVars && Array.isArray(storedVars)) {
+      variables = storedVars.map((variable) => ({
+        text: variable.name,
+        value: variable.name
+      }));
+      console.log("Variables after mapping:", variables);
+    } else {
+      console.warn("storedVars is not an array:", storedVars);
+      variables = [];
+    }
+  }
+  function onVariableChange(selectedVars: string[]): void {
+    console.log("line 170", selectedVars);
+    value.selected_variables = selectedVars;
+    const variableParams = selectedVars.map(v => `${v}:@{${v}}`).join(',');
+    value.url = `xplore-promote://submit?data:{${variableParams}}`;
+    value.log_url = value.url; // Set the log_url to match the url
+  }
+
+console.log("line 164", variables);
+
+function onMapCoordinatesChange(): void {
+  console.log("line 183", value.latitude, value.longitude);
+    if (value.latitude && value.longitude) {
+        value.url = `xplore-promote://map?lat=${value.latitude}&lng=${value.longitude}`;
+        value.log_url = value.url;
+    }
+}
 </script>
 
 {#if isShown && target}
@@ -159,20 +210,56 @@ function onSubtypeChange(): void {
             <Text bind:value={value.url} disabled={readOnly} />
           </label>
         </div>
+      {:else if subtype === "submit-form"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Select Variables
+            </div>
+            <Select
+              items={variables}
+              bind:value={selectedVariables}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              multiple={true}
+              on:change={(e) => onVariableChange(e.detail)}
+            />
+          </label>
+        </div>
+      {:else if subtype === "map"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Latitude
+            </div>
+            <Text bind:value={value.latitude} disabled={readOnly} on:change={onMapCoordinatesChange} />
+          </label>
+        </div>
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Longitude
+            </div>
+            <Text bind:value={value.longitude} disabled={readOnly} on:change={onMapCoordinatesChange} />
+          </label>
+        </div>
       {:else if actionArgs.length}
         {#each actionArgs as arg, index}
           <div>
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>
+              {arg.desc.text[$lang] || arg.desc.name}
               <div class="actions2-dialog__label">
                 {(arg.desc.text[$lang] || arg.desc.name) === "ID"
                   ? "Select screen to open"
                   : arg.desc.text[$lang] || arg.desc.name}
               </div>
-
+              
               <!-- Conditional Select or Text Input based on argument type -->
               {#if (arg.desc.text[$lang] || arg.desc.name) === "ID"}
                 <!-- Dropdown for selecting screen names when argument is 'ID' -->
+               
                 <Select
                   items={updatedScreens}
                   bind:value={arg.value}
@@ -229,5 +316,31 @@ function onSubtypeChange(): void {
     font-size: 14px;
     line-height: 20px;
     color: var(--text-secondary);
+  }
+
+  .map-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .input-group input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .url-preview {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    word-break: break-all;
   }
 </style>

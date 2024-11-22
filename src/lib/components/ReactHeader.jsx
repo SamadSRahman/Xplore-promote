@@ -7,7 +7,7 @@ import { MdDeleteOutline } from 'react-icons/md';
 import useLayout from '../utils/useLayout';
 
 
-export default function ReactHeader({ screens, refreshScreenNames }) {
+export default function ReactHeader( { screens ,refreshScreenNames}) {
     const navigate = useNavigate();
     const location = useLocation();
     const campaignId = location.pathname.split('/')[2];
