@@ -715,3 +715,258 @@ export const quizJSON = {
   ] 
  }  
 } 
+
+
+
+export const contactUsJSON = {
+  "card": {
+    "log_id": "div2_sample_card",
+    "states": [
+      {
+        "state_id": 0,
+        "div": {
+          "visibility_action": {
+            "log_id": "visible"
+          },
+          "background": [
+            {
+              "color": "@{getDictOptColor('#00ffffff', local_palette, 'bg_primary', theme)}",
+              "type": "solid"
+            }
+          ],
+          "height": {
+            "type": "match_parent"
+          },
+          "orientation": "vertical",
+          "type": "container",
+          "items": [
+            {
+              "type": "input_text",
+              "width": {
+                "type": "fixed",
+                "value": 248
+              },
+              "text_variable": "userName",
+              "alignment_horizontal": "center",
+              "alignment_vertical": "top",
+              "hint_text": "Name",
+              "margins": {
+                "top": 200,
+                "right": 16,
+                "bottom": 0,
+                "left": 16
+              }
+            },
+            {
+              "type": "input_text",
+              "width": {
+                "type": "fixed",
+                "value": 248
+              },
+              "text_variable": "email",
+              "alignment_horizontal": "center",
+              "alignment_vertical": "top",
+              "margins": {
+                "top": 50
+              },
+              "hint_text": "Email",
+              "keyboard_type": "email"
+            },
+            {
+              "type": "input_text",
+              "width": {
+                "type": "fixed",
+                "value": 248
+              },
+              "text_variable": "phone",
+              "alignment_horizontal": "center",
+              "alignment_vertical": "top",
+              "margins": {
+                "top": 50
+              },
+              "hint_text": "Phone",
+              "keyboard_type": "number"
+            },
+            {
+              "text": "Submit",
+              "background": [
+                {
+                  "type": "solid",
+                  "color": "#000"
+                }
+              ],
+              "text_color": "#fff",
+              "corners": 8,
+              "type": "_template_button",
+              "width": {
+                "type": "match_parent"
+              },
+              "alignment_horizontal": "center",
+              "alignment_vertical": "top",
+              "margins": {
+                "top": 50,
+                "right": 20,
+                "left": 20
+              },
+              "actions": [
+                {
+                  "log_id": "action_id",
+                  "url": "xplore-promote://submit?userName=@{userName}&email=@{email}&phone=@{phone}",
+                  "log_url": "xplore-promote://submit?userName=@{userName}&email=@{email}&phone=@{phone}",
+                  "selected_variables": [
+                    "userName",
+                    "email",
+                    "phone"
+                  ]
+                }
+              ],
+              "paddings": {
+                "top": 20,
+                "right": 20,
+                "bottom": 20,
+                "left": 20
+              },
+              "font_size": 18,
+              "font_weight": "medium"
+            }
+          ],
+          "content_alignment_horizontal": "center",
+          "content_alignment_vertical": "top"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "type": "dict",
+        "name": "local_palette",
+        "value": {
+          "bg_primary": {
+            "name": "Primary background",
+            "light": "#fff",
+            "dark": "#000"
+          },
+          "color0": {
+            "name": "Secondary background",
+            "light": "#eeeeee",
+            "dark": "#000"
+          }
+        }
+      },
+      {
+        "type": "string",
+        "name": "userName",
+        "value": ""
+      },
+      {
+        "type": "string",
+        "name": "email",
+        "value": ""
+      },
+      {
+        "type": "string",
+        "name": "phone",
+        "value": ""
+      }
+    ]
+  },
+  "templates": {
+    "input_text": {
+      "type": "input",
+      "text_variable": "my_borderless_text",
+      "width": {
+        "type": "match_parent"
+      },
+      "height": {
+        "type": "wrap_content"
+      },
+      "text_alignment_horizontal": "left",
+      "margins": {
+        "left": 16,
+        "top": 20,
+        "right": 16,
+        "bottom": 16
+      },
+      "paddings": {
+        "left": 16,
+        "top": 10,
+        "right": 16,
+        "bottom": 10
+      },
+      "alignment_horizontal": "center",
+      "alignment_vertical": "center",
+      "font_size": 16,
+      "font_weight": "medium",
+      "text_color": "#000000",
+      "hint_color": "#888888",
+      "highlight_color": "#e0bae3",
+      "line_height": 22,
+      "accessibility": {
+        "description": "Enter text here",
+        "hint": "Type your response",
+        "state_description": "Active input field"
+      },
+      "autocapitalization": "sentences",
+      "keyboard_type": "default",
+      "background": [
+        {
+          "type": "solid",
+          "color": "#f8f8f8"
+        }
+      ],
+      "border": {
+        "corner_radius": 8,
+        "stroke": {
+          "color": "#cccccc",
+          "width": 1
+        }
+      },
+      "enter_key_type": "done",
+      "on_focus": [
+        {
+          "type": "highlight",
+          "highlight_color": "#d3d3d3"
+        }
+      ],
+      "visibility": "visible",
+      "max_length": 100,
+      "mask": {
+        "type": "text",
+        "pattern": "[A-Za-z0-9 ]*"
+      },
+      "text_alignment_vertical": "center"
+    },
+    "_template_button": {
+      "type": "text",
+      "text_alignment_horizontal": "center",
+      "text_alignment_vertical": "center",
+      "border": {
+        "$corner_radius": "corners"
+      },
+      "paddings": {
+        "bottom": 24,
+        "left": 28,
+        "right": 28,
+        "top": 22
+      },
+      "width": {
+        "type": "wrap_content"
+      }
+    },
+    "_template_close": {
+      "accessibility": {
+        "description": "Закрыть",
+        "mode": "merge",
+        "type": "button"
+      },
+      "actions": [
+        {
+          "log_id": "close_popup",
+          "url": "div-screen://close"
+        }
+      ],
+      "image_url": "https://yastatic.net/s3/home/div/div_fullscreens/cross2.3.png",
+      "tint_color": "#73000000",
+      "type": "image"
+    }
+  }
+}

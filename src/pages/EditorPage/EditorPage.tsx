@@ -18,11 +18,13 @@ import useCampaign from '../../lib/utils/useCampaign'
 import useLayout from '../../lib/utils/useLayout';
 import ReactHeader from '../../lib/components/ReactHeader';
 import QuizStyleInputPopup from '../../components/QuizStyleInputPopup';
+import { isContactUs } from '../../lib/utils/services';
+import { contactUsJSON } from '../../lib/utils/splashScreenData';
 
 const EditorPage = () => {
   const { campaignId, page } = useParams();
   const { getCampaignById, currentLayout, layoutId, screens } = useCampaign();
-  const { updateLayout } = useLayout();
+  const { updateLayout, createLayout } = useLayout();
   const navigate = useNavigate();
   const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
@@ -193,6 +195,13 @@ const EditorPage = () => {
     console.log("line 193", jsonData.card.variables);
     localStorage.setItem("variables", JSON.stringify(jsonData.card.variables));
     const quizComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_quiz");
+    const contactUsComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_template_contact_us");
+    if(contactUsComponent){
+      console.log("contactUsComponent line 198", contactUsComponent, isContactUs());
+      if(!isContactUs()){
+        await createLayout(JSON.stringify(contactUsJSON), campaignId, "contact_us_screen");
+      }
+    }
     if (screens.find((ele: { path: string }) => ele.path === "quiz_screen") === undefined) {
       try {
         // await handleLogJSON();

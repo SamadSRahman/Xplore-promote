@@ -208,6 +208,13 @@ export type SiblingComponentProperty = ComponentProperty & {
         value: string;
     }[];
 }
+const storedVariables = JSON.parse(localStorage.getItem('variables') || '[]');
+console.log("storedVariables line 212:", storedVariables);
+const variables = storedVariables.map((variable: {name: string}) => ({
+    text: variable.name || '', // Ensure text is never undefined
+    value: variable.name || '' // Ensure value is never undefined
+})) || []; // Fallback to empty array if map fails
+console.log("Variables after mapping line 216:", variables);
 
 export const BASE_COMPONENT_PROPS: ComponentProperty[] = [{
     type: 'group',
@@ -549,8 +556,23 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
             prop: 'text_color',
             type: 'color',
             enableSources: true
-        }],
+        },
+        {
+            name: 'props.text_variable',
+            prop: 'text_variable',
+            type: 'select',
+            options: variables.map((variable: {text: string, type: string}) => {
+                console.log('Variable:', variable);
+                return {
+                    text: variable.text,
+                    value: variable.text
+                };
+            }),
+            enableSources: true
+        },
+        ],
     },
+   
     {
         name: 'props.keyboard_type',
         prop: 'keyboard_type',

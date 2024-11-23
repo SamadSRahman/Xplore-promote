@@ -172,8 +172,8 @@ let selectedVariables: string[] = [];
   function onVariableChange(selectedVars: string[]): void {
     console.log("line 170", selectedVars);
     value.selected_variables = selectedVars;
-    const variableParams = selectedVars.map(v => `${v}:@{${v}}`).join(',');
-    value.url = `xplore-promote://submit?data:{${variableParams}}`;
+    const variableParams = selectedVars.map(v => `${v}=@{${v}}`).join('&');
+    value.url = `xplore-promote://submit?${variableParams}`;
     value.log_url = value.url; // Set the log_url to match the url
   }
 

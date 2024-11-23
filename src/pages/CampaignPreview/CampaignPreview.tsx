@@ -19,13 +19,35 @@ export default function CampaignPreview() {
 
     useEffect(()=>{
         if(screen===undefined||screen==='splash_screen'){
+           
             const splashLayout = layouts.find((ele) => ele.name === 'splash_screen');
             if (splashLayout) {
+                console.log("splashLayout line 30", splashLayout.layoutJSON.card.variables);
+                const variables = splashLayout.layoutJSON.card.variables;
+                const googleData =  localStorage.getItem("googleData")
+                if(googleData){
+                    const googleDataObj = JSON.parse(googleData)
+                    if (variables) {
+                        const fields = ['email', 'name', 'phone'];
+                        variables.forEach((variable: any) => {
+                            if (fields.includes(variable.name) && googleDataObj[variable.name]) {
+                                variable.value = googleDataObj[variable.name];
+                            }
+                        });
+                      
+                        // console.log("updatedVariables line 35", updatedVariables);
+                        
+                        console.log("variables line 42", variables);
+                     
+                        splashLayout.layoutJSON.card.variables = variables;
+                    }
+                }
                 setLayout(splashLayout);
             }
         }
         else{
             const newLayout = layouts.find((ele) => ele.name === screen);
+            console.log("newLayout line 30", newLayout);
             if (newLayout) {
                 setLayout(newLayout);
             }

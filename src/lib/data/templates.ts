@@ -698,6 +698,134 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       }]
     },
   },
+  _template_contact_us: {
+    nameKey: 'templates.contact_us',
+    visible: true,
+    inShortList: true,
+    inlineTextEditorProp: 'text',
+    icon: buttonIcon, // You may want to create a specific map icon
+    props: [
+      {
+        type: 'group',
+        title: 'contactUsProps.title',
+        list: [
+          {
+            name: 'props.text',
+            prop: 'text',
+            type: 'string',
+            enableTanker: true,
+            enableSources: true,
+            default: 'View on Map',
+          },
+          {
+            type: 'split',
+            list: [
+              {
+                name: 'props.font_size',
+                prop: 'font_size',
+                type: 'integer',
+                min: 1,
+                max: 1000,
+                enableSources: true,
+              },
+              {
+                name: 'props.line_height',
+                prop: 'line_height',
+                type: 'integer',
+                min: 0,
+                max: 1000,
+                enableSources: true,
+              },
+            ],
+          },
+          {
+            name: 'props.font_weight',
+            prop: 'font_weight',
+            type: 'select',
+            options: [
+              {
+                name: 'props.font_weight_light',
+                value: 'light',
+              },
+              {
+                name: 'props.font_weight_normal',
+                value: 'regular',
+              },
+              {
+                name: 'props.font_weight_medium',
+                value: 'medium',
+              },
+              {
+                name: 'props.font_weight_bold',
+                value: 'bold',
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: 'props.text_color',
+            prop: 'text_color',
+            type: 'color',
+            enableSources: true,
+          },
+          {
+            name: 'props.corners',
+            prop: 'corners',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+          },
+        ],
+      },
+    ],
+    newNode: {
+      text: 'Contact Us',
+      background: [
+        {
+          type: 'solid',
+          color: '#000',
+        },
+      ],
+      text_color: '#fff',
+      corners: 8,
+      actions: [
+        {
+          log_id: "contact_us",
+          url: "div-screen://open?id=contact_us_screen",
+        }
+      ]
+    },
+    template: {
+      type: 'text',
+      $latitude: 'latitude',  // Add this
+      $longitude: 'longitude',
+      $text: 'text',
+      text_alignment_horizontal: 'center',
+      text_alignment_vertical: 'center',
+      border: { $corner_radius: 'corners' },
+      paddings: {
+        bottom: 15,
+        left: 22,
+        right: 22,
+        top: 15,
+      },
+      width: { type: 'wrap_content' },
+      $actions: [{
+        log_id: "open_map",
+        url: {
+          type: 'expression',
+           value: 'https://www.google.com/maps?q=' + '$latitude' + ',' + '$longitude'
+        },
+        _template_map: true
+      }]
+    },
+  },
 
   _template_native_signup: {
     nameKey: 'templates.native_signup',
@@ -786,7 +914,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     nameKey: 'templates.button',
   
     visible: true,
-    inShortList: true,
+    inShortList: false,
     icon: buttonIcon,
     description: { en: 'Button component' },
     props: [
@@ -1044,6 +1172,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       ]
     }
 }
+,
 
 };
 
