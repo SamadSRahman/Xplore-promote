@@ -156,7 +156,17 @@ let selectedVariables: string[] = [];
 
   let variables: variables[] = [];
   $: {
-    const storedVars = JSON.parse(localStorage.getItem("variables") || "[]") as Variable[];
+    const storedVars = (() => {
+      try {
+        const stored = localStorage.getItem("variables");
+        if (!stored) return [];
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        console.warn("Error parsing variables from localStorage:", e);
+        return [];
+      }
+    })() as Variable[];
     console.log("line 153", storedVars);
     if (storedVars && Array.isArray(storedVars)) {
       variables = storedVars.map((variable) => ({

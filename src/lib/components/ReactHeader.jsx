@@ -94,7 +94,7 @@ export default function ReactHeader( { screens ,refreshScreenNames}) {
         )}
       </div>
 
-      {/* <button
+      <button
         onClick={() => setIsNewScreenPopupVisible(true)}
         style={{
             backgroundColor: '#4CAF50',
@@ -108,7 +108,7 @@ export default function ReactHeader( { screens ,refreshScreenNames}) {
         }}
       >
         Add Screen
-      </button> */}
+      </button>
     </div>
     );
 }

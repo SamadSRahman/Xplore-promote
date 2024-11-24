@@ -28,7 +28,7 @@ export default function CampaignPreview() {
                 if(googleData){
                     const googleDataObj = JSON.parse(googleData)
                     if (variables) {
-                        const fields = ['email', 'name', 'phone'];
+                        const fields = ['email', 'user', 'phone'];
                         variables.forEach((variable: any) => {
                             if (fields.includes(variable.name) && googleDataObj[variable.name]) {
                                 variable.value = googleDataObj[variable.name];
@@ -46,10 +46,29 @@ export default function CampaignPreview() {
             }
         }
         else{
-            const newLayout = layouts.find((ele) => ele.name === screen);
+            const newLayout = layouts.find((ele) => ele.name === screen)||{};
             console.log("newLayout line 30", newLayout);
-            if (newLayout) {
-                setLayout(newLayout);
+            const variables = newLayout.layoutJSON.card.variables;
+            const googleData =  localStorage.getItem("googleData")
+            if(googleData){
+                const googleDataObj = JSON.parse(googleData)
+                if (variables) {
+                    const fields = ['email', 'user', 'phone'];
+                    variables.forEach((variable: any) => {
+                        if (fields.includes(variable.name) && googleDataObj[variable.name]) {
+                            variable.value = googleDataObj[variable.name];
+                        }
+                    });
+                  
+                    
+                    console.log("variables line 42", variables);
+                 
+                    newLayout.layoutJSON.card.variables = variables;
+
+                    if (newLayout) {
+                        setLayout(newLayout);
+                    }
+                }
             }
         }
     },[screen, layouts])

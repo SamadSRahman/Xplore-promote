@@ -15,6 +15,8 @@
     color: black;
     max-height: 100vh;
     overflow: scroll;
+    border: 1px solid blue;
+    min-height: 100vh;
 }
 .renderDiv span{
     /* overflow: scroll; */

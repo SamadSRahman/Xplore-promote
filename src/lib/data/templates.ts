@@ -1024,7 +1024,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
             name: 'props.font_size',
             prop: 'font_size',
             type: 'number',
-            default: 16,
+            default: 14,
             enableSources: true,
           },
           {
@@ -1053,10 +1053,10 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     newNode: {
       type: '_template_checkbox',
       initial_state: 'unchecked',
-      size: 24,
+      size: 20,
       label_text: 'Checkbox Label',
       label_color: '#000000',
-      font_size: 16,
+      font_size: 14,
       checked_color: '#3F28C3',
       unchecked_color: '#FFFFFF',
       actions: []
@@ -1090,13 +1090,14 @@ export const namedTemplates: Record<string, TemplateDescription> = {
                 ],
                 actions: [
                   {
-                    log_id: 'toggle_checkbox',
-                    url: 'div-action://set_state?state_id=0/checkbox_state/checked'
+                    "log_id": "update_checkbox_state",
+                    "url": "div-action://set_variable?name=checkbox_variable&value=true"
                   },
                   {
-                    "log_id": "update_checkbox_state",
-                    "url": "div-action://set_variable?name=checkbox_state&value=true"
+                    log_id: 'toggle_checkbox',
+                    url: 'div-action://set_state?state_id=0/checkbox_state/checked'
                   }
+                 
                 ]
               },
               {
@@ -1148,13 +1149,14 @@ export const namedTemplates: Record<string, TemplateDescription> = {
                 ],
                 actions: [
                   {
-                    log_id: 'toggle_checkbox',
-                    url: 'div-action://set_state?state_id=0/checkbox_state/unchecked'
+                    "log_id": "update_checkbox_state",
+                    "url": "div-action://set_variable?name=checkbox_variable&value=false"
                   },
                   {
-                    "log_id": "update_checkbox_state",
-                    "url": "div-action://set_variable?name=checkbox_state&value=false"
+                    log_id: 'toggle_checkbox',
+                    url: 'div-action://set_state?state_id=0/checkbox_state/unchecked'
                   }
+                 
                 ]
               },
               {

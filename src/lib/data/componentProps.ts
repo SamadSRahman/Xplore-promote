@@ -208,13 +208,13 @@ export type SiblingComponentProperty = ComponentProperty & {
         value: string;
     }[];
 }
-const storedVariables = JSON.parse(localStorage.getItem('variables') || '[]');
-console.log("storedVariables line 212:", storedVariables);
-const variables = storedVariables.map((variable: {name: string}) => ({
-    text: variable.name || '', // Ensure text is never undefined
-    value: variable.name || '' // Ensure value is never undefined
-})) || []; // Fallback to empty array if map fails
-console.log("Variables after mapping line 216:", variables);
+// const storedVariables = JSON.parse(localStorage.getItem('variables') || '[]');
+// console.log("storedVariables line 212:", storedVariables);
+// const variables = storedVariables.map((variable: {name: string}) => ({
+//     text: variable.name || '', // Ensure text is never undefined
+//     value: variable.name || '' // Ensure value is never undefined
+// })) || []; // Fallback to empty array if map fails
+// console.log("Variables after mapping line 216:", variables);
 
 export const BASE_COMPONENT_PROPS: ComponentProperty[] = [{
     type: 'group',
@@ -557,19 +557,6 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
             type: 'color',
             enableSources: true
         },
-        {
-            name: 'props.text_variable',
-            prop: 'text_variable',
-            type: 'select',
-            options: variables.map((variable: {text: string, type: string}) => {
-                console.log('Variable:', variable);
-                return {
-                    text: variable.text,
-                    value: variable.text
-                };
-            }),
-            enableSources: true
-        },
         ],
     },
    
@@ -783,6 +770,14 @@ image: [...BASE_COMPONENT_PROPS,
             }],
             enableSources: true
         }, 
+        {
+            name: 'props.corners',
+            prop: 'corners',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
+          },
         {
             name: 'props.content_alignment',
             type: 'alignment',

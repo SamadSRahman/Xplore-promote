@@ -8,7 +8,7 @@
 /* eslint-disable indent */
 import axios from "axios";
 import { useState } from "react";
-import {  getScreenPath } from "./services";
+import {  getScreenName, getScreenPath } from "./services";
 
 export default function useLayout() {
     const channel = localStorage.getItem("channel");
@@ -51,6 +51,9 @@ export default function useLayout() {
     };
 
     const deleteLayout = async (id)=>{
+        if (!window.confirm('Are you sure you want to delete this screen?')) {
+            return;
+        }
         try {
             const response = await axios.delete(`https://pre.xplore.xircular.io/api/v1/layout/delete/${id}`,{
                 headers: {
@@ -98,6 +101,15 @@ export default function useLayout() {
         try {
             const response = await axios.get(`https://pre.xplore.xircular.io/api/v1/layout/getAll/${id}`)
             console.log(response)
+            const campaignScreens = response.data.layouts.map(ele=>ele);
+
+        const formattedScreens = campaignScreens.map(screen => ({
+            name: getScreenName(screen.name),
+            path: getScreenPath(screen.name),
+            id: screen.layoutID
+        }));
+        console.log(formattedScreens);
+        localStorage.setItem('screens', JSON.stringify(formattedScreens))
             setLayouts(response.data.layouts)
         } catch (error) {
             console(error)

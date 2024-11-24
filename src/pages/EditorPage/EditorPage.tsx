@@ -24,7 +24,7 @@ import { contactUsJSON } from '../../lib/utils/splashScreenData';
 const EditorPage = () => {
   const { campaignId, page } = useParams();
   const { getCampaignById, currentLayout, layoutId, screens } = useCampaign();
-  const { updateLayout, createLayout } = useLayout();
+  const { updateLayout, createLayout, getAllLayout } = useLayout();
   const navigate = useNavigate();
   const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
@@ -200,6 +200,7 @@ const EditorPage = () => {
       console.log("contactUsComponent line 198", contactUsComponent, isContactUs());
       if(!isContactUs()){
         await createLayout(JSON.stringify(contactUsJSON), campaignId, "contact_us_screen");
+        await getAllLayout(campaignId);
       }
     }
     if (screens.find((ele: { path: string }) => ele.path === "quiz_screen") === undefined) {
