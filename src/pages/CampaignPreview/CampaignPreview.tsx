@@ -108,7 +108,7 @@ export default function CampaignPreview() {
             console.log("Changing to landing screen");
             const landingLayout = layouts.find((ele) => ele.name === 'landing_screen');
            if(landingLayout){
-            // setTimeout(() => { navigate(`/campaign/${campaignId}/landing_screen`) }, 2000);
+            setTimeout(() => { navigate(`/campaign/${campaignId}/landing_screen`) }, 2000);
            }
         }
     }, [layout]);

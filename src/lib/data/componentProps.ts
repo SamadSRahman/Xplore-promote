@@ -651,6 +651,19 @@ image: [...BASE_COMPONENT_PROPS,
             horizontalProp: 'content_alignment_horizontal',
             verticalProp: 'content_alignment_vertical',
             enableSources: true
+        }],
+   
+    },
+    {
+        type: 'group',
+        title: 'props.border',
+        list: [{
+            name: 'props.corners',
+            prop: 'border.corner_radius',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
         }]
     },
     {
@@ -771,14 +784,6 @@ image: [...BASE_COMPONENT_PROPS,
             enableSources: true
         }, 
         {
-            name: 'props.corners',
-            prop: 'corners',
-            type: 'integer',
-            min: 0,
-            max: 100,
-            enableSources: true,
-          },
-        {
             name: 'props.content_alignment',
             type: 'alignment',
             horizontalProp: 'content_alignment_horizontal',
@@ -786,6 +791,26 @@ image: [...BASE_COMPONENT_PROPS,
             orientationProp: 'orientation',
             isContent: true
         },
+        {
+            type: 'group',
+            title: 'props.actions',
+            list: [{
+                name: 'props.actions',
+                prop: 'actions',
+                type: 'actions2'
+            }]
+        },{
+            type: 'group',
+            title: 'props.border',
+            list: [{
+                name: 'props.corners',
+                prop: 'border.corner_radius',
+                type: 'integer',
+                min: 0,
+                max: 100,
+                enableSources: true,
+            }]
+        }
        
     
     ],

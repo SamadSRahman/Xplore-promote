@@ -15,9 +15,11 @@
     color: black;
     max-height: 100vh;
     overflow: scroll;
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     min-height: 100vh;
+    height: 100vh;
 }
-.renderDiv span{
+.renderDiv >div{
+    height: 100vh;
     /* overflow: scroll; */
 }
