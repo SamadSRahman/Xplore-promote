@@ -17,12 +17,16 @@ export default function CampaignPreview() {
     const { campaignId, screen } = useParams();
     const [inputValues, setInputValues] = useState({});
 
+    useEffect(() => {
+        getAllLayout(campaignId);
+    }, []);
+    
     useEffect(()=>{
-        if(screen===undefined||screen==='splash_screen'){
-           
+        if (!layouts.length) return;
+        
+        if (screen === undefined || screen === 'splash_screen') {
             const splashLayout = layouts.find((ele) => ele.name === 'splash_screen');
             if (splashLayout) {
-                console.log("splashLayout line 30", splashLayout.layoutJSON.card.variables);
                 const variables = splashLayout.layoutJSON.card.variables;
                 const googleData =  localStorage.getItem("googleData")
                 if(googleData){
@@ -44,34 +48,32 @@ export default function CampaignPreview() {
                 }
                 setLayout(splashLayout);
             }
-        }
-        else{
-            const newLayout = layouts.find((ele) => ele.name === screen)||{};
-            console.log("newLayout line 30", newLayout);
-            const variables = newLayout.layoutJSON.card.variables;
-            const googleData =  localStorage.getItem("googleData")
-            if(googleData){
-                const googleDataObj = JSON.parse(googleData)
-                if (variables) {
-                    const fields = ['email', 'user', 'phone'];
-                    variables.forEach((variable: any) => {
-                        if (fields.includes(variable.name) && googleDataObj[variable.name]) {
-                            variable.value = googleDataObj[variable.name];
-                        }
-                    });
-                  
-                    
-                    console.log("variables line 42", variables);
-                 
-                    newLayout.layoutJSON.card.variables = variables;
-
-                    if (newLayout) {
-                        setLayout(newLayout);
-                    }
-                }
+        } else {
+            const newLayout = layouts.find((ele) => ele.name === screen);
+            if (!newLayout) {
+                console.warn(`Layout not found for screen: ${screen}`);
+                return;
             }
+            
+            const variables = newLayout.layoutJSON?.card?.variables;
+            const googleData = localStorage.getItem("googleData");
+            
+            if (googleData && variables) {
+                const googleDataObj = JSON.parse(googleData);
+                const fields = ['email', 'user', 'phone'];
+                variables.forEach((variable: any) => {
+                    if (fields.includes(variable.name) && googleDataObj[variable.name]) {
+                        variable.value = googleDataObj[variable.name];
+                    }
+                });
+                
+                newLayout.layoutJSON.card.variables = variables;
+            }
+            
+            setLayout(newLayout);
         }
-    },[screen, layouts])
+    }, [screen, layouts]);
+
     function handleBtnClick(action: { url: string; log_url?: string; latitude?: string; longitude?: string }) {
         console.log("action clicked", action);
         if (action.url === 'submit-form') {
@@ -113,10 +115,7 @@ export default function CampaignPreview() {
         }
     }, [layout]);
 
-    useEffect(() => {
-        // getCampaignById(campaignId);
-        getAllLayout(campaignId);
-    }, []);
+
 
     useEffect(() => {
         if (landingScreenLayout) {

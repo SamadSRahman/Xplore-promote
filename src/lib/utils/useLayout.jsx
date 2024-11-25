@@ -7,7 +7,7 @@
 /* eslint-disable quotes */
 /* eslint-disable indent */
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {  getScreenName, getScreenPath } from "./services";
 
 export default function useLayout() {
@@ -98,11 +98,14 @@ export default function useLayout() {
     };
 
     const getAllLayout = async (id)=>{
+        console.log("id line 101", id);
+        
         try {
             const response = await axios.get(`https://pre.xplore.xircular.io/api/v1/layout/getAll/${id}`)
-            console.log(response)
+            console.log(response.data.layouts)
+            setLayouts(response.data.layouts)
             const campaignScreens = response.data.layouts.map(ele=>ele);
-
+            
         const formattedScreens = campaignScreens.map(screen => ({
             name: getScreenName(screen.name),
             path: getScreenPath(screen.name),
@@ -110,11 +113,14 @@ export default function useLayout() {
         }));
         console.log(formattedScreens);
         localStorage.setItem('screens', JSON.stringify(formattedScreens))
-            setLayouts(response.data.layouts)
+          
         } catch (error) {
             console(error)
         }
     }
+    useEffect(()=>{
+        console.log("layouts line 122", layouts);
+    },[layouts])
     return {
         updateLayout,
         createLayout,
