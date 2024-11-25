@@ -45,7 +45,7 @@ const QrPopup = ({ campaignId, onClose, campaignName }) => {
           <div className={styles.linkWrapper}>
             <a
               target="_blank"
-              href={`https://pre.xplore.xircular.io/campaign/${campaignId}`}
+              href={`${window.location.origin}/campaign/${campaignId}`}
               rel="noreferrer"
             >
               Click here to visit your campaign
