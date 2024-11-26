@@ -10,6 +10,7 @@ import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
 import useLayout from '../../lib/utils/useLayout';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import useEndUser from '../../lib/utils/useEndUser';
 
 export default function CampaignPreview() {
     const { getCampaignById, landingScreenLayout } = useApi();
@@ -24,6 +25,7 @@ export default function CampaignPreview() {
         {extendedResult: true},
         {immediate: true}
       )
+    const {submitContactForm} = useEndUser()
 
     useEffect(() => {
         getAllLayout(campaignId);
@@ -76,6 +78,29 @@ export default function CampaignPreview() {
             return;
         }
         const btnAction = action.url?.split("://")[1].split("?")[0];
+
+        if (btnAction === 'submit') {
+            const params = new URLSearchParams(action.url.split("?")[1]);
+            const isCheckboxChecked = params.get("isCheckboxChecked") === "true";
+            
+            if (!isCheckboxChecked) {
+                alert("Please agree to the terms and conditions first");
+                return;
+            }
+
+            const formData = {
+                name: params.get("name"),
+                email: params.get("email"), 
+                phone: params.get("phone"),
+                visitorId: localStorage.getItem("visitorId"),
+                deviceId: localStorage.getItem("deviceId"),
+                campaignID: campaignId
+            };
+
+            submitContactForm(formData);
+            return;
+        }
+
         if (btnAction === 'map' && action.latitude && action.longitude) {
             // Open Google Maps in new tab with coordinates
             const mapsUrl = `https://www.google.com/maps?q=${action.latitude},${action.longitude}`;
