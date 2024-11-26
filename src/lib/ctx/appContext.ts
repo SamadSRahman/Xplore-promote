@@ -40,6 +40,7 @@ export interface Actions2DialogShowProps {
     value: Action;
     target: HTMLElement;
     readOnly?: boolean;
+    isTemplateMap?: boolean; 
     callback(val: Action): void;
 }
 

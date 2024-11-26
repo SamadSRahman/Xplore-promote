@@ -55,6 +55,7 @@ const editors = new Map([
     ['div-action.json', '__action-item'],
     ['div-video-source.json', '__video-source-item'],
     ['div-list.json', '__list-item'], 
+    ['div-border.json', '__border-item'],
 ]);
 
 const arrayEditors = new Map([

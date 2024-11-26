@@ -6,6 +6,7 @@
 import lottieIcon from '../../assets/components/lottie.svg?url';
 import buttonIcon from '../../assets/components/button.svg?url';
 import closeIcon from '../../assets/components/close.svg?url';
+import backIcon from '../../assets/components/back-button.svg';
 import listItemIcon from '../../assets/components/list-item.svg?url';
 import listIcon from '../../assets/list.svg.svg';
 import { type ComponentProperty } from './componentProps';
@@ -26,91 +27,93 @@ interface TemplateDescription {
 }
 
 interface TemplateProps {
-    list_items: ListItemProps[];
-  }
+  list_items: ListItemProps[];
+}
 
-  interface ListItemProps {
-    list_text: string;
-    list_color: string;
-    list_text_size: number;
-    list_font_weight: 'light' | 'regular' | 'medium' | 'bold';
-    image_url: string;
-  }
+interface ListItemProps {
+  list_text: string;
+  list_color: string;
+  list_text_size: number;
+  list_font_weight: 'light' | 'regular' | 'medium' | 'bold';
+  image_url: string;
+}
 
 // Example of Action (can be further expanded as per your needs)
 
 // Sample props data
 const props: TemplateProps = {
-    list_items: [
+  list_items: [
+    {
+      list_text: 'Item 1',
+      list_color: '#FF5733',
+      list_text_size: 14,
+      list_font_weight: 'bold',
+      image_url: 'https://example.com/item1.png',
+    },
+    {
+      list_text: 'Item 2',
+      list_color: '#33FF57',
+      list_text_size: 18,
+      list_font_weight: 'medium',
+      image_url: 'https://example.com/item2.png',
+    },
+    {
+      list_text: 'Item 3',
+      list_color: '#3357FF',
+      list_text_size: 16,
+      list_font_weight: 'light',
+      image_url: 'https://example.com/item3.png',
+    },
+  ],
+};
+const createTemplate = (props: TemplateProps): Record<string, unknown> => {
+  const items = (props.list_items || []).map((item) => ({
+    type: 'container',
+    orientation: 'horizontal',
+    items: [
       {
-        list_text: 'Item 1',
-        list_color: '#FF5733',
-        list_text_size: 14,
-        list_font_weight: 'bold',
-        image_url: 'https://example.com/item1.png',
+        type: 'image',
+        image_url: item.image_url,
+        $tint_color: item.list_color,
+        width: {
+          type: 'fixed',
+          value: 28,
+          unit: 'sp',
+        },
+        height: {
+          type: 'fixed',
+          value: 28,
+          unit: 'sp',
+        },
+        margins: {
+          top: 2,
+          right: 12,
+          bottom: 2,
+        },
       },
       {
-        list_text: 'Item 2',
-        list_color: '#33FF57',
-        list_text_size: 18,
-        list_font_weight: 'medium',
-        image_url: 'https://example.com/item2.png',
-      },
-      {
-        list_text: 'Item 3',
-        list_color: '#3357FF',
-        list_text_size: 16,
-        list_font_weight: 'light',
-        image_url: 'https://example.com/item3.png',
+        type: 'text',
+        $text: item.list_text,
+        $text_color: item.list_color,
+        $font_size: item.list_text_size,
+        line_height: 32,
+        $font_weight: item.list_font_weight,
+        width: {
+          type: 'wrap_content',
+          constrained: true,
+        },
       },
     ],
+  }));
+
+  return {
+    type: 'container',
+    orientation: 'vertical',
+    items,
   };
-  const createTemplate = (props: TemplateProps): Record<string, unknown> => {
-    const items = (props.list_items || []).map((item) => ({
-      type: 'container',
-      orientation: 'horizontal',
-      items: [
-        {
-          type: 'image',
-          image_url: item.image_url,
-          $tint_color: item.list_color,
-          width: {
-            type: 'fixed',
-            value: 28,
-            unit: 'sp',
-          },
-          height: {
-            type: 'fixed',
-            value: 28,
-            unit: 'sp',
-          },
-          margins: {
-            top: 2,
-            right: 12,
-            bottom: 2,
-          },
-        },
-        {
-          type: 'text',
-          $text: item.list_text,
-          $text_color: item.list_color,
-          $font_size: item.list_text_size,
-          line_height: 32,
-          $font_weight: item.list_font_weight,
-          width: {
-            type: 'wrap_content',
-            constrained: true,
-          },
-        },
-      ],
-    }));
-  
-    return {
-      type: 'container',
-      orientation: 'vertical',
-      items,
-    };
-  };
+};
+const screens = JSON.parse(localStorage.getItem('screens') || '[]').map((screen: { name: string, path: string }) => ({ name: screen.name, value: screen.path }))
+console.log("screens", screens);
 
 export const namedTemplates: Record<string, TemplateDescription> = {
 
@@ -264,534 +267,133 @@ export const namedTemplates: Record<string, TemplateDescription> = {
   _quiz: {
     nameKey: 'templates.quiz',
     visible: true,
-    inShortList: true,
+    inShortList: false,
     icon: listIcon,
     description: { en: 'Quiz component' },
-    props: [],
-    newNode: {},
+    props: [
+      {
+        type: 'group',
+        title: ' ',
+        list: [
+          {
+            name: 'props.button_text',
+            prop: 'button_text',
+            type: 'string',
+            enableTanker: true,
+            enableSources: true,
+            default: 'Start quiz',
+          },
+          {
+            type: 'split',
+            list: [
+              {
+                name: 'props.font_size',
+                prop: 'font_size',
+                type: 'integer',
+                min: 1,
+                max: 1000,
+                enableSources: true,
+              },
+              {
+                name: 'props.line_height',
+                prop: 'line_height',
+                type: 'integer',
+                min: 0,
+                max: 1000,
+                enableSources: true,
+              },
+            ],
+          },
+          {
+            name: 'props.font_weight',
+            prop: 'font_weight',
+            type: 'select',
+            options: [
+              {
+                name: 'props.font_weight_light',
+                value: 'light',
+              },
+              {
+                name: 'props.font_weight_normal',
+                value: 'regular',
+              },
+              {
+                name: 'props.font_weight_medium',
+                value: 'medium',
+              },
+              {
+                name: 'props.font_weight_bold',
+                value: 'bold',
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: 'props.text_color',
+            prop: 'text_color',
+            type: 'color',
+            enableSources: true,
+          },
+          {
+            name: 'props.corners',
+            prop: 'corners',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+          },
+        ],
+      },
+    ],
+    newNode: {
+      text: 'Click me!',
+      background: [
+        {
+          type: 'solid',
+          color: '#000',
+        },
+      ],
+      text_color: '#fff',
+      corners: 8,
+      actions: [
+        {
+          log_id: "action_id",
+          url: "div-screen://open?id=quiz_screen",
+          log_url: "@{on_click_log_url}"
+        }
+      ]
+    },
     template: {
       type: 'container',
-
+      width: { type: 'match_parent' },
+      height: { type: 'wrap_content' },
+      items: [
+        {
+          type: '_template_button',
+          width: { type: 'wrap_content' },
+          height: { type: 'wrap_content' },
+          text_color: '#ffffff',
+          background_color: '#4CAF50',
+          font_size: 16,
+          text: 'Start quiz',
+          padding: {
+            left: 16,
+            right: 16,
+            top: 8,
+            bottom: 8
+          },
+          border_radius: 4
+        }
+      ],
+      alignment_horizontal: 'center',
+      alignment_vertical: 'center'
     },
   },
-  // _template_text_list: {
-  //   nameKey: 'templates.text_list',
-  //   visible: true,
-  //   inShortList: true,
-  //   icon: listIcon,
-  //   description: { en: 'Dynamic text list component' },
-  //   props: [
-  //     {
-  //       type: 'group',
-  //       title: 'listItemProps.title',
-  //       list: [
-  //         {
-  //           name: 'props.list_items',
-  //           prop: 'list_items',
-  //           type: 'array',
-  //           arrayType: 'object',
-  //           minItems: 1,
-  //           maxItems: 10,
-  //           fields: [
-  //             {
-  //               name: 'props.text',
-  //               prop: 'text',
-  //               type: 'string',
-  //               // enableTanker: true,
-  //               enableSources: true,
-  //             },
-  //             {
-  //               name: 'props.text_color',
-  //               prop: 'text_color',
-  //               type: 'color',
-  //               enableSources: true,
-  //             },
-  //             {
-  //               name: 'props.font_size',
-  //               prop: 'font_size',
-  //               type: 'integer',
-  //               min: 12,
-  //               max: 32,
-  //               default: 16,
-  //               enableSources: true,
-  //             }
-  //           ]
-  //         }
-  //       ]
-  //     }
-  //   ],
-  //   newNode: {
-  //     type: '_template_text_list',
-  //     list_items: [
-  //       {
-  //         text: 'Item 1',
-  //         text_color: '#000000',
-  //         font_size: 16
-  //       },
-  //       {
-  //         text: 'Item 2',
-  //         text_color: '#000000',
-  //         font_size: 16
-  //       }
-  //     ]
-  //   },
-  //   template: {
-  //     type: 'container',
-  //     orientation: 'vertical',
-  //     width: { type: 'match_parent' },
-  //     height: { type: 'wrap_content' },
-  //     margins: { left: 16, right: 16, top: 8, bottom: 8 },
-  //     items: {
-  //       type: 'array',
-  //       value: { $ref: 'list_items' },
-  //       itemTemplate: {
-  //         type: 'text',
-  //         $text: { $ref: 'text' },
-  //         $text_color: { $ref: 'text_color' },
-  //         $font_size: { $ref: 'font_size' },
-  //         margins: { bottom: 8 }
-  //       }
-  //     }
-  //   }
-  // },
-  // _template_list: {
-  //   nameKey: 'templates.list',
-  //   visible: true,
-  //   inShortList: true,
-  //   icon: listIcon, // You'll need to create this icon
-  //   description: { en: 'Custom container-like component' },
-  //   props: [
-  //     {
-  //       type: 'group',
-  //       title: 'containerProps.title',
-  //       list: [
-  //         {
-  //           name: 'props.orientation',
-  //           prop: 'orientation',
-  //           type: 'select',
-  //           default: 'horizontal',
-  //           options: [
-  //             {
-  //               name: 'props.orientation_horizontal',
-  //               value: 'horizontal',
-  //             },
-  //             {
-  //               name: 'props.orientation_vertical',
-  //               value: 'vertical',
-  //             },
-  //             {
-  //               name: 'props.orientation_overlap',
-  //               value: 'overlap',
-  //             },
-  //           ],
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.content_alignment',
-  //           type: 'alignment',
-  //           horizontalProp: 'content_alignment_horizontal',
-  //           verticalProp: 'content_alignment_vertical',
-  //           orientationProp: 'orientation',
-  //           isContent: true,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       type: 'group',
-  //       title: 'listProps.title',
-  //       list: [
-  //         {
-  //           name: 'props.image',
-  //           prop: 'image_url',
-  //           type: 'file',
-  //           subtype: 'image',
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.heading',
-  //           prop: 'heading_text',
-  //           type: 'string',
-  //           enableTanker: true,
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.subheading',
-  //           prop: 'subheading_text',
-  //           type: 'string',
-  //           enableTanker: true,
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.button_text',
-  //           prop: 'button_text',
-  //           type: 'string',
-  //           enableTanker: true,
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.button_text_color',
-  //           prop: 'button_text_color',
-  //           type: 'color',
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.actions',
-  //           prop: 'actions',
-  //           type: 'actions2',
-  //           sizeValue: 'width',
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   newNode: {
-  //     type: '_template_list',
-  //     orientation: 'horizontal',
-  //     content_alignment_horizontal: 'center',
-  //     content_alignment_vertical: 'center',
-  //     image_url: 'https://yastatic.net/s3/home/divkit/placeholder.png',
-  //     heading_text: 'Heading',
-  //     subheading_text: 'Subheading',
-  //     button_text: 'Action',
-  //     button_text_color: '#02bba4',
-  //   },
-  //   template: {
-  //     type: 'container',
-  //     $orientation: 'orientation',
-  //     $item_spacing: 'item_spacing',
-  //     width: { type: 'wrap_content' },
-  //     height: { type: 'wrap_content' },
-  //     $alignment_horizontal: 'content_alignment_horizontal',
-  //     $alignment_vertical: 'content_alignment_vertical',
-  //     margins: { left: 16, right: 16, top: 8, bottom: 8 },
-      
-  //     items: [
-  //       {
-  //         type: 'image',
-  //         width: { type: 'fixed', value: 48 },
-  //         height: { type: 'fixed', value: 48 },
-  //         $image_url: 'image_url',
-  //         margins: { left: 16, right: 16, top: 8, bottom: 8 },
-  //       },
-  //       {
-  //         type: 'container',  
-  //         orientation: 'horizontal',
-  //         width: { type: 'wrap_content' },
-  //         alignment_vertical: 'center',
-  //         margins: { left: 16 },
-  //         items: [
-  //           {
-  //             type: 'container',
-  //             orientation: 'vertical',
-  //             width: { type: 'wrap_content', weight: 1 },
-  //             margins: { left: 16, right: 16, top: 8, bottom: 8 },
-  //             items: [
-  //               {
-  //                 type: 'text',
-  //                 $text: 'heading_text',
-  //                 font_size: 16,
-  //                 font_weight: 'bold',
-  //                 max_lines: 1,
-  //               },
-  //               {
-  //                 type: 'text',
-  //                 $text: 'subheading_text',
-  //                 font_size: 14,
-  //                 color: '#666666',
-  //                 max_lines: 2,
-  //               },
-  //             ],
-  //           },
-  //           {
-  //             type: 'text',
-  //             $text: 'button_text',
-  //             font_size: 14,
-  //             font_weight: 'medium',
-  //             $text_color: 'button_text_color',
-  //             paddings: { left: 12, right: 12, top: 8, bottom: 8 },
-  //             width: { type: 'wrap_content' },
-  //             border: {
-  //               corner_radius: 4,
-  //               stroke: {
-  //                 color: '#0077FF',
-  //                 width: 1,
-  //               },
-  //             },
-  //             $actions: 'actions',
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  // },
-  // _template_list_text_only: {
-  //   nameKey: 'templates.list_text_only',
-  //   visible: true,
-  //   inShortList: true,
-  //   icon: listItemIcon, // Replace with your appropriate icon for text-only items
-  //   props: [
-  //     {
-  //       type: 'group',
-       
-        
-  //       title: 'listTextProps.title',
-  //       list: [
-  //         {
-  //           name: 'props.items',
-  //           prop: 'list_items',
-  //           type: 'array',
-  //            // Array type for dynamic lists
-  //           arrayType: 'object',
-  //           minItems: 1,
-  //           maxItems: 10,
-  //           fields: [
-  //             {
-  //               name: 'props.text',
-  //               prop: 'list_item_text',
-  //               type: 'string',
-  //               // enableTanker: true,
-  //               default: '\0',
-  //               enableSources: true,
-  //             },
-  //             {
-  //               name: 'props.text_color',
-  //               prop: 'list_item_color',
-  //               type: 'color',
-  //               enableSources: true,
-  //             },
-  //             {
-  //               name: 'props.font_size',
-  //               prop: 'list_item_size',
-  //               type: 'integer',
-  //               min: 1,
-  //               max: 1000,
-  //               enableSources: true,
-  //             },
-  //             {
-  //               name: 'props.font_weight',
-  //               prop: 'list_item_weight',
-  //               type: 'select',
-  //               options: [
-  //                 {
-  //                   name: 'props.font_weight_light',
-  //                   value: 'light',
-  //                 },
-  //                 {
-  //                   name: 'props.font_weight_normal',
-  //                   value: 'regular',
-  //                 },
-  //                 {
-  //                   name: 'props.font_weight_medium',
-  //                   value: 'medium',
-  //                 },
-  //                 {
-  //                   name: 'props.font_weight_bold',
-  //                   value: 'bold',
-  //                 },
-  //               ],
-  //               enableSources: true,
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   newNode: {
-  //     list_items: [
-  //       {
-  //         list_item_text: 'Item 1',
-  //         list_item_color: '#000',
-  //         list_item_size: 24,
-  //         list_item_weight: 'regular',
-  //       },
-  //       {
-  //         list_item_text: 'Item 2',
-  //         list_item_color: '#000',
-  //         list_item_size: 24,
-  //         list_item_weight: 'regular',
-  //       },
-  //     ],
-  //   },
-  //   template: {
-  //     type: 'container',
-  //     orientation: 'vertical',
-  //     items: [
-  //       {
-  //         type: 'foreach', // Allows dynamic rendering based on list_items
-  //         in: 'list_items',
-  //         template: {
-  //           type: 'text',
-  //           $text: 'list_item_text',
-  //           $text_color: 'list_item_color',
-  //           $font_size: 'list_item_size',
-  //           line_height: 32,
-  //           $font_weight: 'list_item_weight',
-  //           width: {
-  //             type: 'wrap_content',
-  //             constrained: true,
-  //           },
-  //         },
-  //       },
-  //     ],
-  //   },
-  // },
-  // _template_text_container: {
-  //   nameKey: 'templates.text_container',
-  //   inShortList: true,
-  //   visible: true,
-  //   icon: listItemIcon, // Replace with your icon for this template
-  //   props: [
-  //     {
-  //       type: 'group',
-  //       title: 'textContainerProps.title',
-  //       list: [
-  //         {
-  //           name: 'props.items',
-  //           prop: 'text_items',
-  //           type: 'array',
-  //           // Dynamic array for text items
-  //           arrayType: 'object',
-  //           minItems: 1,
-  //           maxItems: 10,
-  //           fields: [
-  //             {
-  //               name: 'props.text',
-  //               prop: 'item_text',
-  //               type: 'string',
-  //               default: 'text',
-  //               enableSources: true,
-  //             },
-  //             {
-  //               name: 'props.font_size',
-  //               prop: 'item_font_size',
-  //               type: 'integer',
-  //               min: 1,
-  //               max: 100,
-  //               default: 20,
-  //               enableSources: true,
-  //             },
-  //           ],
-  //         },
-  //         {
-  //           name: 'props.container_margins',
-  //           prop: 'container_margins',
-  //           type: 'margins-paddings',
-  //           default: {
-  //             left: 86,
-  //             right: 86,
-  //             top: 41,
-  //           },
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   newNode: {
-  //     text_items: [
-  //       { item_text: 'Text 1', item_font_size: 20 },
-  //       { item_text: 'Text 2', item_font_size: 20 },
-  //       { item_text: 'Text 3', item_font_size: 20 },
-  //     ],
-  //     container_margins: {
-  //       left: 86,
-  //       right: 86,
-  //       top: 41,
-  //     },
-  //   },
-  //   template: {
-  //     type: 'container',
-  //     width: {
-  //       type: 'fixed',
-  //       value: 74,
-  //     },
-  //     height: {
-  //       type: 'fixed',
-  //       value: 128,
-  //     },
-  //     alignment_horizontal: 'center',
-  //     alignment_vertical: 'top',
-  //     margins: {
-  //       $left: 'container_margins.left',
-  //       $right: 'container_margins.right',
-  //       $top: 'container_margins.top',
-  //     },
-  //     items: [
-  //       {
-  //         type: 'foreach',
-  //         in: 'text_items',
-  //         template: {
-  //           type: 'text',
-  //           $text: 'item_text',
-  //           $font_size: 'item_font_size',
-  //           width: {
-  //             type: 'wrap_content',
-  //             constrained: true,
-  //           },
-  //           alignment_horizontal: 'center',
-  //           margins: {
-  //             bottom: 15,
-  //           },
-  //         },
-  //       },
-  //     ],
-  //     content_alignment_horizontal: 'center',
-  //     content_alignment_vertical: 'center',
-  //   },
-  // },
-  
-  
-  // _template_lottie: {
-  //   nameKey: 'templates.lottie',
-  //   visible: true,
-  //   inShortList: true,
-  //   icon: lottieIcon,
-  //   props: [
-  //     {
-  //       type: 'group',
-  //       title: 'lottieProps.title',
-  //       list: [
-  //         {
-  //           name: 'props.lottie_url',
-  //           prop: 'lottie_params.lottie_url',
-  //           type: 'file',
-  //           subtype: 'lottie',
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.preview',
-  //           prop: 'preview',
-  //           type: 'file',
-  //           subtype: 'image_preview',
-  //           enableSources: true,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   newNode: {
-  //     lottie_params: {
-  //       lottie_url: '',
-  //       repeat_count: -1,
-  //       repeat_mode: 'restart',
-  //     },
-  //     width: {
-  //       type: 'fixed',
-  //       value: 100,
-  //     },
-  //     height: {
-  //       type: 'fixed',
-  //       value: 100,
-  //     },
-  //   },
-  //   template: {
-  //     type: 'gif',
-  //     scale: 'fit',
-  //     extensions: [
-  //       {
-  //         id: 'lottie',
-  //         $params: 'lottie_params',
-  //       },
-  //     ],
-  //     gif_url: 'https://yastatic.net/s3/home/divkit/empty2.png',
-  //   },
-  // },
   _template_button: {
     nameKey: 'templates.button',
     visible: true,
@@ -953,381 +555,686 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       preload_required: true,
     },
   },
-  // _template_list_item: {
-  //   nameKey: 'templates.list_item',
-  //   visible: true,
-  //   icon: listItemIcon,
-  //   props: [
-  //     {
-  //       type: 'group',
-  //       title: 'listItemProps.title',
-  //       list: [
-  //         {
-  //           name: 'props.text',
-  //           prop: 'list_text',
-  //           type: 'string',
-  //           enableTanker: true,
-  //           default: '\0',
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.font_size',
-  //           prop: 'list_text_size',
-  //           type: 'integer',
-  //           min: 1,
-  //           max: 1000,
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.font_weight',
-  //           prop: 'list_font_weight',
-  //           type: 'select',
-  //           options: [
-  //             {
-  //               name: 'props.font_weight_light',
-  //               value: 'light',
-  //             },
-  //             {
-  //               name: 'props.font_weight_normal',
-  //               value: 'regular',
-  //             },
-  //             {
-  //               name: 'props.font_weight_medium',
-  //               value: 'medium',
-  //             },
-  //             {
-  //               name: 'props.font_weight_bold',
-  //               value: 'bold',
-  //             },
-  //           ],
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.text_color',
-  //           prop: 'list_color',
-  //           type: 'color',
-  //           enableSources: true,
-  //         },
-  //         {
-  //           name: 'props.actions',
-  //           prop: 'actions',
-  //           type: 'actions2',
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   newNode: {
-  //     list_text: 'Text',
-  //     list_color: '#000',
-  //     list_text_size: 24,
-  //     list_font_weight: 'medium',
-  //   },
-  //   template: {
-  //     type: 'container',
-  //     orientation: 'horizontal',
-  //     items: [
-  //       {
-  //         type: 'image',
-  //         image_url:
-  //           'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png',
-  //         $tint_color: 'list_color',
-  //         width: {
-  //           type: 'fixed',
-  //           value: 28,
-  //           unit: 'sp',
-  //         },
-  //         height: {
-  //           type: 'fixed',
-  //           value: 28,
-  //           unit: 'sp',
-  //         },
-  //         margins: {
-  //           top: 2,
-  //           right: 12,
-  //           bottom: 2,
-  //         },
-  //       },
-  //       {
-  //         type: 'text',
-  //         $text: 'list_text',
-  //         $text_color: 'list_color',
-  //         $font_size: 'list_text_size',
-  //         line_height: 32,
-  //         $font_weight: 'list_font_weight',
-  //         width: {
-  //           type: 'wrap_content',
-  //           constrained: true,
-  //         },
-  //       },
-  //     ],
-  //   },
-  // },
-//   _template_list_new: {
-//     inShortList: true,
-//     nameKey: 'templates.list_item',
-//   visible: true,
-//   icon: listItemIcon,
-//   props: [
-//     {
-//         type: 'group',
-//         title: 'listProps.title',
-//         list: [
-//           {
-//             name: 'listItemProps.title',
-//             prop: 'list_items',
-//             type: 'array',
-//             arrayType: 'object',
-//             minItems: 1,
-//             maxItems: 10, // You can adjust this as needed
-//             fields: [
-//               {
-//                 name: 'props.image',
-//                 prop: 'image_url',
-//                 type: 'file',
-//                 subtype: 'image',
-//                 enableSources: true
-//               },
-//               {
-//                 name: 'props.text',
-//                 prop: 'list_text',
-//                 type: 'string',
-//                 default: 'List Item',
-//                 enableSources: true
-//               },
-//               {
-//                 name: 'props.font_size',
-//                 prop: 'list_text_size',
-//                 type: 'integer',
-//                 min: 1,
-//                 max: 1000,
-//                 default: 16,
-//                 enableSources: true
-//               },
-//               {
-//                 name: 'props.font_weight',
-//                 prop: 'list_font_weight',
-//                 type: 'select',
-//                 options: [
-//                   { name: 'props.font_weight_light', value: 'light' },
-//                   { name: 'props.font_weight_normal', value: 'regular' },
-//                   { name: 'props.font_weight_medium', value: 'medium' },
-//                   { name: 'props.font_weight_bold', value: 'bold' }
-//                 ],
-//                 default: 'regular',
-//                 enableSources: true
-//               },
-//               {
-//                 name: 'props.text_color',
-//                 prop: 'list_color',
-//                 type: 'color',
-//                 default: '#000000',
-//                 enableSources: true
-//               }
-//             ]
-//           }
-//         ]
-//       }
-//     ],
-//     newNode: {
-//       items: [
-//         {
-//           list_text: 'Item 1',
-//           list_color: '#000000',
-//           list_text_size: 16,
-//           list_font_weight: 'regular',
-//           image_url: 'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png'
-//         },
-//         {
-//           list_text: 'Item 2',
-//           list_color: '#000000',
-//           list_text_size: 16,
-//           list_font_weight: 'regular',
-//           image_url: 'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png'
-//         },
-//         {
-//           list_text: 'Item 3',
-//           list_color: '#000000',
-//           list_text_size: 16,
-//           list_font_weight: 'regular',
-//           image_url: 'https://yastatic.net/s3/home/div/div_fullscreens/hyphen.4.png'
-//         }
-//       ]
-//     },
-//     template: {
-//         type: 'container',
-//         orientation: 'vertical',
-//         items: {
-//           type: 'array',
-//           value: {
-//             $ref: 'list_items'
-//           },
-//           itemTemplate: {
-//             type: 'container',
-//             orientation: 'horizontal',
-//             items: [
-//               {
-//                 type: 'image',
-//                 $image_url: {
-//                   $ref: 'image_url'
-//                 },
-//                 $tint_color: {
-//                   $ref: 'list_color'
-//                 },
-//                 width: {
-//                   type: 'fixed',
-//                   value: 28,
-//                   unit: 'sp',
-//                 },
-//                 height: {
-//                   type: 'fixed',
-//                   value: 28,
-//                   unit: 'sp',
-//                 },
-//                 margins: {
-//                   top: 2,
-//                   right: 12,
-//                   bottom: 2,
-//                 },
-//               },
-//               {
-//                 type: 'text',
-//                 $text: {
-//                   $ref: 'list_text'
-//                 },
-//                 $text_color: {
-//                   $ref: 'list_color'
-//                 },
-//                 $font_size: {
-//                   $ref: 'list_text_size'
-//                 },
-//                 line_height: 32,
-//                 $font_weight: {
-//                   $ref: 'list_font_weight'
-//                 },
-//                 width: {
-//                   type: 'wrap_content',
-//                   constrained: true,
-//                 },
-//               },
-//             ],
-//           },
-//         },
-//       },
-// },
-//  _template_add_image : {
-//   nameKey: 'templates.add_image',
-//   description: {en:'Component to take image inputs'},
-//   visible: true,
-//   icon: listItemIcon, // replace with the appropriate icon for this template
-//   props: [
-//     {
-//       type: 'group',
-//       title: 'addImageProps.title',
-//       list: [
-//         {
-//           name: 'props.image',
-//           prop: 'image_url',
-//           type: 'file',
-//           subtype: 'image',
-//           enableSources: true,
-//         },
-//         {
-//           name: 'props.text',
-//           prop: 'text',
-//           type: 'string',
-//           enableTanker: true,
-//           default: 'Text',
-//           enableSources: true,
-//         },
-//         {
-//           name: 'props.font_size',
-//           prop: 'text_size',
-//           type: 'integer',
-//           min: 1,
-//           max: 1000,
-//           enableSources: true,
-//         },
-//         {
-//           name: 'props.font_weight',
-//           prop: 'font_weight',
-//           type: 'select',
-//           options: [
-//             {
-//               name: 'props.font_weight_light',
-//               value: 'light',
-//             },
-//             {
-//               name: 'props.font_weight_normal',
-//               value: 'regular',
-//             },
-//             {
-//               name: 'props.font_weight_medium',
-//               value: 'medium',
-//             },
-//             {
-//               name: 'props.font_weight_bold',
-//               value: 'bold',
-//             },
-//           ],
-//           enableSources: true,
-//         },
-//         {
-//           name: 'props.text_color',
-//           prop: 'text_color',
-//           type: 'color',
-//           enableSources: true,
-//         },
-//         {
-//           name: 'props.actions',
-//           prop: 'actions',
-//           type: 'actions2',
-//         },
-//       ],
-//     },
-//   ],
-//   newNode: {
-//     text: 'Sample Text',
-//     text_color: '#000',
-//     text_size: 24,
-//     font_weight: 'medium',
-//   },
-//   template: {
-//     type: 'container',
-//     orientation: 'vertical', // Aligns items vertically
-//     items: [
-//       {
-//         type: 'image',
-//         image_url: 'image_url', // Placeholder for actual image URL
-//         width: {
-//           type: 'fixed',
-//           value: 100,
-//           unit: 'sp',
-//         },
-//         height: {
-//           type: 'fixed',
-//           value: 100,
-//           unit: 'sp',
-//         },
-//         margins: {
-//           bottom: 8,
-//         },
-//       },
-//       {
-//         type: 'text',
-//         $text: 'text',
-//         $text_color: 'text_color',
-//         $font_size: 'text_size',
-//         line_height: 32,
-//         $font_weight: 'font_weight',
-//         width: {
-//           type: 'wrap_content',
-//           constrained: true,
-//         },
-//       },
-//     ],
-//   },
-// }
 
+  _template_back: {
+    nameKey: 'templates.back',
+    visible: true,
+    inShortList: true,
+    icon: backIcon,
+    props: [
+      {
+        type: 'group',
+        title: 'backProps.title',
+        list: [
+          {
+            name: 'color',
+            prop: 'tint_color',
+            type: 'color',
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+          },
+        ],
+      },
+    ],
+    newNode: {
+      alignment_horizontal: 'left',
+      height: { type: 'fixed', value: 28 },
+      margins: { top: 20, left: 24 },
+      width: { type: 'fixed', value: 28 },
+      actions: [
+        {
+          log_id: 'back_button',
+          url: 'xplore-promote://backBtn',
+        },
+      ]
+    },
+    template: {
+      accessibility: {
+        description: 'Back',
+        mode: 'merge',
+        type: 'button',
+      },
+      actions: [
+        {
+          log_id: 'back_button',
+          url: 'xplore-promote://backBtn',
+        },
+      ],
+      image_url:
+        'https://objectstore.e2enetworks.net/xplore/1732611449421-a4145e328273d3ae.png',
+      tint_color: '#000',
+      type: 'image',
+      preload_required: true,
+    },
+  },
+
+
+  _template_map: {
+    nameKey: 'templates.map',
+    visible: true,
+    inShortList: true,
+    inlineTextEditorProp: 'text',
+    icon: buttonIcon, // You may want to create a specific map icon
+    props: [
+      {
+        type: 'group',
+        title: 'mapProps.title',
+        list: [
+          {
+            name: 'props.text',
+            prop: 'text',
+            type: 'string',
+            enableTanker: true,
+            enableSources: true,
+            default: 'View on Map',
+          },
+          {
+            name: 'props.latitude',
+            prop: 'latitude',
+            type: 'number',
+            enableSources: true,
+            default: 0,
+          },
+          {
+            name: 'props.longitude',
+            prop: 'longitude',
+            type: 'number',
+            enableSources: true,
+            default: 0,
+          },
+          {
+            type: 'split',
+            list: [
+              {
+                name: 'props.font_size',
+                prop: 'font_size',
+                type: 'integer',
+                min: 1,
+                max: 1000,
+                enableSources: true,
+              },
+              {
+                name: 'props.line_height',
+                prop: 'line_height',
+                type: 'integer',
+                min: 0,
+                max: 1000,
+                enableSources: true,
+              },
+            ],
+          },
+          {
+            name: 'props.font_weight',
+            prop: 'font_weight',
+            type: 'select',
+            options: [
+              {
+                name: 'props.font_weight_light',
+                value: 'light',
+              },
+              {
+                name: 'props.font_weight_normal',
+                value: 'regular',
+              },
+              {
+                name: 'props.font_weight_medium',
+                value: 'medium',
+              },
+              {
+                name: 'props.font_weight_bold',
+                value: 'bold',
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: 'props.text_color',
+            prop: 'text_color',
+            type: 'color',
+            enableSources: true,
+          },
+          {
+            name: 'props.corners',
+            prop: 'corners',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+          },
+        ],
+      },
+    ],
+    newNode: {
+      text: 'View on Map',
+      latitude: 0,
+      longitude: 0,
+      background: [
+        {
+          type: 'solid',
+          color: '#000',
+        },
+      ],
+      text_color: '#fff',
+      corners: 8,
+      actions: [
+        {
+          log_id: "open_map",
+          url: "https://www.google.com/maps?q=0,0",
+          _template_map: true,
+        }
+      ]
+    },
+    template: {
+      type: 'text',
+      $latitude: 'latitude',  // Add this
+      $longitude: 'longitude',
+      $text: 'text',
+      text_alignment_horizontal: 'center',
+      text_alignment_vertical: 'center',
+      border: { $corner_radius: 'corners' },
+      paddings: {
+        bottom: 15,
+        left: 22,
+        right: 22,
+        top: 15,
+      },
+      width: { type: 'wrap_content' },
+      $actions: [{
+        log_id: "open_map",
+        url: {
+          type: 'expression',
+          value: 'https://www.google.com/maps?q=' + '$latitude' + ',' + '$longitude'
+        },
+        _template_map: true
+      }]
+    },
+  },
+  _template_contact_us: {
+    nameKey: 'templates.contact_us',
+    visible: true,
+    inShortList: true,
+    inlineTextEditorProp: 'text',
+    icon: buttonIcon, // You may want to create a specific map icon
+    props: [
+      {
+        type: 'group',
+        title: 'contactUsProps.title',
+        list: [
+          {
+            name: 'props.text',
+            prop: 'text',
+            type: 'string',
+            enableTanker: true,
+            enableSources: true,
+            default: 'View on Map',
+          },
+          {
+            type: 'split',
+            list: [
+              {
+                name: 'props.font_size',
+                prop: 'font_size',
+                type: 'integer',
+                min: 1,
+                max: 1000,
+                enableSources: true,
+              },
+              {
+                name: 'props.line_height',
+                prop: 'line_height',
+                type: 'integer',
+                min: 0,
+                max: 1000,
+                enableSources: true,
+              },
+            ],
+          },
+          {
+            name: 'props.font_weight',
+            prop: 'font_weight',
+            type: 'select',
+            options: [
+              {
+                name: 'props.font_weight_light',
+                value: 'light',
+              },
+              {
+                name: 'props.font_weight_normal',
+                value: 'regular',
+              },
+              {
+                name: 'props.font_weight_medium',
+                value: 'medium',
+              },
+              {
+                name: 'props.font_weight_bold',
+                value: 'bold',
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: 'props.text_color',
+            prop: 'text_color',
+            type: 'color',
+            enableSources: true,
+          },
+          {
+            name: 'props.corners',
+            prop: 'corners',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+          },
+        ],
+      },
+    ],
+    newNode: {
+      text: 'Contact Us',
+      background: [
+        {
+          type: 'solid',
+          color: '#000',
+        },
+      ],
+      text_color: '#fff',
+      corners: 8,
+      actions: [
+        {
+          log_id: "contact_us",
+          url: "div-screen://open?id=contact_us_screen",
+        }
+      ]
+    },
+    template: {
+      type: 'text',
+      $latitude: 'latitude',  // Add this
+      $longitude: 'longitude',
+      $text: 'text',
+      text_alignment_horizontal: 'center',
+      text_alignment_vertical: 'center',
+      border: { $corner_radius: 'corners' },
+      paddings: {
+        bottom: 15,
+        left: 22,
+        right: 22,
+        top: 15,
+      },
+      width: { type: 'wrap_content' },
+      $actions: [{
+        log_id: "open_map",
+        url: {
+          type: 'expression',
+          value: 'https://www.google.com/maps?q=' + '$latitude' + ',' + '$longitude'
+        },
+        _template_map: true
+      }]
+    },
+  },
+
+  _template_native_signup: {
+    nameKey: 'templates.native_signup',
+    visible: true,
+    inShortList: true,
+    icon: buttonIcon,
+    description: { en: 'Native authentication button (Google/Apple Sign In)' },
+    props: [
+      {
+        type: 'group',
+        title: 'authProps.title',
+        list: [
+          {
+            name: 'props.auth_type',
+            prop: 'auth_type',
+            type: 'select',
+            options: [
+              {
+                name: 'props.auth_type_all',
+                value: 'all',
+              },
+              {
+                name: 'props.auth_type_google',
+                value: 'google',
+              },
+              {
+                name: 'props.auth_type_apple',
+                value: 'apple',
+              },
+            ],
+            default: 'all',
+            enableSources: true,
+          },
+          {
+            name: 'props.text',
+            prop: 'text',
+            type: 'string',
+            default: 'Sign in',
+            enableSources: true,
+          },
+          {
+            name: 'props.background',
+            prop: 'background_color',
+            type: 'color',
+            default: '#2C3E50',
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+          },
+        ],
+      },
+    ],
+    newNode: {
+      auth_type: 'all',
+      text: 'Sign in',
+      background_color: '#2C3E50',
+      custom_props: {
+        $text: 'text',
+        $background: 'background',
+        $auth_type: 'auth_type'
+      },
+      actions: [
+        {
+          log_id: "native_auth",
+          url: "xplorePromote://native-auth://authenticate",
+        }
+      ]
+    },
+    template: {
+      type: 'custom',
+      custom_type: 'native_auth',
+      alignment_horizontal: 'center',
+      alignment_vertical: 'center',
+      custom_props: {
+        $text: 'text',
+        $background: 'background',
+        $auth_type: 'auth_type'
+      },
+      $actions: 'actions'
+    },
+  },
+  button_template: {
+    nameKey: 'templates.button',
+
+    visible: true,
+    inShortList: false,
+    icon: buttonIcon,
+    description: { en: 'Button component' },
+    props: [
+      {
+        type: 'group',
+        title: 'buttonProps.title',
+        list: [
+          {
+            name: 'props.text',
+            prop: 'text',
+            type: 'string',
+            default: 'Button',
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+          },
+          {
+            name: 'props.animation_action',
+            prop: 'animation_action',
+            type: 'select',
+            options: [],
+            default: 'none',
+            enableSources: true,
+          }
+        ]
+      }
+    ],
+    newNode: {
+      text: 'Button',
+
+      animation_action: 'none',
+      actions: []
+    },
+    template: {
+
+      type: "text",
+      text_alignment_horizontal: "center",
+      text_alignment_vertical: "center",
+      border: {
+        $corner_radius: "corners",
+      },
+      paddings: {
+        bottom: 24,
+        left: 28,
+        right: 28,
+        top: 22,
+      },
+      width: {
+        type: "wrap_content",
+      },
+    }
+  },
+  _template_checkbox: {
+    nameKey: 'templates.checkbox',
+    visible: true,
+    inShortList: true,
+    icon: listIcon,
+    description: { en: 'Customizable checkbox component' },
+    props: [
+      {
+        type: 'group',
+        title: 'checkboxProps.title',
+        list: [
+          {
+            name: 'props.initial_state',
+            prop: 'initial_state',
+            type: 'select',
+            default: 'unchecked',
+            options: [
+              {
+                name: 'props.state_unchecked',
+                value: 'unchecked',
+              },
+              {
+                name: 'props.state_checked',
+                value: 'checked',
+              }
+            ],
+            enableSources: true,
+          },
+          {
+            name: 'props.size',
+            prop: 'size',
+            type: 'number',
+            default: 24,
+            min: 16,
+            max: 48,
+            enableSources: true,
+          },
+          {
+            name: 'props.label',
+            prop: 'label_text',
+            type: 'string',
+            enableTanker: true,
+            enableSources: true,
+          },
+          {
+            name: 'props.label_color',
+            prop: 'label_color',
+            type: 'color',
+            enableSources: true,
+          },
+          {
+            name: 'props.font_size',
+            prop: 'font_size',
+            type: 'number',
+            default: 14,
+            enableSources: true,
+          },
+          {
+            name: 'props.checked_color',
+            prop: 'checked_color',
+            type: 'color',
+            default: '#3F28C3',
+            enableSources: true,
+          },
+          {
+            name: 'props.unchecked_color',
+            prop: 'unchecked_color',
+            type: 'color',
+            default: '#FFFFFF',
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+            sizeValue: 'width',
+          },
+        ],
+      }
+    ],
+    newNode: {
+      type: '_template_checkbox',
+      initial_state: 'unchecked',
+      size: 20,
+      label_text: 'Checkbox Label',
+      label_color: '#000000',
+      font_size: 14,
+      checked_color: '#3F28C3',
+      unchecked_color: '#FFFFFF',
+      actions: []
+    },
+    template: {
+      type: 'state',
+      id: 'checkbox_state',
+      states: [
+        {
+          state_id: 'unchecked',
+          div: {
+            type: 'container',
+            orientation: 'horizontal',
+            items: [
+              {
+                type: 'container',
+                width: { type: 'fixed', $value: 'size' },
+                height: { type: 'fixed', $value: 'size' },
+                border: {
+                  corner_radius: 4,
+                  stroke: {
+                    color: '#CCCCCC',
+                    width: 2
+                  }
+                },
+                background: [
+                  {
+                    type: 'solid',
+                    $color: 'unchecked_color'
+                  }
+                ],
+                actions: [
+                  {
+                    "log_id": "update_checkbox_state",
+                    "url": "div-action://set_variable?name=checkbox_variable&value=true"
+                  },
+                  {
+                    log_id: 'toggle_checkbox',
+                    url: 'div-action://set_state?state_id=0/checkbox_state/checked'
+                  }
+
+                ]
+              },
+              {
+                type: 'text',
+                $text: 'label_text',
+                $font_size: 'font_size',
+                $text_color: 'label_color',
+                margins: { left: 8 },
+                width: { type: 'wrap_content' },
+                height: { type: 'wrap_content' }
+              }
+            ]
+          }
+        },
+        {
+          state_id: 'checked',
+          div: {
+            type: 'container',
+            orientation: 'horizontal',
+            items: [
+              {
+                type: 'container',
+                width: { type: 'fixed', $value: 'size' },
+                height: { type: 'fixed', $value: 'size' },
+                border: {
+                  corner_radius: 4,
+                  stroke: {
+                    color: '#3F28C3',
+                    width: 2
+                  }
+                },
+                background: [
+                  {
+                    type: 'solid',
+                    $color: 'checked_color'
+                  }
+                ],
+                items: [
+                  {
+                    type: 'text',
+                    text: '✓',
+                    text_color: '#FFFFFF',
+                    font_size: 16,
+                    text_alignment_horizontal: 'center',
+                    text_alignment_vertical: 'center',
+                    width: { type: 'match_parent' },
+                    height: { type: 'match_parent' }
+                  }
+                ],
+                actions: [
+                  {
+                    "log_id": "update_checkbox_state",
+                    "url": "div-action://set_variable?name=checkbox_variable&value=false"
+                  },
+                  {
+                    log_id: 'toggle_checkbox',
+                    url: 'div-action://set_state?state_id=0/checkbox_state/unchecked'
+                  }
+
+                ]
+              },
+              {
+                type: 'text',
+                $text: 'label_text',
+                $font_size: 'font_size',
+                $text_color: 'label_color',
+                margins: { left: 8 },
+                width: { type: 'wrap_content' },
+                height: { type: 'wrap_content' }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+  ,
 
 };
 

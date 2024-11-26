@@ -6,6 +6,7 @@
     import { APP_CTX, type AppContext } from '../../ctx/appContext';
 
     export let value: Action;
+    export let isTemplateMap = false;
 
     const { l10n, lang } = getContext<LanguageContext>(LANGUAGE_CTX);
     const { state, actions2Dialog } = getContext<AppContext>(APP_CTX);
@@ -18,8 +19,13 @@
     let text = '';
 
     function updateVal(value: Action): void {
-        const parsed = parseAction(value?.url, $customActions);
+        if (isTemplateMap) {
+            type = 'Map Location';
+            text = `Lat: ${value.lat}, Long: ${value.long}`;
+            return;
+        }
 
+        const parsed = parseAction(value?.url, $customActions);
         type = '';
 
         if (parsed.type === 'url') {
@@ -35,12 +41,13 @@
     }
 
     $: updateVal(value);
-
+    console.log("template map", isTemplateMap);
     function onClick(): void {
         actions2Dialog().show({
             value,
             target: elem,
             readOnly: $readOnly,
+            isTemplateMap,
             callback(newValue) {
                 value = newValue;
                 dispatch('change');

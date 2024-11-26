@@ -144,6 +144,7 @@ export interface ColorProperty extends BaseProperty {
 
 export interface Actions2Property extends BaseProperty {
     type: 'actions2';
+    _template_map?: boolean;
 }
 
 export interface VideoSourcesProperty extends BaseProperty {
@@ -153,6 +154,11 @@ export interface VideoSourcesProperty extends BaseProperty {
 export interface FileProperty extends BaseProperty {
     type: 'file';
     subtype: 'image' | 'gif' | 'lottie' | 'image_preview';
+}
+
+export interface MapProperty extends BaseProperty {
+    type: 'boolean';
+    _template_map: boolean;
 }
 
 export interface AlignmentProperty extends BaseProperty {
@@ -177,23 +183,24 @@ export interface TextStylesProperty extends BaseProperty {
     type: 'text-styles';
 }
 
-export interface GroupProperty {
+export interface GroupProperty extends BaseProperty {
     type: 'group';
     title?: string;
     rawTitle?: string;
     list: ComponentProperty[];
 }
 
-export interface SplitProperty {
+export interface SplitProperty extends BaseProperty {
     type: 'split';
     list: [ComponentProperty, ComponentProperty];
 }
+
 
 export type ComponentProperty = RadioProperty | IntegerProperty | BooleanProperty | SelectProperty |
     PercentProperty | RotationProperty | StringProperty |
     ColorProperty | FileProperty | GroupProperty | SplitProperty | AlignmentProperty |
     MarginsPaddingsProperty | Background2Property | TextAlignProperty | TextStylesProperty |
-    Actions2Property | VideoSourcesProperty | NumberProperty |ArrayProperty;
+    Actions2Property | VideoSourcesProperty | NumberProperty | ArrayProperty | MapProperty;
 
 export type SiblingComponentProperty = ComponentProperty & {
     related?: {
@@ -201,6 +208,13 @@ export type SiblingComponentProperty = ComponentProperty & {
         value: string;
     }[];
 }
+// const storedVariables = JSON.parse(localStorage.getItem('variables') || '[]');
+// console.log("storedVariables line 212:", storedVariables);
+// const variables = storedVariables.map((variable: {name: string}) => ({
+//     text: variable.name || '', // Ensure text is never undefined
+//     value: variable.name || '' // Ensure value is never undefined
+// })) || []; // Fallback to empty array if map fails
+// console.log("Variables after mapping line 216:", variables);
 
 export const BASE_COMPONENT_PROPS: ComponentProperty[] = [{
     type: 'group',
@@ -477,7 +491,8 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
         list: [{
             name: 'props.actions',
             prop: 'actions',
-            type: 'actions2'
+            type: 'actions2',
+            _template_map: true
         }]
     }],
     input: [...BASE_COMPONENT_PROPS, {
@@ -541,8 +556,10 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
             prop: 'text_color',
             type: 'color',
             enableSources: true
-        }],
+        },
+        ],
     },
+   
     {
         name: 'props.keyboard_type',
         prop: 'keyboard_type',
@@ -634,6 +651,19 @@ image: [...BASE_COMPONENT_PROPS,
             horizontalProp: 'content_alignment_horizontal',
             verticalProp: 'content_alignment_vertical',
             enableSources: true
+        }],
+   
+    },
+    {
+        type: 'group',
+        title: 'props.border',
+        list: [{
+            name: 'props.corners',
+            prop: 'border.corner_radius',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
         }]
     },
     {
@@ -761,6 +791,26 @@ image: [...BASE_COMPONENT_PROPS,
             orientationProp: 'orientation',
             isContent: true
         },
+        {
+            type: 'group',
+            title: 'props.actions',
+            list: [{
+                name: 'props.actions',
+                prop: 'actions',
+                type: 'actions2'
+            }]
+        },{
+            type: 'group',
+            title: 'props.border',
+            list: [{
+                name: 'props.corners',
+                prop: 'border.corner_radius',
+                type: 'integer',
+                min: 0,
+                max: 100,
+                enableSources: true,
+            }]
+        }
        
     
     ],

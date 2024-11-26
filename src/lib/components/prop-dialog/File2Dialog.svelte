@@ -10,6 +10,7 @@
     import loaderImage from '../../../assets/loader.svg?raw';
     import trashIcon from '../../../assets/trash.svg?raw';
     import { loadFileAsBase64 } from '../../utils/loadFileAsBase64';
+  import axios from 'axios';
 
     const { l10nString } = getContext<LanguageContext>(LANGUAGE_CTX);
     const {  previewWarnFileLimit, previewErrorFileLimit } = getContext<AppContext>(APP_CTX);
@@ -156,39 +157,45 @@
             return it.type && FILE_FILTER_SETS[commonSubtype] && FILE_FILTER_SETS[commonSubtype].has(it.type);
         });
     }
-   async function uploadFile(file: File): Promise<string> {
+
+async function uploadFile(file: File): Promise<string> {
     console.log("Upload triggered");
-    
+
     const formData = new FormData();
     formData.append('files', file);
+
     const url = 'https://pre.xplore.xircular.io/api/v1/content/uploadContent';
-    let token = localStorage.getItem('accessToken')
-    let session = localStorage.getItem('channel')
+    const token = localStorage.getItem('accessToken') || '';
+    const session = localStorage.getItem('channel') || '';
 
     try {
-        const response = await fetch(url, {
-            method: 'POST',
+        const response = await axios.post(url, formData, {
             headers: {
-                'authorization': `${token}`,
-                'session': `${session}`
+                'authorization': token,
+                'session': session,
             },
-            body: formData
         });
 
-        if (!response.ok) {
-            throw new Error(`Upload failed: ${response.statusText}`);
-        }
-      
-        
-        const data: UploadResponse = await response.json();
-        console.log("data", data);
-        
-        return data?.data[0]?.cdnUrl;
-    } catch (error) {
+        console.log("Response data:", response.data);
+
+        // Ensure the expected data structure is returned
+        return response.data?.data?.newUploads[0]?.cdnUrl || '';
+    } catch (error: any) {
         console.error('Upload error:', error);
+
+        // Provide more details about the error
+        if (error.response) {
+            console.error('Server responded with:', error.response.data);
+        } else if (error.request) {
+            console.error('No response received:', error.request);
+        } else {
+            console.error('Error setting up request:', error.message);
+        }
+        
         throw error;
     }
 }
+
 
     function onFilesChange(event: Event): void {
         const input = event.target as HTMLInputElement;
@@ -334,12 +341,12 @@
                 </div>
 
                 {#if showError}
-                    <div
+                    <!-- <div
                         class="file2-dialog__error"
                         class:file2-dialog__error_warn={showError === 'big-warn'}
                     >
                         {$l10nString((showError === 'big' || showError === 'big-warn') ? 'file.too_big' : `file.${commonSubtype}_error`)}
-                    </div>
+                    </div> -->
                 {/if}
 
                 <Text

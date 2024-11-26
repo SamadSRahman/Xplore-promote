@@ -54,7 +54,7 @@ const PublishAndPreview = () => {
             />
           </div>
                <div className={styles.linkWrapper}>
-            <a target="_blank" href={`https://pre.xplore.xircular.io/campaign/${campaignId}`}>
+            <a target="_blank" href={`${window.location.origin}/campaign/${campaignId}`}>
               Click here to visit your campaign
             </a>
             <div className={styles.btnDiv}>

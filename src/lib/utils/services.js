@@ -9,3 +9,15 @@ export function getScreenName(path){
 
     return newPath
 }
+
+export const isContactUs = () => {
+    const screens = localStorage.getItem("screens")
+    if(screens){
+        const screensArray = JSON.parse(screens)
+        const contactUsScreen = screensArray.find((ele) => ele.path === "contact_us_screen")
+        if(contactUsScreen){
+            return true
+        }
+    }
+    return false
+}

@@ -161,12 +161,22 @@
           "$ref": "div-aspect.json",
           "$description": "translations.json#/div_container_aspect"
         },
+
         "clip_to_bounds": {
           "$ref": "common.json#/boolean_int",
           "default_value": "true",
           "$description": "translations.json#/div_clip_to_bounds",
           "platforms": [
             "android",
+            "ios",
+            "web"
+          ]
+        },
+        "border": {
+  "$ref": "div-border.json",
+  "$description": "translations.json#/div_corners_radius",
+  "platforms": [
+    "android",
             "ios",
             "web"
           ]

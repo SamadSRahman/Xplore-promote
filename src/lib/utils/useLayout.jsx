@@ -7,18 +7,19 @@
 /* eslint-disable quotes */
 /* eslint-disable indent */
 import axios from "axios";
-import { useState } from "react";
-import {  getScreenPath } from "./services";
+import { useEffect, useState } from "react";
+import {  getScreenName, getScreenPath } from "./services";
 
 export default function useLayout() {
     const channel = localStorage.getItem("channel");
     const [layouts, setLayouts] = useState([])
     const token = localStorage.getItem("accessToken");
     const [isLayoutCreated, setIsLayoutCreated] = useState(false)
+    const [screens, setScreens] = useState([])
 
 
 
-    const createLayout = async (jsonData, campaignId, page) => {
+    const createLayout = async (jsonData, campaignId, page, isInitial) => {
         try {
             const response = await fetch(
                 `https://pre.xplore.xircular.io/api/v1/layout/create/${campaignId}`,
@@ -31,7 +32,8 @@ export default function useLayout() {
                     },
                     body: JSON.stringify({
                         name: getScreenPath(page),
-                        layoutJSON: JSON.parse(jsonData)
+                        layoutJSON: JSON.parse(jsonData),
+                        isInitial: isInitial?true:false
                     }),
                 }
             );
@@ -51,6 +53,9 @@ export default function useLayout() {
     };
 
     const deleteLayout = async (id)=>{
+        if (!window.confirm('Are you sure you want to delete this screen?')) {
+            return;
+        }
         try {
             const response = await axios.delete(`https://pre.xplore.xircular.io/api/v1/layout/delete/${id}`,{
                 headers: {
@@ -94,21 +99,63 @@ export default function useLayout() {
         }
     };
 
-    const getAllLayout = async (id)=>{
+    const setInitialLayout = async (id, campaignId) => {
         try {
-            const response = await axios.get(`https://pre.xplore.xircular.io/api/v1/layout/getAll/${id}`)
-            console.log(response)
-            setLayouts(response.data.layouts)
+            const response = await axios.put(
+                `https://pre.xplore.xircular.io/api/v1/layout/update/${id}`,
+                {
+                    isInitial: true
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: token,
+                        session: channel
+                    }
+                }
+            );
+            console.log("Response:", response.data);
+            alert("Screen set as initial successfully");
+            getAllLayout(campaignId);
         } catch (error) {
-            console(error)
+            console.error("Error setting initial layout:", error);
         }
     }
+
+    const getAllLayout = async (id)=>{
+        console.log("id line 101", id);
+        
+        try {
+            const response = await axios.get(`https://pre.xplore.xircular.io/api/v1/layout/getAll/${id}`)
+            console.log(response.data.layouts)
+            setLayouts(response.data.layouts)
+            const campaignScreens = response.data.layouts.map(ele=>ele);
+            
+        const formattedScreens = campaignScreens.map(screen => ({
+            name: getScreenName(screen.name),
+            path: getScreenPath(screen.name),
+            id: screen.layoutID,
+            isInitial: screen.isInitial
+        }));
+        console.log(formattedScreens);
+        setScreens(formattedScreens)
+        localStorage.setItem('screens', JSON.stringify(formattedScreens))
+          
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(()=>{
+        console.log("layouts line 122", layouts);
+    },[layouts])
     return {
         updateLayout,
         createLayout,
         getAllLayout,
         deleteLayout,
+        setInitialLayout,
         layouts,
         isLayoutCreated,
+        screens
     };
 }

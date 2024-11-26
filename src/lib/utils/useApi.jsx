@@ -27,6 +27,7 @@ export default function useApi() {
   const [landingScreenLayout, setLandingScreenLayout] = useState(
     JSON.stringify(blankBackgroundJSON)
   );
+  const [isBusinessUser, setIsBusinessUser] = useState(false);
   // const [layoutId, setLayoutId] = useState('');
   const [splashScreenId, setSplashScreenId] = useState("");
   const [landingScreenId, setLandingScreenId] = useState("");
@@ -50,6 +51,7 @@ export default function useApi() {
     console.log("response", response);
     localStorage.setItem("user", JSON.stringify(response.data.data));
     setName(response.data.data.name);
+    setIsBusinessUser(response.data.data.isBusinessUser);
   };
   const getCampaigns = async () => {
     const token = localStorage.getItem("accessToken");
@@ -198,6 +200,7 @@ export default function useApi() {
     updateLayout,
     deleteCampaign,
     createLayout,
+    isBusinessUser,
     name,
     campaigns,
     splashScreenLayout,
