@@ -156,9 +156,9 @@ export default function Campaigns() {
           <div className={styles.contentSection}>
             <h4>Create campaign</h4>
             <p>Want to get more reach, create your event</p>
-         {   isBusinessUser && <button onClick={() => navigate('/createCampaign')}>
+          <button onClick={() => navigate('/createCampaign')}>
               Create your campaign
-            </button>}
+            </button>
           </div>
         </div>
       </div>
