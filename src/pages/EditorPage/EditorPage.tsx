@@ -24,8 +24,8 @@ import PreviewScreen from '../../components/PreviewScreen';
 
 const EditorPage = () => {
   const { campaignId, page } = useParams();
-  const { getCampaignById, currentLayout, layoutId, screens } = useCampaign();
-  const { updateLayout, createLayout, getAllLayout } = useLayout();
+  const { getCampaignById, currentLayout, layoutId,  } = useCampaign();
+  const { updateLayout, createLayout, getAllLayout, getAllLayoutNames, screens } = useLayout();
   const navigate = useNavigate();
   const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
@@ -42,6 +42,7 @@ const EditorPage = () => {
     }
     if (campaignId) {
       getCampaignById(campaignId, page);
+      getAllLayoutNames(campaignId);
       if (page === "quiz_screen") {
         handleAddQuestion();
       }
@@ -182,7 +183,6 @@ const EditorPage = () => {
         },
       },
     }));
-    console.log('editor', editor);
     setEditorInstance(editor);
     return () => {
       // Clean up the editor if necessary
@@ -194,15 +194,16 @@ const EditorPage = () => {
 
   async function handleQuiz(json: string) {
     const jsonData = JSON.parse(json);
-    console.log("line 193", jsonData.card.variables);
     localStorage.setItem("variables", JSON.stringify(jsonData.card.variables));
     const quizComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_quiz");
     const contactUsComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_template_contact_us");
     if(contactUsComponent){
-      console.log("contactUsComponent line 198", contactUsComponent, isContactUs());
       if(!isContactUs()){
         await createLayout(JSON.stringify(contactUsJSON), campaignId, "contact_us_screen");
+        await getAllLayoutNames(campaignId);
         await getAllLayout(campaignId);
+        console.log("line 204",screens);
+        
       }
     }
     if (screens.find((ele: { path: string }) => ele.path === "quiz_screen") === undefined) {
@@ -228,8 +229,6 @@ const EditorPage = () => {
     try {
       const currentJSON = editorInstance.getValue();
       setJsonContent(currentJSON);
-      console.log("line 243", layoutId);
-
       await updateLayout(layoutId, currentJSON, page, campaignId);
     } catch (error) {
       console.error('Error handling JSON:', error);
@@ -238,7 +237,8 @@ const EditorPage = () => {
 
 
   function refreshScreenNames() {
-    getCampaignById(campaignId, page)
+    console.log("refreshScreenNames");
+    getAllLayout(campaignId)
   }
   const handleQuizSubmit = (quizData: any) => {
     const currentJson = JSON.parse(editorInstance.getValue());

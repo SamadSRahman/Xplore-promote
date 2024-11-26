@@ -113,7 +113,6 @@ const createTemplate = (props: TemplateProps): Record<string, unknown> => {
   };
 };
 const screens = JSON.parse(localStorage.getItem('screens') || '[]').map((screen: { name: string, path: string }) => ({ name: screen.name, value: screen.path }))
-console.log("screens", screens);
 
 export const namedTemplates: Record<string, TemplateDescription> = {
 
@@ -857,7 +856,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       actions: [
         {
           log_id: "contact_us",
-          url: "div-screen://open?id=contact_us_screen",
+          url: "xplore-promote://open?screen_name=contact_us_screen",
         }
       ]
     },
@@ -1151,7 +1150,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
                 actions: [
                   {
                     "log_id": "update_checkbox_state",
-                    "url": "div-action://set_variable?name=checkbox_variable&value=true"
+                    "url": "div-action://set_variable?name=isCheckboxChecked&value=true"
                   },
                   {
                     log_id: 'toggle_checkbox',
@@ -1210,7 +1209,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
                 actions: [
                   {
                     "log_id": "update_checkbox_state",
-                    "url": "div-action://set_variable?name=checkbox_variable&value=false"
+                    "url": "div-action://set_variable?name=isCheckboxChecked&value=false"
                   },
                   {
                     log_id: 'toggle_checkbox',

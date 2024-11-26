@@ -41,7 +41,6 @@
       description: it.description,
     };
   });
-  console.log('extraItems', basicItems, extraItems)
   basicItems.concat(extraItems);
 
   function onDragStart(event: DragEvent, type: string): void {

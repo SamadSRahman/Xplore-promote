@@ -18,7 +18,6 @@
     export let mix = '';
     export let title = '';
     export let multiple = false;
-    console.log("items", items);
     
     const id = 'select' + Math.random();
 
@@ -32,7 +31,7 @@
     let toggled = false;
     let node: HTMLElement;
     let control: HTMLElement;
-    console.log("items line 34:", items);
+
 
     function move(by: number): void {
         let index = items.findIndex(item => item.value === value);

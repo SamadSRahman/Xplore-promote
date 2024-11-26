@@ -23,11 +23,6 @@
     }
   }
   let pathname: any;
-  onMount(() => {
-    pathname = window.location.pathname;
-    let campaignId = pathname.split('/')[2];
-    console.log('pathname', campaignId);
-  });
 
 
 

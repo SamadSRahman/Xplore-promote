@@ -737,7 +737,7 @@ export const contactUsJSON = {
           "height": {
             "type": "match_parent"
           },
-          "orientation": "vertical",
+          "orientation": "overlap",
           "type": "container",
           "items": [
             {
@@ -746,31 +746,13 @@ export const contactUsJSON = {
                 "type": "fixed",
                 "value": 248
               },
-              "text_variable": "userName",
+              "text_variable": "name",
               "alignment_horizontal": "center",
               "alignment_vertical": "top",
               "hint_text": "Name",
               "margins": {
-                "top": 200,
-                "right": 16,
-                "bottom": 0,
-                "left": 16
+                "top": 148
               }
-            },
-            {
-              "type": "input_text",
-              "width": {
-                "type": "fixed",
-                "value": 248
-              },
-              "text_variable": "email",
-              "alignment_horizontal": "center",
-              "alignment_vertical": "top",
-              "margins": {
-                "top": 50
-              },
-              "hint_text": "Email",
-              "keyboard_type": "email"
             },
             {
               "type": "input_text",
@@ -782,13 +764,28 @@ export const contactUsJSON = {
               "alignment_horizontal": "center",
               "alignment_vertical": "top",
               "margins": {
-                "top": 50
+                "top": 216
               },
               "hint_text": "Phone",
               "keyboard_type": "number"
             },
             {
-              "text": "Register",
+              "type": "input_text",
+              "width": {
+                "type": "fixed",
+                "value": 248
+              },
+              "text_variable": "email",
+              "alignment_horizontal": "center",
+              "alignment_vertical": "top",
+              "margins": {
+                "top": 283
+              },
+              "hint_text": "Email",
+              "keyboard_type": "email"
+            },
+            {
+              "text": "Submit",
               "background": [
                 {
                   "type": "solid",
@@ -804,19 +801,20 @@ export const contactUsJSON = {
               "alignment_horizontal": "center",
               "alignment_vertical": "top",
               "margins": {
-                "top": 50,
+                "left": 20,
                 "right": 20,
-                "left": 20
+                "top": 412
               },
               "actions": [
                 {
                   "log_id": "action_id",
-                  "url": "xplore-promote://submit?userName=@{userName}&email=@{email}&phone=@{phone}",
-                  "log_url": "xplore-promote://submit?userName=@{userName}&email=@{email}&phone=@{phone}",
+                  "url": "xplore-promote://submit?name=@{name}&email=@{email}&phone=@{phone}&isCheckboxChecked=@{isCheckboxChecked}",
+                  "log_url": "xplore-promote://submit?name=@{name}&email=@{email}&phone=@{phone}&isCheckboxChecked=@{isCheckboxChecked}",
                   "selected_variables": [
-                    "userName",
+                    "name",
                     "email",
-                    "phone"
+                    "phone",
+                    "isCheckboxChecked"
                   ]
                 }
               ],
@@ -827,7 +825,51 @@ export const contactUsJSON = {
                 "left": 20
               },
               "font_size": 18,
-              "font_weight": "medium"
+              "font_weight": "medium",
+              "text_alignment_horizontal": "center"
+            },
+            {
+              "type": "_template_checkbox",
+              "initial_state": "unchecked",
+              "size": 20,
+              "label_text": "I agree with the terms and conditions",
+              "label_color": "#000000",
+              "font_size": 14,
+              "checked_color": "#3F28C3",
+              "unchecked_color": "#FFFFFF",
+              "actions": [],
+              "width": {
+                "type": "wrap_content",
+                "constrained": true
+              },
+              "margins": {
+                "top": 353
+              },
+              "items": [],
+              "alignment_horizontal": "center"
+            },
+            {
+              "alignment_horizontal": "left",
+              "height": {
+                "type": "fixed",
+                "value": 28
+              },
+              "margins": {
+                "left": 20,
+                "top": 20
+              },
+              "width": {
+                "type": "fixed",
+                "value": 28
+              },
+              "actions": [
+                {
+                  "log_id": "back_button",
+                  "url": "xplore-promote://backBtn"
+                }
+              ],
+              "type": "_template_back",
+              "alignment_vertical": "top"
             }
           ],
           "content_alignment_horizontal": "center",
@@ -854,7 +896,7 @@ export const contactUsJSON = {
       },
       {
         "type": "string",
-        "name": "userName",
+        "name": "name",
         "value": ""
       },
       {
@@ -866,6 +908,11 @@ export const contactUsJSON = {
         "type": "string",
         "name": "phone",
         "value": ""
+      },
+      {
+        "type": "boolean",
+        "name": "isCheckboxChecked",
+        "value": false
       }
     ]
   },
@@ -967,6 +1014,161 @@ export const contactUsJSON = {
       "image_url": "https://yastatic.net/s3/home/div/div_fullscreens/cross2.3.png",
       "tint_color": "#73000000",
       "type": "image"
+    },
+    "_template_checkbox": {
+      "type": "state",
+      "id": "checkbox_state",
+      "states": [
+        {
+          "state_id": "unchecked",
+          "div": {
+            "type": "container",
+            "orientation": "horizontal",
+            "items": [
+              {
+                "type": "container",
+                "width": {
+                  "type": "fixed",
+                  "$value": "size"
+                },
+                "height": {
+                  "type": "fixed",
+                  "$value": "size"
+                },
+                "border": {
+                  "corner_radius": 4,
+                  "stroke": {
+                    "color": "#CCCCCC",
+                    "width": 2
+                  }
+                },
+                "background": [
+                  {
+                    "type": "solid",
+                    "$color": "unchecked_color"
+                  }
+                ],
+                "actions": [
+                  {
+                    "log_id": "update_checkbox_state",
+                    "url": "div-action://set_variable?name=isCheckboxChecked&value=true"
+                  },
+                  {
+                    "log_id": "toggle_checkbox",
+                    "url": "div-action://set_state?state_id=0/checkbox_state/checked"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "$text": "label_text",
+                "$font_size": "font_size",
+                "$text_color": "label_color",
+                "margins": {
+                  "left": 8
+                },
+                "width": {
+                  "type": "wrap_content"
+                },
+                "height": {
+                  "type": "wrap_content"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "state_id": "checked",
+          "div": {
+            "type": "container",
+            "orientation": "horizontal",
+            "items": [
+              {
+                "type": "container",
+                "width": {
+                  "type": "fixed",
+                  "$value": "size"
+                },
+                "height": {
+                  "type": "fixed",
+                  "$value": "size"
+                },
+                "border": {
+                  "corner_radius": 4,
+                  "stroke": {
+                    "color": "#3F28C3",
+                    "width": 2
+                  }
+                },
+                "background": [
+                  {
+                    "type": "solid",
+                    "$color": "checked_color"
+                  }
+                ],
+                "items": [
+                  {
+                    "type": "text",
+                    "text": "✓",
+                    "text_color": "#FFFFFF",
+                    "font_size": 16,
+                    "text_alignment_horizontal": "center",
+                    "text_alignment_vertical": "center",
+                    "width": {
+                      "type": "match_parent"
+                    },
+                    "height": {
+                      "type": "match_parent"
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "log_id": "update_checkbox_state",
+                    "url": "div-action://set_variable?name=isCheckboxChecked&value=false"
+                  },
+                  {
+                    "log_id": "toggle_checkbox",
+                    "url": "div-action://set_state?state_id=0/checkbox_state/unchecked"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "$text": "label_text",
+                "$font_size": "font_size",
+                "$text_color": "label_color",
+                "margins": {
+                  "left": 8
+                },
+                "width": {
+                  "type": "wrap_content"
+                },
+                "height": {
+                  "type": "wrap_content"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "_template_back": {
+      "accessibility": {
+        "description": "Back",
+        "mode": "merge",
+        "type": "button"
+      },
+      "actions": [
+        {
+          "log_id": "back_button",
+          "url": "xplore-promote://backBtn"
+        }
+      ],
+      "image_url": "https://objectstore.e2enetworks.net/xplore/1732611449421-a4145e328273d3ae.png",
+      "tint_color": "#000",
+      "type": "image",
+      "preload_required": true
     }
   }
 }

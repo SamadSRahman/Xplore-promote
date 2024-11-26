@@ -5,7 +5,6 @@ import './styles.css';
 
 const PreviewScreen = ({ isOpen, onClose, jsonData }) => {
   const previewContainer = useRef(null);
-  console.log("jsonData", jsonData);
 
   useEffect(() => {
     if (isOpen && previewContainer.current && jsonData) {

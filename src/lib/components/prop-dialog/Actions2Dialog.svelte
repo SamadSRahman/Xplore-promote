@@ -132,13 +132,6 @@ function onSubtypeChange(): void {
 }
 
   function onArgChange(): void {
-    console.log(
-      "line 79",
-      customDesc,
-      actionArgs,
-      customActionToUrl(customDesc, actionArgs)
-    );
-
     if (!customDesc) {
       return;
     }
@@ -183,7 +176,6 @@ let selectedVariables: string[] = [];
         return [];
       }
     })() as Variable[];
-    console.log("line 153", storedVars);
     if (storedVars && Array.isArray(storedVars)) {
       variables = storedVars.map((variable) => ({
         text: variable.name,
@@ -203,7 +195,6 @@ let selectedVariables: string[] = [];
     value.log_url = value.url; // Set the log_url to match the url
   }
 
-console.log("line 164", variables);
 
 function onMapCoordinatesChange(): void {
   console.log("line 183", value.latitude, value.longitude);
