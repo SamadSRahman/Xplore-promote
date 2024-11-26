@@ -6,6 +6,7 @@
 import lottieIcon from '../../assets/components/lottie.svg?url';
 import buttonIcon from '../../assets/components/button.svg?url';
 import closeIcon from '../../assets/components/close.svg?url';
+import backIcon from '../../assets/components/back-button.svg';
 import listItemIcon from '../../assets/components/list-item.svg?url';
 import listIcon from '../../assets/list.svg.svg';
 import { type ComponentProperty } from './componentProps';
@@ -26,91 +27,93 @@ interface TemplateDescription {
 }
 
 interface TemplateProps {
-    list_items: ListItemProps[];
-  }
+  list_items: ListItemProps[];
+}
 
-  interface ListItemProps {
-    list_text: string;
-    list_color: string;
-    list_text_size: number;
-    list_font_weight: 'light' | 'regular' | 'medium' | 'bold';
-    image_url: string;
-  }
+interface ListItemProps {
+  list_text: string;
+  list_color: string;
+  list_text_size: number;
+  list_font_weight: 'light' | 'regular' | 'medium' | 'bold';
+  image_url: string;
+}
 
 // Example of Action (can be further expanded as per your needs)
 
 // Sample props data
 const props: TemplateProps = {
-    list_items: [
+  list_items: [
+    {
+      list_text: 'Item 1',
+      list_color: '#FF5733',
+      list_text_size: 14,
+      list_font_weight: 'bold',
+      image_url: 'https://example.com/item1.png',
+    },
+    {
+      list_text: 'Item 2',
+      list_color: '#33FF57',
+      list_text_size: 18,
+      list_font_weight: 'medium',
+      image_url: 'https://example.com/item2.png',
+    },
+    {
+      list_text: 'Item 3',
+      list_color: '#3357FF',
+      list_text_size: 16,
+      list_font_weight: 'light',
+      image_url: 'https://example.com/item3.png',
+    },
+  ],
+};
+const createTemplate = (props: TemplateProps): Record<string, unknown> => {
+  const items = (props.list_items || []).map((item) => ({
+    type: 'container',
+    orientation: 'horizontal',
+    items: [
       {
-        list_text: 'Item 1',
-        list_color: '#FF5733',
-        list_text_size: 14,
-        list_font_weight: 'bold',
-        image_url: 'https://example.com/item1.png',
+        type: 'image',
+        image_url: item.image_url,
+        $tint_color: item.list_color,
+        width: {
+          type: 'fixed',
+          value: 28,
+          unit: 'sp',
+        },
+        height: {
+          type: 'fixed',
+          value: 28,
+          unit: 'sp',
+        },
+        margins: {
+          top: 2,
+          right: 12,
+          bottom: 2,
+        },
       },
       {
-        list_text: 'Item 2',
-        list_color: '#33FF57',
-        list_text_size: 18,
-        list_font_weight: 'medium',
-        image_url: 'https://example.com/item2.png',
-      },
-      {
-        list_text: 'Item 3',
-        list_color: '#3357FF',
-        list_text_size: 16,
-        list_font_weight: 'light',
-        image_url: 'https://example.com/item3.png',
+        type: 'text',
+        $text: item.list_text,
+        $text_color: item.list_color,
+        $font_size: item.list_text_size,
+        line_height: 32,
+        $font_weight: item.list_font_weight,
+        width: {
+          type: 'wrap_content',
+          constrained: true,
+        },
       },
     ],
+  }));
+
+  return {
+    type: 'container',
+    orientation: 'vertical',
+    items,
   };
-  const createTemplate = (props: TemplateProps): Record<string, unknown> => {
-    const items = (props.list_items || []).map((item) => ({
-      type: 'container',
-      orientation: 'horizontal',
-      items: [
-        {
-          type: 'image',
-          image_url: item.image_url,
-          $tint_color: item.list_color,
-          width: {
-            type: 'fixed',
-            value: 28,
-            unit: 'sp',
-          },
-          height: {
-            type: 'fixed',
-            value: 28,
-            unit: 'sp',
-          },
-          margins: {
-            top: 2,
-            right: 12,
-            bottom: 2,
-          },
-        },
-        {
-          type: 'text',
-          $text: item.list_text,
-          $text_color: item.list_color,
-          $font_size: item.list_text_size,
-          line_height: 32,
-          $font_weight: item.list_font_weight,
-          width: {
-            type: 'wrap_content',
-            constrained: true,
-          },
-        },
-      ],
-    }));
-  
-    return {
-      type: 'container',
-      orientation: 'vertical',
-      items,
-    };
-  };
+};
+const screens = JSON.parse(localStorage.getItem('screens') || '[]').map((screen: { name: string, path: string }) => ({ name: screen.name, value: screen.path }))
+console.log("screens", screens);
 
 export const namedTemplates: Record<string, TemplateDescription> = {
 
@@ -274,7 +277,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
         list: [
           {
             name: 'props.button_text',
-            prop: 'button_text', 
+            prop: 'button_text',
             type: 'string',
             enableTanker: true,
             enableSources: true,
@@ -358,12 +361,12 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       text_color: '#fff',
       corners: 8,
       actions: [
-                {
-                  log_id: "action_id",
-                  url: "div-screen://open?id=quiz_screen",
-                  log_url: "@{on_click_log_url}"
-                }
-              ]
+        {
+          log_id: "action_id",
+          url: "div-screen://open?id=quiz_screen",
+          log_url: "@{on_click_log_url}"
+        }
+      ]
     },
     template: {
       type: 'container',
@@ -553,6 +556,63 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     },
   },
 
+  _template_back: {
+    nameKey: 'templates.back',
+    visible: true,
+    inShortList: true,
+    icon: backIcon,
+    props: [
+      {
+        type: 'group',
+        title: 'backProps.title',
+        list: [
+          {
+            name: 'color',
+            prop: 'tint_color',
+            type: 'color',
+            enableSources: true,
+          },
+          {
+            name: 'props.actions',
+            prop: 'actions',
+            type: 'actions2',
+          },
+        ],
+      },
+    ],
+    newNode: {
+      alignment_horizontal: 'left',
+      height: { type: 'fixed', value: 28 },
+      margins: { top: 20, left: 24 },
+      width: { type: 'fixed', value: 28 },
+      actions: [
+        {
+          log_id: 'back_button',
+          url: 'xplore-promote://backBtn',
+        },
+      ]
+    },
+    template: {
+      accessibility: {
+        description: 'Back',
+        mode: 'merge',
+        type: 'button',
+      },
+      actions: [
+        {
+          log_id: 'back_button',
+          url: 'xplore-promote://backBtn',
+        },
+      ],
+      image_url:
+        'https://objectstore.e2enetworks.net/xplore/1732611449421-a4145e328273d3ae.png',
+      tint_color: '#000',
+      type: 'image',
+      preload_required: true,
+    },
+  },
+
+
   _template_map: {
     nameKey: 'templates.map',
     visible: true,
@@ -692,7 +752,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
         log_id: "open_map",
         url: {
           type: 'expression',
-           value: 'https://www.google.com/maps?q=' + '$latitude' + ',' + '$longitude'
+          value: 'https://www.google.com/maps?q=' + '$latitude' + ',' + '$longitude'
         },
         _template_map: true
       }]
@@ -820,7 +880,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
         log_id: "open_map",
         url: {
           type: 'expression',
-           value: 'https://www.google.com/maps?q=' + '$latitude' + ',' + '$longitude'
+          value: 'https://www.google.com/maps?q=' + '$latitude' + ',' + '$longitude'
         },
         _template_map: true
       }]
@@ -912,7 +972,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
   },
   button_template: {
     nameKey: 'templates.button',
-  
+
     visible: true,
     inShortList: false,
     icon: buttonIcon,
@@ -947,9 +1007,9 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     ],
     newNode: {
       text: 'Button',
-    
+
       animation_action: 'none',
-      actions: [] 
+      actions: []
     },
     template: {
 
@@ -1097,7 +1157,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
                     log_id: 'toggle_checkbox',
                     url: 'div-action://set_state?state_id=0/checkbox_state/checked'
                   }
-                 
+
                 ]
               },
               {
@@ -1156,7 +1216,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
                     log_id: 'toggle_checkbox',
                     url: 'div-action://set_state?state_id=0/checkbox_state/unchecked'
                   }
-                 
+
                 ]
               },
               {
@@ -1173,8 +1233,8 @@ export const namedTemplates: Record<string, TemplateDescription> = {
         }
       ]
     }
-}
-,
+  }
+  ,
 
 };
 

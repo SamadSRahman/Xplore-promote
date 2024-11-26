@@ -34,10 +34,12 @@
 
 $: {
     const screens = JSON.parse(localStorage.getItem("screens") || "[]");
-    updatedScreens = screens.map((screen: screen) => ({
+    updatedScreens = screens
+      .filter((screen: screen) => screen.path !== "splash_screen")
+      .map((screen: screen) => ({
         text: screen.name,
         value: screen.path,
-    }));
+      }));
 }
 
   export function show(props: Actions2DialogShowProps): void {
@@ -78,6 +80,10 @@ $: {
     for (const arg of args) {
       const value = arg.value;
       if (value) {
+        // Special handling for screen ID parameter
+        if (arg.desc.name === 'id') {
+          return `xplore-promote://open?screen_name=${value}`;
+        }
         searchParams.set(arg.desc.name, value);
       }
     }
@@ -93,9 +99,18 @@ function onSubtypeChange(): void {
             value.selected_variables = [];
         }
     } else if (subtype === "map") {
-        value.url = "xplore-promote://map";  // Default map URL
+        value.url = "xplore-promote://map";
         value.latitude = "";
         value.longitude = "";
+    } else if (subtype === "backBtn") {
+        value.url = "xplore-promote://backBtn";  // Default backBtn URL
+        actionArgs = [{
+            value: "",
+            desc: {
+                name: "screen_name",
+                text: { en: "Select screen to go back to" }
+            }
+        }];
     } else {
         customDesc = subtype.startsWith("custom:")
             ? $customActions[Number(subtype.split(":")[1])]
@@ -142,6 +157,7 @@ let selectedVariables: string[] = [];
       text: $l10n("actions-url"),
     },
     { value: "submit-form", text: "Submit" },
+    { value: "backBtn", text: "Back" },
     { value: "map", text: "Open Map" },  // Add map option
   ].concat(
     $customActions.map((actionDesc, i) => ({
@@ -254,12 +270,31 @@ function onMapCoordinatesChange(): void {
             <Text bind:value={value.longitude} disabled={readOnly} on:change={onMapCoordinatesChange} />
           </label>
         </div>
+      {:else if subtype === "backBtn"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Select screen to go back to
+            </div>
+            <Select
+              items={updatedScreens}
+              bind:value={value.url}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={(e) => {
+                value.url = `xplore-promote://backBtn?screen_name=${e.detail}`;
+                value.log_url = value.url;
+              }}
+            />
+          </label>
+        </div>
       {:else if actionArgs.length}
         {#each actionArgs as arg, index}
           <div>
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>
-              {arg.desc.text[$lang] || arg.desc.name}
+              <!-- {arg.desc.text[$lang] || arg.desc.name} -->
               <div class="actions2-dialog__label">
                 {(arg.desc.text[$lang] || arg.desc.name) === "ID"
                   ? "Select screen to open"

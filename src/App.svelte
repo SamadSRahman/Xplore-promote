@@ -330,6 +330,8 @@
     });
 
     $: components = layout.map((column) => {
+        console.log("column", column);
+        
         return {
             component: LayoutColumn,
             weight: column.weight || 1,

@@ -583,10 +583,10 @@ export const blankBackgroundJSON = {
         $corner_radius: "corners",
       },
       paddings: {
-        bottom: 24,
-        left: 28,
-        right: 28,
-        top: 22,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        top: 0,
       },
       width: {
         type: "wrap_content",
@@ -788,7 +788,7 @@ export const contactUsJSON = {
               "keyboard_type": "number"
             },
             {
-              "text": "Submit",
+              "text": "Register",
               "background": [
                 {
                   "type": "solid",
@@ -943,10 +943,10 @@ export const contactUsJSON = {
         "$corner_radius": "corners"
       },
       "paddings": {
-        "bottom": 24,
-        "left": 28,
-        "right": 28,
-        "top": 22
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0
       },
       "width": {
         "type": "wrap_content"

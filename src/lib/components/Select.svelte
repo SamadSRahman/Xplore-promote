@@ -18,7 +18,8 @@
     export let mix = '';
     export let title = '';
     export let multiple = false;
-
+    console.log("items", items);
+    
     const id = 'select' + Math.random();
 
     $: text = multiple 

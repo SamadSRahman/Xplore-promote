@@ -15,10 +15,11 @@ export default function useLayout() {
     const [layouts, setLayouts] = useState([])
     const token = localStorage.getItem("accessToken");
     const [isLayoutCreated, setIsLayoutCreated] = useState(false)
+    const [screens, setScreens] = useState([])
 
 
 
-    const createLayout = async (jsonData, campaignId, page) => {
+    const createLayout = async (jsonData, campaignId, page, isInitial) => {
         try {
             const response = await fetch(
                 `https://pre.xplore.xircular.io/api/v1/layout/create/${campaignId}`,
@@ -31,7 +32,8 @@ export default function useLayout() {
                     },
                     body: JSON.stringify({
                         name: getScreenPath(page),
-                        layoutJSON: JSON.parse(jsonData)
+                        layoutJSON: JSON.parse(jsonData),
+                        isInitial: isInitial?true:false
                     }),
                 }
             );
@@ -97,6 +99,29 @@ export default function useLayout() {
         }
     };
 
+    const setInitialLayout = async (id, campaignId) => {
+        try {
+            const response = await axios.put(
+                `https://pre.xplore.xircular.io/api/v1/layout/update/${id}`,
+                {
+                    isInitial: true
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: token,
+                        session: channel
+                    }
+                }
+            );
+            console.log("Response:", response.data);
+            alert("Screen set as initial successfully");
+            getAllLayout(campaignId);
+        } catch (error) {
+            console.error("Error setting initial layout:", error);
+        }
+    }
+
     const getAllLayout = async (id)=>{
         console.log("id line 101", id);
         
@@ -109,13 +134,15 @@ export default function useLayout() {
         const formattedScreens = campaignScreens.map(screen => ({
             name: getScreenName(screen.name),
             path: getScreenPath(screen.name),
-            id: screen.layoutID
+            id: screen.layoutID,
+            isInitial: screen.isInitial
         }));
         console.log(formattedScreens);
+        setScreens(formattedScreens)
         localStorage.setItem('screens', JSON.stringify(formattedScreens))
           
         } catch (error) {
-            console(error)
+            console.log(error)
         }
     }
     useEffect(()=>{
@@ -126,7 +153,9 @@ export default function useLayout() {
         createLayout,
         getAllLayout,
         deleteLayout,
+        setInitialLayout,
         layouts,
         isLayoutCreated,
+        screens
     };
 }

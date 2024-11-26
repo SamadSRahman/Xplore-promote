@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IoIosSave } from 'react-icons/io';
+import { IoIosSave, IoMdEye } from 'react-icons/io';
 import styles from './EditorPage.module.css';
 import { MdPublish } from "react-icons/md";
 
@@ -20,6 +20,7 @@ import ReactHeader from '../../lib/components/ReactHeader';
 import QuizStyleInputPopup from '../../components/QuizStyleInputPopup';
 import { isContactUs } from '../../lib/utils/services';
 import { contactUsJSON } from '../../lib/utils/splashScreenData';
+import PreviewScreen from '../../components/PreviewScreen';
 
 const EditorPage = () => {
   const { campaignId, page } = useParams();
@@ -30,6 +31,7 @@ const EditorPage = () => {
   const [editorInstance, setEditorInstance] = React.useState(null);
   const editorContainerRef = React.useRef(null);
   const [showQuizPopup, setShowQuizPopup] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
 
   React.useEffect(() => {
@@ -338,20 +340,21 @@ const EditorPage = () => {
             onClose={() => setShowQuizPopup(false)}
           />
         )}
-        <button
-          className={styles.saveBtn}
-          onClick={handleLogJSON}
-        >
-          <IoIosSave />
-          Save
-        </button>
-        {/* <button
-          className={styles.addQuestionBtn}
-          onClick={handleAddQuestion}
-        >
-          <IoIosAdd />
-          Add Question
-        </button> */}
+        <div className="flex gap-2 absolute bottom-4 right-4">
+          <button
+            onClick={() => setIsPreviewOpen(true)}
+            className={styles.addQuestionBtn}
+          >
+            <IoMdEye /> Preview
+          </button>
+          <button
+            className={styles.saveBtn}
+            onClick={handleLogJSON}
+          >
+            <IoIosSave />
+            Save
+          </button>
+        </div>
         <button className={styles.finishBtn}
           onClick={() => navigate(`/publish/${campaignId}`)}
         >
@@ -359,6 +362,12 @@ const EditorPage = () => {
           Publish
         </button>
       </div>
+
+      <PreviewScreen
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        jsonData={editorInstance?.getValue()}
+      />
     </div>
   );
 };
