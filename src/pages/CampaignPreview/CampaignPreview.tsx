@@ -32,6 +32,7 @@ export default function CampaignPreview() {
     useEffect(()=>{
         console.log("data", data);
         if(data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
+        if(data?.device) localStorage.setItem("deviceId", data.device);
     },[data])
     
     useEffect(()=>{
@@ -40,25 +41,6 @@ export default function CampaignPreview() {
         if (screen === undefined || screen === 'splash_screen') {
             const splashLayout = layouts.find((ele:any) => ele.name === 'splash_screen');
             if (splashLayout) {
-                const variables = splashLayout.layoutJSON.card.variables;
-                const googleData =  localStorage.getItem("googleData")
-                if(googleData){
-                    const googleDataObj = JSON.parse(googleData)
-                    if (variables) {
-                        const fields = ['email', 'user', 'phone'];
-                        variables.forEach((variable: any) => {
-                            if (fields.includes(variable.name) && googleDataObj[variable.name]) {
-                                variable.value = googleDataObj[variable.name];
-                            }
-                        });
-                      
-                        // console.log("updatedVariables line 35", updatedVariables);
-                        
-                        console.log("variables line 42", variables);
-                     
-                        splashLayout.layoutJSON.card.variables = variables;
-                    }
-                }
                 setLayout(splashLayout);
             }
         } else {
@@ -69,11 +51,11 @@ export default function CampaignPreview() {
             }
             
             const variables = newLayout.layoutJSON?.card?.variables;
-            const googleData = localStorage.getItem("googleData");
+            const googleData = localStorage.getItem("user");
             
             if (googleData && variables) {
                 const googleDataObj = JSON.parse(googleData);
-                const fields = ['email', 'user', 'phone'];
+                const fields = ['email', 'name', 'phone'];
                 variables.forEach((variable: any) => {
                     if (fields.includes(variable.name) && googleDataObj[variable.name]) {
                         variable.value = googleDataObj[variable.name];
@@ -108,6 +90,16 @@ export default function CampaignPreview() {
             } else {
                 console.log(`screen ${screen_name} not found`);
             }
+        }
+        if (action.url.startsWith('xplore-promote://backBtn')) {
+            const params = new URLSearchParams(action.url.split('?')[1]);
+            const screenName = params.get('screen_name');
+            if (screenName) {
+                navigate(`/campaign/${campaignId}/${screenName}`);
+            } else {
+                navigate(-1); // Default behavior - go back if no screen specified
+            }
+            return;
         }
     }
     
@@ -151,7 +143,7 @@ export default function CampaignPreview() {
         try {
             // Get visitorId from localStorage (keep this in localStorage as it's needed across sessions)
             const visitorId = localStorage.getItem('visitorId');
-            
+            const deviceId = localStorage.getItem('deviceId');
             if (!visitorId) {
                 console.error('Visitor ID not found');
                 return;
@@ -165,7 +157,10 @@ export default function CampaignPreview() {
                     'authorization': credentialResponse.credential
                 },
                 body: JSON.stringify({
-                    visitorId: visitorId
+                    visitorId: visitorId,
+                    campaignID: campaignId,
+                    deviceId: deviceId
+
                 })
             });
 

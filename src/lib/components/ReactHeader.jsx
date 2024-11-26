@@ -6,27 +6,34 @@ import logo from '../../assets/xplore.svg';
 import { MdDeleteOutline, MdNavigation } from 'react-icons/md';
 import useLayout from '../utils/useLayout';
 import { AiFillStar } from 'react-icons/ai';
+import { useRecoilValue } from 'recoil';
+import { screensAtom } from '../../recoil/atoms';
 
 
-export default function ReactHeader( {refreshScreenNames}) {
+
+export default function ReactHeader( {}) {
     const navigate = useNavigate();
     const location = useLocation();
     const {campaignId} = useParams();
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [isNewScreenPopupVisible, setIsNewScreenPopupVisible] = useState(false);
     const popupRef = useRef();
-    const { deleteLayout, setInitialLayout, screens, getAllLayout } = useLayout();
+    const { deleteLayout, setInitialLayout, getAllLayout,  getAllLayoutNames } = useLayout();
     const [selectedScreen, setSelectedScreen] = useState(null);
     const [popupPosition, setPopupPosition] = useState(null);
+    const screens = useRecoilValue(screensAtom)
 
     const currentScreen = screens.find(screen =>
         location.pathname.includes(screen?.path)
     ) || screens[0];
-    useEffect(()=>{localStorage.setItem('screens', JSON.stringify(screens))},[screens])
+    useEffect(()=>{localStorage.setItem('screens', JSON.stringify(screens))
+
+      console.log("screens updated", screens);
+    },[screens])
+ 
+    
 
     useEffect(() => {
-      console.log("campaignId", campaignId);
-      
       getAllLayout(campaignId)
         const handleClickOutside = (event) => {
             if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -52,7 +59,8 @@ export default function ReactHeader( {refreshScreenNames}) {
     };
 
     const handleDelete = (screenId) => {
-        deleteLayout(screenId);
+        deleteLayout(screenId, campaignId);
+        getAllLayoutNames(campaignId);
         setSelectedScreen(null);
     };
 
