@@ -28,16 +28,18 @@
 
     function onAdd(): void {
         if (!$readOnly) {
-            dispatch('change', {
-                item,
-                value: [...(value || []), {
-                    log_id: 'action_id',
-                    url: 'https://',
-                    log_url: actionLogUrlVariable ? `@{${actionLogUrlVariable}}` : undefined
-                }]
-            });
+          
+                dispatch('change', {
+                    item,
+                    value: [...(value || []), {
+                        log_id: 'action_id',
+                        url: 'https://',
+                        log_url: actionLogUrlVariable ? `@{${actionLogUrlVariable}}` : undefined
+                    }]
+                });
+            }
         }
-    }
+    
 </script>
 
 <div class="actions2">

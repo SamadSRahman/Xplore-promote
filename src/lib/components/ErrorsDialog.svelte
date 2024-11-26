@@ -174,6 +174,7 @@
         max-height: 50vh;
         padding: 12px 16px;
         overflow: auto;
+        border: 1px solid black;
     }
 
     .errors-dialog__list {

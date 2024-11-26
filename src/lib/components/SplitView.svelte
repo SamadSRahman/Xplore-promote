@@ -15,6 +15,12 @@
 
     let parts: HTMLElement[] = [];
 
+    // Add a computed property to check if any component is custom-variables
+    $: hasCustomVariables = components.some(comp => 
+        comp.component.name === 'custom-variables' || 
+        comp.component.__name === 'CustomVariables'  // backup check depending on how component name is stored
+    );
+
     function onPointerdown(event: PointerEvent, movedIndex: number): void {
         if (event.button !== 0) {
             return;
@@ -71,7 +77,11 @@
     }
 </script>
 
-<div class="split-view" class:split-view_vertical={orientation === 'vertical'}>
+<div 
+    class="split-view" 
+    class:split-view_vertical={orientation === 'vertical'}
+    class:split-view_custom-variables={hasCustomVariables}
+>
     {#each components as item, index (item.key || index)}
         {#if index > 0}
             <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -114,6 +124,7 @@
         flex-direction: column;
         flex: var(--grow, 1) 1 0;
         overflow: auto;
+
     }
 
     .split-view__part:focus-visible {
@@ -159,5 +170,10 @@
         bottom: -3px;
         left: 0;
         cursor: row-resize;
+    }
+
+    /* Add new style for custom-variables */
+    .split-view_custom-variables {
+        height: 70%; /* or whatever specific height you want */
     }
 </style>

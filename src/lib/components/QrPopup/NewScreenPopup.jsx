@@ -8,6 +8,10 @@ export default function NewScreenPopup({ onClose, campaignId, refreshScreenNames
     const [screenName, setScreenName] = useState('');
     const { createLayout, isLayoutCreated } = useLayout();
     function handleOnSubmit() {
+        if(screenName === "contact_us_screen"){
+            alert("Cannot create screen with this name. Please use the Contact Us component to create a screen with this name.")
+            return
+        }
         if (screenName.length > 5) {
             createLayout(JSON.stringify(blankBackgroundJSON), campaignId, screenName);
         } else {

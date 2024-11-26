@@ -9,19 +9,32 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    overflow: scroll;
+    color: #000;
   }
   
   .popup-content {
     /* background-color: white; */
     padding: 20px;
     border-radius: 8px;
-    max-width: 500px;
+    /* max-width: 700px; */
     width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  
+  }
+  .popup-content form{
+    display: flex;
+    max-width: 700px;
+    height: 90vh;
   }
   
   .popup-content form > div {
     margin-bottom: 16px;
+    height: 90vh;
   }
   
   .answer-input{
@@ -32,10 +45,152 @@
   }
   .answer-input label{
    width: fit-content;
+   color: #000;
   }
   
   .popup-content input[type="text"] {
     width: 100%;
     padding: 8px;
     margin-top: 4px;
+    background-color: #fff;
+    color: #000;
+  }
+  .popup-content label {
+    display: block;
+    margin-bottom: 4px;
+    color: #000;
+  }
+
+  .popup-content h3,
+  .popup-content h4 {
+    color: #000;
+    margin-bottom: 16px;
+    margin-top: 0;
+  }
+
+  .style-inputs {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 16px;
+    padding-top: 0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .style-inputs div {
+    margin-bottom: 12px;
+  }
+
+  .style-inputs select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+  }
+
+  .style-inputs input[type="color"] {
+    width: 50px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .popup-content button {
+    padding: 8px 16px;
+    margin-right: 8px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .popup-content button:hover {
+    background-color: #45a049;
+  }
+
+  .popup-content input[type="checkbox"],
+  .popup-content input[type="radio"] {
+    margin-right: 8px;
+    cursor: pointer;
+  }
+  .multiple-select-container{
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row-reverse;
+
+  }
+
+  /* Preview Screen Styles */
+  .preview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .preview-container {
+    background-color: white;
+    border-radius: 0.5rem;
+    width: 550px;
+    height: 90%;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .preview-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: opacity 0.2s;
+    color: #000;
+  }
+
+  .preview-close-button:hover {
+    opacity: 0.7;
+    background-color: transparent;
+  }
+
+  .preview-content {
+    padding: 1.5rem;
+    max-height:100%;
+    height: 90%;
+    overflow: scroll;
+    border-radius: 1rem;
+    width: 360px;
+    margin: auto;
+    /* border: 3px solid #000000c5; */
+  }
+  .preview-content div{
+    height: 98%;
+  }
+
+  .preview-content::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .preview-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  .preview-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  .preview-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }

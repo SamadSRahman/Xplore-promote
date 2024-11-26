@@ -330,6 +330,8 @@
     });
 
     $: components = layout.map((column) => {
+        
+        
         return {
             component: LayoutColumn,
             weight: column.weight || 1,

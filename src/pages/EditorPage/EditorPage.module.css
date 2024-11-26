@@ -45,8 +45,14 @@ a - #4e54c9 */
     right: 7rem;
 }
 .addQuestionBtn{
-    background-color: #308ed1;
-    right: 14rem;
+    color: #39A6F5;
+    background-color: white;
+    border: 1px solid #39A6F5;
+    right: 12rem;
+}
+.addQuestionBtn:hover{
+    background-color: #39A6F5;
+    color: white;
 }
 .saveBtn img{
     width: 12px;

@@ -11,16 +11,19 @@
     }
 
     export let items: Item[];
-    export let value: string;
+    export let value: string | string[];
     export let theme: 'normal' | 'canvas';
     export let size: 'small' | 'medium' = 'small';
     export let disabled = false;
     export let mix = '';
     export let title = '';
-
+    export let multiple = false;
+    
     const id = 'select' + Math.random();
 
-    $: text = items.find(item => item.value === value)?.text || value || '';
+    $: text = multiple 
+        ? (Array.isArray(value) ? value.map(v => items.find(item => item.value === v)?.text).join(', ') : '')
+        : (items.find(item => item.value === value)?.text || value || '');
     $: icon = items.find(item => item.value === value)?.icon;
 
     const dispatch = createEventDispatcher();
@@ -28,6 +31,7 @@
     let toggled = false;
     let node: HTMLElement;
     let control: HTMLElement;
+
 
     function move(by: number): void {
         let index = items.findIndex(item => item.value === value);
@@ -89,12 +93,26 @@
     }
 
     function select(val: string): void {
-        selectValue(val);
-        toggled = false;
-
-        tick().then(() => {
-            control?.focus();
-        });
+        if (multiple) {
+            const valueArray = Array.isArray(value) ? value : [];
+            const index = valueArray.indexOf(val);
+            if (index === -1) {
+                value = [...valueArray, val];
+            } else {
+                value = valueArray.filter(v => v !== val);
+            }
+            Promise.resolve().then(() => dispatch('change', value));
+            tick().then(() => {
+                control?.focus();
+            });
+        } else {
+            value = val;
+            Promise.resolve().then(() => dispatch('change', val));
+            toggled = false;
+            tick().then(() => {
+                control?.focus();
+            });
+        }
     }
 
     function onControlClick(): void {
@@ -158,7 +176,9 @@
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <li
                         class="select__item"
-                        class:select__item_selected={item.value === value}
+                        class:select__item_selected={multiple 
+                            ? Array.isArray(value) && value.includes(item.value)
+                            : item.value === value}
                         class:select__item_icon={item.icon}
                         on:click|preventDefault={() => select(item.value)}
                     >

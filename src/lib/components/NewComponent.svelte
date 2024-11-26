@@ -33,7 +33,7 @@
   });
   
   const extraItems = additionalComponentsList
-  .filter(it => it.type === "input" || it.type === "_template_text_list") // Filter items with type 'input'
+  .filter(it => it.type === "input") // Filter items with type 'input'
   .map(it => {
     return {
       name: it.name || (it.nameKey && $l10nString(it.nameKey)) || "<unknown>",
@@ -41,7 +41,6 @@
       description: it.description,
     };
   });
-  console.log('extraItems', basicItems, extraItems)
   basicItems.concat(extraItems);
 
   function onDragStart(event: DragEvent, type: string): void {
@@ -104,16 +103,16 @@
     </div>
   <!-- </Spoiler2> -->
 
-  <Spoiler2 theme="props" open={false}>
-    <div slot="title">
+  <!-- <Spoiler2 theme="props" open={false}> -->
+    <!-- <div slot="title">
       {$l10nString("additionalComponents")}
-    </div>
+    </div> -->
 
-    <div class="new-component__items">
-        {#each additionalItems as item}
+    <!-- <div class="new-component__items"> -->
+        <!-- {#each additionalItems as item} -->
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-static-element-interactions -->
-          <div
+          <!-- <div
             class="new-component__item"
             draggable="true"
             on:dragstart={(event) => onDragStart(event, item.type)}
@@ -131,10 +130,10 @@
             <div class="new-component__text">
               {capitalize(item.name || item.type)}
             </div>
-          </div>
-        {/each}
-      </div>
-  </Spoiler2>
+          </div> -->
+        <!-- {/each} -->
+      <!-- </div> -->
+  <!-- </Spoiler2> -->
 
   <!-- {#if $userDefinedTemplates.length} -->
     <!-- <Spoiler2 theme="props" open={false}> -->

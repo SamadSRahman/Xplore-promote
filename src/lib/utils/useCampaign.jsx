@@ -63,11 +63,12 @@ export default function useCampaign() {
         const formattedScreens = campaignScreens.map(screen => ({
             name: getScreenName(screen.name),
             path: getScreenPath(screen.name),
+            isInitial: screen.isInitial,
             id: screen.layoutID
         }));
         console.log(formattedScreens, page);
         
-        setScreens(formattedScreens);
+        // setScreens(formattedScreens);
         localStorage.setItem('screens', JSON.stringify(formattedScreens))
 
         const splashLayout = response.data.data.layouts.find(

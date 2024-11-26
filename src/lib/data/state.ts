@@ -648,7 +648,7 @@ export class State {
                 type: 'video',
                 video_sources: [{
                     type: 'video_source',
-                    mime_type: 'mp4',
+                    mime_type: 'video/mp4',
                     url: 'https://www.w3schools.com/tags/mov_bbb.mp4'
                 }],
                 controls: true,

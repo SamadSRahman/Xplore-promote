@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage.jsx';
@@ -12,8 +12,49 @@ import CampaignsForm from './pages/CreateCampaign/CreateCampaign.jsx';
 import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export default function App() {
+  const [isMobile, setIsMobile] = React.useState(false);
+  const {isLoading, error, data, getData} = useVisitorData(
+    {extendedResult: true},
+    {immediate: true}
+  )
+
+  React.useEffect(() => {
+    getData({ignoreCache: true});
+    const checkMobile = () => {
+      const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const path = window.location.pathname;
+      const isCampaignPreview = path.startsWith('/campaign/');
+      setIsMobile(mobile && !isCampaignPreview);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+
+
+  if (isMobile) {
+    return (
+      <div style={{
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        textAlign: 'center'
+      }}>
+        <h2>Please access this application from a desktop or laptop computer for the best experience.</h2>
+        {/* <button onClick={() => getData({ignoreCache: true})}>Get Data</button> */}
+      </div>
+    );
+  }
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   return (
     <div>
          <RecoilRoot>

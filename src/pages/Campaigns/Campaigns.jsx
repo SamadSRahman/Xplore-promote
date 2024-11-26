@@ -13,7 +13,7 @@ import QrPopup from '../../lib/components/QrPopup/QrPopup';
 import useCampaign from '../../lib/utils/useCampaign';
 
 export default function Campaigns() {
-    const { name, getUserDetails, } = useApi();
+    const { name, getUserDetails, isBusinessUser } = useApi();
     const { campaigns, getCampaigns, deleteCampaign, } = useCampaign();
     const navigate = useNavigate();
     const [selectedCampaign, setSelectedCampaign] = useState(null);
@@ -129,9 +129,6 @@ export default function Campaigns() {
                         >
                           <FaTrashAlt /> Delete
                         </div>
-                        {/* <div className={styles.popupItem} onClick={() => handleDelete(campaign.campaignID)}>
-                        <FaTrashAlt /> Delete
-                      </div> */}
                       </div>
                     )}
                   </div>
@@ -159,9 +156,9 @@ export default function Campaigns() {
           <div className={styles.contentSection}>
             <h4>Create campaign</h4>
             <p>Want to get more reach, create your event</p>
-            {/* <button onClick={() => navigate('/createCampaign')}>
+          <button onClick={() => navigate('/createCampaign')}>
               Create your campaign
-            </button> */}
+            </button>
           </div>
         </div>
       </div>

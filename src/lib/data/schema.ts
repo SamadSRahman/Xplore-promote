@@ -34,10 +34,8 @@ export type SchemaModule = Schema & {
 const jsons = import.meta.glob('../../schema//*.json', {
     eager: true
 });
-console.log('Loading jsons:', jsons);
 // console.log('Initial schema object:', schema);
 export const schema = Object.keys(jsons).reduce((acc, item) => {
-    console.log('Processing schema item:', item);
     acc[item.replace('../../schema/', '').replace(/\.json$/, '')] = jsons[item] as SchemaModule;
     // debugSchemaLoading();
     return acc;
@@ -55,6 +53,7 @@ const editors = new Map([
     ['div-action.json', '__action-item'],
     ['div-video-source.json', '__video-source-item'],
     ['div-list.json', '__list-item'], 
+    ['div-border.json', '__border-item'],
 ]);
 
 const arrayEditors = new Map([
@@ -651,12 +650,9 @@ export const schemaToComponentType = new Map<string, string>();
 // console.log('Schema to component mapping:', Array.from(schemaToComponentType.entries()));
 const SIMPLE_TYPES: Set<string> = new Set();
 (getSchemaItem('div').anyOf || []).forEach(it => {
-    console.log('Processing div anyOf item:', it);
     const resolved = resolveAllOf(resolveObject(it));
-    console.log('Resolved schema:', resolved);
     const type = resolved?.properties?.type?.enum?.[0];
     const schemaName = it.$ref?.replace(/\.json$/, '');
-    console.log('Found type:', type, 'for schema:', schemaName);
 
     if (type && schemaName) {
         componentTypeToSchema.set(type, schemaName);
@@ -739,10 +735,10 @@ for (const key in namedTemplates) {
 }
 
 export function debugSchemaLoading() {
-    console.log('=== Schema Loading Debug ===');
-    console.log('Available schemas:', Object.keys(schema));
-    console.log('Div schema anyOf:', getSchemaItem('div').anyOf);
-    console.log('List schema:', schema['div-list']);
-    console.log('Component types:', Array.from(componentTypeToSchema.entries()));
-    console.log('=== End Schema Loading Debug ===');
+    // console.log('=== Schema Loading Debug ===');
+    // console.log('Available schemas:', Object.keys(schema));
+    // console.log('Div schema anyOf:', getSchemaItem('div').anyOf);
+    // console.log('List schema:', schema['div-list']);
+    // console.log('Component types:', Array.from(componentTypeToSchema.entries()));
+    // console.log('=== End Schema Loading Debug ===');
 }
