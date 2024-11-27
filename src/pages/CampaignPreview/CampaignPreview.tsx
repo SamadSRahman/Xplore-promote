@@ -148,11 +148,15 @@ export default function CampaignPreview() {
     useEffect(() => {
         console.log('line 41', layout);
         if (layout.name === "splash_screen") {
-            console.log("Changing to landing screen");
-            const landingLayout = layouts.find((ele) => ele.name === 'landing_screen');
-           if(landingLayout){
-            setTimeout(() => { navigate(`/campaign/${campaignId}/landing_screen`) }, 2000);
-           }
+            console.log("Checking for initial screen");
+            const initialLayout = layouts.find((ele) => ele.isInitial === true);
+            if (initialLayout) {
+                setTimeout(() => { 
+                    navigate(`/campaign/${campaignId}/${initialLayout.name}`);
+                }, 2000);
+            } else {
+                console.log("No initial screen found");
+            }
         }
     }, [layout]);
 

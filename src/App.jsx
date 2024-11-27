@@ -12,6 +12,7 @@ import CampaignsForm from './pages/CreateCampaign/CreateCampaign.jsx';
 import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
+import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export default function App() {
@@ -63,6 +64,7 @@ export default function App() {
             <Route path='/privacyPolicy' element={<PrivacyPolicy />}/>           
             <Route path='/publish/:campaignId' element={<PublishAndPreview />}/>
             <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />}/>
+            <Route path='/campaignAnalytics/:campaignId' element={<CampaignAnalytics />}/>
             <Route path='/contactus' element={<ContactUs />}/>
             <Route path='/terms&conditions' element={<TermsAndConditions />}/>
             <Route path='/' element={<QRLogin />}/>

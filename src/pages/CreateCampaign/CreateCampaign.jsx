@@ -34,6 +34,7 @@ const CampaignForm = () => {
         contactInfo: { whatsAppNumber: '', phoneNumber: '', email: '' },
         siteInfo: { siteURL: '', siteName: '' }
     });
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -55,11 +56,12 @@ const CampaignForm = () => {
     const handleSubmit = async e => {
         e.preventDefault();
 
-        // Check if start date or end date is empty
         if (!formData.timing.startDate || !formData.timing.endDate) {
             alert('Please select both start and end dates');
             return;
         }
+
+        setIsLoading(true);
 
         const token = localStorage.getItem('accessToken');
         const data = new FormData();
@@ -72,14 +74,16 @@ const CampaignForm = () => {
                 data,
                 { headers: { Authorization: `Bearer ${token}`, session: channel, 'Content-Type': 'multipart/form-data' } }
             );
-            createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Splash Screen');
-            createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Landing Screen', true);
-            createLayout(JSON.stringify(contactUsJSON), response.data.data.campaignID, 'Contact Us Screen');
+            await createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Splash Screen');
+            await createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Landing Screen', true);
+            await createLayout(JSON.stringify(contactUsJSON), response.data.data.campaignID, 'Contact Us Screen');
             alert('Campaign created successfully');
             navigate(`/editor/${response.data.data.campaignID}/splash_screen`);
         } catch (error) {
             console.error('Error creating campaign:', error);
             alert(error.response.data.message)
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -247,7 +251,13 @@ const CampaignForm = () => {
           </div>
 
           {/* Submit Button */}
-          <button type="submit" className={styles.submitButton}>Create Campaign</button>
+          <button 
+              type="submit" 
+              className={styles.submitButton} 
+              disabled={isLoading}
+          >
+              {isLoading ? 'Loading...' : 'Create Campaign'}
+          </button>
         </form>
       </div>
       </div>

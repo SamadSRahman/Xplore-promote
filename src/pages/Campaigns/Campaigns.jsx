@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BsThreeDots } from 'react-icons/bs';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaChartLine, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { MdOutlineQrCode2 } from 'react-icons/md';
 import styles from './Campaigns.module.css';
 import logo from '../../assets/xplore.svg';
@@ -122,6 +122,12 @@ export default function Campaigns() {
                           onClick={() => handleGetQr(campaign)}
                         >
                           <MdOutlineQrCode2 /> Get QR Code
+                        </div>
+                        <div
+                          className={styles.popupItem}
+                          onClick={() => navigate(`/campaignAnalytics/${campaign.campaignID}`)}
+                        >
+                          <FaChartLine /> Analytics
                         </div>
                         <div
                           className={styles.popupItem}
