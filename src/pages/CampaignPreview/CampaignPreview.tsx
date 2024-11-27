@@ -13,15 +13,13 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import useEndUser from '../../lib/utils/useEndUser';
 
 export default function CampaignPreview() {
-    const { getCampaignById, landingScreenLayout } = useApi();
     const {getAllLayout, layouts} = useLayout()
     const navigate = useNavigate()
     const [layout, setLayout] = useState({ layoutJSON: (blankBackgroundJSON) });
     const { campaignId, screen } = useParams();
-    const [inputValues, setInputValues] = useState({});
     const [showPopup, setShowPopup] = useState(false);
     const [isLoadingPopup, setIsLoadingPopup] = useState(false);
-    const {isLoading, error, data, getData} = useVisitorData(
+    const {data, getData} = useVisitorData(
         {extendedResult: true},
         {immediate: true}
       )
@@ -73,10 +71,6 @@ export default function CampaignPreview() {
 
     function handleBtnClick(action: { url: string; log_url?: string; latitude?: string; longitude?: string }) {
         console.log("action clicked", action);
-        if (action.url === 'submit-form') {
-            console.log("Form submit with data:", inputValues);
-            return;
-        }
         const btnAction = action.url?.split("://")[1].split("?")[0];
 
         if (btnAction === 'submit') {
@@ -107,13 +101,17 @@ export default function CampaignPreview() {
             window.open(mapsUrl, '_blank');
             return;
         }
-        if (btnAction === 'open') {
-            const screen_name = new URLSearchParams(action.url.split("?")[1]).get("screen_name");
-            const foundLayout = layouts.find(ele => ele.name === screen_name);
+        if (btnAction === 'open'||btnAction === 'productDetails') {
+            const params = new URLSearchParams(action.url.split("?")[1]);
+            const screen_name = params.get("screen_name");
+            const screen_id = params.get("id");
+            const screenIdentifier = screen_name || screen_id;
+            
+            const foundLayout = layouts.find(ele => ele.name === screenIdentifier || ele.id === screenIdentifier);
             if (foundLayout) {
-                navigate(`/campaign/${campaignId}/${screen_name}`);
+                navigate(`/campaign/${campaignId}/${screenIdentifier}`);
             } else {
-                console.log(`screen ${screen_name} not found`);
+                console.log(`screen ${screenIdentifier} not found`);
             }
         }
         if (action.url.startsWith('xplore-promote://backBtn')) {
@@ -139,11 +137,6 @@ export default function CampaignPreview() {
         }
     }, [layout]);
 
-    useEffect(() => {
-        if (landingScreenLayout) {
-            setTimeout(() => {}, 2000);
-        }
-    }, [landingScreenLayout]);
 
     useEffect(() => {
         if (screen === 'landing_screen') {
