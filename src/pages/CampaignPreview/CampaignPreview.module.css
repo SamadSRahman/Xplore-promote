@@ -57,6 +57,13 @@
     gap: 1rem;
 }
 
+@media screen and (max-width: 480px) {
+    .popupButtons {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
 .googleButton {
     background-color: #4285f4;
     color: white;
