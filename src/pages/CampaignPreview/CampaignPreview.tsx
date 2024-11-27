@@ -80,7 +80,7 @@ export default function CampaignPreview() {
 
         if (btnAction === 'submit') {
             const params = new URLSearchParams(action.url.split("?")[1]);
-            const isCheckboxChecked = params.get("isCheckboxChecked") === "true";
+            const isCheckboxChecked = params.get("consent_checkbox") === "true";
             
             if (!isCheckboxChecked) {
                 alert("Please agree to the terms and conditions first");
