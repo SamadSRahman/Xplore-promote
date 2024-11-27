@@ -168,10 +168,10 @@ export default function CampaignPreview() {
                 
                 if (!popupShownCampaigns.includes(campaignId)) {
                     setShowPopup(true);
-                    // sessionStorage.setItem(
-                    //     'popupShownCampaigns', 
-                    //     JSON.stringify([...popupShownCampaigns, campaignId])
-                    // );
+                    sessionStorage.setItem(
+                        'popupShownCampaigns', 
+                        JSON.stringify([...popupShownCampaigns, campaignId])
+                    );
                 }
             }
         }
