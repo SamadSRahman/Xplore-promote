@@ -77,23 +77,16 @@ export default function ReactHeader( {}) {
       </div>
       {isNewScreenPopupVisible &&
       <NewScreenPopup  onClose={() => setIsNewScreenPopupVisible(false)} campaignId={campaignId} />}
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+      <div 
+      className='screensContainer'>
         {screens.map(screen => (
           <div
+          className='screen'
             key={screen.path}
             onClick={(e) => handleScreenClick(screen, e)}
             style={{
-              padding: '8px 12px',
-              cursor: 'pointer',
               backgroundColor: screen.path === currentScreen?.path ? '#39A6F5' : '#e9f5ff',
               color: screen.path === currentScreen?.path ? 'white' : '#39A6F5',
-              borderRadius: '7px',
-              fontWeight: '600',
-              fontSize: '13px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              position: 'relative'
             }}
           >
             <span>{screen.name}</span>

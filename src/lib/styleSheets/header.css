@@ -22,3 +22,34 @@
     border-radius: 6px;
     cursor: pointer;
 }
+.screen{
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    min-width: fit-content;
+}
+.screensContainer{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    max-width: 500px;
+    overflow-x: auto;
+    height: 2.8rem;
+
+}
+.screensContainer::-webkit-scrollbar{
+  height: 5px !important;
+}
+.screensContainer::-webkit-scrollbar-track{
+  background-color: transparent;
+}
+.screensContainer::-webkit-scrollbar-thumb{
+  background-color: #999;
+  border-radius: 5px;
+}
