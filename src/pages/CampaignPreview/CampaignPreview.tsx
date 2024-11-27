@@ -55,10 +55,15 @@ export default function CampaignPreview() {
             
             if (googleData && variables) {
                 const googleDataObj = JSON.parse(googleData);
-                const fields = ['email', 'name', 'phone'];
                 variables.forEach((variable: any) => {
-                    if (fields.includes(variable.name) && googleDataObj[variable.name]) {
-                        variable.value = googleDataObj[variable.name];
+                    if (variable.name === 'email' && googleDataObj.email) {
+                        variable.value = googleDataObj.email;
+                    }
+                    if (variable.name === 'userName' && googleDataObj.name) {
+                        variable.value = googleDataObj.name;
+                    }
+                    if (variable.name === 'phone' && googleDataObj.phone) {
+                        variable.value = googleDataObj.phone;
                     }
                 });
                 
@@ -101,6 +106,20 @@ export default function CampaignPreview() {
             window.open(mapsUrl, '_blank');
             return;
         }
+        if (btnAction === 'contact') {
+            const params = new URLSearchParams(action.url.split("?")[1]);
+            const screenName = params.get("screen_name");
+            const interestedProduct = params.get("interested_product");
+            
+            if (interestedProduct) {
+                localStorage.setItem("interestedProduct", interestedProduct);
+            }
+
+            if (screenName) {
+                navigate(`/campaign/${campaignId}/${screenName}`);
+            }
+            return;
+        }
         if (btnAction === 'open'||btnAction === 'productDetails') {
             const params = new URLSearchParams(action.url.split("?")[1]);
             const screen_name = params.get("screen_name");
@@ -140,17 +159,20 @@ export default function CampaignPreview() {
 
     useEffect(() => {
         if (screen === 'landing_screen') {
-            // Get the array of campaigns where popup has been shown
-            const popupShownCampaigns = JSON.parse(sessionStorage.getItem('popupShownCampaigns') || '[]');
+            // Check if user is already logged in
+            const userData = localStorage.getItem('userData');
             
-            // Check if this campaign is in the array
-            if (!popupShownCampaigns.includes(campaignId)) {
-                // Show popup and add this campaign to the array
-                setShowPopup(true);
-                sessionStorage.setItem(
-                    'popupShownCampaigns', 
-                    JSON.stringify([...popupShownCampaigns, campaignId])
-                );
+            if (!userData) {
+                // Only show popup if user is not logged in
+                const popupShownCampaigns = JSON.parse(sessionStorage.getItem('popupShownCampaigns') || '[]');
+                
+                if (!popupShownCampaigns.includes(campaignId)) {
+                    setShowPopup(true);
+                    sessionStorage.setItem(
+                        'popupShownCampaigns', 
+                        JSON.stringify([...popupShownCampaigns, campaignId])
+                    );
+                }
             }
         }
     }, [screen, campaignId]);
@@ -193,6 +215,7 @@ export default function CampaignPreview() {
                 setShowPopup(false);
             } else {
                 console.error('Login failed:', data.message);
+                setShowPopup(false);
             }
         } catch (error) {
             console.error('Error during Google sign-in:', error);
@@ -228,6 +251,7 @@ export default function CampaignPreview() {
                                         type="standard"
                                         theme="filled_blue"
                                         size="large"
+                                        width="100%"
                                         text="signin_with"
                                         shape="rectangular"
                                     />

@@ -11,6 +11,12 @@
     height: 100vh;
     /* border: 1px solid red; */
 }
+
+@media screen and (max-width: 480px) {
+    .cardWrapper {
+        width: 100%;
+    }
+}
 .popupOverlay {
     position: fixed;
     top: 0;

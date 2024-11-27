@@ -111,6 +111,9 @@ function onSubtypeChange(): void {
                 text: { en: "Select screen to go back to" }
             }
         }];
+    } else if (subtype === "contact") {
+        value.url = "xplore-promote://contact?screen_name=contact_us_screen";
+        value.interested_product = "";
     } else {
         customDesc = subtype.startsWith("custom:")
             ? $customActions[Number(subtype.split(":")[1])]
@@ -151,7 +154,8 @@ let selectedVariables: string[] = [];
     },
     { value: "submit-form", text: "Submit" },
     { value: "backBtn", text: "Back" },
-    { value: "map", text: "Open Map" },  // Add map option
+    { value: "map", text: "Open Map" },
+    { value: "contact", text: "Contact" },  // Add contact option
   ].concat(
     $customActions.map((actionDesc, i) => ({
       value: `custom:${i}`,
@@ -191,15 +195,29 @@ let selectedVariables: string[] = [];
     console.log("line 170", selectedVars);
     value.selected_variables = selectedVars;
     const variableParams = selectedVars.map(v => `${v}=@{${v}}`).join('&');
-    value.url = `xplore-promote://submit?${variableParams}`;
-    value.log_url = value.url; // Set the log_url to match the url
+    const screenParam = value.screen_name ? `&screen_name=${value.screen_name}` : '';
+    value.url = `xplore-promote://submit?${variableParams}${screenParam}`;
+    value.log_url = value.url;
   }
 
+  function onScreenChange(screenName: string): void {
+    value.screen_name = screenName;
+    const variableParams = value.selected_variables?.map(v => `${v}=@{${v}}`).join('&') || '';
+    value.url = `xplore-promote://submit?${variableParams}&screen_name=${screenName}`;
+    value.log_url = value.url;
+  }
 
 function onMapCoordinatesChange(): void {
   console.log("line 183", value.latitude, value.longitude);
     if (value.latitude && value.longitude) {
         value.url = `xplore-promote://map?lat=${value.latitude}&lng=${value.longitude}`;
+        value.log_url = value.url;
+    }
+}
+
+function onProductChange(): void {
+    if (value.interested_product) {
+        value.url = `xplore-promote://contact?screen_name=contact_us_screen&interested_product=${value.interested_product}`;
         value.log_url = value.url;
     }
 }
@@ -227,6 +245,19 @@ function onMapCoordinatesChange(): void {
             <Text bind:value={value.url} disabled={readOnly} />
           </label>
         </div>
+      {:else if subtype === "contact"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Interested Product
+            </div>
+            <Text 
+              bind:value={value.interested_product} 
+              disabled={readOnly} 
+              on:change={onProductChange}
+            />
+          </label>
+        </div>
       {:else if subtype === "submit-form"}
         <div>
           <label>
@@ -241,6 +272,21 @@ function onMapCoordinatesChange(): void {
               disabled={readOnly}
               multiple={true}
               on:change={(e) => onVariableChange(e.detail)}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Select Screen to Navigate after Submit
+            </div>
+            <Select
+              items={updatedScreens}
+              bind:value={value.screen_name}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={(e) => onScreenChange(e.detail)}
             />
           </label>
         </div>

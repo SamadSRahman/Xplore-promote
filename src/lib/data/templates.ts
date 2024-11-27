@@ -856,7 +856,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       actions: [
         {
           log_id: "contact_us",
-          url: "xplore-promote://open?screen_name=contact_us_screen",
+          url: "xplore-promote://contact?screen_name=contact_us_screen",
         }
       ]
     },

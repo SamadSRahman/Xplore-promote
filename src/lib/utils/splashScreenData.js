@@ -746,7 +746,7 @@ export const contactUsJSON = {
                 "type": "fixed",
                 "value": 248
               },
-              "text_variable": "name",
+              "text_variable": "userName",
               "alignment_horizontal": "center",
               "alignment_vertical": "top",
               "hint_text": "Name",
@@ -808,13 +808,13 @@ export const contactUsJSON = {
               "actions": [
                 {
                   "log_id": "action_id",
-                  "url": "xplore-promote://submit?name=@{name}&email=@{email}&phone=@{phone}&isCheckboxChecked=@{isCheckboxChecked}",
-                  "log_url": "xplore-promote://submit?name=@{name}&email=@{email}&phone=@{phone}&isCheckboxChecked=@{isCheckboxChecked}",
+                  "url": "xplore-promote://submit?userName=@{userName}&email=@{email}&phone=@{phone}&consent_checkbox=@{consent_checkbox}",
+                  "log_url": "xplore-promote://submit?userName=@{userName}&email=@{email}&phone=@{phone}&consent_checkbox=@{consent_checkbox}",
                   "selected_variables": [
                     "name",
                     "email",
                     "phone",
-                    "isCheckboxChecked"
+                    "consent_checkbox"
                   ]
                 }
               ],
@@ -896,7 +896,7 @@ export const contactUsJSON = {
       },
       {
         "type": "string",
-        "name": "name",
+        "name": "userName",
         "value": ""
       },
       {
@@ -911,7 +911,7 @@ export const contactUsJSON = {
       },
       {
         "type": "boolean",
-        "name": "isCheckboxChecked",
+        "name": "consent_checkbox",
         "value": false
       }
     ]
@@ -1051,7 +1051,7 @@ export const contactUsJSON = {
                 "actions": [
                   {
                     "log_id": "update_checkbox_state",
-                    "url": "div-action://set_variable?name=isCheckboxChecked&value=true"
+                    "url": "div-action://set_variable?name=consent_checkbox&value=true"
                   },
                   {
                     "log_id": "toggle_checkbox",
@@ -1125,7 +1125,7 @@ export const contactUsJSON = {
                 "actions": [
                   {
                     "log_id": "update_checkbox_state",
-                    "url": "div-action://set_variable?name=isCheckboxChecked&value=false"
+                    "url": "div-action://set_variable?name=consent_checkbox&value=false"
                   },
                   {
                     "log_id": "toggle_checkbox",
