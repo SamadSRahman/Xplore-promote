@@ -114,6 +114,15 @@ function onSubtypeChange(): void {
     } else if (subtype === "contact") {
         value.url = "xplore-promote://contact?screen_name=contact_us_screen";
         value.interested_product = "";
+    } else if (subtype === "productDetails") {
+        value.url = "xplore-promote://productDetails";
+        actionArgs = [{
+            value: "",
+            desc: {
+                name: "screen_name",
+                text: { en: "Select screen to open" }
+            }
+        }];
     } else {
         customDesc = subtype.startsWith("custom:")
             ? $customActions[Number(subtype.split(":")[1])]
@@ -155,7 +164,8 @@ let selectedVariables: string[] = [];
     { value: "submit-form", text: "Submit" },
     { value: "backBtn", text: "Back" },
     { value: "map", text: "Open Map" },
-    { value: "contact", text: "Contact" },  // Add contact option
+    { value: "contact", text: "Contact" },
+    { value: "productDetails", text: "Product Details" },
   ].concat(
     $customActions.map((actionDesc, i) => ({
       value: `custom:${i}`,
@@ -321,6 +331,25 @@ function onProductChange(): void {
               disabled={readOnly}
               on:change={(e) => {
                 value.url = `xplore-promote://backBtn?screen_name=${e.detail}`;
+                value.log_url = value.url;
+              }}
+            />
+          </label>
+        </div>
+      {:else if subtype === "productDetails"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Select screen to open
+            </div>
+            <Select
+              items={updatedScreens}
+              bind:value={value.url}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={(e) => {
+                value.url = `xplore-promote://productDetails?screen_name=${e.detail}`;
                 value.log_url = value.url;
               }}
             />
