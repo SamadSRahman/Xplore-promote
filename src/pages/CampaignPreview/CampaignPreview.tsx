@@ -2,15 +2,15 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PreviewCard from '../../lib/components/PreviewCard/PreviewCard';
 import DivkitRenderer from '../../lib/components/PreviewCard/DivkitRenderer';
 import styles from './CampaignPreview.module.css';
-import useApi from '../../lib/utils/useApi';
 import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
 import useLayout from '../../lib/utils/useLayout';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import useEndUser from '../../lib/utils/useEndUser';
+import googleLogo from '../../assets/components/google-icon.webp';
+
 
 export default function CampaignPreview() {
     const {getAllLayout, layouts} = useLayout()
@@ -168,10 +168,10 @@ export default function CampaignPreview() {
                 
                 if (!popupShownCampaigns.includes(campaignId)) {
                     setShowPopup(true);
-                    sessionStorage.setItem(
-                        'popupShownCampaigns', 
-                        JSON.stringify([...popupShownCampaigns, campaignId])
-                    );
+                    // sessionStorage.setItem(
+                    //     'popupShownCampaigns', 
+                    //     JSON.stringify([...popupShownCampaigns, campaignId])
+                    // );
                 }
             }
         }
@@ -250,10 +250,31 @@ export default function CampaignPreview() {
                                         useOneTap
                                         type="standard"
                                         theme="filled_blue"
-                                        size="large"
-                                        width="100%"
-                                        text="signin_with"
-                                        shape="rectangular"
+                                        render={({ onClick }) => (
+                                            <button
+                                                onClick={onClick}
+                                                className={styles.googleButton}
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    gap: '8px',
+                                                    backgroundColor: 'blue',
+                                                }}
+                                            >
+                                                <img 
+                                                    src={googleLogo} 
+                                                    alt="google logo" 
+                                                    style={{
+                                                        width: '25px', 
+                                                        height: '25px', 
+                                                        backgroundColor: 'white', 
+                                                        borderRadius: '50%'
+                                                    }} 
+                                                />
+                                                Sign in with Google
+                                            </button>
+                                        )}
                                     />
                                 )}
                                 <button 
