@@ -10,7 +10,7 @@ export default function useEndUser(){
         },
         body: JSON.stringify({
           name: formData.name,
-          countryCode: formData.countryCode || "+91",
+          countryCode: formData.phone ? formData.countryCode || "+91" : "",
           phone: formData.phone,
           email: formData.email,
           address: {

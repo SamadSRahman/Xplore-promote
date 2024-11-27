@@ -51,7 +51,7 @@ export default function CampaignPreview() {
             }
             
             const variables = newLayout.layoutJSON?.card?.variables;
-            const googleData = localStorage.getItem("user");
+            const googleData = localStorage.getItem("userData");
             
             if (googleData && variables) {
                 const googleDataObj = JSON.parse(googleData);
@@ -86,9 +86,9 @@ export default function CampaignPreview() {
                 alert("Please agree to the terms and conditions first");
                 return;
             }
-
+            
             const formData = {
-                name: params.get("name"),
+                name: params.get("userName"),
                 email: params.get("email"), 
                 phone: params.get("phone"),
                 visitorId: localStorage.getItem("visitorId"),
@@ -208,7 +208,7 @@ export default function CampaignPreview() {
 
             if (data.success) {
                 // Store the user data in localStorage (keep this in localStorage as it's needed across sessions)
-                localStorage.setItem('userData', JSON.stringify(data.data));
+                localStorage.setItem('userData', JSON.stringify(data.data.user));
                 localStorage.setItem('token', data.data.token);
                 
                 // Close the popup
