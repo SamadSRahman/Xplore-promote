@@ -74,7 +74,7 @@ const CampaignForm = () => {
             );
             createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Splash Screen');
             createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Landing Screen', true);
-            createLayout(JSON.stringify(contactUsJSON), response.data.data.campaignID, 'Registration Screen');
+            createLayout(JSON.stringify(contactUsJSON), response.data.data.campaignID, 'Contact Us Screen');
             alert('Campaign created successfully');
             navigate(`/editor/${response.data.data.campaignID}/splash_screen`);
         } catch (error) {

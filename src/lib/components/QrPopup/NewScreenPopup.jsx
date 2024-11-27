@@ -4,9 +4,9 @@ import styles from './QrPopup.module.css';
 import useLayout from '../../utils/useLayout';
 import { blankBackgroundJSON } from '../../utils/splashScreenData';
 
-export default function NewScreenPopup({ onClose, campaignId, refreshScreenNames }) {
+export default function NewScreenPopup({ onClose, campaignId }) {
     const [screenName, setScreenName] = useState('');
-    const { createLayout, isLayoutCreated } = useLayout();
+    const { createLayout, isLayoutCreated, getAllLayoutNames } = useLayout();
     function handleOnSubmit() {
         if(screenName === "contact_us_screen"){
             alert("Cannot create screen with this name. Please use the Contact Us component to create a screen with this name.")
@@ -21,7 +21,7 @@ export default function NewScreenPopup({ onClose, campaignId, refreshScreenNames
 
     useEffect(() => {
         if (isLayoutCreated) {
-            refreshScreenNames();
+            getAllLayoutNames();
             alert(`${screenName} added!`);
             onClose();
         }

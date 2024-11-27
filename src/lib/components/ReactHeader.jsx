@@ -76,7 +76,7 @@ export default function ReactHeader( {}) {
         <img src={logo} alt="" />
       </div>
       {isNewScreenPopupVisible &&
-      <NewScreenPopup refreshScreenNames={refreshScreenNames} onClose={() => setIsNewScreenPopupVisible(false)} campaignId={campaignId} />}
+      <NewScreenPopup  onClose={() => setIsNewScreenPopupVisible(false)} campaignId={campaignId} />}
       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         {screens.map(screen => (
           <div
