@@ -26,8 +26,8 @@ export default function CampaignPreview() {
     const {submitContactForm} = useEndUser()
 
     useEffect(() => {
-        const mainUrl = 'https://pre.xplore.xircular.io/campaign/287dbf19-0ee0-4308-8362-7cc63ed50da7';
-        const appClipUrl = 'https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=287dbf19-0ee0-4308-8362-7cc63ed50da7';
+        const mainUrl = `https://pre.xplore.xircular.io/campaign/${campaignId}`;
+        const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
         const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign';
 
         if (data?.device) {
@@ -45,7 +45,8 @@ export default function CampaignPreview() {
                     window.location.href = mainUrl;
                 }
             } else if (isIOS) {
-                const match = userAgent.match(/os\s([0-9_]*)/);
+                // iOS version detection was incorrect - fix the regex pattern
+                const match = userAgent.match(/os (\d+_\d+)/i);
                 const version = match ? parseFloat(match[1].replace('_', '.')) : 0;
                 
                 if (version >= 16.6) {
