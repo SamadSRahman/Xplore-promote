@@ -36,6 +36,7 @@ export default function CampaignPreview() {
             const isIOS = /iphone|ipad|ipod/.test(userAgent);
 
             if (isAndroid) {
+                console.log("userAgent Android", userAgent);
                 const match = userAgent.match(/android\s([0-9.]*)/);
                 const version = match ? parseFloat(match[1]) : 0;
                 
@@ -46,6 +47,7 @@ export default function CampaignPreview() {
                 }
             } else if (isIOS) {
                 // iOS version detection was incorrect - fix the regex pattern
+                console.log("userAgent iOS", userAgent);
                 const match = userAgent.match(/os (\d+_\d+)/i);
                 const version = match ? parseFloat(match[1].replace('_', '.')) : 0;
                 
