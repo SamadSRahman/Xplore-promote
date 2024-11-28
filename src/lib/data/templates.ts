@@ -505,6 +505,131 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       width: { type: 'wrap_content' },
     },
   },
+
+  _template_input: {
+    nameKey: 'templates.input',
+    visible: true,
+    inShortList: true,
+    icon: buttonIcon,
+    props: [
+      {
+        type: 'group',
+        title: 'Input Field',
+        list: [
+          {
+            name: 'props.hint_text',
+            prop: 'hint_text',
+            type: 'string',
+            enableTanker: true,
+            enableSources: true,
+            default: 'Enter text here',
+          },
+          {
+            type: 'split',
+            list: [
+              {
+                name: 'props.font_size',
+                prop: 'font_size',
+                type: 'integer',
+                min: 1,
+                max: 1000,
+                default: 16,
+                enableSources: true,
+              },
+              {
+                name: 'props.line_height',
+                prop: 'line_height',
+                type: 'integer',
+                min: 0,
+                max: 1000,
+                default: 22,
+                enableSources: true,
+              },
+            ],
+          },
+          {
+            name: 'props.font_weight',
+            prop: 'font_weight',
+            type: 'select',
+            default: 'medium',
+            options: [
+              {
+                name: 'props.font_weight_light',
+                value: 'light',
+              },
+              {
+                name: 'props.font_weight_normal', 
+                value: 'regular',
+              },
+              {
+                name: 'props.font_weight_medium',
+                value: 'medium', 
+              },
+              {
+                name: 'props.font_weight_bold',
+                value: 'bold',
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: 'props.text_color',
+            prop: 'text_color',
+            type: 'color',
+            default: '#000000',
+            enableSources: true,
+          },
+          {
+            name: 'props.corners',
+            prop: 'corners',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            default: 8,
+            enableSources: true,
+          }
+        ],
+      },
+    ],
+    newNode: {
+      hint_text: 'Enter text here',
+      text_variable: 'input_text',
+      font_size: 16,
+      font_weight: 'medium',
+      text_color: '#000000',
+      hint_color: '#888888',
+      corners: 8,
+      background: [
+        {
+          type: 'solid',
+          color: '#f8f8f8'
+        }
+      ]
+    },
+    template: {
+      type: 'input',
+      text_variable: 'input_text',
+      width: { type: 'match_parent' },
+      height: { type: 'wrap_content' },
+      text_alignment_horizontal: 'left',
+      text_alignment_vertical: 'center',
+      border: {
+        corner_radius: 8,
+        stroke: {
+          color: '#cccccc',
+          width: 1
+        }
+      },
+      paddings: {
+        left: 16,
+        top: 10,
+        right: 16,
+        bottom: 10
+      },
+      keyboard_type: 'default',
+      max_length: 100
+    },
+  },
   _template_close: {
     nameKey: 'templates.close',
     visible: true,

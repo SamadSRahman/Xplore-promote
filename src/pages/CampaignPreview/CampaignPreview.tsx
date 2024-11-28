@@ -26,6 +26,42 @@ export default function CampaignPreview() {
     const {submitContactForm} = useEndUser()
 
     useEffect(() => {
+        const mainUrl = 'https://pre.xplore.xircular.io/campaign/287dbf19-0ee0-4308-8362-7cc63ed50da7';
+        const appClipUrl = 'https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=287dbf19-0ee0-4308-8362-7cc63ed50da7';
+        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign';
+
+        if (data?.device) {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isAndroid = /android/.test(userAgent);
+            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+
+            if (isAndroid) {
+                const match = userAgent.match(/android\s([0-9.]*)/);
+                const version = match ? parseFloat(match[1]) : 0;
+                
+                if (version >= 12) {
+                    window.location.href = playStoreUrl;
+                } else {
+                    window.location.href = mainUrl;
+                }
+            } else if (isIOS) {
+                const match = userAgent.match(/os\s([0-9_]*)/);
+                const version = match ? parseFloat(match[1].replace('_', '.')) : 0;
+                
+                if (version >= 16.6) {
+                    window.location.href = appClipUrl;
+                } else {
+                    window.location.href = mainUrl;
+                }
+            } else {
+                window.location.href = mainUrl;
+            }
+        } else {
+            window.location.href = mainUrl;
+        }
+
+
+
         getAllLayout(campaignId);
         getData({ignoreCache: true});
     }, []);

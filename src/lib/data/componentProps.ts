@@ -36,26 +36,26 @@ export const containerComponents = new Set([
 ]);
 
 export type PropertyType =
-  | 'string'
-  | 'number'
-  | 'boolean'
-  | 'radio'
-  | 'integer'
-  | 'select'
-  | 'percent'
-  | 'rotation'
-  | 'background2'
-  | 'color'
-  | 'actions2'
-  | 'video_sources'
-  | 'file'
-  | 'alignment'
-  | 'margins-paddings'
-  | 'text-align'
-  | 'text-styles'
-  | 'group'
-  | 'split'
-  | 'array';
+    | 'string'
+    | 'number'
+    | 'boolean'
+    | 'radio'
+    | 'integer'
+    | 'select'
+    | 'percent'
+    | 'rotation'
+    | 'background2'
+    | 'color'
+    | 'actions2'
+    | 'video_sources'
+    | 'file'
+    | 'alignment'
+    | 'margins-paddings'
+    | 'text-align'
+    | 'text-styles'
+    | 'group'
+    | 'split'
+    | 'array';
 
 export interface BaseProperty {
     name?: string;
@@ -70,8 +70,8 @@ export interface BaseProperty {
     show?: ConditionObject;
     enabled?: ConditionObject | false;
     enableSources?: boolean;
-    min?:number;
-    max?:number;
+    min?: number;
+    max?: number;
 }
 
 export interface RadioProperty extends BaseProperty {
@@ -85,11 +85,11 @@ export interface RadioProperty extends BaseProperty {
 }
 export interface ArrayProperty extends BaseProperty {
     type: 'array';
-    arrayType:'object',
+    arrayType: 'object',
     minItems: number,
-    maxItems:  number,
+    maxItems: number,
     fields: BaseProperty[]; // Specify that each array contains other properties
-   }
+}
 
 export interface IntegerProperty extends BaseProperty {
     type: 'integer';
@@ -208,13 +208,6 @@ export type SiblingComponentProperty = ComponentProperty & {
         value: string;
     }[];
 }
-// const storedVariables = JSON.parse(localStorage.getItem('variables') || '[]');
-// console.log("storedVariables line 212:", storedVariables);
-// const variables = storedVariables.map((variable: {name: string}) => ({
-//     text: variable.name || '', // Ensure text is never undefined
-//     value: variable.name || '' // Ensure value is never undefined
-// })) || []; // Fallback to empty array if map fails
-// console.log("Variables after mapping line 216:", variables);
 
 export const BASE_COMPONENT_PROPS: ComponentProperty[] = [{
     type: 'group',
@@ -410,6 +403,22 @@ export const BASE_COMPONENT_PROPS: ComponentProperty[] = [{
         name: 'props.background',
         prop: 'background',
         type: 'background2'
+    }, {
+        type: 'group',
+        title: 'props.border',
+        list: [{
+            name: 'props.corners',
+            prop: 'border.corner_radius',
+            type: 'integer',
+            min: 0,
+            max: 100,
+            enableSources: true,
+        }, {
+            name: 'props.border_color',
+            prop: 'border.stroke.color',
+            type: 'color',
+            enableSources: true,
+        }]
     }]
 }];
 
@@ -470,7 +479,7 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
                 value: 'bold'
             }],
             enableSources: true
-        }, 
+        },
         // {
         //     name: 'props.font_family',
         //     prop: 'font_family',
@@ -544,23 +553,14 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
                 value: 'bold'
             }],
             enableSources: true
-        },    {
-            name: 'props.corners',
-            prop: 'corners',
-            type: 'integer',
-            min: 0,
-            max: 100,
-            enableSources: true,
-          },{
+        }, {
             name: 'props.text_color',
             prop: 'text_color',
             type: 'color',
             enableSources: true
         },
         ],
-    },
-   
-    {
+    },{
         name: 'props.keyboard_type',
         prop: 'keyboard_type',
         type: 'select',
@@ -577,7 +577,7 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
         }, {
             name: 'props.phone',
             value: 'phone'
-        }, 
+        },
         {
             name: 'props.number',
             value: 'number'
@@ -594,10 +594,10 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
             name: 'props.password',
             value: 'password'
         },
-    
-    ],
+
+        ],
         enableSources: true
-    }, 
+    },
     {
         name: 'props.hint_text',
         prop: 'hint_text',
@@ -605,12 +605,8 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
         enableTanker: true,
         enableSources: true,
         default: '\0'
-    }
-
-
-],
-    
-image: [...BASE_COMPONENT_PROPS, 
+    }],
+    image: [...BASE_COMPONENT_PROPS,
     {
         type: 'group',
         title: 'imageProps.title',
@@ -652,7 +648,7 @@ image: [...BASE_COMPONENT_PROPS,
             verticalProp: 'content_alignment_vertical',
             enableSources: true
         }],
-   
+
     },
     {
         type: 'group',
@@ -782,7 +778,7 @@ image: [...BASE_COMPONENT_PROPS,
                 value: 'overlap'
             }],
             enableSources: true
-        }, 
+        },
         {
             name: 'props.content_alignment',
             type: 'alignment',
@@ -799,28 +795,13 @@ image: [...BASE_COMPONENT_PROPS,
                 prop: 'actions',
                 type: 'actions2'
             }]
-        },{
-            type: 'group',
-            title: 'props.border',
-            list: [{
-                name: 'props.corners',
-                prop: 'border.corner_radius',
-                type: 'integer',
-                min: 0,
-                max: 100,
-                enableSources: true,
-            }]
-        }
-       
-    
-    ],
-    }
-, {
-    name: 'props.clip_to_bounds',
-    prop:'clip_to_bounds',
-    type: 'boolean',
-    default:true,
-},],
+        },],
+    }, {
+        name: 'props.clip_to_bounds',
+        prop: 'clip_to_bounds',
+        type: 'boolean',
+        default: true,
+    },],
     grid: [...BASE_COMPONENT_PROPS, {
         type: 'group',
         title: 'gridProps.title',
