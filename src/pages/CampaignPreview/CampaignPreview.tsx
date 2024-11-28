@@ -46,6 +46,9 @@ export default function CampaignPreview() {
                 if (version >= 12) {
                     window.location.href = playStoreUrl;
                 }
+                else{
+                    alert("Please update your Android version to 12 or above");
+                }
             } else if (isIOS()) {
                 alert("userAgent iOS"); 
                 const match = navigator.userAgent.match(/OS (\d+)[._]?(\d+)?/i);
