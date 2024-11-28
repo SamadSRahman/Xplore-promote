@@ -28,31 +28,33 @@ export default function CampaignPreview() {
     useEffect(() => {
         const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
         const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign';
-
+        
         if (data?.device) {
             const userAgent = navigator.userAgent.toLowerCase();
             const isAndroid = /android/.test(userAgent);
             const isIOS = /iphone|ipad|ipod/.test(userAgent);
-
+        
             if (isAndroid) {
                 alert("userAgent Android");
-                const match = userAgent.match(/android\s([0-9.]*)/);
+                const match = userAgent.match(/android\s([0-9.]+)/);
                 const version = match ? parseFloat(match[1]) : 0;
-                
+        
                 if (version >= 12) {
                     window.location.href = playStoreUrl;
                 }
             } else if (isIOS) {
-                // iOS version detection was incorrect - fix the regex pattern
                 alert("userAgent iOS");
-                const match = userAgent.match(/os (\d+_\d+)/i);
-                const version = match ? parseFloat(match[1].replace('_', '.')) : 0;
-                
+                const match = navigator.userAgent.match(/OS (\d+)[._]?(\d+)?/i);
+                const majorVersion = match ? parseInt(match[1], 10) : 0;
+                const minorVersion = match && match[2] ? parseInt(match[2], 10) : 0;
+                const version = parseFloat(`${majorVersion}.${minorVersion}`);
+        
                 if (version >= 16.6) {
                     window.location.href = appClipUrl;
                 }
             }
         }
+        
 
 
 
