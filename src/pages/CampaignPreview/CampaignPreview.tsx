@@ -28,16 +28,16 @@ export default function CampaignPreview() {
     useEffect(() => {
         const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
         const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign';
-        function isIOS() {
-            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-          }
+         function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent);
+        }
     
           function isAndroid() {
             return /android/i.test(navigator.userAgent);
         }
         console.log("userAgent", navigator.userAgent);
         
-        if (data?.device) {
+       
             if (isAndroid()) {
                 alert("userAgent Android");
                 const match = navigator.userAgent.match(/android\s([0-9.]+)/);
@@ -57,11 +57,7 @@ export default function CampaignPreview() {
                     window.location.href = appClipUrl;
                 }
             }
-        }
         
-
-
-
         getAllLayout(campaignId);
         getData({ignoreCache: true});
     }, []);
