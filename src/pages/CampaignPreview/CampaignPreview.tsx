@@ -39,18 +39,16 @@ export default function CampaignPreview() {
         
        
             if (isAndroid()) {
-                alert("userAgent Android");
                 const match = navigator.userAgent.match(/android\s([0-9.]+)/);
                 const version = match ? parseFloat(match[1]) : 0;
                 window.location.href = playStoreUrl;
-                if (version >= 12) {
+                // if (version >= 12) {
                     
-                }
-                else{
-                    alert("Please update your Android version to 12 or above");
-                }
+                // }
+                // else{
+                //     alert("Please update your Android version to 12 or above");
+                // }
             } else if (isIOS()) {
-                alert("userAgent iOS"); 
                 const match = navigator.userAgent.match(/OS (\d+)[._]?(\d+)?/i);
                 const majorVersion = match ? parseInt(match[1], 10) : 0;
                 const minorVersion = match && match[2] ? parseInt(match[2], 10) : 0;
