@@ -27,7 +27,7 @@ export default function CampaignPreview() {
 
     useEffect(() => {
         const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
-        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign';
+        const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
          function isIOS() {
             return /iPad|iPhone|iPod/.test(navigator.userAgent);
         }

@@ -15,9 +15,16 @@ const PreviewScreen = ({ isOpen, onClose, jsonData }) => {
         typefaceProvider: (font) => {
           // Return the CSS font-family based on the font name
           switch (font) {
-            case 'Arial': return 'Arial, sans-serif';
+            case 'Inter': return '"Inter", sans-serif';
+            case 'Poppins': return '"Poppins", sans-serif';
             case 'Roboto': return '"Roboto", sans-serif';
-            case 'Times': return '"Times New Roman", serif';
+            case 'Open Sans': return '"Open Sans", sans-serif';
+            case 'Lato': return '"Lato", sans-serif';
+            case 'Montserrat': return '"Montserrat", sans-serif';
+            case 'Nunito': return '"Nunito", sans-serif';
+            case 'Raleway': return '"Raleway", sans-serif';
+            case 'Oswald': return '"Oswald", sans-serif';
+            case 'Merriweather': return '"Merriweather", serif';
             default: return 'inherit';
           }
         },
@@ -47,7 +54,7 @@ const PreviewScreen = ({ isOpen, onClose, jsonData }) => {
           <IoClose size={24} />
         </button>
         <div className="preview-content">
-          <div ref={previewContainer} />
+          <div style={{color:'#000'}} ref={previewContainer} />
         </div>
       </div>
     </div>

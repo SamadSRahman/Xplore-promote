@@ -333,6 +333,10 @@
         const processedJson = props?.processedJson;
 
         const computedStyle = getComputedStyle(elem);
+        console.log("computedStyle", computedStyle);
+        // Add this line to get the font-family
+        const fontFamily = computedStyle.fontFamily;
+        console.log('fontFamily', fontFamily);
         const margin = computedStyle.margin;
         const marginTop = parseInt(computedStyle.marginTop);
         const marginRight = parseInt(computedStyle.marginRight);
@@ -471,6 +475,7 @@
           emptyFileType,
           insets,
           visibleText: elem === clone ? componentCloneText : "",
+          fontFamily, // Add this line to include font-family in the returned object
           grid:
             (gridProps &&
               (gridResize || {

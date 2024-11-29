@@ -480,14 +480,55 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
             }],
             enableSources: true
         },
-        // {
-        //     name: 'props.font_family',
-        //     prop: 'font_family',
-        //     type: 'string',
-        //     enableTanker: true,
-        //     enableSources: true,
-        //     default: '\0'
-        // },
+        {
+            name: 'props.font_family',
+            prop: 'font_family',
+            type: 'select',
+            options: [
+                {
+                    name: 'props.font_family_inter',
+                    value: 'Inter'
+                },
+                {
+                    name: 'props.font_family_poppins',
+                    value: 'Poppins'
+                },
+                {
+                    name: 'props.font_family_roboto',
+                    value: 'Roboto'
+                },
+                {
+                    name: 'props.font_family_open_sans',
+                    value: 'Open Sans'
+                },
+                {
+                    name: 'props.font_family_lato',
+                    value: 'Lato'
+                },
+                {
+                    name: 'props.font_family_montserrat',
+                    value: 'Montserrat'
+                },
+                {
+                    name: 'props.font_family_nunito',
+                    value: 'Nunito'
+                },
+                {
+                    name: 'props.font_family_raleway',
+                    value: 'Raleway'
+                },
+                {
+                    name: 'props.font_family_oswald',
+                    value: 'Oswald'
+                },
+                {
+                    name: 'props.font_family_merriweather',
+                    value: 'Merriweather'
+                }
+            ],
+            enableSources: true,
+            default: 'Inter'
+        },
         {
             name: 'props.text_color',
             prop: 'text_color',

@@ -16,11 +16,17 @@ const DivkitRenderer = ({ divkitJson , onClick}) => {
 
           // Return the CSS font-family based on the font name
           switch (font) {
-            case 'Arial': return 'Arial, sans-serif';
+            case 'Inter': return '"Inter", sans-serif';
+            case 'Poppins': return '"Poppins", sans-serif';
             case 'Roboto': return '"Roboto", sans-serif';
-            case 'Times': return '"Times New Roman", serif';
-            // Add more cases for other fonts as needed
-            default: return 'inherit'; // fallback for unspecified fonts
+            case 'Open Sans': return '"Open Sans", sans-serif';
+            case 'Lato': return '"Lato", sans-serif';
+            case 'Montserrat': return '"Montserrat", sans-serif';
+            case 'Nunito': return '"Nunito", sans-serif';
+            case 'Raleway': return '"Raleway", sans-serif';
+            case 'Oswald': return '"Oswald", sans-serif';
+            case 'Merriweather': return '"Merriweather", serif';
+            default: return 'inherit';
           }
         },
         json: divkitJson,
