@@ -124,10 +124,10 @@ export default function CampaignPreview() {
         1,
         2
       );
-  
+      window.location.href = playStoreUrl;
       if (version >= 12) {
         console.log("Redirecting to Play Store Instant App...");
-        window.location.href = playStoreUrl;
+       
       } else {
         console.log("Rendering React App (Android fallback)");
         // React app renders normally
