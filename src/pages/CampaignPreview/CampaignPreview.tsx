@@ -24,6 +24,11 @@ export default function CampaignPreview() {
   );
   const { submitContactForm, updateInterestedProduct } = useEndUser();
 
+
+  useEffect(()=>{
+    getAllLayout(campaignId);
+    getData({ ignoreCache: true });
+  },[]);
   useEffect(() => {
     // const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
     // const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
@@ -137,13 +142,8 @@ export default function CampaignPreview() {
       // React app renders for non-iOS/Android cases
     }
   }
-  
 
     handleDeeplinking(campaignId);
-
-    getAllLayout(campaignId);
-    getData({ ignoreCache: true });
-
     const requestPushNotificationPermission = async () => {
       if ("Notification" in window) {
         const permission = await Notification.requestPermission();
@@ -159,7 +159,7 @@ export default function CampaignPreview() {
     };
 
     requestPushNotificationPermission();
-  }, []);
+  }, [data]);
   useEffect(() => {
     console.log("data", data);
     if (data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
