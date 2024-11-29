@@ -1290,8 +1290,10 @@ export const namedTemplates: Record<string, TemplateDescription> = {
                 $font_size: 'font_size',
                 $text_color: 'label_color',
                 margins: { left: 8 },
-                width: { type: 'wrap_content' },
-                height: { type: 'wrap_content' }
+                width: { type: 'match_parent' },
+                // height: { type: 'wrap_content' 
+                // max_lines: 0,
+                line_height: 1.5
               }
             ]
           }
@@ -1349,8 +1351,10 @@ export const namedTemplates: Record<string, TemplateDescription> = {
                 $font_size: 'font_size',
                 $text_color: 'label_color',
                 margins: { left: 8 },
-                width: { type: 'wrap_content' },
-                height: { type: 'wrap_content' }
+                width: { type: 'match_parent' },
+                height: { type: 'wrap_content' },
+                max_lines: 0,
+                line_height: 1.2
               }
             ]
           }

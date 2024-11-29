@@ -41,7 +41,7 @@ export default function CampaignPreview() {
             if (isAndroid()) {
                 const match = navigator.userAgent.match(/android\s([0-9.]+)/);
                 const version = match ? parseFloat(match[1]) : 0;
-                window.location.href = playStoreUrl;
+                // window.location.href = playStoreUrl;
                 // if (version >= 12) {
                     
                 // }
