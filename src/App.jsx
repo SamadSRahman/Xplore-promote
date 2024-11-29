@@ -27,7 +27,7 @@ export default function App() {
     const checkMobile = () => {
       const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const path = window.location.pathname;
-      const isCampaignPreview = path.startsWith('/campaign/') || path.includes("privacyPolicy") || path.includes("terms&conditions");
+      const isCampaignPreview = path.startsWith('/campaign/') || path.includes("privacyPolicy") || path.includes("terms&conditions") || path.includes("contactus");
       setIsMobile(mobile && !isCampaignPreview);
     };
 
