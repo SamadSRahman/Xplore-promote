@@ -330,12 +330,14 @@
       .filter((elem) => elem.isConnected)
       .map((elem) => {
         const props = components.get(elem);
+        console.log("props", props);
+        
         const processedJson = props?.processedJson;
 
         const computedStyle = getComputedStyle(elem);
         console.log("computedStyle", computedStyle);
         // Add this line to get the font-family
-        const fontFamily = computedStyle.fontFamily;
+        const fontFamily =props?.json.font_family;
         console.log('fontFamily', fontFamily);
         const margin = computedStyle.margin;
         const marginTop = parseInt(computedStyle.marginTop);
@@ -439,7 +441,7 @@
             gridProps = getGridProps(elem);
           });
         }
-
+        console.log("line 481", fontFamily)
         return {
           elem,
           permanent: elem === selectedElem,
@@ -475,7 +477,10 @@
           emptyFileType,
           insets,
           visibleText: elem === clone ? componentCloneText : "",
-          fontFamily, // Add this line to include font-family in the returned object
+          fontFamily,
+       
+          
+          // Add this line to include font-family in the returned object
           grid:
             (gridProps &&
               (gridResize || {
@@ -3652,12 +3657,13 @@ else{
                 style:height="{highlight.heightNum}px"
                 style:margin-top="{-scrollY}px"
                 style:margin-left="{-scrollX}px"
-                style:font-family = "{highlight.fontFamily?highlight.fontFamily==="Times"?'"Times New Roman", serif': "" :"inherit"}"
+                style:font-family = "{`${highlight.fontFamily}, sans-serif`}"
               >
                 <div
                   class="renderer__highlight-border"
                   class:renderer__highlight-border_insets={highlight.insets}
                   style:transform="rotate({highlight.rotation}deg)"
+                    style:font-family = "{`${highlight.fontFamily}, sans-serif`}"
                 >
                   {#if highlight.insets}
                     <svg
