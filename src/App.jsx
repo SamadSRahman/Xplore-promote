@@ -17,17 +17,17 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 
 export default function App() {
   const [isMobile, setIsMobile] = React.useState(false);
-  const {isLoading, error, data, getData} = useVisitorData(
-    {extendedResult: true},
-    {immediate: true}
-  )
+  const { isLoading, error, data, getData } = useVisitorData(
+    { extendedResult: true },
+    { immediate: true }
+  );
 
   React.useEffect(() => {
-    getData({ignoreCache: true});
+    getData({ ignoreCache: true });
     const checkMobile = () => {
       const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const path = window.location.pathname;
-      const isCampaignPreview = path.startsWith('/campaign/');
+      const isCampaignPreview = path.startsWith('/campaign/') || path.includes("privacyPolicy") || path.includes("terms&conditions");
       setIsMobile(mobile && !isCampaignPreview);
     };
 
@@ -36,45 +36,45 @@ export default function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-
-
-  if (isMobile) {
-    return (
-      <div style={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px',
-        textAlign: 'center'
-      }}>
-        <h2>Please access this application from a desktop or laptop computer for the best experience.</h2>
-        {/* <button onClick={() => getData({ignoreCache: true})}>Get Data</button> */}
-      </div>
-    );
-  }
   useEffect(() => {
     console.log(data);
   }, [data]);
+
   return (
     <div>
-         <RecoilRoot>
-         <BrowserRouter>
-          <Routes>
-            <Route path='/privacyPolicy' element={<PrivacyPolicy />}/>           
-            <Route path='/publish/:campaignId' element={<PublishAndPreview />}/>
-            <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />}/>
-            <Route path='/campaignAnalytics/:campaignId' element={<CampaignAnalytics />}/>
-            <Route path='/contactus' element={<ContactUs />}/>
-            <Route path='/terms&conditions' element={<TermsAndConditions />}/>
-            <Route path='/' element={<QRLogin />}/>
-            <Route path='/campaigns' element={<Campaigns />}/>
-            <Route path='/createCampaign' element={<CampaignsForm />}/>
-            <Route path='/themeSelection' element={<ThemeSelection />}/>
-            <Route path='/editor/:campaignId/:page' element={<EditorPage />}/>
-          </Routes>
+      {isMobile ? (
+        <div style={{
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px',
+          textAlign: 'center',
+          color: '#000',
+          backgroundColor: '#fff'
+        }}>
+          <h2>Please access this application from a desktop or laptop computer for the best experience.</h2>
+        </div>
+      ) : (
+        <RecoilRoot>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
+              <Route path='/publish/:campaignId' element={<PublishAndPreview />} />
+              <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />} />
+              <Route path='/campaignAnalytics/:campaignId' element={<CampaignAnalytics />} />
+              <Route path='/contactus' element={<ContactUs />} />
+              <Route path='/terms&conditions' element={<TermsAndConditions />} />
+              <Route path='/' element={<QRLogin />} />
+              <Route path='/campaigns' element={<Campaigns />} />
+              <Route path='/createCampaign' element={<CampaignsForm />} />
+              <Route path='/themeSelection' element={<ThemeSelection />} />
+              <Route path='/editor/:campaignId/:page' element={<EditorPage />} />
+            </Routes>
           </BrowserRouter>
-         </RecoilRoot>
+        </RecoilRoot>
+      )}
     </div>
   );
 }
+
