@@ -54,11 +54,38 @@ export default function useEndUser(){
             city: formData.address?.city
           },
           otherDetails: {
-            website: formData.otherDetails?.website
+            website: formData.otherDetails?.website,
+            interestedProduct: localStorage.getItem('interestedProduct')
           },
           visitorId: formData.visitorId,
           deviceId: formData.deviceId,
           campaignID: formData.campaignID
+        })
+      });
+      alert("Form submitted successfully");
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      return await response.json();
+ 
+    } catch (error) {
+      console.log('Error submitting contact form:', error);
+      throw error;
+    }
+  };
+  const updateInterestedProduct = async (id) => {
+    try {
+      const response = await fetch('https://pre.xplore.xircular.io/api/v1/endUser/updateInterestedProduct', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          visitorId: localStorage.getItem('visitorId'),
+          deviceId: localStorage.getItem('deviceId'), 
+          productName: localStorage.getItem('interestedProduct'),
+          campaignID:id
         })
       });
 
@@ -66,18 +93,17 @@ export default function useEndUser(){
         throw new Error('Network response was not ok');
       }
 
-      alert("Form submitted successfully");
       return await response.json();
- 
+
     } catch (error) {
-      console.error('Error submitting contact form:', error);
-      alert("Failed to submit form. Please try again.");
+      console.error('Error updating interested product:', error);
       throw error;
     }
   };
 
   return {
-    submitContactForm
+    submitContactForm,
+    updateInterestedProduct
   };
 
 }

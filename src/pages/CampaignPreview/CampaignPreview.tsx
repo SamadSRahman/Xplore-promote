@@ -23,7 +23,7 @@ export default function CampaignPreview() {
         {extendedResult: true},
         {immediate: true}
       )
-    const {submitContactForm} = useEndUser()
+    const {submitContactForm, updateInterestedProduct} = useEndUser()
 
     useEffect(() => {
         const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
@@ -130,6 +130,7 @@ export default function CampaignPreview() {
             };
 
             submitContactForm(formData);
+            updateInterestedProduct(campaignId);
             return;
         }
 

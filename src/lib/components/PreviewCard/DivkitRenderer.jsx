@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { render } from '@divkitframework/divkit/client';
+import { render } from '@divkitframework/divkit/client-hydratable';
 import styles from './PreviewCard.module.css'
 const DivkitRenderer = ({ divkitJson , onClick}) => {
   const divkitContainer = useRef(null);
@@ -7,6 +7,7 @@ const DivkitRenderer = ({ divkitJson , onClick}) => {
   useEffect(() => {
     if (divkitContainer.current) {
       render({
+        hydrate: true,
         onCustomAction:(e)=>onClick(e),
         id: 'divkit-root',
         target: divkitContainer.current,
@@ -23,6 +24,7 @@ const DivkitRenderer = ({ divkitJson , onClick}) => {
           }
         },
         json: divkitJson,
+       
         onError(details) {
           console.error('Divkit rendering error:', details.error);
         },
