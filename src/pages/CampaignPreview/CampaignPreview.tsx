@@ -127,10 +127,7 @@ export default function CampaignPreview() {
             url: appClipUrl
           });
         // Redirect after a short delay to ensure state update
-        setTimeout(() => {
-            alert("redirecting")
-          window.location.href = appClipUrl;
-        }, 100);
+   
       } else {
         console.log("Rendering React App (iOS fallback)");
         // React app renders normally
@@ -183,6 +180,9 @@ export default function CampaignPreview() {
 
     requestPushNotificationPermission();
   }, [data]);
+
+  useEffect(()=>{console.log("redirect info", redirectInfo);
+  },[redirectInfo])
 
   const handleRedirect = () => {
     if (redirectInfo?.url) {
