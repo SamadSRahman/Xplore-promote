@@ -121,6 +121,7 @@ export default function CampaignPreview() {
         setShouldRenderApp(false);
         // Redirect after a short delay to ensure state update
         setTimeout(() => {
+            alert("redirecting")
           window.location.href = appClipUrl;
         }, 100);
       } else {
@@ -179,7 +180,7 @@ export default function CampaignPreview() {
   if (!shouldRenderApp) {
     return null; // Return null to prevent any rendering
   }
-  
+
   useEffect(() => {
     if (!layouts.length) return;
 
