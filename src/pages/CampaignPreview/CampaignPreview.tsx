@@ -61,11 +61,10 @@ export default function CampaignPreview() {
       if (/android/i.test(userAgent)) {
         setDeviceType("android");
         setRedirectURL(playStoreUrl);
-        window.location.href = playStoreUrl;
         // setTimeout(()=>{
         //   window.location.href = playStoreUrl;
         //  }, 1000)
-      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      } else if (/iPad|iPhone|iPod/.test(userAgent)) {
         setDeviceType("ios");
         setRedirectURL(appClipUrl);
       //  setTimeout(()=>{
