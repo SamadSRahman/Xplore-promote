@@ -10,6 +10,7 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
 import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
+import icon from '../../assets/xplore-logo.svg'
 
 export default function CampaignPreview() {
   const { getAllLayout, layouts } = useLayout();
@@ -18,7 +19,10 @@ export default function CampaignPreview() {
   const { campaignId, screen } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
-  const [shouldRenderApp, setShouldRenderApp] = useState(true);
+  const [redirectInfo, setRedirectInfo] = useState<{
+    platform: 'ios' | 'android' | null;
+    url: string;
+  } | null>(null);
 
   const { data, getData } = useVisitorData(
     { extendedResult: true },
@@ -118,7 +122,10 @@ export default function CampaignPreview() {
   
       if (version >= 16.6) {
         console.log("Redirecting to App Clip...");
-        setShouldRenderApp(false);
+        setRedirectInfo({
+            platform: 'ios',
+            url: appClipUrl
+          });
         // Redirect after a short delay to ensure state update
         setTimeout(() => {
             alert("redirecting")
@@ -139,7 +146,10 @@ export default function CampaignPreview() {
       window.location.href = playStoreUrl;
       if (version >= 12) {
         console.log("Redirecting to Play Store Instant App...");
-        setShouldRenderApp(false);
+        setRedirectInfo({
+            platform: 'android',
+            url: playStoreUrl
+          });
           // Redirect after a short delay to ensure state update
           setTimeout(() => {
             window.location.href = playStoreUrl;
@@ -155,6 +165,7 @@ export default function CampaignPreview() {
     }
   }
 
+  
     handleDeeplinking(campaignId);
     const requestPushNotificationPermission = async () => {
       if ("Notification" in window) {
@@ -172,13 +183,44 @@ export default function CampaignPreview() {
 
     requestPushNotificationPermission();
   }, [data]);
+
+  const handleRedirect = () => {
+    if (redirectInfo?.url) {
+      window.location.href = redirectInfo.url;
+    }
+  };
+
   useEffect(() => {
     if (data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
     if (data?.device) localStorage.setItem("deviceId", data.device);
   }, [data]);
 
-  if (!shouldRenderApp) {
-    return null; // Return null to prevent any rendering
+ if (redirectInfo) {
+    return (
+      <div className={styles.redirectContainer}>
+        <div className={styles.redirectContent}>
+          {redirectInfo.platform === 'ios' ? (
+            <>
+              <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
+              <h2>Open in App Clip</h2>
+              <p>This campaign is optimized for Apple App Clip. Tap below to continue.</p>
+            </>
+          ) : (
+            <>
+              <img src={icon} alt="Android Instant App" className={styles.platformIcon} />
+              <h2>Open Instant App</h2>
+              <p>This campaign is optimized for Android Instant App. Tap below to continue.</p>
+            </>
+          )}
+          <button 
+            onClick={handleRedirect} 
+            className={styles.redirectButton}
+          >
+            Continue to {redirectInfo.platform === 'ios' ? 'App Clip' : 'Instant App'}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   useEffect(() => {
