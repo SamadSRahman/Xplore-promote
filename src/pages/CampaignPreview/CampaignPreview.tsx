@@ -19,9 +19,9 @@ export default function CampaignPreview() {
   const { campaignId, screen } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
-  const [deviceType, setDeviceType] = useState("other");
+  const [deviceType, setDeviceType] = useState("ios");
   const [redirectURL, setRedirectURL] = useState("")
-  const type = new MobileDetect(window.navigator.userAgent)
+
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
         const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
@@ -31,14 +31,6 @@ export default function CampaignPreview() {
   );
   const { submitContactForm, updateInterestedProduct } = useEndUser();
 
-useEffect(()=>{
-  if(type.os()==='iOS'){
-    alert("ios Detected")
-  }
-  else{
-    alert(type.os)
-  }
-},[])
   useEffect(() => {
     getAllLayout(campaignId);
     getData({ ignoreCache: true });
@@ -74,20 +66,19 @@ useEffect(()=>{
         //  }, 1000)
       } else if (/iPad|iPhone|iPod/.test(userAgent)) {
         setDeviceType("ios");
-        setRedirectURL(appClipUrl);
-        // alert("state updated")
-      //  setTimeout(()=>{
-      //   window.location.href = appClipUrl;
-      //  }, 1000)
+        // setRedirectURL(appClipUrl);
+       setTimeout(()=>{
+        window.location.href = appClipUrl;
+       }, 100)
       } else {
         setDeviceType("other");
       }
-    }, []);
+    },[]);
   
 
   useEffect(() => {
     console.log("deviceType", deviceType, redirectURL);
-    alert(`device type: ${deviceType}` )
+    // alert(`device type: ${deviceType}` )
   }, [deviceType])
 
   const handleRedirect = () => {
@@ -99,33 +90,9 @@ useEffect(()=>{
     if (data?.device) localStorage.setItem("deviceId", data.device);
   }, [data]);
 
-  if (deviceType === "ios"|| deviceType === "android") {
-    return (
-      <div className={styles.redirectContainer}>
-        <div className={styles.redirectContent}>
-          {deviceType === 'ios' ? (
-            <>
-              <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
-              <h2>Open in App Clip</h2>
-              <p>This campaign is optimized for Apple App Clip. Tap below to continue.</p>
-            </>
-          ) : (
-            <>
-              <img src={icon} alt="Android Instant App" className={styles.platformIcon} />
-              <h2>Open Instant App</h2>
-              <p>This campaign is optimized for Android Instant App. Tap below to continue.</p>
-            </>
-          )}
-          <button
-            onClick={handleRedirect}
-            className={styles.redirectButton}
-          >
-            Continue to {deviceType === 'ios' ? 'App Clip' : 'Instant App'}
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // if (deviceType === "ios"|| deviceType === "android") {
+  //   return
+  // }
 
   useEffect(() => {
     if (!layouts.length) return;
@@ -342,7 +309,35 @@ useEffect(()=>{
   };
 
   return (
-    <GoogleOAuthProvider clientId="1026223734987-lqcb9auvggk9vuri3jucmblf4lhhm9sj.apps.googleusercontent.com">
+   
+<div>
+{ deviceType=== "ios"|| deviceType==="android"?
+    (
+      <div className={styles.redirectContainer}>
+        <div className={styles.redirectContent}>
+          {deviceType === 'ios' ? (
+            <>
+              <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
+              <h2>Open in App Clip</h2>
+              <p>This campaign is optimized for Apple App Clip. Tap below to continue.</p>
+            </>
+          ) : (
+            <>
+              <img src={icon} alt="Android Instant App" className={styles.platformIcon} />
+              <h2>Open Instant App</h2>
+              <p>This campaign is optimized for Android Instant App. Tap below to continue.</p>
+            </>
+          )}
+          <button
+            onClick={handleRedirect}
+            className={styles.redirectButton}
+          >
+            Continue to {deviceType === 'ios' ? 'App Clip' : 'Instant App'}
+          </button>
+        </div>
+      </div>
+    ):(
+      <GoogleOAuthProvider clientId="1026223734987-lqcb9auvggk9vuri3jucmblf4lhhm9sj.apps.googleusercontent.com">
       <div className={styles.container}>
         {showPopup && (
           <div className={styles.popupOverlay}>
@@ -408,5 +403,15 @@ useEffect(()=>{
         </div>
       </div>
     </GoogleOAuthProvider>
-  );
+    )
+
+  }
+
+</div>
+
+
+
+
+
+  )
 }
