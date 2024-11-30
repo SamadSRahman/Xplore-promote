@@ -67,6 +67,7 @@ export default function CampaignPreview() {
       } else if (/iPad|iPhone|iPod/.test(userAgent)) {
         setDeviceType("ios");
         setRedirectURL(appClipUrl);
+        alert("state updated")
       //  setTimeout(()=>{
       //   window.location.href = appClipUrl;
       //  }, 1000)
@@ -78,6 +79,7 @@ export default function CampaignPreview() {
 
   useEffect(() => {
     console.log("deviceType", deviceType, redirectURL);
+    alert(`device type: ${deviceType}` )
   }, [deviceType])
 
   const handleRedirect = () => {
