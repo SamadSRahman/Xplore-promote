@@ -35,6 +35,9 @@ useEffect(()=>{
   if(type.os()==='iOS'){
     alert("ios Detected")
   }
+  else{
+    alert(type.os)
+  }
 },[])
   useEffect(() => {
     getAllLayout(campaignId);
