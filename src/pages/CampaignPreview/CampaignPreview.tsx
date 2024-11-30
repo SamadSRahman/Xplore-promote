@@ -21,6 +21,7 @@ export default function CampaignPreview() {
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [deviceType, setDeviceType] = useState("other");
   const [redirectURL, setRedirectURL] = useState("")
+  const type = new MobileDetect(window.navigator.userAgent)
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
         const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
@@ -30,7 +31,11 @@ export default function CampaignPreview() {
   );
   const { submitContactForm, updateInterestedProduct } = useEndUser();
 
-
+useEffect(()=>{
+  if(type.os()==='iOS'){
+    alert("ios Detected")
+  }
+},[])
   useEffect(() => {
     getAllLayout(campaignId);
     getData({ ignoreCache: true });
@@ -67,7 +72,7 @@ export default function CampaignPreview() {
       } else if (/iPad|iPhone|iPod/.test(userAgent)) {
         setDeviceType("ios");
         setRedirectURL(appClipUrl);
-        alert("state updated")
+        // alert("state updated")
       //  setTimeout(()=>{
       //   window.location.href = appClipUrl;
       //  }, 1000)
