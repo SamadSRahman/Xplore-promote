@@ -18,6 +18,8 @@ export default function CampaignPreview() {
   const { campaignId, screen } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
+  const [shouldRenderApp, setShouldRenderApp] = useState(true);
+
   const { data, getData } = useVisitorData(
     { extendedResult: true },
     { immediate: true }
@@ -116,7 +118,11 @@ export default function CampaignPreview() {
   
       if (version >= 16.6) {
         console.log("Redirecting to App Clip...");
-        window.location.href = appClipUrl;
+        setShouldRenderApp(false);
+        // Redirect after a short delay to ensure state update
+        setTimeout(() => {
+          window.location.href = appClipUrl;
+        }, 100);
       } else {
         console.log("Rendering React App (iOS fallback)");
         // React app renders normally
@@ -132,6 +138,11 @@ export default function CampaignPreview() {
       window.location.href = playStoreUrl;
       if (version >= 12) {
         console.log("Redirecting to Play Store Instant App...");
+        setShouldRenderApp(false);
+          // Redirect after a short delay to ensure state update
+          setTimeout(() => {
+            window.location.href = playStoreUrl;
+          }, 100);
        
       } else {
         console.log("Rendering React App (Android fallback)");
@@ -161,11 +172,14 @@ export default function CampaignPreview() {
     requestPushNotificationPermission();
   }, [data]);
   useEffect(() => {
-    console.log("data", data);
     if (data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
     if (data?.device) localStorage.setItem("deviceId", data.device);
   }, [data]);
 
+  if (!shouldRenderApp) {
+    return null; // Return null to prevent any rendering
+  }
+  
   useEffect(() => {
     if (!layouts.length) return;
 
