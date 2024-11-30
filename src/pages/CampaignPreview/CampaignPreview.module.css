@@ -110,3 +110,25 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.redirectContainer{
+    border: 1px solid blue;
+    color: black;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.redirectContent{
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.redirectContent > button{
+    background-color: #896BF0;
+    padding: 8px 10px;
+    border-radius: 7px;
+    border: none;
+}

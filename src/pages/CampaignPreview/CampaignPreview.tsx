@@ -19,11 +19,11 @@ export default function CampaignPreview() {
   const { campaignId, screen } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
-  const [redirectInfo, setRedirectInfo] = useState<{
-    platform: 'ios' | 'android' | null;
-    url: string;
-  } | null>(null);
+  const [deviceType, setDeviceType] = useState("other");
+  const [redirectURL, setRedirectURL] = useState("")
 
+  const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
+        const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
   const { data, getData } = useVisitorData(
     { extendedResult: true },
     { immediate: true }
@@ -31,139 +31,10 @@ export default function CampaignPreview() {
   const { submitContactForm, updateInterestedProduct } = useEndUser();
 
 
-  useEffect(()=>{
+  useEffect(() => {
     getAllLayout(campaignId);
     getData({ ignoreCache: true });
-  },[]);
-  useEffect(() => {
-    // const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
-    // const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
-    //  function isIOS() {
-    //     return /iPad|iPhone|iPod/.test(navigator.userAgent);
-    // }
 
-    //   function isAndroid() {
-    //     return /android/i.test(navigator.userAgent);
-    // }
-    // console.log("userAgent", navigator.userAgent);
-
-    //     if (isAndroid()) {
-    //         const match = navigator.userAgent.match(/android\s([0-9.]+)/);
-    //         const version = match ? parseFloat(match[1]) : 0;
-    //         window.location.href = playStoreUrl;
-    //         // if (version >= 12) {
-
-    //         // }
-    //         // else{
-    //         //     alert("Please update your Android version to 12 or above");
-    //         // }
-    //     } else if (isIOS()) {
-    //         const match = navigator.userAgent.match(/OS (\d+)[._]?(\d+)?/i);
-    //         const majorVersion = match ? parseInt(match[1], 10) : 0;
-    //         const minorVersion = match && match[2] ? parseInt(match[2], 10) : 0;
-    //         const version = parseFloat(`${majorVersion}.${minorVersion}`);
-
-    //         if (version >= 16.6) {
-    //             window.location.href = appClipUrl;
-    //         }
-    //     }
-
-    const appClipBaseUrl =
-    "https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip";
-  const playStoreBaseUrl =
-    "https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&launch=true";
-  
-  // Helper function to append query parameters
-  function appendQueryParams(baseUrl: string, params: Record<string, string>): string {
-    const url = new URL(baseUrl);
-    Object.entries(params).forEach(([key, value]) => {
-      url.searchParams.append(key, value);
-    });
-    return url.toString();
-  }
-  
-  // OS detection functions
-  function isIOS(): boolean {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent);
-  }
-  
-  function isAndroid(): boolean {
-    return /android/i.test(navigator.userAgent);
-  }
-  
-  // Version parsing helper
-  function parseVersion(
-    userAgent: string,
-    regex: RegExp,
-    majorIndex: number,
-    minorIndex: number
-  ): number {
-    const match = userAgent.match(regex);
-    const major = match ? parseInt(match[majorIndex], 10) : 0;
-    const minor = match && match[minorIndex] ? parseInt(match[minorIndex], 10) : 0;
-    return parseFloat(`${major}.${minor}`);
-  }
-  
-  // Main handler for deeplinking
-  function handleDeeplinking(campaignId: string): void {
-    const appClipUrl = appendQueryParams(appClipBaseUrl, { campaignId });
-    const playStoreUrl = appendQueryParams(playStoreBaseUrl, { campaignId });
-  
-    console.log("User Agent:", navigator.userAgent);
-  
-    if (isIOS()) {
-      // Parse iOS version
-      const version = parseVersion(
-        navigator.userAgent,
-        /OS (\d+)[._]?(\d+)?/i,
-        1,
-        2
-      );
-  
-      if (version >= 16.6) {
-        console.log("Redirecting to App Clip...");
-        setRedirectInfo({
-            platform: 'ios',
-            url: appClipUrl
-          });
-        // Redirect after a short delay to ensure state update
-   
-      } else {
-        console.log("Rendering React App (iOS fallback)");
-        // React app renders normally
-      }
-    } else if (isAndroid()) {
-      // Parse Android version
-      const version = parseVersion(
-        navigator.userAgent,
-        /android\s([0-9.]+)/i,
-        1,
-        2
-      );
-      window.location.href = playStoreUrl;
-      if (version >= 12) {
-        console.log("Redirecting to Play Store Instant App...");
-        setRedirectInfo({
-            platform: 'android',
-            url: playStoreUrl
-          });
-          // Redirect after a short delay to ensure state update
-          setTimeout(() => {
-            window.location.href = playStoreUrl;
-          }, 100);
-       
-      } else {
-        console.log("Rendering React App (Android fallback)");
-        // React app renders normally
-      }
-    } else {
-      console.log("Rendering React App (Other platforms)");
-      // React app renders for non-iOS/Android cases
-    }
-  }
-
-  
-    handleDeeplinking(campaignId);
     const requestPushNotificationPermission = async () => {
       if ("Notification" in window) {
         const permission = await Notification.requestPermission();
@@ -179,15 +50,34 @@ export default function CampaignPreview() {
     };
 
     requestPushNotificationPermission();
-  }, [data]);
 
-  useEffect(()=>{console.log("redirect info", redirectInfo);
-  },[redirectInfo])
+  }, []);
+
+
+  
+    useEffect(() => {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  
+      if (/android/i.test(userAgent)) {
+        setDeviceType("android");
+        setRedirectURL(playStoreUrl);
+        window.location.href = playStoreUrl;
+      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        setDeviceType("ios");
+        setRedirectURL(appClipUrl);
+        window.location.href = appClipUrl;
+      } else {
+        setDeviceType("other");
+      }
+    }, []);
+  
+
+  useEffect(() => {
+    console.log("deviceType", deviceType, redirectURL);
+  }, [deviceType])
 
   const handleRedirect = () => {
-    if (redirectInfo?.url) {
-      window.location.href = redirectInfo.url;
-    }
+    window.location.href = redirectURL;
   };
 
   useEffect(() => {
@@ -195,11 +85,11 @@ export default function CampaignPreview() {
     if (data?.device) localStorage.setItem("deviceId", data.device);
   }, [data]);
 
- if (redirectInfo) {
+  if (deviceType === "ios"|| deviceType === "android") {
     return (
       <div className={styles.redirectContainer}>
         <div className={styles.redirectContent}>
-          {redirectInfo.platform === 'ios' ? (
+          {deviceType === 'ios' ? (
             <>
               <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
               <h2>Open in App Clip</h2>
@@ -212,11 +102,11 @@ export default function CampaignPreview() {
               <p>This campaign is optimized for Android Instant App. Tap below to continue.</p>
             </>
           )}
-          <button 
-            onClick={handleRedirect} 
+          <button
+            onClick={handleRedirect}
             className={styles.redirectButton}
           >
-            Continue to {redirectInfo.platform === 'ios' ? 'App Clip' : 'Instant App'}
+            Continue to {deviceType === 'ios' ? 'App Clip' : 'Instant App'}
           </button>
         </div>
       </div>
