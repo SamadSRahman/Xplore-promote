@@ -69,7 +69,7 @@ export default function CampaignPreview() {
     const getIosVersion = (userAgent: any) => {
       const match = userAgent.match(/OS (\d+(_\d+)+)/);
       console.log("version", match ? match[1].replace(/_/g, '.') : null);
-      alert(`version: ${match ? match[1].replace(/_/g, '.') : null}`);
+      // alert(`version: ${match ? match[1].replace(/_/g, '.') : null}`);
       
       return match ? match[1].replace(/_/g, '.') : null;
     };
