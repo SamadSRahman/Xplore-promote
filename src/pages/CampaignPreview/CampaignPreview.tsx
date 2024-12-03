@@ -178,10 +178,47 @@ export default function CampaignPreview() {
     log_url?: string;
     latitude?: string;
     longitude?: string;
+    email?: string;
+    phone?: string;
+    socialPlatform?: string;
+    socialProfile?: string;
+    webUrl?: string;
   }) {
     console.log("action clicked", action);
     const btnAction = action.url?.split("://")[1].split("?")[0];
 
+    if (btnAction === "emailAddress" && action.email) {
+      // Open native email client
+      const mailtoLink = `mailto:${action.email}`;
+      window.location.href = mailtoLink;
+      return;
+    }
+    if (btnAction === "phoneNumber" && action.phone) {
+      // Check if device is mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // For mobile devices, open phone dialer
+        window.location.href = `tel:${action.phone}`;
+      } else {
+        // For non-mobile devices, copy to clipboard and show a message
+        navigator.clipboard.writeText(action.phone).then(() => {
+          alert(`Phone number ${action.phone} copied to clipboard`);
+        });
+      }
+      return;
+    }
+    if (btnAction === "socialMedia" && action.socialPlatform && action.socialProfile) {
+      const redirectUrl = action.socialProfile;
+      window.open(redirectUrl, '_blank');
+      return;
+    }
+    if (btnAction === "webLink" && action.webUrl) {
+      const redirectUrl = action.webUrl;
+      window.open(redirectUrl, '_blank');
+      return;
+    }
+    
     if (btnAction === "submit") {
       const params = new URLSearchParams(action.url.split("?")[1]);
       const isCheckboxChecked = params.get("consent_checkbox") === "true";

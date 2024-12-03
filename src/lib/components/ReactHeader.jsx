@@ -11,7 +11,7 @@ import { screensAtom } from '../../recoil/atoms';
 
 
 
-export default function ReactHeader( {}) {
+export default function ReactHeader( {isAddScreen}) {
     const navigate = useNavigate();
     const location = useLocation();
     const {campaignId} = useParams();
@@ -95,7 +95,7 @@ export default function ReactHeader( {}) {
         ))}
       </div>
 
-      <button
+    {isAddScreen && (  <button
         onClick={() => setIsNewScreenPopupVisible(true)}
         style={{
             backgroundColor: '#4CAF50',
@@ -109,7 +109,7 @@ export default function ReactHeader( {}) {
         }}
       >
         Add Screen
-      </button>
+      </button>)}
 
       {selectedScreen && popupPosition && (
         <div

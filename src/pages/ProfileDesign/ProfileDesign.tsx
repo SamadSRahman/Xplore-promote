@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosSave, IoMdEye } from 'react-icons/io';
-import styles from './EditorPage.module.css';
+import styles from './Profile.module.css';
 import { MdPublish } from "react-icons/md";
 
 import {
@@ -22,8 +22,8 @@ import { isContactUs } from '../../lib/utils/services';
 import { contactUsJSON } from '../../lib/utils/splashScreenData';
 import PreviewScreen from '../../components/PreviewScreen';
 
-const EditorPage = () => {
-  const { campaignId, page } = useParams();
+const ProfileDesign = () => {
+  const { campaignId, page, userId } = useParams();
   const { getCampaignById, currentLayout, layoutId,  } = useCampaign();
   const { updateLayout, createLayout, getAllLayout, getAllLayoutNames, screens } = useLayout();
   const navigate = useNavigate();
@@ -35,6 +35,8 @@ const EditorPage = () => {
 
 
   React.useEffect(() => {
+    console.log("userId", userId);
+    
     const token = localStorage.getItem('accessToken')
     if (!token) {
       alert("Please login to access your campaigns")
@@ -331,7 +333,7 @@ const EditorPage = () => {
 
   return (
     <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box',  }}>
-      <ReactHeader isAddScreen={true} screens={screens} refreshScreenNames={refreshScreenNames} />
+      <ReactHeader screens={[]} refreshScreenNames={refreshScreenNames} />
       <div>
         {showQuizPopup && (
           <QuizStyleInputPopup
@@ -378,4 +380,4 @@ window.convertPaletteToDict = convertPaletteToDict;
 window.addTemplatesSuffix = addTemplatesSuffix;
 window.removeTemplatesSuffix = removeTemplatesSuffix;
 
-export default EditorPage;
+export default ProfileDesign;

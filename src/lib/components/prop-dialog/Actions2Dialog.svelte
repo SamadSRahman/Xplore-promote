@@ -15,6 +15,7 @@
     type AppContext,
   } from "../../ctx/appContext";
   import type { ActionDesc } from "../../../lib";
+  import { sub } from "date-fns";
 
   const { l10n, lang } = getContext<LanguageContext>(LANGUAGE_CTX);
   const { state } = getContext<AppContext>(APP_CTX);
@@ -98,7 +99,23 @@ function onSubtypeChange(): void {
         if (!value.selected_variables) {
             value.selected_variables = [];
         }
-    } else if (subtype === "map") {
+    }
+    else if(subtype === 'webLink'){
+      value.url = "xplore-promote://webLink";
+      value.webUrl=""
+    }
+    else if (subtype === "email") {
+      value.url = "xplore-promote://emailAddress";
+      value.email = ""; // Add email field to value
+    } else if (subtype === "phone") {
+      value.url = "xplore-promote://phoneNumber";
+      value.phone = ""; // Add phone field to value
+    } else if (subtype === "social") {
+      value.url = "xplore-promote://socialMedia";
+      value.socialPlatform = ""; // Add platform selection
+      value.socialProfile = ""; // Add profile URL field
+    }
+    else if (subtype === "map") {
         value.url = "xplore-promote://map";
         value.latitude = "";
         value.longitude = "";
@@ -156,6 +173,40 @@ let selectedVariables: string[] = [];
   //     text: $l10n('actions-url')
   // }]  // Action list removed
 
+
+  const socialPlatforms = [
+    { value: "linkedIn", text: "LinkedIn" },
+    { value: "twitter", text: "Twitter" },
+    { value: "facebook", text: "Facebook" },
+    { value: "instagram", text: "Instagram" }
+  ];
+
+  function onWebLinkChange(): void {
+    if(value.webUrl){
+      value.url = `xplore-promote://webLink?webUrl=${value.webUrl}`;
+      value.log_url = value.webUrl;
+    }
+  }
+  function onEmailChange(): void {
+    if (value.email) {
+      value.url = `xplore-promote://emailAddress?email=${encodeURIComponent(value.email)}`;
+      value.log_url = value.url;
+    }
+  }
+
+  function onPhoneChange(): void {
+    if (value.phone) {
+      value.url = `xplore-promote://phoneNumber?phone=${encodeURIComponent(value.phone)}`;
+      value.log_url = value.url;
+    }
+  }
+
+  function onSocialChange(): void {
+    if (value.socialPlatform && value.socialProfile) {
+      value.url = `xplore-promote://socialMedia?${value.socialPlatform}=${(value.socialProfile)}`;
+      value.log_url = value.url;
+    }
+  }
   $: types = [
     {
       value: "url",
@@ -166,6 +217,10 @@ let selectedVariables: string[] = [];
     { value: "map", text: "Open Map" },
     { value: "contact", text: "Contact" },
     { value: "productDetails", text: "Product Details" },
+    { value: "email", text: "Email" },
+    { value: "phone", text: "Phone" },
+    { value: "social", text: "Social links" },
+    { value: "webLink", text: "Web link" },
   ].concat(
     $customActions.map((actionDesc, i) => ({
       value: `custom:${i}`,
@@ -255,6 +310,19 @@ function onProductChange(): void {
             <Text bind:value={value.url} disabled={readOnly} />
           </label>
         </div>
+        {:else if subtype === "webLink"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Web URL
+            </div>
+            <Text 
+              bind:value={value.webUrl} 
+              disabled={readOnly} 
+              on:change={onWebLinkChange}
+            />
+          </label>
+        </div>
       {:else if subtype === "contact"}
         <div>
           <label>
@@ -300,6 +368,63 @@ function onProductChange(): void {
             />
           </label>
         </div>
+        {:else if subtype === "email"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Email Address
+            </div>
+            <Text 
+              bind:value={value.email} 
+              disabled={readOnly} 
+              on:change={onEmailChange}
+            />
+          </label>
+        </div>
+
+      {:else if subtype === "phone"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Phone Number
+            </div>
+            <Text 
+              bind:value={value.phone} 
+              disabled={readOnly} 
+              on:change={onPhoneChange}
+            />
+          </label>
+        </div>
+
+      {:else if subtype === "social"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Social Platform
+            </div>
+            <Select
+              items={socialPlatforms}
+              bind:value={value.socialPlatform}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={onSocialChange}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Profile URL
+            </div>
+            <Text 
+              bind:value={value.socialProfile} 
+              disabled={readOnly} 
+              on:change={onSocialChange}
+            />
+          </label>
+        </div>
+
       {:else if subtype === "map"}
         <div>
           <label>

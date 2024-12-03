@@ -1,0 +1,70 @@
+.container{
+    color: black;
+}.publishBtn{
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    border-radius: 10px;
+    background-color: #39A6F5;
+    z-index: 3;
+    border:none;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: 550;
+    font-size: 15px;
+
+}
+.publishBtn:hover{
+    /* background-color: #545bd6; */
+}
+.publishBtn:active{
+    /* background-color:#4e54c9; */
+}
+
+/* #5959e8
+
+h - #545bd6
+a - #4e54c9 */
+
+.saveBtn, .finishBtn, .addQuestionBtn{
+    background-color: rgb(76, 175, 80);
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 6px;
+    /* color: black; */
+    cursor: pointer;
+    position: absolute;
+    z-index: 5;
+    right: 1rem;
+    top: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.saveBtn{
+    background-color: #39A6F5;
+    right: 7rem;
+}
+.addQuestionBtn{
+    color: #39A6F5;
+    background-color: white;
+    border: 1px solid #39A6F5;
+    right: 12rem;
+}
+.addQuestionBtn:hover{
+    background-color: #39A6F5;
+    color: white;
+}
+.saveBtn img{
+    width: 12px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.saveBtn:hover{
+    /* background-color: white; */
+    background-color: #308ed1;
+}
+.finishBtn:hover{
+    /* background-color: white; */
+    background-color: rgb(61, 142, 64);
+}

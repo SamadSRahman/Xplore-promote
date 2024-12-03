@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LandingPage from './pages/LandingPage/LandingPage.jsx';
 import EditorPage from './pages/EditorPage/EditorPage.tsx';
 import ThemeSelection from './pages/ThemeSelection/ThemeSelection.jsx';
 import Campaigns from './pages/Campaigns/Campaigns.jsx';
@@ -13,17 +12,17 @@ import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
 import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
-import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx'
 
 export default function App() {
   const [isMobile, setIsMobile] = React.useState(false);
-  const { isLoading, error, data, getData } = useVisitorData(
-    { extendedResult: true },
-    { immediate: true }
-  );
+  // const { data, getData } = useVisitorData(
+  //   { extendedResult: true },
+  //   { immediate: true }
+  // );
 
   React.useEffect(() => {
-    getData({ ignoreCache: true });
+    // getData({ ignoreCache: true });
     const checkMobile = () => {
       const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const path = window.location.pathname;
@@ -35,10 +34,6 @@ export default function App() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <div>
@@ -60,6 +55,7 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
+              <Route path='/profileDesign/:userId' element={<ProfileDesign />} />
               <Route path='/publish/:campaignId' element={<PublishAndPreview />} />
               <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />} />
               <Route path='/campaignAnalytics/:campaignId' element={<CampaignAnalytics />} />

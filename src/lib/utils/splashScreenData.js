@@ -1172,3 +1172,840 @@ export const contactUsJSON = {
     }
   }
 }
+
+
+export const profileJSON = {
+  "card": {
+    "log_id": "div2_sample_card",
+    "states": [
+      {
+        "state_id": 0,
+        "div": {
+          "visibility_action": {
+            "log_id": "visible"
+          },
+          "background": [
+            {
+              "color": "@{getDictOptColor('#00ffffff', local_palette, 'bg_primary', theme)}",
+              "type": "solid"
+            }
+          ],
+          "height": {
+            "type": "match_parent"
+          },
+          "orientation": "overlap",
+          "type": "container",
+          "items": [
+            {
+              "type": "gallery",
+              "width": {
+                "type": "match_parent"
+              },
+              "height": {
+                "type": "match_parent"
+              },
+              "alignment_horizontal": "left",
+              "alignment_vertical": "top",
+              "items": [
+                {
+                  "type": "container",
+                  "width": {
+                    "type": "match_parent"
+                  },
+                  "height": {
+                    "type": "wrap_content"
+                  },
+                  "items": [
+                    {
+                      "type": "container",
+                      "width": {
+                        "type": "fixed",
+                        "value": 173
+                      },
+                      "height": {
+                        "type": "wrap_content"
+                      },
+                      "items": [
+                        {
+                          "type": "image",
+                          "image_url": "https://objectstore.e2enetworks.net/xplore/1733213244734-d5b40f5f754d901e.png",
+                          "width": {
+                            "type": "fixed",
+                            "value": 151
+                          },
+                          "height": {
+                            "type": "fixed",
+                            "value": 150
+                          },
+                          "preload_required": true,
+                          "alignment_horizontal": "center",
+                          "border": {
+                            "stroke": {
+                              "color": "#ffffff"
+                            },
+                            "corner_radius": 20
+                          },
+                          "scale": "fit",
+                          "margins": {
+                            "top": 10,
+                            "right": 10,
+                            "bottom": 10,
+                            "left": 10
+                          },
+                          "background": [
+                            {
+                              "type": "solid",
+                              "color": "#f2f2f2"
+                            }
+                          ]
+                        }
+                      ],
+                      "border": {
+                        "stroke": {
+                          "color": "#d9d8d8"
+                        },
+                        "corner_radius": 20
+                      },
+                      "alignment_horizontal": "center",
+                      "paddings": {
+                        "bottom": 1
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": "Shreyas Srinivasan",
+                      "width": {
+                        "type": "wrap_content"
+                      },
+                      "alignment_horizontal": "center",
+                      "text_alignment_horizontal": "center",
+                      "height": {
+                        "type": "wrap_content"
+                      },
+                      "font_size": 18,
+                      "font_weight": "bold",
+                      "margins": {
+                        "top": 15
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": "Founder at xplore",
+                      "font_size": 14,
+                      "width": {
+                        "type": "wrap_content",
+                        "constrained": true
+                      },
+                      "alignment_horizontal": "center",
+                      "alignment_vertical": "top",
+                      "font_weight": "regular",
+                      "text_color": "#666666",
+                      "margins": {
+                        "top": 10
+                      }
+                    }
+                  ],
+                  "margins": {
+                    "top": 50
+                  },
+                  "paddings": {
+                    "top": 1
+                  }
+                },
+                {
+                  "type": "container",
+                  "width": {
+                    "type": "match_parent"
+                  },
+                  "height": {
+                    "type": "fixed",
+                    "value": 149
+                  },
+                  "items": [
+                    {
+                      "type": "image",
+                      "image_url": "https://objectstore.e2enetworks.net/xplore/1733213908205-560c5733a7665671.png",
+                      "width": {
+                        "type": "fixed",
+                        "value": 30
+                      },
+                      "height": {
+                        "type": "fixed",
+                        "value": 30
+                      },
+                      "preload_required": true,
+                      "alignment_horizontal": "left",
+                      "alignment_vertical": "top"
+                    },
+                    {
+                      "type": "text",
+                      "text": "explore.in",
+                      "font_size": 14,
+                      "width": {
+                        "type": "wrap_content",
+                        "constrained": true
+                      },
+                      "alignment_horizontal": "left",
+                      "alignment_vertical": "center"
+                    },
+                    {
+                      "text": "Enquire",
+                      "background": [
+                        {
+                          "type": "solid",
+                          "color": "#896bf0"
+                        }
+                      ],
+                      "text_color": "#fff",
+                      "corners": 8,
+                      "type": "_template_button",
+                      "width": {
+                        "type": "fixed",
+                        "value": 90
+                      },
+                      "alignment_horizontal": "left",
+                      "alignment_vertical": "bottom",
+                      "paddings": {
+                        "top": 10,
+                        "right": 12,
+                        "bottom": 10,
+                        "left": 12
+                      },
+                      "font_weight": "medium",
+                      "font_size": 12,
+                      "border": {
+                        "corner_radius": 20
+                      }
+                    },
+                    {
+                      "type": "image",
+                      "image_url": "https://objectstore.e2enetworks.net/xplore/1733214286638-f2e3baf45ede5d27.png",
+                      "width": {
+                        "type": "fixed",
+                        "value": 100
+                      },
+                      "height": {
+                        "type": "fixed",
+                        "value": 100
+                      },
+                      "preload_required": true,
+                      "alignment_horizontal": "right",
+                      "alignment_vertical": "center"
+                    }
+                  ],
+                  "margins": {
+                    "top": 14,
+                    "right": 14,
+                    "left": 15
+                  },
+                  "orientation": "overlap",
+                  "paddings": {
+                    "top": 15,
+                    "right": 15,
+                    "bottom": 15,
+                    "left": 15
+                  },
+                  "border": {
+                    "corner_radius": 20,
+                    "stroke": {
+                      "color": "#d9d8d8"
+                    }
+                  }
+                },
+                {
+                  "type": "container",
+                  "width": {
+                    "type": "match_parent"
+                  },
+                  "height": {
+                    "type": "wrap_content"
+                  },
+                  "items": [
+                    {
+                      "type": "container",
+                      "width": {
+                        "type": "match_parent"
+                      },
+                      "height": {
+                        "type": "fixed",
+                        "value": 151
+                      },
+                      "items": [
+                        {
+                          "type": "image",
+                          "image_url": "https://objectstore.e2enetworks.net/xplore/1733216790278-44ab5d40fc2190fe.png",
+                          "width": {
+                            "type": "fixed",
+                            "value": 30
+                          },
+                          "height": {
+                            "type": "fixed",
+                            "value": 30
+                          },
+                          "preload_required": true,
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "top"
+                        },
+                        {
+                          "type": "text",
+                          "text": "+91- 9087654321",
+                          "font_size": 14,
+                          "width": {
+                            "type": "wrap_content",
+                            "constrained": true
+                          },
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "center",
+                          "height": {
+                            "type": "fixed",
+                            "value": 18
+                          }
+                        },
+                        {
+                          "text": "Enquire",
+                          "background": [
+                            {
+                              "type": "solid",
+                              "color": "#3e90fb"
+                            }
+                          ],
+                          "text_color": "#fff",
+                          "corners": 8,
+                          "type": "_template_button",
+                          "width": {
+                            "type": "fixed",
+                            "value": 90
+                          },
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "bottom",
+                          "paddings": {
+                            "top": 10,
+                            "right": 12,
+                            "bottom": 10,
+                            "left": 12
+                          },
+                          "font_weight": "medium",
+                          "font_size": 12,
+                          "border": {
+                            "corner_radius": 20
+                          }
+                        }
+                      ],
+                      "margins": {
+                        "top": 15,
+                        "right": 7,
+                        "left": 15
+                      },
+                      "orientation": "overlap",
+                      "paddings": {
+                        "top": 15,
+                        "right": 15,
+                        "bottom": 15,
+                        "left": 15
+                      },
+                      "border": {
+                        "corner_radius": 20,
+                        "stroke": {
+                          "color": "#d9d8d8"
+                        }
+                      }
+                    },
+                    {
+                      "type": "container",
+                      "width": {
+                        "type": "match_parent"
+                      },
+                      "height": {
+                        "type": "fixed",
+                        "value": 151
+                      },
+                      "margins": {
+                        "top": 15,
+                        "right": 14,
+                        "left": 7
+                      },
+                      "orientation": "overlap",
+                      "paddings": {
+                        "top": 15,
+                        "right": 15,
+                        "bottom": 15,
+                        "left": 15
+                      },
+                      "border": {
+                        "corner_radius": 20,
+                        "stroke": {
+                          "color": "#d9d8d8"
+                        }
+                      },
+                      "items": [
+                        {
+                          "type": "image",
+                          "image_url": "https://objectstore.e2enetworks.net/xplore/1733216851637-1711ea6804a0c7da.png",
+                          "width": {
+                            "type": "fixed",
+                            "value": 30
+                          },
+                          "height": {
+                            "type": "fixed",
+                            "value": 30
+                          },
+                          "preload_required": true,
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "top"
+                        },
+                        {
+                          "type": "text",
+                          "text": "shreyas@gmail.com",
+                          "font_size": 14,
+                          "width": {
+                            "type": "wrap_content",
+                            "constrained": true
+                          },
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "center",
+                          "height": {
+                            "type": "fixed",
+                            "value": 18
+                          }
+                        },
+                        {
+                          "text": "Enquire",
+                          "background": [
+                            {
+                              "type": "solid",
+                              "color": "#ec4b35"
+                            }
+                          ],
+                          "text_color": "#fff",
+                          "corners": 8,
+                          "type": "_template_button",
+                          "width": {
+                            "type": "fixed",
+                            "value": 90
+                          },
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "bottom",
+                          "paddings": {
+                            "top": 10,
+                            "right": 12,
+                            "bottom": 10,
+                            "left": 12
+                          },
+                          "font_weight": "medium",
+                          "font_size": 12,
+                          "border": {
+                            "corner_radius": 20
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "orientation": "horizontal"
+                },
+                {
+                  "type": "container",
+                  "width": {
+                    "type": "match_parent"
+                  },
+                  "height": {
+                    "type": "fixed",
+                    "value": 150
+                  },
+                  "margins": {
+                    "top": 14,
+                    "right": 14,
+                    "left": 15
+                  },
+                  "orientation": "overlap",
+                  "paddings": {
+                    "top": 15,
+                    "right": 15,
+                    "bottom": 15,
+                    "left": 15
+                  },
+                  "border": {
+                    "corner_radius": 20,
+                    "stroke": {
+                      "color": "#d9d8d8"
+                    }
+                  },
+                  "items": [
+                    {
+                      "type": "image",
+                      "image_url": "https://objectstore.e2enetworks.net/xplore/1733217099664-c4cbc6f4299f828a.png",
+                      "width": {
+                        "type": "fixed",
+                        "value": 30
+                      },
+                      "height": {
+                        "type": "fixed",
+                        "value": 30
+                      },
+                      "preload_required": true,
+                      "alignment_horizontal": "left",
+                      "alignment_vertical": "top"
+                    },
+                    {
+                      "type": "text",
+                      "text": "18 Chuncha, 9th Main Rd, 2nd Block, Jaya Nagar East, Jayanagar, Bengaluru, Karnataka 560011",
+                      "font_size": 14,
+                      "width": {
+                        "type": "wrap_content",
+                        "constrained": true
+                      },
+                      "alignment_horizontal": "left",
+                      "alignment_vertical": "center",
+                      "height": {
+                        "type": "wrap_content"
+                      }
+                    },
+                    {
+                      "text": "Enquire",
+                      "background": [
+                        {
+                          "type": "solid",
+                          "color": "#3e90fb"
+                        }
+                      ],
+                      "text_color": "#fff",
+                      "corners": 8,
+                      "type": "_template_button",
+                      "width": {
+                        "type": "fixed",
+                        "value": 90
+                      },
+                      "alignment_horizontal": "left",
+                      "alignment_vertical": "bottom",
+                      "paddings": {
+                        "top": 10,
+                        "right": 12,
+                        "bottom": 10,
+                        "left": 12
+                      },
+                      "font_weight": "medium",
+                      "font_size": 12,
+                      "border": {
+                        "corner_radius": 20
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "container",
+                  "width": {
+                    "type": "match_parent"
+                  },
+                  "height": {
+                    "type": "fixed",
+                    "value": 200
+                  },
+                  "orientation": "horizontal",
+                  "items": [
+                    {
+                      "type": "container",
+                      "width": {
+                        "type": "match_parent"
+                      },
+                      "height": {
+                        "type": "fixed",
+                        "value": 150
+                      },
+                      "margins": {
+                        "top": 14,
+                        "right": 7,
+                        "left": 15
+                      },
+                      "orientation": "overlap",
+                      "paddings": {
+                        "top": 15,
+                        "right": 15,
+                        "bottom": 15,
+                        "left": 15
+                      },
+                      "border": {
+                        "corner_radius": 20,
+                        "stroke": {
+                          "color": "#d9d8d8"
+                        }
+                      },
+                      "items": [
+                        {
+                          "type": "image",
+                          "image_url": "https://objectstore.e2enetworks.net/xplore/1733217029607-769096eb268d173e.jpg",
+                          "width": {
+                            "type": "fixed",
+                            "value": 30
+                          },
+                          "height": {
+                            "type": "fixed",
+                            "value": 30
+                          },
+                          "preload_required": true,
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "top"
+                        },
+                        {
+                          "type": "text",
+                          "text": "+91- 9087654321",
+                          "font_size": 14,
+                          "width": {
+                            "type": "wrap_content",
+                            "constrained": true
+                          },
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "center",
+                          "height": {
+                            "type": "fixed",
+                            "value": 18
+                          }
+                        },
+                        {
+                          "text": "Enquire",
+                          "background": [
+                            {
+                              "type": "solid",
+                              "color": "#020202"
+                            }
+                          ],
+                          "text_color": "#fff",
+                          "corners": 8,
+                          "type": "_template_button",
+                          "width": {
+                            "type": "fixed",
+                            "value": 90
+                          },
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "bottom",
+                          "paddings": {
+                            "top": 10,
+                            "right": 12,
+                            "bottom": 10,
+                            "left": 12
+                          },
+                          "font_weight": "medium",
+                          "font_size": 12,
+                          "border": {
+                            "corner_radius": 20
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "container",
+                      "width": {
+                        "type": "match_parent"
+                      },
+                      "height": {
+                        "type": "fixed",
+                        "value": 150
+                      },
+                      "margins": {
+                        "top": 14,
+                        "right": 14,
+                        "left": 7
+                      },
+                      "orientation": "overlap",
+                      "paddings": {
+                        "top": 15,
+                        "right": 15,
+                        "bottom": 15,
+                        "left": 15
+                      },
+                      "border": {
+                        "corner_radius": 20,
+                        "stroke": {
+                          "color": "#d9d8d8"
+                        }
+                      },
+                      "items": [
+                        {
+                          "type": "image",
+                          "image_url": "https://objectstore.e2enetworks.net/xplore/1733217049343-53dab7af99ad3a53.png",
+                          "width": {
+                            "type": "fixed",
+                            "value": 30
+                          },
+                          "height": {
+                            "type": "fixed",
+                            "value": 30
+                          },
+                          "preload_required": true,
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "top"
+                        },
+                        {
+                          "type": "text",
+                          "text": "shreyas@gmail.com",
+                          "font_size": 14,
+                          "width": {
+                            "type": "wrap_content",
+                            "constrained": true
+                          },
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "center",
+                          "height": {
+                            "type": "fixed",
+                            "value": 18
+                          }
+                        },
+                        {
+                          "text": "Enquire",
+                          "background": [
+                            {
+                              "type": "solid",
+                              "color": "#0a66c2"
+                            }
+                          ],
+                          "text_color": "#fff",
+                          "corners": 8,
+                          "type": "_template_button",
+                          "width": {
+                            "type": "fixed",
+                            "value": 90
+                          },
+                          "alignment_horizontal": "left",
+                          "alignment_vertical": "bottom",
+                          "paddings": {
+                            "top": 10,
+                            "right": 12,
+                            "bottom": 10,
+                            "left": 12
+                          },
+                          "font_weight": "medium",
+                          "font_size": 12,
+                          "border": {
+                            "corner_radius": 20
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "orientation": "vertical",
+              "cross_content_alignment": "start"
+            }
+          ]
+        }
+      }
+    ],
+    "variables": [
+      {
+        "type": "dict",
+        "name": "local_palette",
+        "value": {
+          "bg_primary": {
+            "name": "Primary background",
+            "light": "#fff",
+            "dark": "#000"
+          },
+          "color0": {
+            "name": "Secondary background",
+            "light": "#eeeeee",
+            "dark": "#000"
+          }
+        }
+      }
+    ]
+  },
+  "templates": {
+    "input_text": {
+      "type": "input",
+      "text_variable": "my_borderless_text",
+      "width": {
+        "type": "match_parent"
+      },
+      "height": {
+        "type": "wrap_content"
+      },
+      "text_alignment_horizontal": "left",
+      "margins": {
+        "left": 16,
+        "top": 20,
+        "right": 16,
+        "bottom": 16
+      },
+      "paddings": {
+        "left": 16,
+        "top": 10,
+        "right": 16,
+        "bottom": 10
+      },
+      "alignment_horizontal": "center",
+      "alignment_vertical": "center",
+      "font_size": 16,
+      "font_weight": "medium",
+      "text_color": "#000000",
+      "hint_color": "#888888",
+      "highlight_color": "#e0bae3",
+      "line_height": 22,
+      "accessibility": {
+        "description": "Enter text here",
+        "hint": "Type your response",
+        "state_description": "Active input field"
+      },
+      "autocapitalization": "sentences",
+      "keyboard_type": "default",
+      "background": [
+        {
+          "type": "solid",
+          "color": "#f8f8f8"
+        }
+      ],
+      "border": {
+        "corner_radius": 8,
+        "stroke": {
+          "color": "#cccccc",
+          "width": 1
+        }
+      },
+      "enter_key_type": "done",
+      "on_focus": [
+        {
+          "type": "highlight",
+          "highlight_color": "#d3d3d3"
+        }
+      ],
+      "visibility": "visible",
+      "max_length": 100,
+      "mask": {
+        "type": "text",
+        "pattern": "[A-Za-z0-9 ]*"
+      },
+      "text_alignment_vertical": "center"
+    },
+    "_template_button": {
+      "type": "text",
+      "text_alignment_horizontal": "center",
+      "text_alignment_vertical": "center",
+      "border": {
+        "$corner_radius": "corners"
+      },
+      "paddings": {
+        "bottom": 24,
+        "left": 28,
+        "right": 28,
+        "top": 22
+      },
+      "width": {
+        "type": "wrap_content"
+      }
+    },
+    "_template_close": {
+      "accessibility": {
+        "description": "Закрыть",
+        "mode": "merge",
+        "type": "button"
+      },
+      "actions": [
+        {
+          "log_id": "close_popup",
+          "url": "div-screen://close"
+        }
+      ],
+      "image_url": "https://yastatic.net/s3/home/div/div_fullscreens/cross2.3.png",
+      "tint_color": "#73000000",
+      "type": "image"
+    }
+  }
+}

@@ -11,9 +11,12 @@ import example3 from '../../assets/Frame 13816.svg';
 import useApi from '../../lib/utils/useApi';
 import QrPopup from '../../lib/components/QrPopup/QrPopup';
 import useCampaign from '../../lib/utils/useCampaign';
+import { MdDesignServices } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
+
 
 export default function Campaigns() {
-    const { name, getUserDetails, isBusinessUser } = useApi();
+    const { name, getUserDetails, isBusinessUser, userId } = useApi();
     const { campaigns, getCampaigns, deleteCampaign, } = useCampaign();
     const navigate = useNavigate();
     const [selectedCampaign, setSelectedCampaign] = useState(null);
@@ -88,8 +91,11 @@ export default function Campaigns() {
               />
               {isLogoutPopupVisible && (
                 <div ref={popupRef} className={styles.popupMenu}>
+                   <div className={styles.popupItem} onClick={()=>navigate(`/profileDesign/${userId}`)}>
+                  <MdDesignServices/>   Profile Design
+                  </div>
                   <div className={styles.popupItem} onClick={handleLogout}>
-                    Logout
+                <MdLogout/>     Logout
                   </div>
                 </div>
               )}

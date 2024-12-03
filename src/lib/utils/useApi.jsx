@@ -17,6 +17,7 @@ export default function useApi() {
   const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState([]);
   const [name, setName] = useState("");
+  const [userId, setUserId] = useState("")
   const [splashScreenLayout, setSplashScreenLayout] = useState(
     JSON.stringify(blankBackgroundJSON)
   );
@@ -51,6 +52,7 @@ export default function useApi() {
     console.log("response", response);
     localStorage.setItem("user", JSON.stringify(response.data.data));
     setName(response.data.data.name);
+    setUserId(response.data.data.id)
     setIsBusinessUser(response.data.data.isBusinessUser);
   };
   const getCampaigns = async () => {
@@ -211,5 +213,6 @@ export default function useApi() {
     isLandingScreenAvailable,
     campaignName,
     layouts,
+    userId
   };
 }
