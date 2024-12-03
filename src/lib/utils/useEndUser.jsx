@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import axios from "axios";
 
 export default function useEndUser(){
   const submitContactForm = async (formData) => {
@@ -53,10 +53,6 @@ export default function useEndUser(){
           address: {
             city: formData.address?.city
           },
-          otherDetails: {
-            website: formData.otherDetails?.website,
-            interestedProduct: localStorage.getItem('interestedProduct')
-          },
           visitorId: formData.visitorId,
           deviceId: formData.deviceId,
           campaignID: formData.campaignID
@@ -100,10 +96,27 @@ export default function useEndUser(){
       throw error;
     }
   };
+  const saveUserDetails = async(id, visitorId, deviceId)=>{
+    try {
+      const response = await axios.post("https://pre.xplore.xircular.io/api/v1/endUser/saveVisitorAndCampaign",
+       { body:{
+        visitorId:visitorId,
+        deviceId:deviceId,
+        campaignID: id
+       }}
+      )
+      console.log(response.data);
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
 
   return {
     submitContactForm,
-    updateInterestedProduct
+    updateInterestedProduct,
+    saveUserDetails
   };
 
 }

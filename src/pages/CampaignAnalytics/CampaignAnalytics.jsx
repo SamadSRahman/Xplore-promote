@@ -2,14 +2,37 @@ import React, { useEffect } from 'react';
 import styles from './CampaignAnalytics.module.css';
 import useAnalytics from '../../lib/utils/useAnalytics';
 import { useParams } from 'react-router-dom';
+import * as XLSX from 'xlsx';
 
 const CampaignAnalytics = () => {
-    const { users, getAnalyticsData } = useAnalytics();  
+    const { users, getAnalyticsData, data } = useAnalytics();  
     const { campaignId } = useParams();
     
     useEffect(() => {
         getAnalyticsData(campaignId);
     }, []);
+useEffect(()=>{
+    console.log("data", data);
+    
+},[data])
+
+const handleExportExcel = () => {
+    // Prepare data for export (remove any nested objects or complex structures)
+    const exportData = data.map(user => ({
+      Name: user.name,
+      Email: user.email,
+      Phone: `+${user.countryCode} ${user.phone}`,
+    }));
+
+    // Create a new workbook and worksheet
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Users');
+
+    // Generate and download the Excel file
+    XLSX.writeFile(workbook, 'user_details.xlsx');
+  };
+
 
     const renderContent = () => {
         if (!users || users.length === 0) {
@@ -35,16 +58,13 @@ const CampaignAnalytics = () => {
                             <span className={styles.label}>Phone</span>
                         </div>
                         <div className={styles.detailItem}>
-                            <span className={styles.label}>Auth Provider</span>
-                        </div>
-                        <div className={styles.detailItem}>
                             <span className={styles.label}>Interested Product</span>
                         </div>
                     </div>
                 </div>
                 
                 {/* Data Rows */}
-                {users.map(user => (
+                {data.map(user => (
                     <div key={user.id} className={styles.userCard}>
                         <div className={styles.userHeader}>
                             <h3>{user.name}</h3>
@@ -56,9 +76,6 @@ const CampaignAnalytics = () => {
                             </div>
                             <div className={styles.detailItem}>
                                 <span>{user.countryCode ? `+${user.countryCode}` : ''} {user.phone}</span>
-                            </div>
-                            <div className={styles.detailItem}>
-                                <span className={styles.authProvider}>{user.authProvider}</span>
                             </div>
                             <div className={styles.detailItem}>
                                 <span>{Array.isArray(user.isInterestedProducts) ? user.isInterestedProducts.join(', ') : 'N/A'}</span>
@@ -74,7 +91,35 @@ const CampaignAnalytics = () => {
         <div className={styles.container}>
             <h1 className={styles.title}>Campaign Analytics</h1>
             <div className={styles.analyticsContainer}>
-                {renderContent()}
+                <button onClick={handleExportExcel}
+                   className={styles.exportButton}
+                >Export to Excel</button>
+                {/* {renderContent()}
+                    
+                
+                */}
+                <div className={styles.tableContainer}>
+      <table className={styles.userTable}>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Interested Product</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((user, index) => (
+            <tr key={index}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>+{user.countryCode} {user.phone}</td>
+              <td></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
             </div>
         </div>
     );

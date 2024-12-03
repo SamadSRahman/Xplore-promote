@@ -29,7 +29,7 @@ export default function CampaignPreview() {
     { extendedResult: true },
     { immediate: true }
   );
-  const { submitContactForm, updateInterestedProduct } = useEndUser();
+  const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
 
   useEffect(() => {
     getAllLayout(campaignId);
@@ -55,25 +55,60 @@ export default function CampaignPreview() {
 
 
   
-    useEffect(() => {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  useEffect(() => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    console.log("userAgent", userAgent);
+    
+    // Function to extract Android version from the user agent string
+    const getAndroidVersion = (userAgent: any) => {
+      const match = userAgent.match(/Android (\d+(\.\d+)+)/);
+      return match ? match[1] : null;
+    };
   
-      if (/android/i.test(userAgent)) {
+    // Function to extract iOS version from the user agent string
+    const getIosVersion = (userAgent: any) => {
+      const match = userAgent.match(/OS (\d+(_\d+)+)/);
+      console.log("version", match ? match[1].replace(/_/g, '.') : null);
+      alert(`version: ${match ? match[1].replace(/_/g, '.') : null}`);
+      
+      return match ? match[1].replace(/_/g, '.') : null;
+    };
+  
+    // Check Android version
+    if (/android/i.test(userAgent)) {
+      const androidVersion = getAndroidVersion(userAgent);
+      if (androidVersion && parseFloat(androidVersion) >= 12) {
+        // alert("android")
         setDeviceType("android");
         setRedirectURL(playStoreUrl);
-        // setTimeout(()=>{
-        //   window.location.href = playStoreUrl;
-        //  }, 1000)
-      } else if (/iPad|iPhone|iPod/.test(userAgent)) {
-        setDeviceType("ios");
-        // setRedirectURL(appClipUrl);
-       setTimeout(()=>{
-        window.location.href = appClipUrl;
-       }, 100)
-      } else {
-        setDeviceType("other");
+        setTimeout(() => {
+          window.location.href = playStoreUrl;
+        }, 1000);
+      } 
+      else if (androidVersion && parseFloat(androidVersion) < 12){
+        // alert("Version ")
       }
-    },[]);
+      else {
+        // alert("Version not found ")
+        setDeviceType("other");  // Android version < 12
+      }
+    }
+    // Check iOS version
+    else if (/iPad|iPhone|iPod/.test(userAgent)) {
+      const iosVersion = getIosVersion(userAgent);
+      if (iosVersion && parseFloat(iosVersion) >= 16.6) {
+        setDeviceType("ios");
+        setRedirectURL(appClipUrl);
+        setTimeout(() => {
+          // window.location.href = appClipUrl;
+        }, 100);
+      } else {
+        setDeviceType("other");  // iOS version < 16.6
+      }
+    } else {
+      setDeviceType("other");
+    }
+  });
   
 
   useEffect(() => {
@@ -88,6 +123,9 @@ export default function CampaignPreview() {
   useEffect(() => {
     if (data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
     if (data?.device) localStorage.setItem("deviceId", data.device);
+    if(data?.visitorId){
+      saveUserDetails(campaignId, data.visitorId, data.device)
+    }
   }, [data]);
 
   // if (deviceType === "ios"|| deviceType === "android") {

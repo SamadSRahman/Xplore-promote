@@ -1,9 +1,10 @@
+
 .container {
     padding: 2rem;
-    max-width: 1200px;
     margin: 0 auto;
     color: #000;
     width: 100vw;
+   
 }
 
 .title {
@@ -13,12 +14,15 @@
 }
 
 .analyticsContainer {
+    overflow: scroll !important;
     display: table;
-    width: 100%;
+    width: 95vw;
+    max-height: 100vh;
     border-collapse: collapse;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   
 }
 
 .userCard {
@@ -90,3 +94,65 @@
 .userCard:first-child .userHeader h3 {
     font-size: 1.1rem;
 }
+
+
+
+
+.tableContainer {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+  
+  .userTable {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .userTable thead {
+    background-color: #f4f4f4;
+  }
+  
+  .userTable th,
+  .userTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .userTable th {
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #333;
+  }
+  
+  .userTable tbody tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .userTable td {
+    color: #666;
+  }
+
+  .exportButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+  
+  .exportButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  
+  .exportButton:hover {
+    background-color: #45a049;
+  }
