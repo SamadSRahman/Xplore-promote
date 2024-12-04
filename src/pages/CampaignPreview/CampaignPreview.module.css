@@ -112,7 +112,7 @@
 }
 
 .redirectContainer{
-
+    width: 100vw;
     color: black;
     height: 100vh;
     display: flex;
@@ -125,8 +125,13 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 5rem;
+}
+.redirectContent>img{
+    width: 8rem;
 }
 .redirectContent > button{
+    margin-top: 20px;
     background-color: #896BF0;
     padding: 8px 10px;
     border-radius: 7px;

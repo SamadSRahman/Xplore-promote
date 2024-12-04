@@ -24,7 +24,7 @@ export default function CampaignPreview() {
 
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
-        const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
+  const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
   const { data, getData } = useVisitorData(
     { extendedResult: true },
     { immediate: true }
@@ -54,26 +54,26 @@ export default function CampaignPreview() {
   }, []);
 
 
-  
+
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     console.log("userAgent", userAgent);
-    
+
     // Function to extract Android version from the user agent string
     const getAndroidVersion = (userAgent: any) => {
       const match = userAgent.match(/Android (\d+(\.\d+)+)/);
       return match ? match[1] : null;
     };
-  
+
     // Function to extract iOS version from the user agent string
     const getIosVersion = (userAgent: any) => {
       const match = userAgent.match(/OS (\d+(_\d+)+)/);
       console.log("version", match ? match[1].replace(/_/g, '.') : null);
       // alert(`version: ${match ? match[1].replace(/_/g, '.') : null}`);
-      
+
       return match ? match[1].replace(/_/g, '.') : null;
     };
-  
+
     // Check Android version
     if (/android/i.test(userAgent)) {
       const androidVersion = getAndroidVersion(userAgent);
@@ -84,8 +84,8 @@ export default function CampaignPreview() {
         setTimeout(() => {
           window.location.href = playStoreUrl;
         }, 1000);
-      } 
-      else if (androidVersion && parseFloat(androidVersion) < 12){
+      }
+      else if (androidVersion && parseFloat(androidVersion) < 12) {
         // alert("Version ")
       }
       else {
@@ -109,7 +109,7 @@ export default function CampaignPreview() {
       setDeviceType("other");
     }
   });
-  
+
 
   useEffect(() => {
     console.log("deviceType", deviceType, redirectURL);
@@ -123,7 +123,7 @@ export default function CampaignPreview() {
   useEffect(() => {
     if (data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
     if (data?.device) localStorage.setItem("deviceId", data.device);
-    if(data?.visitorId){
+    if (data?.visitorId) {
       saveUserDetails(campaignId, data.visitorId, data.device)
     }
   }, [data]);
@@ -196,7 +196,7 @@ export default function CampaignPreview() {
     if (btnAction === "phoneNumber" && action.phone) {
       // Check if device is mobile
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
+
       if (isMobile) {
         // For mobile devices, open phone dialer
         window.location.href = `tel:${action.phone}`;
@@ -218,7 +218,7 @@ export default function CampaignPreview() {
       window.open(redirectUrl, '_blank');
       return;
     }
-    
+
     if (btnAction === "submit") {
       const params = new URLSearchParams(action.url.split("?")[1]);
       const isCheckboxChecked = params.get("consent_checkbox") === "true";
@@ -345,7 +345,7 @@ export default function CampaignPreview() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            authorization: credentialResponse.credential,
+            Authorization: `Bearer ${credentialResponse.credential}`,
           },
           body: JSON.stringify({
             visitorId: visitorId,
@@ -384,105 +384,95 @@ export default function CampaignPreview() {
   };
 
   return (
-   
-<div>
-{ deviceType=== "ios"|| deviceType==="android"?
-    (
-      <div className={styles.redirectContainer}>
-        <div className={styles.redirectContent}>
-          {deviceType === 'ios' ? (
-            <>
+
+    <div>
+      {deviceType === "ios" || deviceType === "android" ?
+        (
+          <div className={styles.redirectContainer}>
+            <div className={styles.redirectContent}>
+
               <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
-              <h2>Open in App Clip</h2>
-              <p>This campaign is optimized for Apple App Clip. Tap below to continue.</p>
-            </>
-          ) : (
-            <>
-              <img src={icon} alt="Android Instant App" className={styles.platformIcon} />
-              <h2>Open Instant App</h2>
-              <p>This campaign is optimized for Android Instant App. Tap below to continue.</p>
-            </>
-          )}
-          <button
-            onClick={handleRedirect}
-            className={styles.redirectButton}
-          >
-            Continue to {deviceType === 'ios' ? 'App Clip' : 'Instant App'}
-          </button>
-        </div>
-      </div>
-    ):(
-      <GoogleOAuthProvider clientId="1026223734987-lqcb9auvggk9vuri3jucmblf4lhhm9sj.apps.googleusercontent.com">
-      <div className={styles.container}>
-        {showPopup && (
-          <div className={styles.popupOverlay}>
-            <div className={styles.popup}>
-              <h2>Sign in with Google</h2>
-              <p>Sign in to personalize your experience</p>
-              <div className={styles.popupButtons}>
-                {isLoadingPopup ? (
-                  <div className={styles.loader}>Loading...</div>
-                ) : (
-                  <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={handleGoogleError}
-                    useOneTap
-                    type="standard"
-                    theme="filled_blue"
-                    render={({ onClick }) => (
-                      <button
-                        onClick={onClick}
-                        className={styles.googleButton}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "8px",
-                          backgroundColor: "blue",
-                        }}
-                      >
-                        <img
-                          src={googleLogo}
-                          alt="google logo"
-                          style={{
-                            width: "25px",
-                            height: "25px",
-                            backgroundColor: "white",
-                            borderRadius: "50%",
-                          }}
-                        />
-                        Sign in with Google
-                      </button>
-                    )}
-                  />
-                )}
-                <button
-                  className={styles.skipButton}
-                  onClick={handleSkip}
-                  disabled={isLoadingPopup}
-                >
-                  Skip
-                </button>
-              </div>
+
+              <button
+                onClick={handleRedirect}
+                className={styles.redirectButton}
+              >
+                Continue
+              </button>
             </div>
           </div>
-        )}
-        <div className={styles.cardWrapper}>
-          {layout?.layoutJSON && (
-            // <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
-            <DivkitRenderer
-              onClick={handleBtnClick}
-              divkitJson={layout.layoutJSON}
-            />
-          )}
-        </div>
-      </div>
-    </GoogleOAuthProvider>
-    )
+        ) : (
+          <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
+            <div className={styles.container}>
+              {showPopup && (
+                <div className={styles.popupOverlay}>
+                  <div className={styles.popup}>
+                    <h2>Sign in with Google</h2>
+                    <p>Sign in to personalize your experience</p>
+                    <div className={styles.popupButtons}>
+                      {isLoadingPopup ? (
+                        <div className={styles.loader}>Loading...</div>
+                      ) : (
+                        <GoogleLogin
+                          onSuccess={handleGoogleSuccess}
+                          onError={handleGoogleError}
+                          useOneTap
+                          type="standard"
+                          theme="filled_blue"
+                          render={({ onClick }) => (
+                            <button
+                              onClick={onClick}
+                              className={styles.googleButton}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "8px",
+                                backgroundColor: "blue",
+                              }}
+                            >
+                              <img
+                                src={googleLogo}
+                                alt="google logo"
+                                style={{
+                                  width: "25px",
+                                  height: "25px",
+                                  backgroundColor: "white",
+                                  borderRadius: "50%",
+                                }}
+                              />
+                              Sign in with Google
+                            </button>
+                          )}
+                        />
+                      )}
+                      <button
+                        className={styles.skipButton}
+                        onClick={handleSkip}
+                        disabled={isLoadingPopup}
+                      >
+                        Skip
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className={styles.cardWrapper}>
+                {layout?.layoutJSON && (
+                  // <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
+                  <DivkitRenderer
+                    onClick={handleBtnClick}
+                    divkitJson={layout.layoutJSON}
+                  />
+                )}
+              </div>
+            </div>
+          </GoogleOAuthProvider>
+        )
 
-  }
+      }
 
-</div>
+    </div>
 
 
 

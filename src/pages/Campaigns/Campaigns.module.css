@@ -145,4 +145,11 @@ text-align: center;    height: 100%;
     background-color: #F0F0F0;
   }
 
-  
+  .campaignList{
+
+    overflow-y: scroll;
+    max-height: 75vh;
+  }
+  .campaignList::-webkit-scrollbar{
+    display: none;
+  }

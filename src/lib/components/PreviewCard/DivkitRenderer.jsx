@@ -1,6 +1,49 @@
 import React, { useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { render } from '@divkitframework/divkit/client-hydratable';
 import styles from './PreviewCard.module.css'
+import CameraComponent from '../../../customComponent/CameraComponent/CameraComponent'
+
+// class CustomCard extends HTMLElement {
+//   constructor() {
+//       super();
+
+//       // Create a shadow root if needed
+//       const shadow = this.attachShadow({ mode: 'open' });
+
+//       // Add content or logic here
+//       const container = document.createElement('div');
+//       container.textContent = 'This is a Custom Card';
+//       container.style.padding = '16px';
+//       container.style.border = '1px solid #ddd';
+//       container.style.borderRadius = '8px';
+
+//       shadow.appendChild(container);
+//   }
+// }
+const CustomCard = () => {
+  return (
+    <div>
+      This is a custom functional card rendered with React.
+    </div>
+  );
+};
+ 
+class CustomCardElement extends HTMLElement {
+  connectedCallback() {
+    // Render the React component inside the custom element
+    const margin = this.getAttribute('margin');
+    console.log("margin", margin);
+    ReactDOM.render(<CameraComponent styles={margin} />, this);
+
+  }
+  disconnectedCallback() {
+    // Cleanup when the element is removed from the DOM
+    ReactDOM.unmountComponentAtNode(this);
+  }
+}
+customElements.define('custom-card', CustomCardElement);
+
 const DivkitRenderer = ({ divkitJson , onClick}) => {
   const divkitContainer = useRef(null);
 
@@ -30,7 +73,11 @@ const DivkitRenderer = ({ divkitJson , onClick}) => {
           }
         },
         json: divkitJson,
-       
+        customComponents: new Map([
+          ['custom_card', {
+              element: 'custom-card'
+          }]
+      ]),
         onError(details) {
           console.error('Divkit rendering error:', details.error);
         },

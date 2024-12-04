@@ -92,10 +92,10 @@ export default function Campaigns() {
               {isLogoutPopupVisible && (
                 <div ref={popupRef} className={styles.popupMenu}>
                    <div className={styles.popupItem} onClick={()=>navigate(`/profileDesign/${userId}`)}>
-                  <MdDesignServices/>   Profile Design
+                  <MdDesignServices size={15}/>   Profile Design
                   </div>
                   <div className={styles.popupItem} onClick={handleLogout}>
-                <MdLogout/>     Logout
+                <MdLogout size={15}/>     Logout
                   </div>
                 </div>
               )}
@@ -104,7 +104,7 @@ export default function Campaigns() {
           {campaigns.length > 0 ? (
             <div>
               <p>Your campaigns:</p>
-              <div>
+              <div className={styles.campaignList}>
                 {campaigns.map(campaign => (
                   <div
                     key={campaign.campaignID}
@@ -121,25 +121,25 @@ export default function Campaigns() {
                           className={styles.popupItem}
                           onClick={() => handleEdit(campaign.campaignID)}
                         >
-                          <FaEdit /> Change Layout
+                          <FaEdit size={15} /> Change Layout
                         </div>
                         <div
                           className={styles.popupItem}
                           onClick={() => handleGetQr(campaign)}
                         >
-                          <MdOutlineQrCode2 /> Get QR Code
+                          <MdOutlineQrCode2 size={15}/> Get QR Code
                         </div>
                         <div
                           className={styles.popupItem}
                           onClick={() => navigate(`/campaignAnalytics/${campaign.campaignID}`)}
                         >
-                          <FaChartLine /> Analytics
+                          <FaChartLine size={15} /> Analytics
                         </div>
                         <div
                           className={styles.popupItem}
                           onClick={() => handleDelete(campaign.campaignID)}
                         >
-                          <FaTrashAlt /> Delete
+                          <FaTrashAlt size={15} /> Delete
                         </div>
                       </div>
                     )}
