@@ -100,7 +100,7 @@ export default function CampaignPreview() {
         setDeviceType("ios");
         setRedirectURL(appClipUrl);
         setTimeout(() => {
-          // window.location.href = appClipUrl;
+          window.location.href = appClipUrl;
         }, 100);
       } else {
         setDeviceType("other");  // iOS version < 16.6

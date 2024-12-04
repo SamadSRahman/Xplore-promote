@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosSave, IoMdEye } from 'react-icons/io';
 import styles from './Profile.module.css';
@@ -14,8 +14,8 @@ import {
   DivProEditor,
   removeTemplatesSuffix,
 } from '../../lib'; // Adjust this import path as needed
-import useCampaign from '../../lib/utils/useCampaign'
 import useLayout from '../../lib/utils/useLayout';
+import useProfile from '../../lib/utils/useProfile';
 import ReactHeader from '../../lib/components/ReactHeader';
 import QuizStyleInputPopup from '../../components/QuizStyleInputPopup';
 import { isContactUs } from '../../lib/utils/services';
@@ -24,8 +24,7 @@ import PreviewScreen from '../../components/PreviewScreen';
 
 const ProfileDesign = () => {
   const { campaignId, page, userId } = useParams();
-  const { getCampaignById, currentLayout, layoutId,  } = useCampaign();
-  const { updateLayout, createLayout, getAllLayout, getAllLayoutNames, screens } = useLayout();
+  const {getProfileLayout, profileLayout} = useProfile()
   const navigate = useNavigate();
   const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
@@ -39,15 +38,13 @@ const ProfileDesign = () => {
     
     const token = localStorage.getItem('accessToken')
     if (!token) {
-      alert("Please login to access your campaigns")
+      alert("Please login to design your profile")
       navigate('/')
     }
-    if (campaignId) {
-      getCampaignById(campaignId, page);
-      getAllLayoutNames(campaignId);
-      if (page === "quiz_screen") {
-        handleAddQuestion();
-      }
+    if(userId){
+      console.log(userId);
+      
+      getProfileLayout(userId)
     }
   }, [campaignId, page]);
 
@@ -62,7 +59,7 @@ const ProfileDesign = () => {
       locale: 'en',
       rootConfigurable: true,
       card: {
-        json: currentLayout,
+        json:profileLayout,
 
       },
 
@@ -147,7 +144,6 @@ const ProfileDesign = () => {
 
       // readOnly: true,
       api: {
-        onChange: (newJson) => handleQuiz(newJson),
         getTranslationKey(key) {
           return new Promise(resolve => {
             console.log("key", key, resolve);
@@ -192,33 +188,9 @@ const ProfileDesign = () => {
         editor.destroy();
       }
     };
-  }, [currentLayout, page]);
+  }, [profileLayout]);
 
-  async function handleQuiz(json: string) {
-    const jsonData = JSON.parse(json);
-    localStorage.setItem("variables", JSON.stringify(jsonData.card.variables));
-    const quizComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_quiz");
-    const contactUsComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_template_contact_us");
-    if(contactUsComponent){
-      if(!isContactUs()){
-        await createLayout(JSON.stringify(contactUsJSON), campaignId, "contact_us_screen");
-        await getAllLayoutNames(campaignId);
-        await getAllLayout(campaignId);
-        console.log("line 204",screens);
-        
-      }
-    }
-    if (screens.find((ele: { path: string }) => ele.path === "quiz_screen") === undefined) {
-      try {
-        // await handleLogJSON();
-        // await createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
-        // refreshScreenNames();
-        // navigate(`/editor/${campaignId}/quiz_screen`);
-      } catch (error) {
-        console.error('Error handling quiz:', error);
-      }
-    }
-  }
+
 
 
 
