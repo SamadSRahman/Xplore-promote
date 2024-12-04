@@ -13,7 +13,7 @@ import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
 import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
 import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx'
-import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx4'
+import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx'
 
 export default function App() {
   const [isMobile, setIsMobile] = React.useState(false);
