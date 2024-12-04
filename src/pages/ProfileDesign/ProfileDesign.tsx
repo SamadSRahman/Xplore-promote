@@ -14,22 +14,19 @@ import {
   DivProEditor,
   removeTemplatesSuffix,
 } from '../../lib'; // Adjust this import path as needed
-import useLayout from '../../lib/utils/useLayout';
+
 import useProfile from '../../lib/utils/useProfile';
 import ReactHeader from '../../lib/components/ReactHeader';
-import QuizStyleInputPopup from '../../components/QuizStyleInputPopup';
-import { isContactUs } from '../../lib/utils/services';
-import { contactUsJSON } from '../../lib/utils/splashScreenData';
+
 import PreviewScreen from '../../components/PreviewScreen';
 
 const ProfileDesign = () => {
   const { campaignId, page, userId } = useParams();
-  const {getProfileLayout, profileLayout} = useProfile()
+  const {getProfileLayout, profileLayout, updateProfileLayout} = useProfile()
   const navigate = useNavigate();
   const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
   const editorContainerRef = React.useRef(null);
-  const [showQuizPopup, setShowQuizPopup] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
 
@@ -52,7 +49,7 @@ const ProfileDesign = () => {
   React.useEffect(() => {
     const screenWidth = window.innerWidth;
     const leftRightWidth = 0.25 * screenWidth;
-    const middleWidth = 0.4 * screenWidth;
+    // const middleWidth = 0.4 * screenWidth;
     if (!editorContainerRef.current) return;
     const editor = (window.editor = DivProEditor.init({
       renderTo: editorContainerRef.current,
@@ -203,117 +200,21 @@ const ProfileDesign = () => {
     try {
       const currentJSON = editorInstance.getValue();
       setJsonContent(currentJSON);
-      await updateLayout(layoutId, currentJSON, page, campaignId);
+      updateProfileLayout(currentJSON);
+    
     } catch (error) {
       console.error('Error handling JSON:', error);
     }
   };
 
 
-  function refreshScreenNames() {
-    console.log("refreshScreenNames");
-    getAllLayout(campaignId)
-  }
-  const handleQuizSubmit = (quizData: any) => {
-    const currentJson = JSON.parse(editorInstance.getValue());
-    
-    // Create quiz component structure
-    const quizComponent = {
-      type: "container",
-      margins: { top: 20 },
-      items: [
-        {
-          type: "container",
-          items: [
-            {
-              type: "text",
-              text: `Question ${quizData.questionNumber}: ${quizData.question}`,
-              font_size: 22,
-              font_weight: "bold",
-              margin: { bottom: 16, top:20 },
-              text_alignment_horizontal: "center"
-            }
-          ],
-          orientation: "overlap"
-        },
-        {
-          type: "gallery",
-          width: { type: "match_parent" },
-          height: { type: "fixed", value: 61 },
-          alignment_horizontal: "left",
-          alignment_vertical: "top",
-          margins: { top: 47, right: 7, left: 7 },
-          items: quizData.answers.map((answer: string, index: number) => ({
-            type: "_template_button",
-            text: answer,
-            margin: { bottom: 8 },
-            actions: [
-              {
-                question: quizData.question,
-                options: quizData.answers,
-                selected: answer,
-                correct: quizData.answers[quizData.correctAnswer],
-                log_id: `answer_${index}`,
-                url: `quiz://answer?selected=${index}&correct=${quizData.correctAnswer}`
-              }
-            ],
-            paddings: {
-              top: 12,
-              right: 15,
-              bottom: 12,
-              left: 15
-            },
-            text_alignment_horizontal: "center"
-          })),
-          cross_content_alignment: "center",
-          item_spacing: 20,
-          orientation: "horizontal",
-          background: [
-            {
-              type: "solid",
-              color: "#edc7c7"
-            }
-          ]
-        }
-      ]
-    };
+ 
 
-    // Get the current items or initialize empty array
-    const currentItems = currentJson.card.states[0].div.items || [];
-    
-    // Update the div structure with the new quiz component
-    currentJson.card.states[0].div = {
-      ...currentJson.card.states[0].div,
-      items: [...currentItems, quizComponent]
-    };
-
-    // Update the card
-
-    updateLayout(layoutId, JSON.stringify(currentJson), page, campaignId);
-    getCampaignById(campaignId, page);
-  
-    const card = editorInstance.getCard();
-    if (card) {
-      card.json = currentJson;
-    }
-  };
-
-  const handleAddQuestion = () => {
-    // setQuestionCount(prev => prev + 1);
-    // setShowQuizPopup(true);
-  };
 
   return (
     <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box',  }}>
-      <ReactHeader screens={[]} refreshScreenNames={refreshScreenNames} />
+      <ReactHeader screens={[]} />
       <div>
-        {showQuizPopup && (
-          <QuizStyleInputPopup
-            questionNumber={1}
-            onSubmit={handleQuizSubmit}
-            onClose={() => setShowQuizPopup(false)}
-          />
-        )}
         <div className="flex gap-2 absolute bottom-4 right-4">
           <button
             onClick={() => setIsPreviewOpen(true)}

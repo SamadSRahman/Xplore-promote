@@ -172,7 +172,7 @@ export default function useLayout() {
             
             console.log('screens updated', formattedScreens);
             setScreens(formattedScreens);
-            ocalStorage.setItem('screens', JSON.stringify(formattedScreens));
+            localStorage.setItem('screens', JSON.stringify(formattedScreens));
             
         } catch (error) {
             console.error('Error fetching layout names:', error);

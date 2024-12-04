@@ -13,6 +13,7 @@ import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
 import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
 import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx'
+import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx'
 
 export default function App() {
   const [isMobile, setIsMobile] = React.useState(false);
@@ -57,6 +58,7 @@ export default function App() {
               <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
               <Route path='/profileDesign/:userId' element={<ProfileDesign />} />
               <Route path='/publish/:campaignId' element={<PublishAndPreview />} />
+              <Route path='/profile/:userId' element={<ProfilePreview />} />
               <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />} />
               <Route path='/campaignAnalytics/:campaignId' element={<CampaignAnalytics />} />
               <Route path='/contactus' element={<ContactUs />} />

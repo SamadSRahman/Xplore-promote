@@ -3,36 +3,43 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DivkitRenderer from "../../lib/components/PreviewCard/DivkitRenderer";
-import styles from "./CampaignPreview.module.css";
+import styles from "./ProfilePreview.module.css";
 import { blankBackgroundJSON } from "../../lib/utils/splashScreenData";
 import useLayout from "../../lib/utils/useLayout";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import useProfile from '../../lib/utils/useProfile'
 import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
 import useEndUser from "../../lib/utils/useEndUser";
-import googleLogo from "../../assets/components/google-icon.webp";
+
 import icon from '../../assets/xplore-logo.svg'
 
-export default function CampaignPreview() {
-  const { getAllLayout, layouts } = useLayout();
+export default function ProfilePreview() {
+  const {layouts } = useLayout();
+  const {getProfileLayout, profileLayout} = useProfile()
   const navigate = useNavigate();
   const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
-  const { campaignId, screen } = useParams();
+  const { userId} = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [deviceType, setDeviceType] = useState("");
   const [redirectURL, setRedirectURL] = useState("")
 
 
-  const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
-  const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
+  const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&profileId=${userId}`;
+  const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&profileId=${userId}&launch=true`;
   const { data, getData } = useVisitorData(
     { extendedResult: true }, 
     { immediate: true }
   );
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
-
+useEffect(()=>{
+  if(profileLayout){
+    setLayout(JSON.parse(profileLayout))
+    console.log(profileLayout);
+    
+  }
+},[profileLayout])
   useEffect(() => {
-    getAllLayout(campaignId);
+    getProfileLayout(userId)
     getData({ ignoreCache: true });
 
     const requestPushNotificationPermission = async () => {
@@ -124,7 +131,7 @@ export default function CampaignPreview() {
     if (data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
     if (data?.device) localStorage.setItem("deviceId", data.device);
     if (data?.visitorId) {
-      saveUserDetails(campaignId, data.visitorId, data.device)
+      // saveUserDetails(data.visitorId, data.device)
     }
   }, [data]);
 
@@ -132,46 +139,7 @@ export default function CampaignPreview() {
   //   return
   // }
 
-  useEffect(() => {
-    if (!layouts.length) return;
 
-    if (screen === undefined || screen === "splash_screen") {
-      const splashLayout = layouts.find(
-        (ele: any) => ele.name === "splash_screen"
-      );
-      if (splashLayout) {
-        setLayout(splashLayout);
-      }
-    } else {
-      const newLayout = layouts.find((ele) => ele.name === screen);
-      if (!newLayout) {
-        console.warn(`Layout not found for screen: ${screen}`);
-        return;
-      }
-
-      const variables = newLayout.layoutJSON?.card?.variables;
-      const googleData = localStorage.getItem("userData");
-
-      if (googleData && variables) {
-        const googleDataObj = JSON.parse(googleData);
-        variables.forEach((variable: any) => {
-          if (variable.name === "email" && googleDataObj.email) {
-            variable.value = googleDataObj.email;
-          }
-          if (variable.name === "userName" && googleDataObj.name) {
-            variable.value = googleDataObj.name;
-          }
-          if (variable.name === "phone" && googleDataObj.phone) {
-            variable.value = googleDataObj.phone;
-          }
-        });
-
-        newLayout.layoutJSON.card.variables = variables;
-      }
-
-      setLayout(newLayout);
-    }
-  }, [screen, layouts]);
 
   function handleBtnClick(action: {
     url: string;
@@ -324,7 +292,7 @@ export default function CampaignPreview() {
         }
       }
     }
-  }, [screen, campaignId]);
+  }, [profileLayout]);
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
     setIsLoadingPopup(true);
@@ -375,14 +343,6 @@ export default function CampaignPreview() {
     }
   };
 
-  const handleGoogleError = () => {
-    console.error("Google Sign-in Failed");
-  };
-
-  const handleSkip = () => {
-    setShowPopup(false);
-  };
-
   return (
 
     <div>
@@ -402,72 +362,18 @@ export default function CampaignPreview() {
             </div>
           </div>
         ) : (
-          <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
+         
             <div className={styles.container}>
-              {showPopup && (
-                <div className={styles.popupOverlay}>
-                  <div className={styles.popup}>
-                    <h2>Sign in with Google</h2>
-                    <p>Sign in to personalize your experience</p>
-                    <div className={styles.popupButtons}>
-                      {isLoadingPopup ? (
-                        <div className={styles.loader}>Loading...</div>
-                      ) : (
-                        <GoogleLogin
-                          onSuccess={handleGoogleSuccess}
-                          onError={handleGoogleError}
-                          useOneTap
-                          type="standard"
-                          theme="filled_blue"
-                          render={({ onClick }) => (
-                            <button
-                              onClick={onClick}
-                              className={styles.googleButton}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: "8px",
-                                backgroundColor: "blue",
-                              }}
-                            >
-                              <img
-                                src={googleLogo}
-                                alt="google logo"
-                                style={{
-                                  width: "25px",
-                                  height: "25px",
-                                  backgroundColor: "white",
-                                  borderRadius: "50%",
-                                }}
-                              />
-                              Sign in with Google
-                            </button>
-                          )}
-                        />
-                      )}
-                      <button
-                        className={styles.skipButton}
-                        onClick={handleSkip}
-                        disabled={isLoadingPopup}
-                      >
-                        Skip
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
               <div className={styles.cardWrapper}>
-                {layout?.layoutJSON && (
-                  // <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
+                {layout && (
                   <DivkitRenderer
                     onClick={handleBtnClick}
-                    divkitJson={layout.layoutJSON}
+                    divkitJson={layout}
                   />
                 )}
               </div>
             </div>
-          </GoogleOAuthProvider>
+          
         )
 
       }
