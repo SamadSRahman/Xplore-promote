@@ -13,7 +13,7 @@ import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
 import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
 import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx'
-import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx'
+import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx4'
 
 export default function App() {
   const [isMobile, setIsMobile] = React.useState(false);
@@ -27,7 +27,7 @@ export default function App() {
     const checkMobile = () => {
       const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const path = window.location.pathname;
-      const isCampaignPreview = path.startsWith('/campaign/') || path.includes("privacyPolicy") || path.includes("terms&conditions") || path.includes("contactus");
+      const isCampaignPreview = path.startsWith('/campaign/') || path.includes("privacyPolicy") || path.includes("terms&conditions") || path.includes("contactus") || path.includes("profile");
       setIsMobile(mobile && !isCampaignPreview);
     };
 
