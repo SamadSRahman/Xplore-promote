@@ -22,6 +22,7 @@ const handleExportExcel = () => {
       Name: user.name,
       Email: user.email,
       Phone: `+${user.countryCode} ${user.phone}`,
+      InterestedProduct: user.isInterestedProducts!==null? user.isInterestedProducts.join(","):""
     }));
 
     // Create a new workbook and worksheet
@@ -114,7 +115,7 @@ const handleExportExcel = () => {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>+{user.countryCode} {user.phone}</td>
-              <td></td>
+              <td>{user.isInterestedProducts}</td>
             </tr>
           ))}
         </tbody>

@@ -11,6 +11,7 @@ import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
 import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
 import icon from '../../assets/xplore-logo.svg'
+import CameraComponent from "../../customComponent/CameraComponent/CameraComponent";
 
 export default function CampaignPreview() {
   const { getAllLayout, layouts } = useLayout();
@@ -20,7 +21,8 @@ export default function CampaignPreview() {
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [deviceType, setDeviceType] = useState("");
-  const [redirectURL, setRedirectURL] = useState("")
+  const [redirectURL, setRedirectURL] = useState("");
+  const [isCameraScreen, setIsCameraScreen] = useState(false)
 
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
@@ -150,30 +152,57 @@ export default function CampaignPreview() {
       }
 
       const variables = newLayout.layoutJSON?.card?.variables;
+      
       const googleData = localStorage.getItem("userData");
-
-      if (googleData && variables) {
-        const googleDataObj = JSON.parse(googleData);
-        variables.forEach((variable: any) => {
-          if (variable.name === "email" && googleDataObj.email) {
-            variable.value = googleDataObj.email;
+      const imageData = localStorage.getItem("userUploadUrl");
+      
+      console.log("variables", variables);
+      console.log("googleData", googleData);
+      console.log("imageData", imageData);
+      
+      if (variables && Array.isArray(variables)) {
+        try {
+          // Process Google Data
+          if (googleData) {
+            const googleDataObj = JSON.parse(googleData);
+            
+            variables.forEach((variable) => {
+              if (!variable || typeof variable !== 'object') return;
+      
+              if (variable.name === "email" && googleDataObj.email) {
+                variable.value = googleDataObj.email;
+              }
+              if (variable.name === "userName" && googleDataObj.name) {
+                variable.value = googleDataObj.name;
+              }
+              if (variable.name === "phone" && googleDataObj.phone) {
+                variable.value = googleDataObj.phone;
+              }
+            });
           }
-          if (variable.name === "userName" && googleDataObj.name) {
-            variable.value = googleDataObj.name;
+      
+          // Process Image Data
+          if (imageData) {
+            variables.forEach((variable) => {
+              if (!variable || typeof variable !== 'object') return;
+      
+              if (variable.name === "picture") {
+                variable.value = imageData;
+              }
+            });
           }
-          if (variable.name === "phone" && googleDataObj.phone) {
-            variable.value = googleDataObj.phone;
-          }
-        });
-
-        newLayout.layoutJSON.card.variables = variables;
+      
+          newLayout.layoutJSON.card.variables = variables;
+        } catch (error) {
+          console.error("Error processing user data:", error);
+        }
       }
 
       setLayout(newLayout);
     }
   }, [screen, layouts]);
 
-  function handleBtnClick(action: {
+  async function handleBtnClick(action: {
     url: string;
     log_url?: string;
     latitude?: string;
@@ -183,6 +212,7 @@ export default function CampaignPreview() {
     socialPlatform?: string;
     socialProfile?: string;
     webUrl?: string;
+    selected_variables:[]
   }) {
     console.log("action clicked", action);
     const btnAction = action.url?.split("://")[1].split("?")[0];
@@ -218,26 +248,67 @@ export default function CampaignPreview() {
       window.open(redirectUrl, '_blank');
       return;
     }
+    if(btnAction === "camera"){
+      navigate(`/campaign/${campaignId}/camera_screen`);
+    }
 
     if (btnAction === "submit") {
+      console.log(action.selectedVariables);
+      
       const params = new URLSearchParams(action.url.split("?")[1]);
       const isCheckboxChecked = params.get("consent_checkbox") === "true";
-
+    
+      // Dynamic validation based on selected variables
+      const missingVariables = action.selected_variables.filter(variable => {
+        // Skip validation for consent checkbox
+        if (variable === "consent_checkbox") return false;
+        
+        const value = params.get(variable);
+        // Check if value is undefined, null, or empty string
+        return !value || value.trim() === '';
+      });
+    
+      if (missingVariables.length > 0) {
+        alert(`Please fill in the following required fields: ${missingVariables.join(', ')}`);
+        return;
+      }
+    
       if (!isCheckboxChecked) {
         alert("Please agree to the terms and conditions first");
         return;
       }
-
+    
+      // Prepare otherFields object for additional variables
+      const otherFields = {};
+    
+      // Add any extra variables from action.selected_variables to otherFields
+      action.selected_variables.forEach(variable => {
+        const value = params.get(variable);
+        if (value && 
+            !['userName', 'email', 'phone', 'consent_checkbox'].includes(variable)) {
+              console.log("variable,", variable);
+              
+          otherFields[variable] = value;
+        }
+      });
+      console.log(otherFields);
+      
       const formData = {
         name: params.get("userName"),
-        email: params.get("email"),
+        email: params.get("email") || '',
         phone: params.get("phone"),
         visitorId: localStorage.getItem("visitorId"),
         deviceId: localStorage.getItem("deviceId"),
         campaignID: campaignId,
+        otherFields: otherFields
       };
-
-      submitContactForm(formData);
+      console.log("formData", formData);
+      
+      await submitContactForm(formData);
+      const screenName = params.get("screen_name");
+      if(screenName){
+        navigate(`/campaign/${campaignId}/${screenName}`)
+      }
       updateInterestedProduct(campaignId);
       return;
     }
@@ -271,7 +342,7 @@ export default function CampaignPreview() {
       const foundLayout = layouts.find(
         (ele) => ele.name === screenIdentifier || ele.id === screenIdentifier
       );
-      if (foundLayout) {
+      if (foundLayout || screenIdentifier==="camera_screen") {
         navigate(`/campaign/${campaignId}/${screenIdentifier}`);
       } else {
         console.log(`screen ${screenIdentifier} not found`);
@@ -323,6 +394,9 @@ export default function CampaignPreview() {
           );
         }
       }
+    }
+    else if(screen==="camera_screen"){
+      setIsCameraScreen(true)
     }
   }, [screen, campaignId]);
 
@@ -383,6 +457,9 @@ export default function CampaignPreview() {
     setShowPopup(false);
   };
 
+  if(isCameraScreen){
+    return (<CameraComponent/>)
+  }
   return (
 
     <div>

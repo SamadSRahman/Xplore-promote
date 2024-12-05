@@ -4,10 +4,11 @@ import { IoMdClose } from 'react-icons/io';
 
 import styles from './QrPopup.module.css';
 
-const QrPopup = ({ campaignId, onClose, campaignName, type }) => {
+const QrPopup = ({ campaignId, onClose, campaignName, type, shortUrl }) => {
   
     const qrRef = useRef(null);
-
+    console.log("shortUrl", shortUrl);
+    
     useEffect(() => {
         if (!campaignId) {
             onClose();
@@ -36,7 +37,7 @@ const QrPopup = ({ campaignId, onClose, campaignName, type }) => {
           <div className={styles.qrContainer} ref={qrRef}>
             <h2 className={styles.subTitle}>Campaign QR Code</h2>
             <QRCodeCanvas
-              value={`https://pre.xplore.xircular.io/${type}/${campaignId}`}
+              value={shortUrl}
               size={150}
               bgColor="white"
               fgColor="#000"

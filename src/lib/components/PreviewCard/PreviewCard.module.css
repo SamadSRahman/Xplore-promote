@@ -14,12 +14,12 @@
     background-color: white;
     color: black;
     max-height: 100vh;
-    overflow: scroll;
+    overflow-y: scroll;
     /* border: 1px solid blue; */
     min-height: 100vh;
     height: 100vh;
 }
 .renderDiv >div{
-    height: 100vh;
+    min-height: 100vh;
     /* overflow: scroll; */
 }

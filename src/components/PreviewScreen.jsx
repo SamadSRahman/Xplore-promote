@@ -54,7 +54,7 @@ const PreviewScreen = ({ isOpen, onClose, jsonData }) => {
           <IoClose size={24} />
         </button>
         <div className="preview-content">
-          <div style={{color:'#000'}} ref={previewContainer} />
+          <div className='render-container' style={{color:'#000', height:'85vh'}} ref={previewContainer} />
         </div>
       </div>
     </div>

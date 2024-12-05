@@ -331,7 +331,7 @@ const EditorPage = () => {
 
   return (
     <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box',  }}>
-      <ReactHeader isAddScreen={true} screens={screens} refreshScreenNames={refreshScreenNames} />
+      <ReactHeader isScreens={true} isAddScreen={true} screens={screens} refreshScreenNames={refreshScreenNames} />
       <div>
         {showQuizPopup && (
           <QuizStyleInputPopup

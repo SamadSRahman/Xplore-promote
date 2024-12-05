@@ -11,6 +11,7 @@ import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
 import useEndUser from "../../lib/utils/useEndUser";
 
 import icon from '../../assets/xplore-logo.svg'
+import useApi from "../../lib/utils/useApi";
 
 export default function ProfilePreview() {
   const {layouts } = useLayout();
@@ -39,7 +40,7 @@ useEffect(()=>{
   }
 },[profileLayout])
   useEffect(() => {
-    getProfileLayout(userId)
+    getProfileLayout(userId);
     getData({ ignoreCache: true });
 
     const requestPushNotificationPermission = async () => {

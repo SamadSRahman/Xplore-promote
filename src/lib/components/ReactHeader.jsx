@@ -11,7 +11,7 @@ import { screensAtom } from '../../recoil/atoms';
 
 
 
-export default function ReactHeader( {isAddScreen}) {
+export default function ReactHeader( {isAddScreen, isScreens}) {
     const navigate = useNavigate();
     const location = useLocation();
     const {campaignId} = useParams();
@@ -77,23 +77,27 @@ export default function ReactHeader( {isAddScreen}) {
       </div>
       {isNewScreenPopupVisible &&
       <NewScreenPopup  onClose={() => setIsNewScreenPopupVisible(false)} campaignId={campaignId} />}
-      <div 
-      className='screensContainer'>
-        {screens.map(screen => (
-          <div
-          className='screen'
-            key={screen.path}
-            onClick={(e) => handleScreenClick(screen, e)}
-            style={{
-              backgroundColor: screen.path === currentScreen?.path ? '#39A6F5' : '#e9f5ff',
-              color: screen.path === currentScreen?.path ? 'white' : '#39A6F5',
-            }}
-          >
-            <span>{screen.name}</span>
-            {screen.isInitial && <AiFillStar color="#FFD700" />}
+      {
+        isScreens && (
+          <div 
+          className='screensContainer'>
+            {screens.map(screen => (
+              <div
+              className='screen'
+                key={screen.path}
+                onClick={(e) => handleScreenClick(screen, e)}
+                style={{
+                  backgroundColor: screen.path === currentScreen?.path ? '#39A6F5' : '#e9f5ff',
+                  color: screen.path === currentScreen?.path ? 'white' : '#39A6F5',
+                }}
+              >
+                <span>{screen.name}</span>
+                {screen.isInitial && <AiFillStar color="#FFD700" />}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        )
+      }
 
     {isAddScreen && (  <button
         onClick={() => setIsNewScreenPopupVisible(true)}

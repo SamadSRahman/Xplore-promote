@@ -215,7 +215,7 @@ const ProfileDesign = () => {
 
   return (
     <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box',  }}>
-   {isPopupVisible &&    <QrPopup type={"profile"} campaignId={userId} onClose={()=>setIsPopupVisible(false)} campaignName={JSON.parse(localStorage.getItem(("user")))?.name} />}
+   {isPopupVisible && <QrPopup type={"profile"} campaignId={userId} onClose={()=>setIsPopupVisible(false)} campaignName={JSON.parse(localStorage.getItem(("user")))?.name}  shortUrl={JSON.parse(localStorage.getItem(("user")))?.shortUrl} />}
       <ReactHeader screens={[]} />
       <div>
         <div className="flex gap-2 absolute bottom-4 right-4">
