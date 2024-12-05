@@ -4,7 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 
 import styles from './QrPopup.module.css';
 
-const QrPopup = ({ campaignId, onClose, campaignName }) => {
+const QrPopup = ({ campaignId, onClose, campaignName, type }) => {
   
     const qrRef = useRef(null);
 
@@ -36,7 +36,7 @@ const QrPopup = ({ campaignId, onClose, campaignName }) => {
           <div className={styles.qrContainer} ref={qrRef}>
             <h2 className={styles.subTitle}>Campaign QR Code</h2>
             <QRCodeCanvas
-              value={`https://pre.xplore.xircular.io/campaign/${campaignId}`}
+              value={`https://pre.xplore.xircular.io/${type}/${campaignId}`}
               size={150}
               bgColor="white"
               fgColor="#000"
@@ -45,10 +45,10 @@ const QrPopup = ({ campaignId, onClose, campaignName }) => {
           <div className={styles.linkWrapper}>
             <a
               target="_blank"
-              href={`${window.location.origin}/campaign/${campaignId}`}
+              href={`${window.location.origin}/${type}/${campaignId}`}
               rel="noreferrer"
             >
-              Click here to visit your campaign
+              Click here to visit your {type}
             </a>
             <button className={styles.downloadButton} onClick={handleDownload}>
               Download QR Code

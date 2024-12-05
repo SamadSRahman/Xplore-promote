@@ -12,7 +12,7 @@ export default function useProfile() {
       );
       console.log("respones", response);
       if(response.data.ProfileLayout!==null){
-        setProfileLayout(response.data.ProfileLayout)
+        setProfileLayout(JSON.stringify(response.data.ProfileLayout))
       }
     } catch (error) {
       console.log(error);

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DivkitRenderer from "../../lib/components/PreviewCard/DivkitRenderer";
 import styles from "./ProfilePreview.module.css";
-import { blankBackgroundJSON } from "../../lib/utils/splashScreenData";
+import { blankBackgroundJSON, profileJSON } from "../../lib/utils/splashScreenData";
 import useLayout from "../../lib/utils/useLayout";
 import useProfile from '../../lib/utils/useProfile'
 import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
@@ -368,7 +368,7 @@ useEffect(()=>{
                 {layout && (
                   <DivkitRenderer
                     onClick={handleBtnClick}
-                    divkitJson={layout}
+                    divkitJson={JSON.parse(profileLayout)}
                   />
                 )}
               </div>

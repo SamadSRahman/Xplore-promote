@@ -69,6 +69,7 @@ export default function Campaigns() {
     <div className={styles.container}>
       {isPopupVisible && (
         <QrPopup
+        type={"campaign"}
           campaignId={selectedId}
           onClose={() => setIsPopupVisible(false)}
           campaignName={selectedCampaignName}

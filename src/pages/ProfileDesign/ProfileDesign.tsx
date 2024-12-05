@@ -19,6 +19,7 @@ import useProfile from '../../lib/utils/useProfile';
 import ReactHeader from '../../lib/components/ReactHeader';
 
 import PreviewScreen from '../../components/PreviewScreen';
+import QrPopup from '../../lib/components/QrPopup/QrPopup';
 
 const ProfileDesign = () => {
   const { campaignId, page, userId } = useParams();
@@ -28,6 +29,7 @@ const ProfileDesign = () => {
   const [editorInstance, setEditorInstance] = React.useState(null);
   const editorContainerRef = React.useRef(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false)
 
 
   React.useEffect(() => {
@@ -213,6 +215,7 @@ const ProfileDesign = () => {
 
   return (
     <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box',  }}>
+   {isPopupVisible &&    <QrPopup type={"profile"} campaignId={userId} onClose={()=>setIsPopupVisible(false)} campaignName={JSON.parse(localStorage.getItem(("user")))?.name} />}
       <ReactHeader screens={[]} />
       <div>
         <div className="flex gap-2 absolute bottom-4 right-4">
@@ -231,7 +234,7 @@ const ProfileDesign = () => {
           </button>
         </div>
         <button className={styles.finishBtn}
-          onClick={() => navigate(`/publish/${campaignId}`)}
+          onClick={() =>setIsPopupVisible(pre=>!pre)}
         >
           <MdPublish />
           Publish
