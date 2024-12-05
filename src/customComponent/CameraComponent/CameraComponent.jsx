@@ -1,15 +1,34 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
 
-export default function CameraComponent({styles}) {
+const CameraComponent = forwardRef((props, ref) => {
   const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const streamRef = useRef(null);
-    console.log("styles",styles);
-    
+
+  useImperativeHandle(ref, () => ({
+    capture: () => {
+      if (!canvasRef.current || !videoRef.current) return null;
+
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+
+      // Set canvas size to match video
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const context = canvas.getContext("2d");
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Return the captured image as a data URL
+      return canvas.toDataURL("image/png");
+    },
+  }));
+
   useEffect(() => {
     const openCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        streamRef.current = stream; // Store the stream in a ref
+        streamRef.current = stream;
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
@@ -20,7 +39,6 @@ export default function CameraComponent({styles}) {
 
     openCamera();
 
-    // Cleanup function to stop the camera when the component unmounts
     return () => {
       if (streamRef.current) {
         const tracks = streamRef.current.getTracks();
@@ -37,6 +55,10 @@ export default function CameraComponent({styles}) {
         playsInline
         style={{ width: "100%", height: "auto", border: "1px solid black" }}
       />
+      {/* Hidden canvas for capturing images */}
+      <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );
-}
+});
+
+export default CameraComponent;
