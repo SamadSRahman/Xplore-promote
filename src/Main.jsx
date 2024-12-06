@@ -41,7 +41,7 @@ createRoot(document.getElementById('app')).render(
 loadOptions={{
     apiKey: "fV3yxgFXWOAzkQz50q9T",
     // region: "eu",
-    region:'ap',
+    region:'ap', 
     // endpoint: [
     //     FingerprintJSPro.default.endpoint,
     // ],
