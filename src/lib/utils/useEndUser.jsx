@@ -2,7 +2,14 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function useEndUser(){
-  const [pictureUrl, setPictureUrl] = useState("")
+  const [pictureUrl, setPictureUrl] = useState("");
+  
+  let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
+  if(window.location.origin==="https://xplr.live"){
+      console.log(window.location.origin);  
+   API_BASE_URL = 'https://xplr.live/api';
+  }
+
   const submitContactForm = async (formData, selectedVariables) => {
     try {
       // Validate required fields
@@ -42,7 +49,7 @@ export default function useEndUser(){
       //   }
       // }
 
-      const response = await fetch('https://pre.xplore.xircular.io/api/v1/endUser/contactUs', {
+      const response = await fetch(`${API_BASE_URL}/v1/endUser/contactUs`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +89,7 @@ export default function useEndUser(){
   };
   const updateInterestedProduct = async (id) => {
     try {
-      const response = await fetch('https://pre.xplore.xircular.io/api/v1/endUser/updateInterestedProduct', {
+      const response = await fetch(`${API_BASE_URL}/v1/endUser/updateInterestedProduct`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +115,7 @@ export default function useEndUser(){
   };
   const saveUserDetails = async(id, visitorId, deviceId)=>{
     try {
-      const response = await axios.post("https://pre.xplore.xircular.io/api/v1/endUser/saveVisitorAndCampaign",
+      const response = await axios.post(`${API_BASE_URL}/v1/endUser/saveVisitorAndCampaign`,
        { body:{
         visitorId:visitorId,
         deviceId:deviceId,
@@ -128,7 +135,7 @@ export default function useEndUser(){
     formData.append("files", file)
     formData.append
     try {
-        const response = await axios.post("https://pre.xplore.xircular.io/api/v1/content/uploadImage", formData)
+        const response = await axios.post(`${API_BASE_URL}/v1/content/uploadImage1`, formData)
         console.log(response.data.data[0].cdnUrl);
         localStorage.setItem("userUploadUrl", response.data.data[0].cdnUrl);
     } catch (error) {

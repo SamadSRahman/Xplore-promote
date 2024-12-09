@@ -20,7 +20,11 @@ const QRLogin = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const API_BASE_URL = 'https://pre.xplore.xircular.io/api';
+    let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
+    if(window.location.origin==="https://xplr.live"){
+        console.log(window.location.origin);  
+     API_BASE_URL = 'https://xplr.live/api';
+    }
 
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
@@ -28,7 +32,7 @@ const QRLogin = () => {
             navigate('/campaigns');
         }
         // Initialize socket connection
-        const socketInstance = io('https://pre.xplore.xircular.io', {
+        const socketInstance = io('https://xplr.live', {
             path: '/socket.io/',
             transports: ['polling', 'websocket'], // Start with polling
 

@@ -17,14 +17,21 @@ export default function useLayout() {
     const [layouts, setLayouts] = useState([])
     const token = localStorage.getItem("accessToken");
     const [isLayoutCreated, setIsLayoutCreated] = useState(false)
-    const setScreens = useSetRecoilState(screensAtom)
+    const setScreens = useSetRecoilState(screensAtom);
+
+    let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
+    if(window.location.origin==="https://xplr.live"){
+        console.log(window.location.origin);  
+     API_BASE_URL = 'https://xplr.live/api';
+    }
+
 
 
 
     const createLayout = async (jsonData, campaignId, page, isInitial) => {
         try {
             const response = await fetch(
-                `https://pre.xplore.xircular.io/api/v1/layout/create/${campaignId}`,
+                `${API_BASE_URL}/v1/layout/create/${campaignId}`,
                 {
                     method: 'POST',
                     headers: {
@@ -60,7 +67,7 @@ export default function useLayout() {
             return;
         }
         try {
-            const response = await axios.delete(`https://pre.xplore.xircular.io/api/v1/layout/delete/${id}`,{
+            const response = await axios.delete(`${API_BASE_URL}/v1/layout/delete/${id}`,{
                 headers: {
                     authorization: token,
                     session: channel
@@ -77,7 +84,7 @@ export default function useLayout() {
     const updateLayout = async (id, layout, name) => {
         try {
             const response = await axios.put(
-                `https://pre.xplore.xircular.io/api/v1/layout/update/${id}`,
+                `${API_BASE_URL}/v1/layout/update/${id}`,
                 {
                     // Pass the body content as a JavaScript object
                     name: getScreenPath(name),
@@ -106,7 +113,7 @@ export default function useLayout() {
     const setInitialLayout = async (id, campaignId) => {
         try {
             const response = await axios.put(
-                `https://pre.xplore.xircular.io/api/v1/layout/update/${id}`,
+                `${API_BASE_URL}/v1/layout/update/${id}`,
                 {
                     isInitial: true
                 },
@@ -130,7 +137,7 @@ export default function useLayout() {
         console.log("id line 101", id);
         
         try {
-            const response = await axios.get(`https://pre.xplore.xircular.io/api/v1/layout/getAll/${id}`)
+            const response = await axios.get(`${API_BASE_URL}/v1/layout/getAll/${id}`)
             console.log(response.data.layouts)
             setLayouts(response.data.layouts)
             const campaignScreens = response.data.layouts.map(ele=>ele);
@@ -153,7 +160,7 @@ export default function useLayout() {
     const getAllLayoutNames = async (campaignId, page = 0, size = 10) => {
         try {
             const response = await axios.get(
-                `https://pre.xplore.xircular.io/api/v1/layout/getAllLayoutName/${campaignId}`,
+                `${API_BASE_URL}/v1/layout/getAllLayoutName/${campaignId}`,
                 {
                     params: { page, size },
                     headers: {

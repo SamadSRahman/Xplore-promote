@@ -1,11 +1,4 @@
-/* eslint-disable brace-style */
-/* eslint-disable arrow-parens */
-/* eslint-disable keyword-spacing */
-/* eslint-disable space-before-blocks */
-/* eslint-disable space-before-function-paren */
-/* eslint-disable no-console */
-/* eslint-disable quotes */
-/* eslint-disable indent */
+
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -34,13 +27,20 @@ export default function useApi() {
   const [landingScreenId, setLandingScreenId] = useState("");
   const [layouts, setLayouts] = useState([])
   const token = localStorage.getItem("accessToken");
-  const session = localStorage.getItem('channel')
+  const session = localStorage.getItem('channel');
+
+  let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
+  if(window.location.origin==="https://xplr.live"){
+      console.log(window.location.origin);  
+   API_BASE_URL = 'https://xplr.live/api';
+  }
+
 
 
   const getUserDetails = async () => {
     const token = localStorage.getItem("accessToken");
     const response = await axios.get(
-      "https://pre.xplore.xircular.io/api/v1/user/getUserByToken",
+      `${API_BASE_URL}/v1/user/getUserByToken`,
       {
         headers: {
           authorization: token,

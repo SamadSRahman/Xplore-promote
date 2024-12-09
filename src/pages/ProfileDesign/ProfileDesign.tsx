@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 
-import React, { useId, useState } from 'react';
+import React, {useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosSave, IoMdEye } from 'react-icons/io';
 import styles from './Profile.module.css';

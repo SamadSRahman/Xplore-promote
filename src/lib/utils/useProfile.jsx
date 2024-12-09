@@ -4,11 +4,19 @@ import { profileJSON } from "./splashScreenData";
 
 export default function useProfile() {
     const [profileLayout, setProfileLayout] = useState( JSON.stringify(profileJSON))
-    const token = localStorage.getItem("accessToken")
+    const token = localStorage.getItem("accessToken");
+
+    let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
+    if(window.location.origin==="https://xplr.live"){
+        console.log(window.location.origin);  
+     API_BASE_URL = 'https://xplr.live/api';
+    }
+
+    
   const getProfileLayout = async (id) => {
     try {
       const response = await axios.get(
-        `https://pre.xplore.xircular.io/api/v1/user/getUserProfile/${id}`
+        `${API_BASE_URL}/v1/user/getUserProfile/${id}`
       );
       console.log("respones", response);
       if(response.data.ProfileLayout!==null){
@@ -29,7 +37,7 @@ export default function useProfile() {
     );   
   
     try {
-      const response = await axios.put("https://pre.xplore.xircular.io/api/v1/user/updateUser", formData, {
+      const response = await axios.put(`${API_BASE_URL}/v1/user/updateUser`, formData, {
         headers: {
             Authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data", // Set content type to handle FormData

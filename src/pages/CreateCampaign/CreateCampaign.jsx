@@ -11,6 +11,12 @@ import { blankBackgroundJSON, contactUsJSON } from '../../lib/utils/splashScreen
 
 
 const CampaignForm = () => {
+  let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
+  if(window.location.origin==="https://xplr.live"){
+      console.log(window.location.origin);  
+   API_BASE_URL = 'https://xplr.live/api';
+  }
+
     const navigate = useNavigate();
     const { createLayout } = useLayout()
     const [image, setImage] = useState('');
@@ -70,7 +76,7 @@ const CampaignForm = () => {
         const channel = localStorage.getItem('channel');
         try {
             const response = await axios.post(
-                'https://pre.xplore.xircular.io/api/v1/campaign/create',
+                `${API_BASE_URL}/v1/campaign/create`,
                 data,
                 { headers: { Authorization: `Bearer ${token}`, session: channel, 'Content-Type': 'multipart/form-data' } }
             );

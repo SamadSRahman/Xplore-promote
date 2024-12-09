@@ -18,12 +18,19 @@ export default function useCampaign() {
     const [campaigns, setCampaigns] = useState([]);
     const [screens, setScreens] = useState([]);
 
+    let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
+    if(window.location.origin==="https://xplr.live"){
+        console.log(window.location.origin);  
+     API_BASE_URL = 'https://xplr.live/api';
+    }
+
+    
     const getCampaigns = async() => {
         const token = localStorage.getItem('accessToken');
 
         try {
             const response = await axios.get(
-                'https://pre.xplore.xircular.io/api/v1/campaign/getAll?page=0&size=20',
+                `${API_BASE_URL}/v1/campaign/getAll?page=0&size=50`,
                 {
                     headers: {
                         authorization: token,
@@ -47,7 +54,7 @@ export default function useCampaign() {
     const getCampaignById = async (id, page) => {
        try {
         const response = await axios.get(
-            `https://pre.xplore.xircular.io/api/v1/campaign/getOne/${id}`,
+            `${API_BASE_URL}/v1/campaign/getOne/${id}`,
             {
                 headers: {
                     authorization: token,
@@ -88,7 +95,7 @@ export default function useCampaign() {
     const deleteCampaign = async id => {
         try {
             const response = await axios.delete(
-                `https://pre.xplore.xircular.io/api/v1/campaign/delete/${id}`,
+                `${API_BASE_URL}/v1/campaign/delete/${id}`,
                 {
                     headers: {
                         authorization: token,
