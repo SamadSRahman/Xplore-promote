@@ -14,6 +14,7 @@ import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
 import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
 import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx'
 import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx'
+import Preview from './pages/Preview/Preview.tsx'
 
 export default function App() {
   const [isMobile, setIsMobile] = React.useState(false);
@@ -64,6 +65,7 @@ export default function App() {
               <Route path='/contactus' element={<ContactUs />} />
               <Route path='/terms&conditions' element={<TermsAndConditions />} />
               <Route path='/' element={<QRLogin />} />
+              <Route path='/:shortId/:screen?' element={<Preview />} />
               <Route path='/campaigns' element={<Campaigns />} />
               <Route path='/createCampaign' element={<CampaignsForm />} />
               <Route path='/themeSelection' element={<ThemeSelection />} />

@@ -12,7 +12,7 @@ const CameraComponent = () => {
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
   const navigate = useNavigate();
-  const {campaignId, screen} = useParams();
+  const {campaignId, screen, shortId} = useParams();
   const {endUserUpload} = useEndUser()
 
   useEffect(() => {
@@ -119,6 +119,10 @@ const CameraComponent = () => {
     const imageFile = base64toFile(imageDataUrl, `campaign_image_${Date.now()}.jpg`);
 
    await endUserUpload(imageFile)
+   if(window.location.origin==="https://xplr.live/"){
+    navigate(`/${shortId}/contact_us_screen`);
+   }
+   else
     navigate(`/campaign/${campaignId}/contact_us_screen`);
   };
 
