@@ -6,7 +6,7 @@ export default function useShortUrl() {
   const [campaignId, setCampaignId] = useState("")
     const getLayoutByShortId = async(id)=>{
        try {
-        const response = await axios.get(`https://pre.xplore.xircular.io/api/v1/viewLayout/${id}`);
+        const response = await axios.get(`https://xplr.live/v1/viewLayout/${id}`);
         console.log("response", response.data);
           if(response.data.type==="campaign"){
             setLayouts(response.data.campaign.layouts)
