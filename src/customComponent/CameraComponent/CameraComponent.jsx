@@ -119,7 +119,7 @@ const CameraComponent = () => {
     const imageFile = base64toFile(imageDataUrl, `campaign_image_${Date.now()}.jpg`);
 
    await endUserUpload(imageFile)
-   if(window.location.origin==="https://xplr.live/"){
+   if(window.location.origin==="https://xplr.live"){
     navigate(`/${shortId}/contact_us_screen`);
    }
    else
