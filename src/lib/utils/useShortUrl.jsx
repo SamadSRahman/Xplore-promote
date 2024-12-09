@@ -3,10 +3,17 @@ import { useState } from 'react';
 
 export default function useShortUrl() {
   const [layouts, setLayouts] = useState([]);
-  const [campaignId, setCampaignId] = useState("")
+  const [campaignId, setCampaignId] = useState("");
+
+  let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
+  if(window.location.origin==="https://xplr.live"){
+      console.log(window.location.origin);  
+   API_BASE_URL = 'https://xplr.live/api';
+  }
+
     const getLayoutByShortId = async(id)=>{
        try {
-        const response = await axios.get(`https://xplr.live/v1/viewLayout/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/v1/viewLayout/${id}`);
         console.log("response", response.data);
           if(response.data.type==="campaign"){
             setLayouts(response.data.campaign.layouts)
