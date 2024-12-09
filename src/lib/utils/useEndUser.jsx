@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function useEndUser(){
   const [pictureUrl, setPictureUrl] = useState("");
-  
+
   let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
   if(window.location.origin==="https://xplr.live"){
       console.log(window.location.origin);  
@@ -135,7 +135,7 @@ export default function useEndUser(){
     formData.append("files", file)
     formData.append
     try {
-        const response = await axios.post(`${API_BASE_URL}/v1/content/uploadImage1`, formData)
+        const response = await axios.post(`${API_BASE_URL}/v1/content/uploadImage`, formData)
         console.log(response.data.data[0].cdnUrl);
         localStorage.setItem("userUploadUrl", response.data.data[0].cdnUrl);
     } catch (error) {
