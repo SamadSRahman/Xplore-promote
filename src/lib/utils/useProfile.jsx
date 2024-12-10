@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
-import { profileJSON } from "./splashScreenData";
+import { blankBackgroundJSON } from "./splashScreenData";
 
 export default function useProfile() {
-    const [profileLayout, setProfileLayout] = useState( JSON.stringify(profileJSON))
+    const [profileLayout, setProfileLayout] = useState( JSON.stringify(blankBackgroundJSON))
     const token = localStorage.getItem("accessToken");
 
     let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
