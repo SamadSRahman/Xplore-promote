@@ -32,7 +32,7 @@ const QRLogin = () => {
             navigate('/campaigns');
         }
         // Initialize socket connection
-        const socketInstance = io('https://xplr.live', {
+        const socketInstance = io(window.location.origin, {
             path: '/socket.io/',
             transports: ['polling', 'websocket'], // Start with polling
 
