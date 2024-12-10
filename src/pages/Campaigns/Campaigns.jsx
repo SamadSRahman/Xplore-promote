@@ -26,6 +26,7 @@ export default function Campaigns() {
     const [selectedCampaignName, setSelectedCampaignName] = useState('');
     const [isLogoutPopupVisible, setIsLogoutPopupVisible] = useState(false);
     const [selectedShortUrl, setSelectedShortUrl] = useState("")
+    const [selectedShortCode, setSelectedShortCode] = useState("")
 
 
     useEffect(() => {
@@ -61,6 +62,7 @@ export default function Campaigns() {
         setSelectedId(campaign.campaignID);
         setSelectedCampaignName(campaign.name);
         setSelectedShortUrl(campaign.shortUrl)
+        setSelectedShortCode(campaign.shortCode)
         setIsPopupVisible(true);
     };
     const handleLogout = () => {
@@ -76,6 +78,7 @@ export default function Campaigns() {
           onClose={() => setIsPopupVisible(false)}
           campaignName={selectedCampaignName}
           shortUrl={selectedShortUrl}
+          shortCode={selectedShortCode}
         />
       )}
       <div className={styles.sideBar}>

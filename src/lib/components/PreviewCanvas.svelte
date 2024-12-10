@@ -10,6 +10,7 @@
     const { previewThemeStore } = state;
 
     const VIEWPORT_LIST = [
+        "375x750",
         '320x568',  // iPhone SE
         '360x640',  // Common Android
         '375x667',  // iPhone 6/7/8
@@ -18,7 +19,7 @@
         '768x1024'  // iPad
     ];
 
-    const DEFAULT_VIEWPORT = '360x640';
+    const DEFAULT_VIEWPORT = '375x750';
 
     $: viewportList = [
         ...VIEWPORT_LIST,
@@ -64,13 +65,13 @@
 
 <div class="preview-canvas">
     <div class="preview-canvas__topbar">
-        <Select
+        <!-- <Select
             bind:value={selectViewport}
             items={viewportList}
             theme="canvas"
             title={$l10nString('previewSize')}
             on:change={onViewportSelectChange}
-        />
+        /> -->
 
         {#if selectViewport === 'custom'}
             <div class="preview-canvas__dimensions">
@@ -100,7 +101,7 @@
     </div>
 
     <div class="preview-canvas__renderer-wrapper">
-        <Renderer bind:viewport={viewport} theme={$previewThemeStore} />
+        <!-- <Renderer bind:viewport={viewport} theme={$previewThemeStore} /> -->
     </div>
 </div>
 

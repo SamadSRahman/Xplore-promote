@@ -80,7 +80,7 @@ const EditorPage = () => {
           minWidth: leftRightWidth,
         },
       ],
-      actionLogUrlVariable: 'on_click_log_url',
+      // actionLogUrlVariable: 'on_click_log_url',
       paletteEnabled: true,
       cardLocales: [
         {
@@ -110,13 +110,13 @@ const EditorPage = () => {
         },
       ],
       customActions: [
-        {
-          baseUrl: 'div-screen://close',
-          text: {
-            ru: 'Закрыть',
-            en: 'Close',
-          },
-        },
+        // {
+        //   baseUrl: 'div-screen://close',
+        //   text: {
+        //     ru: 'Закрыть',
+        //     en: 'Close',
+        //   },
+        // },
         {
           baseUrl: 'div-screen://open',
           text: {
@@ -134,13 +134,13 @@ const EditorPage = () => {
             },
           ],
         },
-        {
-          baseUrl: 'div-screen://next_slide',
-          text: {
-            ru: 'Следующий',
-            en: 'Next',
-          },
-        },
+        // {
+        //   baseUrl: 'div-screen://next_slide',
+        //   text: {
+        //     ru: 'Следующий',
+        //     en: 'Next',
+        //   },
+        // },
       ],
 
       // readOnly: true,

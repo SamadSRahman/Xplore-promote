@@ -35,6 +35,8 @@
 
 $: {
     const screens = JSON.parse(localStorage.getItem("screens") || "[]");
+    console.log("screens", screens);
+    
     updatedScreens = screens
       .filter((screen: screen) => screen.path !== "splash_screen")
       .map((screen: screen) => ({
@@ -516,25 +518,25 @@ function onProductChange(): void {
           </div>
         {/each}
       {/if}
-      <div>
+      <!-- <div> -->
         <!-- svelte-ignore a11y-label-has-associated-control -->
-        <label>
+        <!-- <label>
           <div class="actions2-dialog__label">
             {$l10n("actions-log-id")}
           </div>
           <Text bind:value={value.log_id} disabled={readOnly} />
         </label>
-      </div>
+      </div> -->
 
-      <div>
+      <!-- <div> -->
         <!-- svelte-ignore a11y-label-has-associated-control -->
-        <label>
+        <!-- <label>
           <div class="actions2-dialog__label">
             {$l10n("actions-log-url")}
           </div>
           <Text bind:value={value.log_url} disabled={readOnly} />
         </label>
-      </div>
+      </div> -->
     </div>
   </ContextDialog>
 {/if}
@@ -544,7 +546,7 @@ function onProductChange(): void {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    margin: 16px;
+    margin: 16px; 
   }
 
   .actions2-dialog__label {

@@ -4,11 +4,18 @@ import { IoMdClose } from 'react-icons/io';
 
 import styles from './QrPopup.module.css';
 
-const QrPopup = ({ campaignId, onClose, campaignName, type, shortUrl }) => {
+const QrPopup = ({ campaignId, onClose, campaignName, type, shortUrl, shortCode }) => {
   
     const qrRef = useRef(null);
-    console.log("shortUrl", shortUrl);
-    
+    console.log("shortUrl", shortUrl, shortCode);
+    // let url = ""
+    // if(window.location.origin==="https://xplr.live"){
+    //   url = `${window.location.origin}/${shortId}`
+    // }
+    // else {
+    //  url = `${window.location.origin}/${type}/${campaignId}`
+    // }
+    const url = `https://xplr.live/${shortCode}`
     useEffect(() => {
         if (!campaignId) {
             onClose();
@@ -37,7 +44,7 @@ const QrPopup = ({ campaignId, onClose, campaignName, type, shortUrl }) => {
           <div className={styles.qrContainer} ref={qrRef}>
             <h2 className={styles.subTitle}>Campaign QR Code</h2>
             <QRCodeCanvas
-              value={shortUrl}
+              value={url}
               size={150}
               bgColor="white"
               fgColor="#000"
@@ -46,7 +53,7 @@ const QrPopup = ({ campaignId, onClose, campaignName, type, shortUrl }) => {
           <div className={styles.linkWrapper}>
             <a
               target="_blank"
-              href={`${window.location.origin}/${type}/${campaignId}`}
+              href={url}
               rel="noreferrer"
             >
               Click here to visit your {type}
