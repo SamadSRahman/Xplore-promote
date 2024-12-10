@@ -34,7 +34,7 @@ const QRLogin = () => {
         // Initialize socket connection
         const socketInstance = io("https://xplr.live", {
             path: '/socket.io/',
-            transports: ['polling', 'websocket'], // Start with polling
+            transports: ['websocket'], // Start with polling
 
         });
 
