@@ -49,7 +49,7 @@ const QRLogin = () => {
         });
 
         // Set up login event listener outside of generateQRCode
-        socketInstance.on('login-event', (data) => {
+        socketInstance.on("login-event", (data) => {
             console.log('Login event received:', data);
             handleLoginEvent(data);
         });
