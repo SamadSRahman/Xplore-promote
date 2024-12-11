@@ -59,8 +59,8 @@ const QRLogin = () => {
         return () => {
             if (socketInstance) {
                 console.log('Cleaning up socket connection');
-                socketInstance.off('login-event');
-                socketInstance.disconnect();
+                // socketInstance.off('login-event');
+                // socketInstance.disconnect();
             }
         };
     }, []); // Empty dependency array
