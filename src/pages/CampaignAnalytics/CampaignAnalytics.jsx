@@ -107,6 +107,7 @@ const handleExportExcel = () => {
             <th>Email</th>
             <th>Phone</th>
             <th>Interested Product</th>
+            <th>Image</th>
           </tr>
         </thead>
         <tbody>
@@ -116,6 +117,7 @@ const handleExportExcel = () => {
               <td>{user.email}</td>
               <td>+{user.countryCode} {user.phone}</td>
               <td>{user.isInterestedProducts}</td>
+              <td>{user.otherDetails?.imageUrl  && <img src={user.otherDetails?.imageUrl} alt="" />}</td>
             </tr>
           ))}
         </tbody>

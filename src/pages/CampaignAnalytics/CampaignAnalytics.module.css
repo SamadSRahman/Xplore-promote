@@ -134,6 +134,9 @@
   .userTable td {
     color: #666;
   }
+  .userTable img{
+    width: 3rem;
+  }
 
   .exportButtonContainer {
     display: flex;
