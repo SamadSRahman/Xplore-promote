@@ -1,8 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
 
 export default function useEndUser(){
-  const [pictureUrl, setPictureUrl] = useState("");
 
   let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
   if(window.location.origin==="https://xplr.live"){
@@ -10,7 +8,7 @@ export default function useEndUser(){
    API_BASE_URL = 'https://xplr.live/api';
   }
 
-  const submitContactForm = async (formData, selectedVariables) => {
+  const submitContactForm = async (formData) => {
     try {
       // Validate required fields
       // if (!formData.name?.trim()) {
@@ -59,7 +57,7 @@ export default function useEndUser(){
           countryCode: formData.phone ? formData.countryCode || "+91" : "",
           phone: formData.phone,
           email: formData.email,
-          otherFields: formData.otherFields,
+          otherDetails: formData.otherFields,
           address: {
             city: formData.address?.city
           },

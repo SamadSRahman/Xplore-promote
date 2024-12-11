@@ -24,18 +24,27 @@ export default function App() {
   // );
 
   React.useEffect(() => {
-    // getData({ ignoreCache: true });
     const checkMobile = () => {
       const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const path = window.location.pathname;
-      const isCampaignPreview = path.startsWith('/campaign/') || path.includes("privacyPolicy") || path.includes("terms&conditions") || path.includes("contactus") || path.includes("profile");
-      setIsMobile(mobile && !isCampaignPreview);
+  
+      // Check if the current path matches the specified routes
+      const isCampaignPreview = path.startsWith('/editor/') ||
+        path.includes("createCampaign") ||
+        path.includes("campaigns") ||
+        path.includes("campaignAnalytics") ||
+        path.includes("publish") ||
+          path.includes("profileDesign")||
+          path==="/"
+  
+      setIsMobile(mobile && isCampaignPreview);
     };
-
+  
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+  
 
   return (
     <div>

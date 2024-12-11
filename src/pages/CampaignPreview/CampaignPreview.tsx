@@ -12,6 +12,7 @@ import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
 import icon from '../../assets/xplore-logo.svg'
 import CameraComponent from "../../customComponent/CameraComponent/CameraComponent";
+import { uid } from "uid";
 
 export default function CampaignPreview() {
   const { getAllLayout, layouts } = useLayout();
@@ -124,7 +125,18 @@ export default function CampaignPreview() {
 
   useEffect(() => {
     if (data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
-    if (data?.device) localStorage.setItem("deviceId", data.device);
+    if (data?.device) {
+      localStorage.setItem("deviceId", data.device)
+    }
+    else{
+      const key = 'deviceId';
+      let deviceId = localStorage.getItem(key);
+    
+      if (!deviceId) {
+        deviceId = uid();
+        localStorage.setItem(key, deviceId);
+      }
+    }
     if (data?.visitorId) {
       saveUserDetails(campaignId, data.visitorId, data.device)
     }
