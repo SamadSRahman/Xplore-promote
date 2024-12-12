@@ -163,8 +163,15 @@ async function uploadFile(file: File): Promise<string> {
 
     const formData = new FormData();
     formData.append('files', file);
+    let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
+    if(window.location.origin==="https://xplr.live"){
+        console.log(window.location.origin);  
+     API_BASE_URL = 'https://xplr.live/api';
+    }
 
-    const url = 'https://pre.xplore.xircular.io/api/v1/content/uploadContent';
+
+
+    const url = `${API_BASE_URL}/v1/content/uploadContent`;
     const token = localStorage.getItem('accessToken') || '';
     const session = localStorage.getItem('channel') || '';
 
