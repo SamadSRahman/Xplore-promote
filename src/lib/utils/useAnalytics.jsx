@@ -14,7 +14,7 @@ export default function useAnalytics() {
 
     
     const getAnalyticsData = async (campaignId) => {
-        const response = await fetch(`${API_BASE_URL}v1/user/getSubmittedContact/${campaignId}`,
+        const response = await fetch(`${API_BASE_URL}v1/user/getSubmittedContac/${campaignId}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
