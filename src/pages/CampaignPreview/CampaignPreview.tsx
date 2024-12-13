@@ -59,7 +59,10 @@ export default function CampaignPreview() {
 
 
   useEffect(() => {
+
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    // Detect Facebook/Instagram in-app browsers
+    const isInAppBrowser = /(FBAN|FBAV|Instagram|Twitter|LinkedIn|WhatsApp|Snapchat|Pinterest|Messenger)/i.test(userAgent);
     console.log("userAgent", userAgent);
 
     // Function to extract Android version from the user agent string
@@ -90,11 +93,21 @@ export default function CampaignPreview() {
       }
       else if (androidVersion && parseFloat(androidVersion) < 12) {
         // alert("Version ")
-      }
+      }     
+        // Android: Redirect to the instant app using intent
+      else if (isInAppBrowser) {
+          // Force open the instant app
+          setDeviceType("android");
+          setRedirectURL(playStoreUrl);
+          setTimeout(() => {
+            window.location.href = playStoreUrl;
+          }, 1000);
+      } 
       else {
         // alert("Version not found ")
         setDeviceType("other");  // Android version < 12
       }
+
     }
     // Check iOS version
     else if (/iPad|iPhone|iPod/.test(userAgent)) {
@@ -105,13 +118,26 @@ export default function CampaignPreview() {
         setTimeout(() => {
           window.location.href = appClipUrl;
         }, 100);
-      } else {
+      }  else if (isInAppBrowser) {
+        setDeviceType("ios");
+        setRedirectURL(appClipUrl);
+        setTimeout(() => {
+          window.location.href = appClipUrl;
+        }, 100);
+
+      }
+       else {
         setDeviceType("other");  // iOS version < 16.6
       }
+
+
+
     } else {
       setDeviceType("other");
     }
+
   });
+
 
 
   useEffect(() => {
