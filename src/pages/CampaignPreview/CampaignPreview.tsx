@@ -59,7 +59,10 @@ export default function CampaignPreview() {
 
 
   useEffect(() => {
+
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    // Detect Facebook/Instagram in-app browsers
+    const isInAppBrowser = /(FBAN|FBAV|Instagram|Twitter|LinkedIn|WhatsApp|Snapchat|Pinterest|Messenger)/i.test(userAgent);
     console.log("userAgent", userAgent);
 
     // Function to extract Android version from the user agent string
@@ -77,8 +80,44 @@ export default function CampaignPreview() {
       return match ? match[1].replace(/_/g, '.') : null;
     };
 
+
+    if (isInAppBrowser) {
+      // Handle redirection for in-app browsers
+       if (/android/i.test(userAgent)) {
+        const androidVersion = getAndroidVersion(userAgent);
+        if (androidVersion && parseFloat(androidVersion) >= 12) {
+          // alert("android")
+          setDeviceType("android");
+          setRedirectURL(playStoreUrl);
+          setTimeout(() => {
+            window.location.href = playStoreUrl;
+          }, 1000);
+         }
+        else if (androidVersion && parseFloat(androidVersion) < 12) {
+            // alert("Version ")
+         }     
+        else {
+            // alert("Version not found ")
+            setDeviceType("other");  // Android version < 12
+         }       
+      } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+          const iosVersion = getIosVersion(userAgent);
+          if (iosVersion && parseFloat(iosVersion) >= 16.6) {
+          setDeviceType("ios");
+          setRedirectURL(appClipUrl);
+          setTimeout(() => {
+            window.location.href = appClipUrl;
+          }, 100);
+         } 
+        else {
+           setDeviceType("other");  // iOS version < 16.6
+        }     
+      } else {
+          console.log('In-app browser detected on an unsupported platform.');     
+     }
+   }
     // Check Android version
-    if (/android/i.test(userAgent)) {
+   else if (/android/i.test(userAgent)) {
       const androidVersion = getAndroidVersion(userAgent);
       if (androidVersion && parseFloat(androidVersion) >= 12) {
         // alert("android")
@@ -89,12 +128,14 @@ export default function CampaignPreview() {
         }, 1000);
       }
       else if (androidVersion && parseFloat(androidVersion) < 12) {
-        // alert("Version ")
-      }
+           // alert("Version ")
+        
+      }     
       else {
         // alert("Version not found ")
         setDeviceType("other");  // Android version < 12
       }
+
     }
     // Check iOS version
     else if (/iPad|iPhone|iPod/.test(userAgent)) {
@@ -105,13 +146,17 @@ export default function CampaignPreview() {
         setTimeout(() => {
           window.location.href = appClipUrl;
         }, 100);
-      } else {
+      } 
+       else {
         setDeviceType("other");  // iOS version < 16.6
       }
+
     } else {
       setDeviceType("other");
     }
+
   });
+
 
 
   useEffect(() => {
