@@ -15,6 +15,8 @@ import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
 import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx'
 import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx'
 import Preview from './pages/Preview/Preview.tsx'
+import AdminLogin from './pages/AdminLogin/AdminLogin.jsx'
+import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx'
 
 export default function App() {
   const [isMobile, setIsMobile] = React.useState(false);
@@ -79,6 +81,12 @@ export default function App() {
               <Route path='/createCampaign' element={<CampaignsForm />} />
               <Route path='/themeSelection' element={<ThemeSelection />} />
               <Route path='/editor/:campaignId/:page' element={<EditorPage />} />
+
+              {/* Admin section */}
+
+              <Route path='/admin' element={<AdminLogin />} />
+              <Route path='/admin/homepage' element={<AdminHomepage />} />
+
             </Routes>
           </BrowserRouter>
         </RecoilRoot>

@@ -1,0 +1,109 @@
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f6f9;
+    width: 100vw;
+  }
+  
+  .loginCard {
+    background-color: white;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(118, 84, 238, 0.1);
+  }
+  
+  .logoContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  .loginContainer>img{
+    width: 20rem;
+  }
+  
+  .logo {
+    width: 80px;
+    height: 80px;
+    background-color: #7654ee;
+    border-radius: 50%;
+    position: relative;
+  }
+  
+  .logo::before {
+    content: 'A';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+  }
+  
+  .loginTitle {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  .inputGroup {
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    display: block;
+    margin-bottom: 8px;
+    color: #6c757d;
+    font-weight: 500;
+  }
+  
+  .input {
+    width: 92%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: white;
+    color: black;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: #7654ee;
+    box-shadow: 0 0 0 3px rgba(118, 84, 238, 0.1);
+  }
+  
+  .loginButton {
+    width: 100%;
+    padding: 12px;
+    background-color: #896bf0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .loginButton:hover {
+    background-color: #7654ee;
+  }
+  
+  .forgotPassword {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .forgotPassword a {
+    color: #896bf0;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .forgotPassword a:hover {
+    text-decoration: underline;
+  }

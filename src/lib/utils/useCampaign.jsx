@@ -19,7 +19,7 @@ export default function useCampaign() {
     const [screens, setScreens] = useState([]);
 
     let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
-    if(window.location.origin==="https://xplr.live"){
+    if(window.location.origin==="https://xplr.live"||window.location.origin.includes("localhost")){
         console.log(window.location.origin);  
      API_BASE_URL = 'https://xplr.live/api';
     }

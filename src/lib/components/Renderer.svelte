@@ -330,15 +330,15 @@
       .filter((elem) => elem.isConnected)
       .map((elem) => {
         const props = components.get(elem);
-        console.log("props", props);
+   
         
         const processedJson = props?.processedJson;
 
         const computedStyle = getComputedStyle(elem);
-        console.log("computedStyle", computedStyle);
+
         // Add this line to get the font-family
         const fontFamily =props?.json.font_family;
-        console.log('fontFamily', fontFamily);
+   
         const margin = computedStyle.margin;
         const marginTop = parseInt(computedStyle.marginTop);
         const marginRight = parseInt(computedStyle.marginRight);
@@ -441,7 +441,7 @@
             gridProps = getGridProps(elem);
           });
         }
-        console.log("line 481", fontFamily)
+
         return {
           elem,
           permanent: elem === selectedElem,
@@ -1116,7 +1116,7 @@
   }
 
   function onDrop(event: DragEvent): void {
-    console.log('onDrop', event);
+  
     if ($readOnly) {
       return;
     }
@@ -3097,8 +3097,7 @@
   }
 
   function onRootClick(event: MouseEvent): void {
-    console.log('event', event.target);
-    console.log("highlights", highlights);
+   
     const dist =
       (event.pageX - mousedownX) * (event.pageX - mousedownX) +
       (event.pageY - mousedownY) * (event.pageY - mousedownY);
@@ -3260,7 +3259,7 @@
     }
 
     const text = value.text;
-    console.log("text line 3247", text);
+  
     
     const ranges = value.ranges;
     const images = value.images;
@@ -3277,7 +3276,7 @@
         : namedTemplates[json.type].inlineTextEditorProp;
 
     node.style.opacity = "";
-    console.log("line 3264");
+   
     
     if ($readOnly || !prop) {
       return;
@@ -3408,12 +3407,12 @@
     if (!leaf || !elem) {
       return;
     }
-    console.log("upload triggered");
+  
     const json = leaf.props.json;
-    console.log("json", elem);
+  
 
     const processedJson = leaf.props.processedJson;
-    console.log("processedJson", processedJson);
+ 
     if (!processedJson) {
       return;
     }

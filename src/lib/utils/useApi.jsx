@@ -30,7 +30,7 @@ export default function useApi() {
   const session = localStorage.getItem('channel');
 
   let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
-  if(window.location.origin==="https://xplr.live"){
+  if(window.location.origin==="https://xplr.live"||window.location.origin.includes("localhost")){
       console.log(window.location.origin);  
    API_BASE_URL = 'https://xplr.live/api';
   }
