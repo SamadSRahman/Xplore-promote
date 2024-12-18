@@ -10,6 +10,7 @@ import DivkitRenderer from "../../lib/components/PreviewCard/DivkitRenderer";
 import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
 import icon from '../../assets/xplore-logo.svg'
+import { uid } from "uid";
 
 
 export default function Preview() {
@@ -34,6 +35,17 @@ export default function Preview() {
     { immediate: true }
   );
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
+
+
+  
+  useEffect(() => {
+    const deviceId = localStorage.getItem("deviceId");
+    if(!deviceId){
+     const id = uid();
+     localStorage.setItem("deviceId", id);
+    }
+ 
+   }, []);
 
   useEffect(() => {
     getLayoutByShortId(shortId);
@@ -274,10 +286,10 @@ export default function Preview() {
         return !value || value.trim() === '';
       });
     
-      if (missingVariables.length > 0) {
-        alert(`Please fill in the following required fields: ${missingVariables.join(', ')}`);
-        return;
-      }
+      // if (missingVariables.length > 0) {
+      //   alert(`Please fill in the following required fields: ${missingVariables.join(', ')}`);
+      //   return;
+      // }
     
       if (!isCheckboxChecked) {
         alert("Please agree to the terms and conditions first");

@@ -45,7 +45,7 @@ const DeleteInstructions = () => {
             <ul>
               <li>
                 <FaCheck className={styles.listIcon} /> 
-                A pop-up message will appear asking, "Do you want to delete your account?"
+                A pop-up message will appear asking, "Are you sure you want to delete your account? This action cannot be undone."
               </li>
               <li>
                 If you are certain you want to delete your account, select Yes.

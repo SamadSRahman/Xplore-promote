@@ -7,7 +7,7 @@ import styles from "./CampaignPreview.module.css";
 import { blankBackgroundJSON } from "../../lib/utils/splashScreenData";
 import useLayout from "../../lib/utils/useLayout";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
+// import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
 import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
 import icon from '../../assets/xplore-logo.svg'
@@ -28,15 +28,15 @@ export default function CampaignPreview() {
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
-  const { data, getData } = useVisitorData(
-    { extendedResult: true }, 
-    { immediate: true }
-  );
+  // const { data, getData } = useVisitorData(
+  //   { extendedResult: true }, 
+  //   { immediate: true }
+  // );
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
 
   useEffect(() => {
     getAllLayout(campaignId);
-    getData({ ignoreCache: true });
+   
 
     const requestPushNotificationPermission = async () => {
       if ("Notification" in window) {
@@ -169,23 +169,13 @@ export default function CampaignPreview() {
   };
 
   useEffect(() => {
-    if (data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
-    if (data?.device) {
-      localStorage.setItem("deviceId", data.device)
-    }
-    else{
-      const key = 'deviceId';
-      let deviceId = localStorage.getItem(key);
-    
-      if (!deviceId) {
-        deviceId = uid();
-        localStorage.setItem(key, deviceId);
-      }
-    }
-    if (data?.visitorId) {
-      saveUserDetails(campaignId, data.visitorId, data.device)
-    }
-  }, [data]);
+   const deviceId = localStorage.getItem("deviceId");
+   if(!deviceId){
+    const id = uid();
+    localStorage.setItem("deviceId", id);
+   }
+
+  }, []);
 
   // if (deviceType === "ios"|| deviceType === "android") {
   //   return
@@ -325,10 +315,10 @@ export default function CampaignPreview() {
         return !value || value.trim() === '';
       });
     
-      if (missingVariables.length > 0) {
-        alert(`Please fill in the following required fields: ${missingVariables.join(', ')}`);
-        return;
-      }
+      // if (missingVariables.length > 0) {
+      //   alert(`Please fill in the following required fields: ${missingVariables.join(', ')}`);
+      //   return;
+      // }
     
       if (!isCheckboxChecked) {
         alert("Please agree to the terms and conditions first");
@@ -339,15 +329,15 @@ export default function CampaignPreview() {
       const otherFields = {};
     
       // Add any extra variables from action.selected_variables to otherFields
-      action.selected_variables.forEach(variable => {
-        const value = params.get(variable);
-        if (value && 
-            !['userName', 'email', 'phone', 'consent_checkbox'].includes(variable)) {
-              console.log("variable,", variable);
+      // action.selected_variables.forEach(variable => {
+      //   const value = params.get(variable);
+      //   if (value && 
+      //       !['userName', 'email', 'phone', 'consent_checkbox'].includes(variable)) {
+      //         console.log("variable,", variable);
               
-          otherFields[variable] = value;
-        }
-      });
+      //     otherFields[variable] = value;
+      //   }
+      // });
       console.log(otherFields);
       
       const formData = {
@@ -360,6 +350,11 @@ export default function CampaignPreview() {
         otherFields: otherFields
       };
       console.log("formData", formData);
+
+      if(!formData.name || formData.email|| formData.phone){
+        alert("Please fill all the fields");
+        return
+      }
       
       await submitContactForm(formData);
       const screenName = params.get("screen_name");
