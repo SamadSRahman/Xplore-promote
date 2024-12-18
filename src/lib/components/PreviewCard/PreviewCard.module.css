@@ -13,10 +13,10 @@
 .renderDiv{
     background-color: white;
     color: black;
-    max-height: 100vh;
+    max-height: 95vh;
     overflow-y: scroll;
     /* border: 1px solid blue; */
-    min-height: 100vh;
+    min-height: 95vh;
     height: 100vh;
 }
 .renderDiv >div{
