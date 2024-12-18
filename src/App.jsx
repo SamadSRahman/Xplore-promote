@@ -17,6 +17,7 @@ import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx'
 import Preview from './pages/Preview/Preview.tsx'
 import AdminLogin from './pages/AdminLogin/AdminLogin.jsx'
 import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx'
+import DeleteInstructions from './pages/DeleteInstructions/DeleteInstructions.jsx'
 
 export default function App() {
   const [isMobile, setIsMobile] = React.useState(false);
@@ -68,6 +69,7 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
+              <Route path='/deleteInstructions' element={<DeleteInstructions />} />
               <Route path='/profileDesign/:userId' element={<ProfileDesign />} />
               <Route path='/publish/:campaignId' element={<PublishAndPreview />} />
               <Route path='/profile/:userId' element={<ProfilePreview />} />
