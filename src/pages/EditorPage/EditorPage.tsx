@@ -204,7 +204,7 @@ const EditorPage = () => {
       isThrottled = true; // Set throttle flag to true.
       
       // Call the update function immediately.
-      await updateLayout(layoutId, json, page, alert);
+      // await updateLayout(layoutId, json, page, alert);
     
       // Reset the throttle flag after 30 seconds.
       setTimeout(() => {

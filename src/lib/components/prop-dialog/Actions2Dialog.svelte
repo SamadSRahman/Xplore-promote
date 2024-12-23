@@ -106,6 +106,10 @@ function onSubtypeChange(): void {
       value.url = "xplore-promote://webLink";
       value.webUrl=""
     }
+    else if(subtype === 'share'){
+      value.url = "xplore-promote://share";
+      value.attachmentUrl = "";
+    }
     else if (subtype === "email") {
       value.url = "xplore-promote://emailAddress";
       value.email = ""; // Add email field to value
@@ -189,6 +193,13 @@ let selectedVariables: string[] = [];
       value.log_url = value.webUrl;
     }
   }
+  function onShareChange(): void {
+    console.log(value);
+    
+    if(value.attachmentUrl){
+      value.url = `xplore-promote://share?attachment_link=${value.attachmentUrl}`;
+    }
+  }
   function onEmailChange(): void {
     if (value.email) {
       value.url = `xplore-promote://emailAddress?email=${encodeURIComponent(value.email)}`;
@@ -223,6 +234,7 @@ let selectedVariables: string[] = [];
     { value: "phone", text: "Phone" },
     { value: "social", text: "Social links" },
     { value: "webLink", text: "Web link" },
+    { value: "share", text: "Share" },
   ].concat(
     $customActions.map((actionDesc, i) => ({
       value: `custom:${i}`,
@@ -320,6 +332,29 @@ function onProductChange(): void {
             </div>
             <Text 
               bind:value={value.webUrl} 
+              disabled={readOnly} 
+              on:change={onWebLinkChange}
+            />
+          </label>
+        </div>
+        {:else if subtype === "share"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+            Attachment URL
+            </div>
+            <Text 
+            bind:value={value.attachmentUrl} 
+            disabled={readOnly} 
+            on:change={onShareChange}
+          />
+        </label>
+        <label >
+            <div class="actions2-dialog__label">
+              Url
+            </div>
+            <Text 
+              bind:value={value.url} 
               disabled={readOnly} 
               on:change={onWebLinkChange}
             />
