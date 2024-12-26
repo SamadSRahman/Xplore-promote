@@ -98,6 +98,8 @@ export default function CampaignPreview() {
 
 
     if (isInAppBrowser) {
+
+      alert("inside if condition")
       // Handle redirection for in-app browsers in social media
        if (/android/i.test(userAgent)) {
         const androidVersion = getAndroidVersion(userAgent);
