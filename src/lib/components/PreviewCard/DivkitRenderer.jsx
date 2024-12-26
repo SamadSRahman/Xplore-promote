@@ -2,16 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { render } from '@divkitframework/divkit/client-hydratable';
 import styles from './PreviewCard.module.css';
-import CameraComponent from '../../../customComponent/CameraComponent/CameraComponent';
-
-// Rename the React component to avoid confusion
-const CustomCard = ({ margin }) => {
-  return (
-    <div>
-      I am a custom card element with margin: {margin}
-    </div>
-  );
-};
+import Image360Viewer from '../../components/ImageViewer/ImageViewer';
+import {vr_exterior_image} from '../../components/ImageViewer/imageData';
 
 const DivkitRenderer = ({ divkitJson, onClick }) => {
   const divkitContainer = useRef(null);
@@ -43,16 +35,13 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
   if (typeof window !== 'undefined' && !customElements.get('custom-card')) {
     class CustomCardElement extends HTMLElement {
       connectedCallback() {
-        // Get attributes
-        const margin = this.getAttribute('margin');
-        
         // Create a container for React
         const container = document.createElement('div');
         this.appendChild(container);
         
         // Render the React component with props
-        ReactDOM.render(
-          <CustomCard margin={margin} />,
+        ReactDOM.createRoot(
+          <Image360Viewer images={vr_exterior_image} />,
           container
         );
       }
@@ -93,14 +82,11 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
           }
         },
         json: divkitJson,
-        customComponents: {
-          custom_card: {
-            element: 'custom-card',
-            props: {
-              margin: '16px' // Example default prop
-            }
-          }
-        },
+        customComponents: new Map([
+          ['threesixty_card', {
+              element: 'custom-card'
+          }]
+      ]),
         onError(details) {
           console.error('Divkit rendering error:', details.error);
         },

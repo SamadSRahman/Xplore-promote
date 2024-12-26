@@ -3,6 +3,8 @@ import { IoClose } from 'react-icons/io5';
 import { render } from '@divkitframework/divkit/client';
 import ReactDOM from 'react-dom';
 import './styles.css';
+import Image360Viewer from '../lib/components/ImageViewer/ImageViewer';
+
 
 // Move CustomCard component outside of PreviewScreen
 const CustomCard = ({ margin }) => {
@@ -17,12 +19,13 @@ const CustomCard = ({ margin }) => {
 if (typeof window !== 'undefined' && !customElements.get('custom-card')) {
   class CustomCardElement extends HTMLElement {
     connectedCallback() {
-      const margin = this.getAttribute('margin');
       const container = document.createElement('div');
       this.appendChild(container);
+      const productId = this.getAttribute('productId');
+      console.log("productId", productId);
       
       ReactDOM.render(
-        <CustomCard margin={margin} />,
+        <Image360Viewer productId={productId}  />,
         container
       );
     }
@@ -40,7 +43,7 @@ if (typeof window !== 'undefined' && !customElements.get('custom-card')) {
 
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === 'margin' && oldValue !== newValue && this.firstElementChild) {
-        ReactDOM.render(
+        ReactDOM.createRoot(
           <CustomCard margin={newValue} />,
           this.firstElementChild
         );
@@ -87,7 +90,7 @@ const PreviewScreen = ({ isOpen, onClose, jsonData }) => {
         }
       },
         customComponents: new Map([
-          ['custom_card', {
+          ['threesixty_card', {
               element: 'custom-card'
           }]
       ]),
