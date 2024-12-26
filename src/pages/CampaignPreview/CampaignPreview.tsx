@@ -75,7 +75,7 @@ export default function CampaignPreview() {
 
 
 
-  useEffect(() => {
+
 
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     // Detect Facebook/Instagram in-app browsers
@@ -99,7 +99,7 @@ export default function CampaignPreview() {
 
     if (isInAppBrowser) {
 
-      alert("inside if condition")
+      
       // Handle redirection for in-app browsers in social media
        if (/android/i.test(userAgent)) {
         const androidVersion = getAndroidVersion(userAgent);
@@ -107,9 +107,10 @@ export default function CampaignPreview() {
           // alert("android")
           setDeviceType("android");
           setRedirectURL(androidIntent);
-          setTimeout(() => {  
+          alert("android device")
+          
            window.location.replace(androidIntent);
-           }, 100);
+        
          }
         else {
              setDeviceType("other");  
@@ -163,7 +164,7 @@ export default function CampaignPreview() {
         }
     }
 
-  },[]);
+ 
 
 
 
