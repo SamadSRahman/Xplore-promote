@@ -30,9 +30,14 @@ export default function CampaignPreview() {
 
 
   useEffect(() => {
-                getCampaignById(campaignId);
+                getCampaignById(campaignId, screen);
 
   }, [campaignId]);
+
+  useEffect(()=>{
+    console.log("metaData", metaData);
+    
+  },[metaData])
      
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;

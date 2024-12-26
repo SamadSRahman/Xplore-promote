@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { blankBackgroundJSON } from './splashScreenData';
 import { getScreenName, getScreenPath } from './services';
@@ -57,8 +57,15 @@ export default function useCampaign() {
 
         }
     };
+     useEffect(()=>{
+        console.log("metaData", metaData);
+        
+      },[metaData])
+         
 
     const getCampaignById = async (id, page) => {
+        console.log("API call triggered", id, page);
+        
        try {
         const response = await axios.get(
             `${API_BASE_URL}/v1/campaign/getOne/${id}`,
@@ -69,12 +76,12 @@ export default function useCampaign() {
                 },
             }
         );
-        console.log('response', response.data.data, getScreenName(page));
+        console.log('response from line 77', response.data.data, getScreenName(page));
         setCampaignName(response.data.data.name);
         setMetaData({
             title: response.data.data.name,
             description: response.data.data.description,
-            image: response.data.data.image,
+            image: response.data.data.images[0].url,
           });
 
         const campaignScreens = response.data.data.layouts.map(ele=>ele);
