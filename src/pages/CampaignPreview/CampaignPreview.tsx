@@ -6,6 +6,7 @@ import DivkitRenderer from "../../lib/components/PreviewCard/DivkitRenderer";
 import styles from "./CampaignPreview.module.css";
 import { blankBackgroundJSON } from "../../lib/utils/splashScreenData";
 import useLayout from "../../lib/utils/useLayout";
+import useCampaign from "../../lib/utils/useCampaign";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 // import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
 import useEndUser from "../../lib/utils/useEndUser";
@@ -13,6 +14,7 @@ import googleLogo from "../../assets/components/google-icon.webp";
 import icon from '../../assets/xplore-logo.svg'
 import CameraComponent from "../../customComponent/CameraComponent/CameraComponent";
 import { uid } from "uid";
+import { Helmet } from "react-helmet";
 
 export default function CampaignPreview() {
   const { getAllLayout, layouts } = useLayout();
@@ -23,11 +25,21 @@ export default function CampaignPreview() {
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [deviceType, setDeviceType] = useState("");
   const [redirectURL, setRedirectURL] = useState("");
-  const [isCameraScreen, setIsCameraScreen] = useState(false)
+  const [isCameraScreen, setIsCameraScreen] = useState(false);
+  const { metaData, getCampaignById }  = useCampaign();
 
+
+  useEffect(() => {
+                getCampaignById(campaignId);
+
+  }, [campaignId]);
+     
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
-  const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
+ // const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
+  const androidIntent = `intent://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true#Intent;scheme=https;package=com.android.vending;end`;   
+
+
   // const { data, getData } = useVisitorData(
   //   { extendedResult: true }, 
   //   { immediate: true }
@@ -76,83 +88,72 @@ export default function CampaignPreview() {
       const match = userAgent.match(/OS (\d+(_\d+)+)/);
       console.log("version", match ? match[1].replace(/_/g, '.') : null);
       // alert(`version: ${match ? match[1].replace(/_/g, '.') : null}`);
-
       return match ? match[1].replace(/_/g, '.') : null;
     };
 
 
     if (isInAppBrowser) {
-      // Handle redirection for in-app browsers
+      // Handle redirection for in-app browsers in social media
        if (/android/i.test(userAgent)) {
         const androidVersion = getAndroidVersion(userAgent);
         if (androidVersion && parseFloat(androidVersion) >= 12) {
           // alert("android")
           setDeviceType("android");
-          setRedirectURL(playStoreUrl);
-          setTimeout(() => {
-            window.location.href = playStoreUrl;
-          }, 1000);
+          setRedirectURL(androidIntent);
+          setTimeout(() => {  
+           window.location.replace(androidIntent);
+           }, 100);
          }
-        else if (androidVersion && parseFloat(androidVersion) < 12) {
-            // alert("Version ")
-         }     
         else {
-            // alert("Version not found ")
-            setDeviceType("other");  // Android version < 12
+             setDeviceType("other");  
          }       
       } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
           const iosVersion = getIosVersion(userAgent);
           if (iosVersion && parseFloat(iosVersion) >= 16.6) {
           setDeviceType("ios");
           setRedirectURL(appClipUrl);
-          setTimeout(() => {
-            window.location.href = appClipUrl;
-          }, 100);
+
          } 
         else {
            setDeviceType("other");  // iOS version < 16.6
         }     
       } else {
           console.log('In-app browser detected on an unsupported platform.');     
-     }
+       }
    }
-    // Check Android version
-   else if (/android/i.test(userAgent)) {
-      const androidVersion = getAndroidVersion(userAgent);
-      if (androidVersion && parseFloat(androidVersion) >= 12) {
-        // alert("android")
-        setDeviceType("android");
-        setRedirectURL(playStoreUrl);
-        setTimeout(() => {
-          window.location.href = playStoreUrl;
-        }, 1000);
-      }
-      else if (androidVersion && parseFloat(androidVersion) < 12) {
-           // alert("Version ")
-        
-      }     
-      else {
-        // alert("Version not found ")
-        setDeviceType("other");  // Android version < 12
-      }
+   else { // Non Social media platforms
+        if (/android/i.test(userAgent)) {
+          const androidVersion = getAndroidVersion(userAgent);
+          if (androidVersion && parseFloat(androidVersion) >= 12) {
+            // alert("android")
+            setDeviceType("android");
+            setRedirectURL(androidIntent);
+            setTimeout(() => {  
+             window.location.replace(androidIntent);
+             }, 100);
+          }    
+          else {
+              // alert("Version not found ")
+              setDeviceType("other");  // Android version < 12
+          }
+        }
+        else if (/iPad|iPhone|iPod/.test(userAgent)) {
+          const iosVersion = getIosVersion(userAgent);
+          if (iosVersion && parseFloat(iosVersion) >= 16.6) {
+            setDeviceType("ios");
+            setRedirectURL(appClipUrl);
+            setTimeout(() => {
+              window.location.replace(appClipUrl);
+            }, 100);
+          } 
+          else {
+            setDeviceType("other");  // iOS version < 16.6
+          }
 
-    }
-    // Check iOS version
-    else if (/iPad|iPhone|iPod/.test(userAgent)) {
-      const iosVersion = getIosVersion(userAgent);
-      if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-        setDeviceType("ios");
-        setRedirectURL(appClipUrl);
-        setTimeout(() => {
-          window.location.href = appClipUrl;
-        }, 100);
-      } 
-       else {
-        setDeviceType("other");  // iOS version < 16.6
-      }
-
-    } else {
-      setDeviceType("other");
+        } else {
+          //Web view fallback
+          setDeviceType("other");
+        }
     }
 
   });
@@ -162,11 +163,8 @@ export default function CampaignPreview() {
   useEffect(() => {
     console.log("deviceType", deviceType, redirectURL);
     // alert(`device type: ${deviceType}` )
-  }, [deviceType])
+  }, [deviceType, redirectURL])
 
-  const handleRedirect = () => {
-    window.location.href = redirectURL;
-  };
 
   useEffect(() => {
    const deviceId = localStorage.getItem("deviceId");
@@ -515,20 +513,21 @@ export default function CampaignPreview() {
   return (
 
     <div>
+
+     <Helmet>
+        <meta property="og:title" content={metaData.title} />
+        <meta property="og:description" content={metaData.description} />
+        <meta property="og:image" content={metaData.image} />
+        <title>{metaData.title}</title>
+      </Helmet>
+
       {deviceType === "ios" || deviceType === "android" ?
         (
-          <div className={styles.redirectContainer}>
+         <div className={styles.redirectContainer} >
             <div className={styles.redirectContent}>
-
-              <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
-
-              <button
-                onClick={handleRedirect}
-                className={styles.redirectButton}
-              >
-                Continue
-              </button>
-            </div>
+             <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
+             <a className={styles.redirectButton} href={redirectURL} target="_blank"> Continue </a>
+           </div>
           </div>
         ) : (
           <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
@@ -602,10 +601,6 @@ export default function CampaignPreview() {
       }
 
     </div>
-
-
-
-
 
   )
 }

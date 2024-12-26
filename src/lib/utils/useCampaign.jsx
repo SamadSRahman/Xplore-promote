@@ -18,6 +18,12 @@ export default function useCampaign() {
     const [campaigns, setCampaigns] = useState([]);
     const [screens, setScreens] = useState([]);
 
+    const [metaData, setMetaData] = useState({
+        title: "Loading...",
+        description: "Loading description...",
+        image: "",
+      });
+
     let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
     if(window.location.origin==="https://xplr.live"||window.location.origin.includes("localhost")||window.location.origin.includes("vercel")){
         console.log(window.location.origin);  
@@ -51,6 +57,7 @@ export default function useCampaign() {
 
         }
     };
+
     const getCampaignById = async (id, page) => {
        try {
         const response = await axios.get(
@@ -63,7 +70,12 @@ export default function useCampaign() {
             }
         );
         console.log('response', response.data.data, getScreenName(page));
-        setCampaignName(response.data.data.name, );
+        setCampaignName(response.data.data.name);
+        setMetaData({
+            title: response.data.data.name,
+            description: response.data.data.description,
+            image: response.data.data.image,
+          });
 
         const campaignScreens = response.data.data.layouts.map(ele=>ele);
 
@@ -92,6 +104,7 @@ export default function useCampaign() {
         }
        }
     };
+
     const deleteCampaign = async id => {
         try {
             const response = await axios.delete(
@@ -113,6 +126,7 @@ export default function useCampaign() {
     return {
         campaigns,
         campaignName,
+        metaData,
         getCampaignById,
         getCampaigns,
         deleteCampaign,
