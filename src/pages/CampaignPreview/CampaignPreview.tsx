@@ -75,7 +75,7 @@ export default function CampaignPreview() {
 
 
 
-
+  useEffect(() => {
 
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     // Detect Facebook/Instagram in-app browsers
@@ -98,8 +98,6 @@ export default function CampaignPreview() {
 
 
     if (isInAppBrowser) {
-
-      
       // Handle redirection for in-app browsers in social media
        if (/android/i.test(userAgent)) {
         const androidVersion = getAndroidVersion(userAgent);
@@ -164,7 +162,7 @@ export default function CampaignPreview() {
         }
     }
 
- 
+  });
 
 
 
