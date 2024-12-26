@@ -42,6 +42,11 @@ body {
     overflow: hidden;
     width: 100%;
     box-sizing: border-box;
+    color: black;
+}
+input {
+    background-color: white;
+    color: black;
 }
 
 #app {

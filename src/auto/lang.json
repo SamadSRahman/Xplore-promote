@@ -470,6 +470,7 @@
         "templates.lottie": "Lottie",
         "templates.button": "Button",
         "templates.back": "Back button",
+        "templates.share": "Share button",
         "templates.gallery": "Custom Gallery",
         "templates.close": "Cross button",
         "templates.list_item": "List item",

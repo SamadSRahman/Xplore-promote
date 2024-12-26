@@ -7,7 +7,7 @@
 /* eslint-disable quotes */
 /* eslint-disable indent */
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import {  getScreenName, getScreenPath } from "./services";
 import {  useSetRecoilState } from "recoil";
 import { screensAtom } from "../../recoil/atoms";
@@ -20,11 +20,10 @@ export default function useLayout() {
     const setScreens = useSetRecoilState(screensAtom);
 
     let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
-    if(window.location.origin==="https://xplr.live"){
+    if(window.location.origin==="https://xplr.live"||window.location.origin.includes("localhost")||window.location.origin.includes("vercel")){
         console.log(window.location.origin);  
      API_BASE_URL = 'https://xplr.live/api';
     }
-
 
 
 
@@ -81,7 +80,7 @@ export default function useLayout() {
     }
 
 
-    const updateLayout = async (id, layout, name) => {
+    const updateLayout = async (id, layout, name, isAlert) => {
         try {
             const response = await axios.put(
                 `${API_BASE_URL}/v1/layout/update/${id}`,
@@ -99,7 +98,9 @@ export default function useLayout() {
                 }
             );
             console.log("Response:", response.data);
+          if(isAlert){
             alert("Layout saved succssfully");
+          }
             // if (name === "splash_screen") {
             //     window.location.href = `/editor/${campaignId}/landing_screen`;
             // } else {

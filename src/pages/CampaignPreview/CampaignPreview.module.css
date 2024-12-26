@@ -1,14 +1,14 @@
 .container{
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     display: flex;
-    align-items: center;
+    align-items: top;
     justify-content: center;
     background-color: white;
 }
 .cardWrapper{
     width: 360px;
-    height: 100vh;
+    height: 95vh;
     /* border: 1px solid red; */
 }
 

@@ -7,14 +7,14 @@ export default function useAnalytics() {
     const channel = localStorage.getItem('channel');
 
     let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
-    if(window.location.origin==="https://xplr.live"){
+    if(window.location.origin==="https://xplr.live"||window.location.origin.includes("localhost")||window.location.origin.includes("vercel")){
         console.log(window.location.origin);  
      API_BASE_URL = 'https://xplr.live/api';
     }
 
     
     const getAnalyticsData = async (campaignId) => {
-        const response = await fetch(`${API_BASE_URL}v1/user/getSubmittedContact/${campaignId}`,
+        const response = await fetch(`${API_BASE_URL}/v1/user/getSubmittedContact/${campaignId}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -24,9 +24,12 @@ export default function useAnalytics() {
         );
         const data = await response.json();
         console.log(data.contacts);
-        setUsers(data.contacts);
+        if(data?.contacts)
+  {
+    setUsers(data.contacts);
 
-        setData(data.contacts)
+    setData(data.contacts)
+  }
         console.log("contactUs", contactUsData.map((ele)=>ele.contactInfo));
     }
 

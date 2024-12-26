@@ -7,6 +7,7 @@ import lottieIcon from '../../assets/components/lottie.svg?url';
 import buttonIcon from '../../assets/components/button.svg?url';
 import closeIcon from '../../assets/components/close.svg?url';
 import backIcon from '../../assets/components/back-button.svg';
+import shareIcon from '../../assets/share-icon.svg';
 import listItemIcon from '../../assets/components/list-item.svg?url';
 import listIcon from '../../assets/list.svg.svg';
 import { type ComponentProperty } from './componentProps';
@@ -735,6 +736,61 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       preload_required: true,
     },
   },
+  // _template_share: {
+  //   nameKey: 'templates.share',
+  //   visible: true,
+  //   inShortList: true,
+  //   icon: shareIcon,
+  //   props: [
+  //     {
+  //       type: 'group',
+  //       title: 'backProps.title',
+  //       list: [
+  //         {
+  //           name: 'color',
+  //           prop: 'tint_color',
+  //           type: 'color',
+  //           enableSources: true,
+  //         },
+  //         {
+  //           name: 'props.actions',
+  //           prop: 'actions',
+  //           type: 'actions2',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  //   newNode: {
+  //     alignment_horizontal: 'left',
+  //     height: { type: 'fixed', value: 28 },
+  //     margins: { top: 20, left: 24 },
+  //     width: { type: 'fixed', value: 28 },
+  //     actions: [
+  //       {
+  //         log_id: 'back_button',
+  //         url: 'xplore-promote://backBtn',
+  //       },
+  //     ]
+  //   },
+  //   template: {
+  //     accessibility: {
+  //       description: 'Back',
+  //       mode: 'merge',
+  //       type: 'button',
+  //     },
+  //     actions: [
+  //       {
+  //         log_id: 'back_button',
+  //         url: 'xplore-promote://backBtn',
+  //       },
+  //     ],
+  //     image_url:
+  //       'https://xplore.objectstore.e2enetworks.net/1734934115456-23b1079b81f2ae1b.png',
+  //     tint_color: '#000',
+  //     type: 'image',
+  //     preload_required: true,
+  //   },
+  // },
 
 
   _template_map: {

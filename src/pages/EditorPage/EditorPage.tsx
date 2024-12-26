@@ -48,6 +48,10 @@ const EditorPage = () => {
       }
     }
   }, [campaignId, page]);
+  React.useEffect(()=>{
+    console.log("line 52", layoutId);
+    
+  },[layoutId])
 
 
   React.useEffect(() => {
@@ -192,7 +196,26 @@ const EditorPage = () => {
     };
   }, [currentLayout, page]);
 
+  let isThrottled = false;
+
+    const limitedUpdateLayout = async (layoutId: string, json : string, page : string, alert: boolean) => {
+      if (isThrottled) return; // Ignore changes within the 30-sec window.
+    
+      isThrottled = true; // Set throttle flag to true.
+      
+      // Call the update function immediately.
+      // await updateLayout(layoutId, json, page, alert);
+    
+      // Reset the throttle flag after 30 seconds.
+      setTimeout(() => {
+        isThrottled = false;
+      }, 30000); // 30 seconds
+    };
+
   async function handleQuiz(json: string) {
+    
+    // Usage:
+    limitedUpdateLayout(layoutId, json, page, false);
     const jsonData = JSON.parse(json);
     localStorage.setItem("variables", JSON.stringify(jsonData.card.variables));
     const quizComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_quiz");
@@ -229,7 +252,7 @@ const EditorPage = () => {
     try {
       const currentJSON = editorInstance.getValue();
       setJsonContent(currentJSON);
-      await updateLayout(layoutId, currentJSON, page, campaignId);
+      await updateLayout(layoutId, currentJSON, page, true);
     } catch (error) {
       console.error('Error handling JSON:', error);
     }
@@ -315,7 +338,7 @@ const EditorPage = () => {
 
     // Update the card
 
-    updateLayout(layoutId, JSON.stringify(currentJson), page, campaignId);
+    updateLayout(layoutId, JSON.stringify(currentJson), page);
     getCampaignById(campaignId, page);
   
     const card = editorInstance.getCard();
