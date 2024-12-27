@@ -26,23 +26,21 @@ export default function CampaignPreview() {
   const [deviceType, setDeviceType] = useState("");
   const [redirectURL, setRedirectURL] = useState("");
   const [isCameraScreen, setIsCameraScreen] = useState(false);
-  const { metaData, getCampaignById }  = useCampaign();
+  const { metaData, getCampaignById } = useCampaign();
 
 
   useEffect(() => {
-                getCampaignById(campaignId, screen);
-
+    getCampaignById(campaignId, screen);
   }, [campaignId]);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("metaData", metaData);
-    
-  },[metaData])
-     
+  }, [metaData])
+
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
- // const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
-  const androidIntent = `intent://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true#Intent;scheme=https;package=com.android.vending;end`;   
+  // const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
+  const androidIntent = `intent://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true#Intent;scheme=https;package=com.android.vending;end`;
 
 
   // const { data, getData } = useVisitorData(
@@ -53,7 +51,7 @@ export default function CampaignPreview() {
 
   useEffect(() => {
     getAllLayout(campaignId);
-   
+
 
     const requestPushNotificationPermission = async () => {
       if ("Notification" in window) {
@@ -99,66 +97,66 @@ export default function CampaignPreview() {
 
     if (isInAppBrowser) {
       // Handle redirection for in-app browsers in social media
-       if (/android/i.test(userAgent)) {
+      if (/android/i.test(userAgent)) {
         const androidVersion = getAndroidVersion(userAgent);
         if (androidVersion && parseFloat(androidVersion) >= 12) {
           // alert("android")
           setDeviceType("android");
           setRedirectURL(androidIntent);
-          setTimeout(() => {  
-           window.location.replace(androidIntent);
-           }, 100);
-         }
+          setTimeout(() => {
+            window.location.replace(androidIntent);
+          }, 100);
+        }
         else {
-             setDeviceType("other");  
-         }       
+          setDeviceType("other");
+        }
       } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-          const iosVersion = getIosVersion(userAgent);
-          if (iosVersion && parseFloat(iosVersion) >= 16.6) {
+        const iosVersion = getIosVersion(userAgent);
+        if (iosVersion && parseFloat(iosVersion) >= 16.6) {
           setDeviceType("ios");
           setRedirectURL(appClipUrl);
 
-         } 
+        }
         else {
-           setDeviceType("other");  // iOS version < 16.6
-        }     
+          setDeviceType("other");  // iOS version < 16.6
+        }
       } else {
-          console.log('In-app browser detected on an unsupported platform.');     
-       }
-   }
-   else { // Non Social media platforms
-        if (/android/i.test(userAgent)) {
-          const androidVersion = getAndroidVersion(userAgent);
-          if (androidVersion && parseFloat(androidVersion) >= 12) {
-            // alert("android")
-            setDeviceType("android");
-            setRedirectURL(androidIntent);
-            setTimeout(() => {  
-             window.location.replace(androidIntent);
-             }, 100);
-          }    
-          else {
-              // alert("Version not found ")
-              setDeviceType("other");  // Android version < 12
-          }
+        console.log('In-app browser detected on an unsupported platform.');
+      }
+    }
+    else { // Non Social media platforms
+      if (/android/i.test(userAgent)) {
+        const androidVersion = getAndroidVersion(userAgent);
+        if (androidVersion && parseFloat(androidVersion) >= 12) {
+          // alert("android")
+          setDeviceType("android");
+          setRedirectURL(androidIntent);
+          setTimeout(() => {
+            window.location.replace(androidIntent);
+          }, 100);
         }
-        else if (/iPad|iPhone|iPod/.test(userAgent)) {
-          const iosVersion = getIosVersion(userAgent);
-          if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-            setDeviceType("ios");
-            setRedirectURL(appClipUrl);
-            setTimeout(() => {
-              window.location.replace(appClipUrl);
-            }, 100);
-          } 
-          else {
-            setDeviceType("other");  // iOS version < 16.6
-          }
+        else {
+          // alert("Version not found ")
+          setDeviceType("other");  // Android version < 12
+        }
+      }
+      else if (/iPad|iPhone|iPod/.test(userAgent)) {
+        const iosVersion = getIosVersion(userAgent);
+        if (iosVersion && parseFloat(iosVersion) >= 16.6) {
+          setDeviceType("ios");
+          setRedirectURL(appClipUrl);
+          setTimeout(() => {
+            window.location.replace(appClipUrl);
+          }, 100);
+        }
+        else {
+          setDeviceType("other");  // iOS version < 16.6
+        }
 
-        } else {
-          //Web view fallback
-          setDeviceType("other");
-        }
+      } else {
+        //Web view fallback
+        setDeviceType("other");
+      }
     }
 
   });
@@ -172,11 +170,11 @@ export default function CampaignPreview() {
 
 
   useEffect(() => {
-   const deviceId = localStorage.getItem("deviceId");
-   if(!deviceId){
-    const id = uid();
-    localStorage.setItem("deviceId", id);
-   }
+    const deviceId = localStorage.getItem("deviceId");
+    if (!deviceId) {
+      const id = uid();
+      localStorage.setItem("deviceId", id);
+    }
 
   }, []);
 
@@ -202,23 +200,23 @@ export default function CampaignPreview() {
       }
 
       const variables = newLayout.layoutJSON?.card?.variables;
-      
+
       const googleData = localStorage.getItem("userData");
       const imageData = localStorage.getItem("userUploadUrl");
-      
+
       console.log("variables", variables);
       console.log("googleData", googleData);
       console.log("imageData", imageData);
-      
+
       if (variables && Array.isArray(variables)) {
         try {
           // Process Google Data
           if (googleData) {
             const googleDataObj = JSON.parse(googleData);
-            
+
             variables.forEach((variable) => {
               if (!variable || typeof variable !== 'object') return;
-      
+
               if (variable.name === "email" && googleDataObj.email) {
                 variable.value = googleDataObj.email;
               }
@@ -230,18 +228,18 @@ export default function CampaignPreview() {
               }
             });
           }
-      
+
           // Process Image Data
           if (imageData) {
             variables.forEach((variable) => {
               if (!variable || typeof variable !== 'object') return;
-      
+
               if (variable.name === "picture") {
                 variable.value = imageData;
               }
             });
           }
-      
+
           newLayout.layoutJSON.card.variables = variables;
         } catch (error) {
           console.error("Error processing user data:", error);
@@ -262,7 +260,7 @@ export default function CampaignPreview() {
     socialPlatform?: string;
     socialProfile?: string;
     webUrl?: string;
-    selected_variables:[]
+    selected_variables: []
   }) {
     console.log("action clicked", action);
     const btnAction = action.url?.split("://")[1].split("?")[0];
@@ -298,51 +296,51 @@ export default function CampaignPreview() {
       window.open(redirectUrl, '_blank');
       return;
     }
-    if(btnAction === "camera"){
+    if (btnAction === "camera") {
       navigate(`/campaign/${campaignId}/camera_screen`);
     }
 
     if (btnAction === "submit") {
       console.log(action.selectedVariables);
-      
+
       const params = new URLSearchParams(action.url.split("?")[1]);
       const isCheckboxChecked = params.get("consent_checkbox") === "true";
-    
+
       // Dynamic validation based on selected variables
       const missingVariables = action.selected_variables.filter(variable => {
         // Skip validation for consent checkbox
         if (variable === "consent_checkbox") return false;
-        
+
         const value = params.get(variable);
         // Check if value is undefined, null, or empty string
         return !value || value.trim() === '';
       });
-    
+
       // if (missingVariables.length > 0) {
       //   alert(`Please fill in the following required fields: ${missingVariables.join(', ')}`);
       //   return;
       // }
-    
+
       if (!isCheckboxChecked) {
         alert("Please agree to the terms and conditions first");
         return;
       }
-    
+
       // Prepare otherFields object for additional variables
       const otherFields = {};
-    
+
       // Add any extra variables from action.selected_variables to otherFields
       // action.selected_variables.forEach(variable => {
       //   const value = params.get(variable);
       //   if (value && 
       //       !['userName', 'email', 'phone', 'consent_checkbox'].includes(variable)) {
       //         console.log("variable,", variable);
-              
+
       //     otherFields[variable] = value;
       //   }
       // });
       console.log(otherFields);
-      
+
       const formData = {
         name: params.get("userName"),
         email: params.get("email") || '',
@@ -354,14 +352,14 @@ export default function CampaignPreview() {
       };
       console.log("formData", formData);
 
-      if(!formData.name || formData.email|| formData.phone){
+      if (!formData.name || formData.email || formData.phone) {
         alert("Please fill all the fields");
         return
       }
-      
+
       await submitContactForm(formData);
       const screenName = params.get("screen_name");
-      if(screenName){
+      if (screenName) {
         navigate(`/campaign/${campaignId}/${screenName}`)
       }
       updateInterestedProduct(campaignId);
@@ -397,7 +395,7 @@ export default function CampaignPreview() {
       const foundLayout = layouts.find(
         (ele) => ele.name === screenIdentifier || ele.id === screenIdentifier
       );
-      if (foundLayout || screenIdentifier==="camera_screen") {
+      if (foundLayout || screenIdentifier === "camera_screen") {
         navigate(`/campaign/${campaignId}/${screenIdentifier}`);
       } else {
         console.log(`screen ${screenIdentifier} not found`);
@@ -450,7 +448,7 @@ export default function CampaignPreview() {
         }
       }
     }
-    else if(screen==="camera_screen"){
+    else if (screen === "camera_screen") {
       setIsCameraScreen(true)
     }
   }, [screen, campaignId]);
@@ -512,14 +510,14 @@ export default function CampaignPreview() {
     setShowPopup(false);
   };
 
-  if(isCameraScreen){
-    return (<CameraComponent/>)
+  if (isCameraScreen) {
+    return (<CameraComponent />)
   }
   return (
 
     <div>
 
-     <Helmet>
+      <Helmet>
         <meta property="og:title" content={metaData.title} />
         <meta property="og:description" content={metaData.description} />
         <meta property="og:image" content={metaData.image} />
@@ -528,11 +526,11 @@ export default function CampaignPreview() {
 
       {deviceType === "ios" || deviceType === "android" ?
         (
-         <div className={styles.redirectContainer} >
+          <div className={styles.redirectContainer} >
             <div className={styles.redirectContent}>
-             <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
-             <a className={styles.redirectButton} href={redirectURL} target="_blank"> Continue </a>
-           </div>
+              <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
+              <a className={styles.redirectButton} href={redirectURL} target="_blank"> Continue </a>
+            </div>
           </div>
         ) : (
           <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
