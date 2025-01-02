@@ -6,6 +6,7 @@
 import lottieIcon from "../../assets/components/lottie.svg?url";
 import buttonIcon from "../../assets/components/button.svg?url";
 import closeIcon from "../../assets/components/close.svg?url";
+import ThreeSixtyIcon from "../../assets/components/360View.svg?url";
 import backIcon from "../../assets/components/back-button.svg";
 import shareIcon from "../../assets/share-icon.svg";
 import listItemIcon from "../../assets/components/list-item.svg?url";
@@ -798,18 +799,8 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     nameKey: "templates.360view",
     visible: true,
     inShortList: true,
-    icon: lottieIcon,
+    icon: ThreeSixtyIcon,
 
-    // type: 'group',
-    // title: 'props.border',
-    // list: [{
-    //     name: 'props.corners',
-    //     prop: 'border.corner_radius',
-    //     type: 'integer',
-    //     min: 0,
-    //     max: 100,
-    //     enableSources: true,
-    // }]
     props: [
       {
         type: "group",
