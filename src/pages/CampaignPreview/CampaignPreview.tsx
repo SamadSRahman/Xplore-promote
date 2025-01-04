@@ -26,7 +26,7 @@ export default function CampaignPreview() {
   const [deviceType, setDeviceType] = useState("");
   const [redirectURL, setRedirectURL] = useState("");
   const [isCameraScreen, setIsCameraScreen] = useState(false);
-  const { metaData, getCampaignById } = useCampaign();
+  const { metaData, getCampaignById, getmetadataCampaignById } = useCampaign();
 
 
   useEffect(() => {
@@ -34,13 +34,13 @@ export default function CampaignPreview() {
   }, [campaignId]);
 
   useEffect(() => {
+    getmetadataCampaignById(campaignId);
+  }, [campaignId]);
+
+  useEffect(() => {
     console.log("metaData", metaData);
   }, [metaData])
 
-
-  const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
-  const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
-  const androidIntent = `intent://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true#Intent;scheme=https;package=com.android.vending;end`;   
 
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
 
@@ -66,6 +66,10 @@ export default function CampaignPreview() {
 
   }, []);
 
+
+  const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
+  const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
+  const androidIntent = `intent:${playStoreUrl}#Intent;package=com.android.chrome;end`; 
 
 
   /* useEffect(() => {
@@ -187,10 +191,9 @@ export default function CampaignPreview() {
               const androidVersion = getAndroidVersion(userAgent);
               if (androidVersion && parseFloat(androidVersion) >= 12) {
                 setDeviceType("android");
-                setRedirectURL(androidIntent);
-                setTimeout(() => {
-                  window.location.replace(androidIntent);
-                }, 100);
+                setRedirectURL(playStoreUrl);
+                 window.location.replace(androidIntent);
+
               } else {
                 setDeviceType("other");
               }
@@ -213,9 +216,7 @@ export default function CampaignPreview() {
               if (androidVersion && parseFloat(androidVersion) >= 12) {
                 setDeviceType("android");
                 setRedirectURL(playStoreUrl);
-                setTimeout(() => {
-                  window.location.replace(playStoreUrl);
-                }, 100);
+                  window.location.replace(androidIntent);
               } else {
                 setDeviceType("other"); // Android version < 12
               }

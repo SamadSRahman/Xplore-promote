@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { blankBackgroundJSON } from './splashScreenData';
 import { getScreenName, getScreenPath } from './services';
@@ -57,11 +57,26 @@ export default function useCampaign() {
 
         }
     };
-     useEffect(()=>{
-        console.log("metaData", metaData);
+
+     
+    const getmetadataCampaignById = async (id) => {
+        console.log("API call triggered for meta data", id); 
+       try {
+        const response = await axios.get(
+            `${API_BASE_URL}/v1/campaign/getOne/${id}`
+        );
+        console.log('response from line 77', response.data.data.campaign.initialLayout.campaign);
+        setMetaData({
+            title: response.data.data.campaign.initialLayout.campaign.name,
+            description: response.data.data.campaign.initialLayout.campaign.description,
+            image: response.data.data.campaign.initialLayout.campaign.images[0].url,
+          });
         
-      },[metaData])
-         
+       } catch (error) {
+               console.log(error);
+       }
+    };
+
 
     const getCampaignById = async (id, page) => {
         console.log("API call triggered", id, page);
@@ -134,6 +149,7 @@ export default function useCampaign() {
         campaigns,
         campaignName,
         metaData,
+        getmetadataCampaignById,
         getCampaignById,
         getCampaigns,
         deleteCampaign,
