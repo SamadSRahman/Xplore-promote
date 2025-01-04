@@ -65,13 +65,13 @@
 
 <div class="preview-canvas">
     <div class="preview-canvas__topbar">
-        <!-- <Select
+        <Select
             bind:value={selectViewport}
             items={viewportList}
             theme="canvas"
             title={$l10nString('previewSize')}
             on:change={onViewportSelectChange}
-        /> -->
+        />
 
         {#if selectViewport === 'custom'}
             <div class="preview-canvas__dimensions">

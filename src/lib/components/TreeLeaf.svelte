@@ -163,7 +163,7 @@
         });
     }
 
-    onMount(() => {
+    onMount(() => {        
         bindChild({
             type: 'mount',
             node,
@@ -240,6 +240,7 @@
     {/if}
     {#if !$readOnly}
         <div class="tree-leaf__menu-outer">
+         
             <div
                 class="tree-leaf__menu"
                 aria-label={$l10nString('treeMenu')}

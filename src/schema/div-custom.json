@@ -22,7 +22,7 @@
         },
         "custom_type": {
           "type": "string",
-          "supports_expressions": false,
+          "supports_expressions": true,
           "$description": "translations.json#/div_custom_custom_type"
         },
         "custom_props": {

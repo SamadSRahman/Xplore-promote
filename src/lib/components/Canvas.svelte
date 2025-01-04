@@ -35,12 +35,13 @@
         '320x568',
         '360x640',
         '375x667',
+        "375x750",
         '393x851',
         '414x896',
         '768x1024'
     ];
 
-    const DEFAULT_VIEWPORT = '360x640';
+    const DEFAULT_VIEWPORT =  "375x750";
 
     setShowErrors(function showErrors(opts) {
         errorsDialog.show(errorButtonNode, {
@@ -167,7 +168,7 @@
                 on:change={onViewportHeightChange}
             />
         {/if}
-
+            <!-- THEME TOGGLE BTN -->
         <!-- {#if $paletteEnabled}
             <CanvasButton
                 title={$l10n($previewThemeStore === 'light' ? 'lightTheme' : 'darkTheme')}
@@ -179,7 +180,7 @@
                 ></div>
             </CanvasButton>
         {/if} -->
-
+            <!-- LANG BTN -->
         <!-- {#if cardLocales.length}
             <Select
                 bind:value={$locale}
@@ -213,7 +214,7 @@
             ></div>
         </CanvasButton>
 
-        <!-- <CanvasButton
+        <CanvasButton
             title={$l10n('errors')}
             bind:node={errorButtonNode}
             on:click={showErrorsDialog}
@@ -232,7 +233,7 @@
                     style:background-image="url({encodeBackground(warningsIcon)})"
                 ></div>
             </div>
-        </CanvasButton> -->
+        </CanvasButton>
     </div>
 
     <div class="canvas__renderer-wrapper" bind:this={wrapper}>

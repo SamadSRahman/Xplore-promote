@@ -28,7 +28,6 @@ export default function CampaignPreview() {
   const [isCameraScreen, setIsCameraScreen] = useState(false);
   const { metaData, getCampaignById, getmetadataCampaignById } = useCampaign();
 
-
   useEffect(() => {
     getCampaignById(campaignId, screen);
   }, [campaignId]);
@@ -52,7 +51,7 @@ export default function CampaignPreview() {
       if ("Notification" in window) {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-          console.log("Push notification permission granted.");
+          console.log("Push notification permission granted.");p
           // You can also register a service worker here if needed
         } else {
           console.log("Push notification permission denied.");

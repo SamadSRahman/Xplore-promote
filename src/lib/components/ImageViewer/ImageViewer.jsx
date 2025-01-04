@@ -18,6 +18,8 @@ const Image360Viewer = ({productId}) => {
       const data = await response.json();
       setColorData(data.data.vr_exterior);
       setSelectedColor(data.data.vr_exterior[0]);
+      console.log(data.data.vr_exterior[0].vr_exterior_image[0]);
+      
       setTotalFrames(data.data.vr_exterior[0].vr_exterior_image.length);
       console.log("data", data.data.vr_exterior[0].vr_exterior_image.length);
       
@@ -39,6 +41,7 @@ const Image360Viewer = ({productId}) => {
   },[selectedColor])
 
   const handleColorSelect = (color) => {
+    console.log("color", color);
     setSelectedColor(color);
     // setCurrentFrame(0)
   };
@@ -110,10 +113,10 @@ const Image360Viewer = ({productId}) => {
         //       ...(selectedColor?.color_name === color.color_name && styles.colorButtonSelected)
         //     }}
         //   >
-            <div style={styles.colorButtonContent}>
+            <div style={styles.colorButtonContent} key={color.color_name}>
               <img 
                onClick={() => handleColorSelect(color)}
-                src={`http://myhyundai.apprikart.com${color.color_pallet_selected_file}`}
+                src={`${color.color_pallet_selected_file}`}
                 alt={color.color_name}
                 style={styles.colorImage}
               />
@@ -133,7 +136,7 @@ const Image360Viewer = ({productId}) => {
       >
         {selectedColor && (
           <img
-            src={`http://myhyundai.apprikart.com${selectedColor?.vr_exterior_image[currentFrame]?.vr_exterior_image_file}`}
+            src={selectedColor?.vr_exterior_image[currentFrame]?.vr_exterior_image_file}
             alt={`${selectedColor.color_name} - Frame ${currentFrame}`}
             style={styles.image}
             draggable="false"
