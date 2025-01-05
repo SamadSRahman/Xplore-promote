@@ -63,8 +63,9 @@ export default function useCampaign() {
         console.log("API call triggered for meta data", id); 
        try {
         const response = await axios.get(
-            `${API_BASE_URL}/v1/campaign/getOne/${id}`
+            `${API_BASE_URL}/v1/viewLayout/${id}`
         );
+
         console.log('response from line 77', response.data.data.campaign.initialLayout.campaign);
         setMetaData({
             title: response.data.data.campaign.initialLayout.campaign.name,

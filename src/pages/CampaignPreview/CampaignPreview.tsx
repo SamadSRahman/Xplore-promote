@@ -214,7 +214,7 @@ export default function CampaignPreview() {
               const androidVersion = getAndroidVersion(userAgent);
               if (androidVersion && parseFloat(androidVersion) >= 12) {
                 setDeviceType("android");
-                setRedirectURL(playStoreUrl);
+                setRedirectURL(androidIntent);
                   window.location.replace(androidIntent);
               } else {
                 setDeviceType("other"); // Android version < 12
