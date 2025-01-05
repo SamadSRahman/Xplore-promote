@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import styles from "./CampaignPreview.module.css";
+import icon from '../../assets/xplore-logo.svg'
 
 interface RedirectComponentProps {
   universalLink: string;
@@ -42,8 +44,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
           window.location.replace(universalLink);
           return;
         } else if (/android/i.test(userAgent)) {
-          const androidIntent = `intent://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=043a10ed-79c6-4b3d-8c16-7ab9d72e96d8&launch=true#Intent;scheme=https;package=com.android.vending;end`;
-          window.location.replace(androidIntent);
+          const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.chrome;end`;           window.location.replace(androidIntent);
           return;
         } else {
           console.log("Default fallback.");
@@ -59,11 +60,12 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
 
   return (
     <div>
-      <div id="ios-instruction" style={{ display: 'none', textAlign: 'center', marginTop: '50px' }}>
-        <h1>Open in Safari</h1>
-        <p>To continue, please tap the link below:</p>
-        <a href={universalLink} target="_blank" rel="noopener noreferrer">Open App Clip in Safari</a>
-      </div>
+       <div className={styles.redirectContainer} >
+            <div className={styles.redirectContent}>
+               <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
+              <a className={styles.redirectButton} href={universalLink} target="_blank"> Continue </a>
+            </div>
+          </div>
     </div>
   );
 };

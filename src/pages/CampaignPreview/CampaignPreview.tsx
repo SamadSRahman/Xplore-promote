@@ -11,12 +11,12 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 // import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
 import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
-import icon from '../../assets/xplore-logo.svg'
+// import icon from '../../assets/xplore-logo.svg'
 import CameraComponent from "../../customComponent/CameraComponent/CameraComponent";
 import { uid } from "uid";
 import { Helmet } from "react-helmet";
+import RidirectComponent from "./RedirectComponent"
 
-import RidirectComponent from "../../components/RedirectComponent"
 
 export default function CampaignPreview() {
   const { getAllLayout, layouts } = useLayout();
@@ -66,8 +66,9 @@ export default function CampaignPreview() {
     requestPushNotificationPermission();
 
   }, []);
-
-
+  
+  
+  const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
   // const androidIntent = `intent:${playStoreUrl}#Intent;package=com.android.chrome;end`; 
@@ -241,10 +242,51 @@ export default function CampaignPreview() {
   
 
 
-  // useEffect(() => {
-  //   console.log("deviceType", deviceType, redirectURL);
-  //   // alert(`device type: ${deviceType}` )
-  // }, [deviceType, redirectURL])
+  useEffect(() => {
+
+    console.log("deviceType", deviceType, redirectURL);
+
+        const getAndroidVersion = (userAgent: string): string | null => {
+      const match = userAgent.match(/Android (\d+(\.\d+)+)/);
+      return match ? match[1] : null;
+    };
+  
+    // Extract iOS version from user agent
+    const getIosVersion = (userAgent: string): string | null => {
+      const match = userAgent.match(/OS (\d+(_\d+)+)/);
+      return match ? match[1].replace(/_/g, ".") : null;
+    };
+
+    // alert(`device type: ${deviceType}` )
+        if (/android/i.test(userAgent)) {
+              const androidVersion = getAndroidVersion(userAgent);
+              if (androidVersion && parseFloat(androidVersion) >= 12) {
+                setDeviceType("android");
+                // setRedirectURL(androidIntent);
+                //   window.location.replace(androidIntent);
+              } else {
+                setDeviceType("other"); // Android version < 12
+              }
+      } else if (/iPad|iPhone|iPod/.test(userAgent)) {
+              const iosVersion = getIosVersion(userAgent);
+              if (iosVersion && parseFloat(iosVersion) >= 16.6) {
+                setDeviceType("ios");
+                // setRedirectURL(appClipUrl);
+                // setTimeout(() => {
+                //   window.location.replace(appClipUrl);
+                // }, 100);
+              } else {
+                setDeviceType("other"); // iOS version < 16.6
+              }
+      } else {
+                  // Fallback for unsupported platforms
+                  setDeviceType("other");
+      }
+
+
+
+
+  }, [deviceType, redirectURL])
 
 
   useEffect(() => {
@@ -602,16 +644,11 @@ export default function CampaignPreview() {
 
 
           {/* Include the RedirectComponent */}
-        <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
+        
 
       {deviceType === "ios" || deviceType === "android" ?
         (
-          <div className={styles.redirectContainer} >
-            <div className={styles.redirectContent}>
-              <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
-              <a className={styles.redirectButton} href={redirectURL} target="_blank"> Continue </a>
-            </div>
-          </div>
+           <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
         ) : (
           <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
