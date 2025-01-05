@@ -16,6 +16,8 @@ import CameraComponent from "../../customComponent/CameraComponent/CameraCompone
 import { uid } from "uid";
 import { Helmet } from "react-helmet";
 
+import RidirectComponent from "../../components/RedirectComponent"
+
 export default function CampaignPreview() {
   const { getAllLayout, layouts } = useLayout();
   const navigate = useNavigate();
@@ -68,7 +70,7 @@ export default function CampaignPreview() {
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
-  const androidIntent = `intent:${playStoreUrl}#Intent;package=com.android.chrome;end`; 
+  // const androidIntent = `intent:${playStoreUrl}#Intent;package=com.android.chrome;end`; 
 
 
   /* useEffect(() => {
@@ -163,86 +165,86 @@ export default function CampaignPreview() {
   */
 
 
-  //REDIRECTION FOR ALL PLATFORMS
-  useEffect(() => {
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    console.log("User Agent:", userAgent);
+  // //REDIRECTION FOR ALL PLATFORMS
+  // useEffect(() => {
+  //   const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+  //   console.log("User Agent:", userAgent);
   
-    // Detect in-app browsers for social media
-    const isInAppBrowser = /(FBAN|FBAV|Instagram|Twitter|LinkedIn|WhatsApp|Snapchat|Pinterest|Messenger)/i.test(userAgent);
+  //   // Detect in-app browsers for social media
+  //   const isInAppBrowser = /(FBAN|FBAV|Instagram|Twitter|LinkedIn|WhatsApp|Snapchat|Pinterest|Messenger)/i.test(userAgent);
   
-    // Extract Android version from user agent
-    const getAndroidVersion = (userAgent: string): string | null => {
-      const match = userAgent.match(/Android (\d+(\.\d+)+)/);
-      return match ? match[1] : null;
-    };
+  //   // Extract Android version from user agent
+  //   const getAndroidVersion = (userAgent: string): string | null => {
+  //     const match = userAgent.match(/Android (\d+(\.\d+)+)/);
+  //     return match ? match[1] : null;
+  //   };
   
-    // Extract iOS version from user agent
-    const getIosVersion = (userAgent: string): string | null => {
-      const match = userAgent.match(/OS (\d+(_\d+)+)/);
-      return match ? match[1].replace(/_/g, ".") : null;
-    };
+  //   // Extract iOS version from user agent
+  //   const getIosVersion = (userAgent: string): string | null => {
+  //     const match = userAgent.match(/OS (\d+(_\d+)+)/);
+  //     return match ? match[1].replace(/_/g, ".") : null;
+  //   };
 
   
-    if (isInAppBrowser) {
-      // Handle redirection for social media in-app browsers
-      if (/android/i.test(userAgent)) {
-              const androidVersion = getAndroidVersion(userAgent);
-              if (androidVersion && parseFloat(androidVersion) >= 12) {
-                setDeviceType("android");
-                setRedirectURL(playStoreUrl);
-                 window.location.replace(androidIntent);
+  //   if (isInAppBrowser) {
+  //     // Handle redirection for social media in-app browsers
+  //     if (/android/i.test(userAgent)) {
+  //             const androidVersion = getAndroidVersion(userAgent);
+  //             if (androidVersion && parseFloat(androidVersion) >= 12) {
+  //               setDeviceType("android");
+  //               setRedirectURL(playStoreUrl);
+  //                window.location.replace(androidIntent);
 
-              } else {
-                setDeviceType("other");
-              }
-      } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-              const iosVersion = getIosVersion(userAgent);
-              if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-                setDeviceType("ios");
-                setRedirectURL(appClipUrl);
-                window.location.replace(appClipUrl);
-              } else {
-                setDeviceType("other"); // iOS version < 16.6
-              }
-      } else {
-                console.log("In-app browser detected on an unsupported platform.");
-      }
-    } else {
-      // Handle redirection for non-social media platforms
-      if (/android/i.test(userAgent)) {
-              const androidVersion = getAndroidVersion(userAgent);
-              if (androidVersion && parseFloat(androidVersion) >= 12) {
-                setDeviceType("android");
-                setRedirectURL(androidIntent);
-                  window.location.replace(androidIntent);
-              } else {
-                setDeviceType("other"); // Android version < 12
-              }
-      } else if (/iPad|iPhone|iPod/.test(userAgent)) {
-              const iosVersion = getIosVersion(userAgent);
-              if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-                setDeviceType("ios");
-                setRedirectURL(appClipUrl);
-                setTimeout(() => {
-                  window.location.replace(appClipUrl);
-                }, 100);
-              } else {
-                setDeviceType("other"); // iOS version < 16.6
-              }
-      } else {
-          // Fallback for unsupported platforms
-          setDeviceType("other");
-      }
-    }
-  }, []);
+  //             } else {
+  //               setDeviceType("other");
+  //             }
+  //     } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+  //             const iosVersion = getIosVersion(userAgent);
+  //             if (iosVersion && parseFloat(iosVersion) >= 16.6) {
+  //               setDeviceType("ios");
+  //               setRedirectURL(appClipUrl);
+  //               window.location.replace(appClipUrl);
+  //             } else {
+  //               setDeviceType("other"); // iOS version < 16.6
+  //             }
+  //     } else {
+  //               console.log("In-app browser detected on an unsupported platform.");
+  //     }
+  //   } else {
+  //     // Handle redirection for non-social media platforms
+  //     if (/android/i.test(userAgent)) {
+  //             const androidVersion = getAndroidVersion(userAgent);
+  //             if (androidVersion && parseFloat(androidVersion) >= 12) {
+  //               setDeviceType("android");
+  //               setRedirectURL(androidIntent);
+  //                 window.location.replace(androidIntent);
+  //             } else {
+  //               setDeviceType("other"); // Android version < 12
+  //             }
+  //     } else if (/iPad|iPhone|iPod/.test(userAgent)) {
+  //             const iosVersion = getIosVersion(userAgent);
+  //             if (iosVersion && parseFloat(iosVersion) >= 16.6) {
+  //               setDeviceType("ios");
+  //               setRedirectURL(appClipUrl);
+  //               setTimeout(() => {
+  //                 window.location.replace(appClipUrl);
+  //               }, 100);
+  //             } else {
+  //               setDeviceType("other"); // iOS version < 16.6
+  //             }
+  //     } else {
+  //         // Fallback for unsupported platforms
+  //         setDeviceType("other");
+  //     }
+  //   }
+  // }, []);
   
 
 
-  useEffect(() => {
-    console.log("deviceType", deviceType, redirectURL);
-    // alert(`device type: ${deviceType}` )
-  }, [deviceType, redirectURL])
+  // useEffect(() => {
+  //   console.log("deviceType", deviceType, redirectURL);
+  //   // alert(`device type: ${deviceType}` )
+  // }, [deviceType, redirectURL])
 
 
   useEffect(() => {
@@ -597,6 +599,11 @@ export default function CampaignPreview() {
         <title>{metaData.title}</title>
       </Helmet>
 
+
+
+          {/* Include the RedirectComponent */}
+        <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
+
       {deviceType === "ios" || deviceType === "android" ?
         (
           <div className={styles.redirectContainer} >
@@ -675,6 +682,8 @@ export default function CampaignPreview() {
         )
 
       }
+
+
 
     </div>
 
