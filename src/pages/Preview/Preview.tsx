@@ -9,9 +9,8 @@ import styles from '../CampaignPreview/CampaignPreview.module.css'
 import DivkitRenderer from "../../lib/components/PreviewCard/DivkitRenderer";
 import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
-import icon from '../../assets/xplore-logo.svg'
 import { uid } from "uid";
-import RidirectComponent from "../../components/RedirectComponent"
+import RidirectComponent from "../CampaignPreview/RedirectComponent"
 import { Helmet } from "react-helmet";
 import useCampaign from "../../lib/utils/useCampaign";
 

@@ -14,8 +14,7 @@ import googleLogo from "../../assets/components/google-icon.webp";
 // import icon from '../../assets/xplore-logo.svg'
 import CameraComponent from "../../customComponent/CameraComponent/CameraComponent";
 import { uid } from "uid";
-import { Helmet } from "react-helmet";
-import RidirectComponent from "../../components/RedirectComponent"
+import RidirectComponent from "./RedirectComponent"
 
 
 export default function CampaignPreview() {
