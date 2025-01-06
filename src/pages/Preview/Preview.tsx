@@ -15,11 +15,11 @@ import { uid } from "uid";
 
 export default function Preview() {
   const { shortId } = useParams();
-  const { getLayoutByShortId, layouts, campaignId} = usePreview();
+  const { getLayoutByShortId, layouts, campaignId } = usePreview();
 
   const navigate = useNavigate();
   const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
-  const {screen} = useParams();
+  const { screen } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [deviceType, setDeviceType] = useState("");
@@ -31,21 +31,21 @@ export default function Preview() {
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&launch=true`;
 
   const { data, getData } = useVisitorData(
-    { extendedResult: true }, 
+    { extendedResult: true },
     { immediate: true }
   );
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
 
 
-  
+
   useEffect(() => {
     const deviceId = localStorage.getItem("deviceId");
-    if(!deviceId){
-     const id = uid();
-     localStorage.setItem("deviceId", id);
+    if (!deviceId) {
+      const id = uid();
+      localStorage.setItem("deviceId", id);
     }
- 
-   }, []);
+
+  }, []);
 
   useEffect(() => {
     getLayoutByShortId(shortId);
@@ -150,7 +150,7 @@ export default function Preview() {
 
   useEffect(() => {
     if (!layouts.length) return;
-    if(layouts.length===1){
+    if (layouts.length === 1) {
       setLayout(layouts[0])
       return; //for profile page
     }
@@ -170,23 +170,23 @@ export default function Preview() {
       }
 
       const variables = newLayout.layoutJSON?.card?.variables;
-      
+
       const googleData = localStorage.getItem("userData");
       const imageData = localStorage.getItem("userUploadUrl");
-      
+
       console.log("variables", variables);
       console.log("googleData", googleData);
       console.log("imageData", imageData);
-      
+
       if (variables && Array.isArray(variables)) {
         try {
           // Process Google Data
           if (googleData) {
             const googleDataObj = JSON.parse(googleData);
-            
+
             variables.forEach((variable) => {
               if (!variable || typeof variable !== 'object') return;
-      
+
               if (variable.name === "email" && googleDataObj.email) {
                 variable.value = googleDataObj.email;
               }
@@ -198,18 +198,18 @@ export default function Preview() {
               }
             });
           }
-      
+
           // Process Image Data
           if (imageData) {
             variables.forEach((variable) => {
               if (!variable || typeof variable !== 'object') return;
-      
+
               if (variable.name === "picture") {
                 variable.value = imageData;
               }
             });
           }
-      
+
           newLayout.layoutJSON.card.variables = variables;
         } catch (error) {
           console.error("Error processing user data:", error);
@@ -230,7 +230,8 @@ export default function Preview() {
     socialPlatform?: string;
     socialProfile?: string;
     webUrl?: string;
-    selected_variables:[]
+    selected_variables: [];
+    attachmentUrl?: string;
   }) {
     console.log("action clicked", action);
     const btnAction = action.url?.split("://")[1].split("?")[0];
@@ -240,6 +241,26 @@ export default function Preview() {
       const mailtoLink = `mailto:${action.email}`;
       window.location.href = mailtoLink;
       return;
+    }
+    if(btnAction==="share"){
+     
+      
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "Check this out!",
+            text: "Here's something interesting for you.",
+            url: action.attachmentUrl 
+              ? action.attachmentUrl // Share `attachmentUrl` if available
+              : `${window.location.origin}/${shortId}`, // Fallback to the constructed URL
+          });
+          console.log("Content shared successfully!");
+        } catch (error) {
+          console.error("Error sharing:", error);
+        }
+      } else {
+        alert("Web Share API is not supported in your browser.");
+      }
     }
     if (btnAction === "phoneNumber" && action.phone) {
       // Check if device is mobile
@@ -266,51 +287,51 @@ export default function Preview() {
       window.open(redirectUrl, '_blank');
       return;
     }
-    if(btnAction === "camera"){
+    if (btnAction === "camera") {
       navigate(`/${shortId}/camera_screen`);
     }
 
     if (btnAction === "submit") {
       console.log(action.selectedVariables);
-      
+
       const params = new URLSearchParams(action.url.split("?")[1]);
       const isCheckboxChecked = params.get("consent_checkbox") === "true";
-    
+
       // Dynamic validation based on selected variables
       const missingVariables = action.selected_variables.filter(variable => {
         // Skip validation for consent checkbox
         if (variable === "consent_checkbox") return false;
-        
+
         const value = params.get(variable);
         // Check if value is undefined, null, or empty string
         return !value || value.trim() === '';
       });
-    
+
       // if (missingVariables.length > 0) {
       //   alert(`Please fill in the following required fields: ${missingVariables.join(', ')}`);
       //   return;
       // }
-    
+
       if (!isCheckboxChecked) {
         alert("Please agree to the terms and conditions first");
         return;
       }
-    
+
       // Prepare otherFields object for additional variables
       const otherFields = {};
-    
+
       // Add any extra variables from action.selected_variables to otherFields
       action.selected_variables.forEach(variable => {
         const value = params.get(variable);
-        if (value && 
-            !['userName', 'email', 'phone', 'consent_checkbox'].includes(variable)) {
-              console.log("variable,", variable);
-              
+        if (value &&
+          !['userName', 'email', 'phone', 'consent_checkbox'].includes(variable)) {
+          console.log("variable,", variable);
+
           otherFields[variable] = value;
         }
       });
       console.log(otherFields);
-      
+
       const formData = {
         name: params.get("userName"),
         email: params.get("email") || '',
@@ -321,10 +342,10 @@ export default function Preview() {
         otherFields: otherFields
       };
       console.log("formData", formData);
-      
+
       await submitContactForm(formData);
       const screenName = params.get("screen_name");
-      if(screenName){
+      if (screenName) {
         navigate(`/campaign/${campaignId}/${screenName}`)
       }
       updateInterestedProduct(campaignId);
@@ -360,7 +381,7 @@ export default function Preview() {
       const foundLayout = layouts.find(
         (ele) => ele.name === screenIdentifier || ele.id === screenIdentifier
       );
-      if (foundLayout || screenIdentifier==="camera_screen") {
+      if (foundLayout || screenIdentifier === "camera_screen") {
         navigate(`/${shortId}/${screenIdentifier}`);
       } else {
         console.log(`screen ${screenIdentifier} not found`);
@@ -413,7 +434,7 @@ export default function Preview() {
         }
       }
     }
-    else if(screen==="camera_screen"){
+    else if (screen === "camera_screen") {
       setIsCameraScreen(true)
     }
   }, [screen, campaignId]);
@@ -475,8 +496,8 @@ export default function Preview() {
     setShowPopup(false);
   };
 
-  if(isCameraScreen){
-    return (<CameraComponent/>)
+  if (isCameraScreen) {
+    return (<CameraComponent />)
   }
   return (
 
@@ -553,13 +574,13 @@ export default function Preview() {
                 </div>
               )}
               <div className={styles.cardWrapper}>
-                {layout?.layoutJSON!==undefined ? (
+                {layout?.layoutJSON !== undefined ? (
                   // <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
                   <DivkitRenderer
                     onClick={handleBtnClick}
                     divkitJson={layout.layoutJSON}
                   />
-                ):(<DivkitRenderer  onClick={handleBtnClick}
+                ) : (<DivkitRenderer onClick={handleBtnClick}
                   divkitJson={layout} />)}
               </div>
             </div>

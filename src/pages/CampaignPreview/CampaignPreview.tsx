@@ -332,6 +332,7 @@ export default function CampaignPreview() {
     socialPlatform?: string;
     socialProfile?: string;
     webUrl?: string;
+    attachmentUrl?: string;
     selected_variables: []
   }) {
     console.log("action clicked", action);
@@ -343,6 +344,22 @@ export default function CampaignPreview() {
       window.location.href = mailtoLink;
       return;
     }
+    if(btnAction==="share"){
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "Check this out!",
+            text: "Here's something interesting for you.",
+            url: action.attachmentUrl? action.attachmentUrl: `${window.location.origin}/campaign/${campaignId}`, // The URL to share
+          });
+        } catch (error) {
+          console.error("Error sharing:", error);
+        }
+      } else {
+        alert("Web Share API is not supported in your browser.");
+      }
+    }
+
     if (btnAction === "phoneNumber" && action.phone) {
       // Check if device is mobile
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
