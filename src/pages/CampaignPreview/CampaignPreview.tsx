@@ -405,14 +405,6 @@ export default function CampaignPreview() {
   }
   return (
     <div>
-
-      <Helmet>
-        <meta property="og:title" content={metaData.title} />
-        <meta property="og:description" content={metaData.description} />
-        <meta property="og:image" content={metaData.image} />
-        <title>{metaData.title}</title>
-      </Helmet>
-
           <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
               {showPopup && (
