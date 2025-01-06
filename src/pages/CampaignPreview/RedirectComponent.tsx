@@ -34,8 +34,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
           return;
         } else {
           console.log("Other platform detected in Instagram WebView.");
-          // window.location.replace(universalLink);
-          // return;
+          return;
         }
       } else {
         console.log("Non-Instagram browser detected.");
@@ -52,8 +51,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
           return;
         } else {
           console.log("Default fallback.");
-          // window.location.replace(universalLink);
-          // return;
+          return;
         }
       }
     };
