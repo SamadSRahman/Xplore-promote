@@ -15,7 +15,7 @@ import googleLogo from "../../assets/components/google-icon.webp";
 import CameraComponent from "../../customComponent/CameraComponent/CameraComponent";
 import { uid } from "uid";
 import { Helmet } from "react-helmet";
-import RidirectComponent from "./RedirectComponent"
+import RidirectComponent from "../../components/RedirectComponent"
 
 
 export default function CampaignPreview() {
@@ -28,20 +28,11 @@ export default function CampaignPreview() {
   // const [deviceType, setDeviceType] = useState("");
   // const [redirectURL, setRedirectURL] = useState("");
   const [isCameraScreen, setIsCameraScreen] = useState(false);
-  const { metaData, getCampaignById, getmetadataCampaignById } = useCampaign();
+  const { getCampaignById } = useCampaign();
 
   useEffect(() => {
     getCampaignById(campaignId, screen);
   }, [campaignId]);
-
-  useEffect(() => {
-    getmetadataCampaignById(campaignId);
-  }, [campaignId]);
-
-  useEffect(() => {
-    console.log("metaData", metaData);
-  }, [metaData])
-
 
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
 
@@ -70,211 +61,6 @@ export default function CampaignPreview() {
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
-  // const androidIntent = `intent:${playStoreUrl}#Intent;package=com.android.chrome;end`; 
-  // const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-
-  /* useEffect(() => {
-
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    // Detect Facebook/Instagram in-app browsers
-    const isInAppBrowser = /(FBAN|FBAV|Instagram|Twitter|LinkedIn|WhatsApp|Snapchat|Pinterest|Messenger)/i.test(userAgent);
-    console.log("userAgent", userAgent);
-
-    // Function to extract Android version from the user agent string
-    const getAndroidVersion = (userAgent: any) => {
-      const match = userAgent.match(/Android (\d+(\.\d+)+)/);
-      return match ? match[1] : null;
-    };
-
-    // Function to extract iOS version from the user agent string
-    const getIosVersion = (userAgent: any) => {
-      const match = userAgent.match(/OS (\d+(_\d+)+)/);
-      console.log("version", match ? match[1].replace(/_/g, '.') : null);
-      // alert(`version: ${match ? match[1].replace(/_/g, '.') : null}`);
-      return match ? match[1].replace(/_/g, '.') : null;
-    };
-
-
-    if (isInAppBrowser) {
-      // Handle redirection for in-app browsers in social media
-       if (/android/i.test(userAgent)) {
-        alert("android device");
-        const androidVersion = getAndroidVersion(userAgent);
-        if (androidVersion && parseFloat(androidVersion) >= 12) {
-          // alert("android")
-          setDeviceType("android");
-          setRedirectURL(androidIntent);
-          alert("android device")
-          
-           window.location.replace(androidIntent);
-        
-         }
-        else {
-          setDeviceType("other");
-        }
-      } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-        const iosVersion = getIosVersion(userAgent);
-        if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-          setDeviceType("ios");
-          setRedirectURL(appClipUrl);
-
-        }
-        else {
-          setDeviceType("other");  // iOS version < 16.6
-        }
-      } else {
-        console.log('In-app browser detected on an unsupported platform.');
-      }
-    }
-    else { // Non Social media platforms
-      if (/android/i.test(userAgent)) {
-        const androidVersion = getAndroidVersion(userAgent);
-        if (androidVersion && parseFloat(androidVersion) >= 12) {
-          // alert("android")
-          setDeviceType("android");
-          setRedirectURL(androidIntent);
-          setTimeout(() => {
-            window.location.replace(androidIntent);
-          }, 100);
-        }
-        else {
-          // alert("Version not found ")
-          setDeviceType("other");  // Android version < 12
-        }
-      }
-      else if (/iPad|iPhone|iPod/.test(userAgent)) {
-        const iosVersion = getIosVersion(userAgent);
-        if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-          setDeviceType("ios");
-          setRedirectURL(appClipUrl);
-          setTimeout(() => {
-            window.location.replace(appClipUrl);
-          }, 100);
-        }
-        else {
-          setDeviceType("other");  // iOS version < 16.6
-        }
-
-      } else {
-        //Web view fallback
-        setDeviceType("other");
-      }
-    }
-
-  });
-  */
-
-  // //REDIRECTION FOR ALL PLATFORMS
-  // useEffect(() => {
-  //   const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-  //   console.log("User Agent:", userAgent);
-  
-  //   // Detect in-app browsers for social media
-  //   const isInAppBrowser = /(FBAN|FBAV|Instagram|Twitter|LinkedIn|WhatsApp|Snapchat|Pinterest|Messenger)/i.test(userAgent);
-  
-  //   // Extract Android version from user agent
-  //   const getAndroidVersion = (userAgent: string): string | null => {
-  //     const match = userAgent.match(/Android (\d+(\.\d+)+)/);
-  //     return match ? match[1] : null;
-  //   };
-  
-  //   // Extract iOS version from user agent
-  //   const getIosVersion = (userAgent: string): string | null => {
-  //     const match = userAgent.match(/OS (\d+(_\d+)+)/);
-  //     return match ? match[1].replace(/_/g, ".") : null;
-  //   };
-
-  
-  //   if (isInAppBrowser) {
-  //     // Handle redirection for social media in-app browsers
-  //     if (/android/i.test(userAgent)) {
-  //             const androidVersion = getAndroidVersion(userAgent);
-  //             if (androidVersion && parseFloat(androidVersion) >= 12) {
-  //               setDeviceType("android");
-  //               setRedirectURL(playStoreUrl);
-  //                window.location.replace(androidIntent);
-
-  //             } else {
-  //               setDeviceType("other");
-  //             }
-  //     } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-  //             const iosVersion = getIosVersion(userAgent);
-  //             if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-  //               setDeviceType("ios");
-  //               setRedirectURL(appClipUrl);
-  //               window.location.replace(appClipUrl);
-  //             } else {
-  //               setDeviceType("other"); // iOS version < 16.6
-  //             }
-  //     } else {
-  //               console.log("In-app browser detected on an unsupported platform.");
-  //     }
-  //   } else {
-  //     // Handle redirection for non-social media platforms
-  //     if (/android/i.test(userAgent)) {
-  //             const androidVersion = getAndroidVersion(userAgent);
-  //             if (androidVersion && parseFloat(androidVersion) >= 12) {
-  //               setDeviceType("android");
-  //               setRedirectURL(androidIntent);
-  //                 window.location.replace(androidIntent);
-  //             } else {
-  //               setDeviceType("other"); // Android version < 12
-  //             }
-  //     } else if (/iPad|iPhone|iPod/.test(userAgent)) {
-  //             const iosVersion = getIosVersion(userAgent);
-  //             if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-  //               setDeviceType("ios");
-  //               setRedirectURL(appClipUrl);
-  //               setTimeout(() => {
-  //                 window.location.replace(appClipUrl);
-  //               }, 100);
-  //             } else {
-  //               setDeviceType("other"); // iOS version < 16.6
-  //             }
-  //     } else {
-  //         // Fallback for unsupported platforms
-  //         setDeviceType("other");
-  //     }
-  //   }
-  // }, []);
-  
-
-  // useEffect(() => {
-   
-  //   const getAndroidVersion = (userAgent: string): string | null => {
-  //     const match = userAgent.match(/Android (\d+(\.\d+)+)/);
-  //     return match ? match[1] : null;
-  //   };
-  
-  //   // Extract iOS version from user agent
-  //   const getIosVersion = (userAgent: string): string | null => {
-  //     const match = userAgent.match(/OS (\d+(_\d+)+)/);
-  //     return match ? match[1].replace(/_/g, ".") : null;
-  //   };
-    
-  //   if (/android/i.test(userAgent)) {
-  //                 const androidVersion = getAndroidVersion(userAgent);
-  //                 if (androidVersion && parseFloat(androidVersion) >= 12) {
-  //                   setDeviceType("android"); 
-  //                 } else {
-  //                   setDeviceType("other");
-  //                 }
-  //         } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-  //                 const iosVersion = getIosVersion(userAgent);
-  //                 if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-  //                   setDeviceType("ios");
-  //                 } else {
-  //                   setDeviceType("other"); // iOS version < 16.6
-  //                 }
-  //         } else {
-  //                   console.log("In-app browser detected on an unsupported platform.");
-  //                   setDeviceType("other"); // iOS version < 16.6
-  //         }
-
-  //         console.log("deviceType", deviceType);
-
-  // }, [userAgent,deviceType])
-
 
   useEffect(() => {
     const deviceId = localStorage.getItem("deviceId");
