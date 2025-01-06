@@ -66,11 +66,11 @@ export default function useCampaign() {
             `${API_BASE_URL}/v1/viewLayout/${id}`
         );
 
-        console.log('response from line 77', response.data.data.campaign.initialLayout.campaign);
+        console.log('response from line 77', response.data.campaign.initialLayout.campaign);
         setMetaData({
-            title: response.data.data.campaign.initialLayout.campaign.name,
-            description: response.data.data.campaign.initialLayout.campaign.description,
-            image: response.data.data.campaign.initialLayout.campaign.images[0].url,
+            title: response.data.campaign.initialLayout.campaign.name,
+            description: response.data.campaign.initialLayout.campaign.description,
+            image: response.data.campaign.initialLayout.campaign.images[0].url,
           });
         
        } catch (error) {
