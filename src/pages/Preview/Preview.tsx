@@ -18,7 +18,7 @@ import useCampaign from "../../lib/utils/useCampaign";
 export default function Preview() {
   const { shortId } = useParams();
   const { metaData, getmetadataCampaignById } = useCampaign();
-
+  const [isMobileDevice, setIsMobileDevice] = useState(false)
   useEffect(() => {
     if (shortId) {
       getmetadataCampaignById(shortId);
@@ -446,7 +446,8 @@ export default function Preview() {
         <link rel="icon" href={metaData.image} />
       </Helmet>
 
-       <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
+    
+         {!isMobileDevice &&  <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
               {showPopup && (
                 <div className={styles.popupOverlay}>
@@ -502,21 +503,22 @@ export default function Preview() {
                 </div>
               )}
               <div className={styles.cardWrapper}>
-                {layout?.layoutJSON !== undefined ? (
+                {layout?.layoutJSON && (
                   // <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
                   <DivkitRenderer
                     onClick={handleBtnClick}
                     divkitJson={layout.layoutJSON}
                   />
-                ) : (<DivkitRenderer onClick={handleBtnClick}
-                  divkitJson={layout} />)}
+                )}
               </div>
             </div>
-       </GoogleOAuthProvider>
+          </GoogleOAuthProvider>}
 
-     <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
+       <RidirectComponent setIsMobileDevice={setIsMobileDevice} universalLink={appClipUrl} playStoreLink={playStoreUrl} />
 
-    </div>
+  </div>
+
+   
 
   )
 }

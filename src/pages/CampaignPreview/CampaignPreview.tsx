@@ -24,8 +24,7 @@ export default function CampaignPreview() {
   const { campaignId, screen } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
-  // const [deviceType, setDeviceType] = useState("");
-  // const [redirectURL, setRedirectURL] = useState("");
+  const [isMobileDevice, setIsMobileDevice] = useState(false)
   const [isCameraScreen, setIsCameraScreen] = useState(false);
   const { getCampaignById } = useCampaign();
 
@@ -421,7 +420,7 @@ export default function CampaignPreview() {
   }
   return (
     <div>
-          <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
+         {!isMobileDevice &&  <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
               {showPopup && (
                 <div className={styles.popupOverlay}>
@@ -486,9 +485,9 @@ export default function CampaignPreview() {
                 )}
               </div>
             </div>
-          </GoogleOAuthProvider>
+          </GoogleOAuthProvider>}
 
-       <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
+       <RidirectComponent setIsMobileDevice={setIsMobileDevice} universalLink={appClipUrl} playStoreLink={playStoreUrl} />
 
   </div>
 

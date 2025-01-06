@@ -5,9 +5,10 @@ import icon from '../../assets/xplore-logo.svg'
 interface RedirectComponentProps {
   universalLink: string;
   playStoreLink: string;
+  setIsMobileDevice: (isMobile: boolean) => void;
 }
 
-const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, playStoreLink }) => {
+const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, playStoreLink, setIsMobileDevice }) => {
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
     const instagramWebView = userAgent.includes("Instagram");
@@ -16,6 +17,13 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
     const twitterView = userAgent.includes("Twitter");
 
     const redirect = () => {
+      if (/iPhone|iPad|iPod|android/i.test(userAgent)) {
+        // Device identified as mobile
+        setIsMobileDevice(true);
+      } else {
+        // Device identified as non-mobile
+        setIsMobileDevice(false);
+      }
       if (instagramWebView || fbView || linkedinWebView || twitterView) {
         console.log("Instagram WebView detected.");
 
