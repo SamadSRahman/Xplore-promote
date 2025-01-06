@@ -26,15 +26,11 @@ export default function Preview() {
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
 
-  const { metaData, getCampaignById, getmetadataCampaignById } = useCampaign();
+  const { metaData, getmetadataCampaignById } = useCampaign();
 
   useEffect(() => {
-    getCampaignById(campaignId, screen);
-  }, [campaignId]);
-
-  useEffect(() => {
-    getmetadataCampaignById(campaignId);
-  }, [campaignId]);
+    getmetadataCampaignById(shortId);
+  }, [shortId]);
 
   useEffect(() => {
     console.log("metaData", metaData);
