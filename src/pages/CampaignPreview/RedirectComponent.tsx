@@ -34,21 +34,25 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
           return;
         } else {
           console.log("Other platform detected in Instagram WebView.");
-          window.location.replace(universalLink);
+          // window.location.replace(universalLink);
           return;
         }
       } else {
         console.log("Non-Instagram browser detected.");
         if (/iPhone|iPad|iPod/i.test(userAgent)) {
           console.log("iOS device outside Instagram.");
-          window.location.replace(universalLink);
+          const iosInstruction = document.getElementById("ios-instruction");
+          if (iosInstruction) {
+            iosInstruction.style.display = "block";
+          }
+          window.stop();
           return;
         } else if (/android/i.test(userAgent)) {
           const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.chrome;end`;           window.location.replace(androidIntent);
           return;
         } else {
           console.log("Default fallback.");
-          window.location.replace(universalLink);
+          // window.location.replace(universalLink);
           return;
         }
       }
@@ -59,7 +63,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
   }, [universalLink, playStoreLink]);
 
   return (
-    <div>
+    <div id="ios-instruction">
        <div className={styles.redirectContainer} >
             <div className={styles.redirectContent}>
                <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />

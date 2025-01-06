@@ -589,7 +589,6 @@ export default function CampaignPreview() {
     return (<CameraComponent />)
   }
   return (
-
     <div>
 
       <Helmet>
@@ -599,9 +598,9 @@ export default function CampaignPreview() {
         <title>{metaData.title}</title>
       </Helmet>
 
-          {/* Include the RedirectComponent */}
+       {/* Include the RedirectComponent */}
         
-           <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
+         <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
 
           <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
