@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import EditorPage from './pages/EditorPage/EditorPage.tsx';
@@ -12,45 +12,42 @@ import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
 import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
-import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx'
-import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx'
-import Preview from './pages/Preview/Preview.tsx'
-import AdminLogin from './pages/AdminLogin/AdminLogin.jsx'
-import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx'
-import DeleteInstructions from './pages/DeleteInstructions/DeleteInstructions.jsx'
+import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx';
+import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx';
+import Preview from './pages/Preview/Preview.tsx';
+import AdminLogin from './pages/AdminLogin/AdminLogin.jsx';
+import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx';
+import DeleteInstructions from './pages/DeleteInstructions/DeleteInstructions.jsx';
 
-export default function App() {
-  const [isMobile, setIsMobile] = React.useState(false);
-  // const { data, getData } = useVisitorData(
-  //   { extendedResult: true },
-  //   { immediate: true }
-  // );
+const App = () => {
 
-  React.useEffect(() => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
     const checkMobile = () => {
       const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const path = window.location.pathname;
-  
+
       // Check if the current path matches the specified routes
       const isCampaignPreview = path.startsWith('/editor/') ||
         path.includes("createCampaign") ||
         path.includes("campaigns") ||
         path.includes("campaignAnalytics") ||
         path.includes("publish") ||
-          path.includes("profileDesign")||
-          path==="/"
-  
+        path.includes("profileDesign") ||
+        path === "/";
+
       setIsMobile(mobile && isCampaignPreview);
     };
-  
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-  
 
   return (
     <div>
+    
       {isMobile ? (
         <div style={{
           height: '100vh',
@@ -85,15 +82,14 @@ export default function App() {
               <Route path='/editor/:campaignId/:page' element={<EditorPage />} />
 
               {/* Admin section */}
-
               <Route path='/admin' element={<AdminLogin />} />
               <Route path='/admin/homepage' element={<AdminHomepage />} />
-
             </Routes>
           </BrowserRouter>
         </RecoilRoot>
       )}
     </div>
   );
-}
+};
 
+export default App;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from "react-router-dom";
 import usePreview from "../../lib/utils/useShortUrl";
 import { blankBackgroundJSON } from "../../lib/utils/splashScreenData";
@@ -9,23 +10,28 @@ import styles from '../CampaignPreview/CampaignPreview.module.css'
 import DivkitRenderer from "../../lib/components/PreviewCard/DivkitRenderer";
 import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
-import icon from '../../assets/xplore-logo.svg'
 import { uid } from "uid";
+import RidirectComponent from "../CampaignPreview/RedirectComponent"
+import useCampaign from "../../lib/utils/useCampaign";
 
 
 export default function Preview() {
   const { shortId } = useParams();
-  const { getLayoutByShortId, layouts, campaignId } = usePreview();
+  const { metaData, getmetadataCampaignById } = useCampaign();
 
+  useEffect(() => {
+    if (shortId) {
+      getmetadataCampaignById(shortId);
+    }
+  }, [shortId]);
+
+  const { getLayoutByShortId, layouts, campaignId} = usePreview();
   const navigate = useNavigate();
   const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
   const { screen } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
-  const [deviceType, setDeviceType] = useState("");
-  const [redirectURL, setRedirectURL] = useState("");
-  const [isCameraScreen, setIsCameraScreen] = useState(false)
-
+  const [isCameraScreen, setIsCameraScreen] = useState(false);
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}`;
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&launch=true`;
@@ -35,8 +41,6 @@ export default function Preview() {
     { immediate: true }
   );
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
-
-
 
   useEffect(() => {
     const deviceId = localStorage.getItem("deviceId");
@@ -70,72 +74,6 @@ export default function Preview() {
   }, []);
 
 
-
-  useEffect(() => {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    console.log("userAgent", userAgent);
-
-    // Function to extract Android version from the user agent string
-    const getAndroidVersion = (userAgent: any) => {
-      const match = userAgent.match(/Android (\d+(\.\d+)+)/);
-      return match ? match[1] : null;
-    };
-
-    // Function to extract iOS version from the user agent string
-    const getIosVersion = (userAgent: any) => {
-      const match = userAgent.match(/OS (\d+(_\d+)+)/);
-      console.log("version", match ? match[1].replace(/_/g, '.') : null);
-      // alert(`version: ${match ? match[1].replace(/_/g, '.') : null}`);
-
-      return match ? match[1].replace(/_/g, '.') : null;
-    };
-
-    // Check Android version
-    if (/android/i.test(userAgent)) {
-      const androidVersion = getAndroidVersion(userAgent);
-      if (androidVersion && parseFloat(androidVersion) >= 12) {
-        // alert("android")
-        setDeviceType("android");
-        setRedirectURL(playStoreUrl);
-        setTimeout(() => {
-          window.location.href = playStoreUrl;
-        }, 1000);
-      }
-      else if (androidVersion && parseFloat(androidVersion) < 12) {
-        // alert("Version ")
-      }
-      else {
-        // alert("Version not found ")
-        setDeviceType("other");  // Android version < 12
-      }
-    }
-    // Check iOS version
-    else if (/iPad|iPhone|iPod/.test(userAgent)) {
-      const iosVersion = getIosVersion(userAgent);
-      if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-        setDeviceType("ios");
-        setRedirectURL(appClipUrl);
-        setTimeout(() => {
-          window.location.href = appClipUrl;
-        }, 100);
-      } else {
-        setDeviceType("other");  // iOS version < 16.6
-      }
-    } else {
-      setDeviceType("other");
-    }
-  });
-
-
-  useEffect(() => {
-    console.log("deviceType", deviceType, redirectURL);
-    // alert(`device type: ${deviceType}` )
-  }, [deviceType])
-
-  const handleRedirect = () => {
-    window.location.href = redirectURL;
-  };
-
   useEffect(() => {
     if (data?.visitorId) localStorage.setItem("visitorId", data.visitorId);
     if (data?.device) localStorage.setItem("deviceId", data.device);
@@ -144,9 +82,7 @@ export default function Preview() {
     }
   }, [data]);
 
-  // if (deviceType === "ios"|| deviceType === "android") {
-  //   return
-  // }
+
 
   useEffect(() => {
     if (!layouts.length) return;
@@ -499,26 +435,18 @@ export default function Preview() {
   if (isCameraScreen) {
     return (<CameraComponent />)
   }
+
   return (
-
     <div>
-      {deviceType === "ios" || deviceType === "android" ?
-        (
-          <div className={styles.redirectContainer}>
-            <div className={styles.redirectContent}>
+     <Helmet>
+        <meta property="og:title" content={metaData.title} />
+        <meta property="og:description" content={metaData.description} />
+        <meta property="og:image" content={metaData.image} />
+        <title>{metaData.title}</title>
+        <link rel="icon" href={metaData.image} />
+      </Helmet>
 
-              <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
-
-              <button
-                onClick={handleRedirect}
-                className={styles.redirectButton}
-              >
-                Continue
-              </button>
-            </div>
-          </div>
-        ) : (
-          <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
+       <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
               {showPopup && (
                 <div className={styles.popupOverlay}>
@@ -584,16 +512,11 @@ export default function Preview() {
                   divkitJson={layout} />)}
               </div>
             </div>
-          </GoogleOAuthProvider>
-        )
+       </GoogleOAuthProvider>
 
-      }
+     <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
 
     </div>
-
-
-
-
 
   )
 }
