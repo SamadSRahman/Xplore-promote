@@ -23,12 +23,7 @@ export default function Preview() {
     if (shortId) {
       getmetadataCampaignById(shortId);
     }
-  }, [shortId, getmetadataCampaignById]);
-
-  useEffect(() => {
-    console.log("metaData", metaData);
-  }, [metaData]);
-
+  }, [shortId]);
 
   const { getLayoutByShortId, layouts, campaignId} = usePreview();
   const navigate = useNavigate();
