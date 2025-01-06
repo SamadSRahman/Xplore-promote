@@ -427,6 +427,7 @@ export default function Preview() {
             <meta property="og:description" content={metaData.description} />
             <meta property="og:image" content={metaData.image} />
             <title>{metaData.title}</title>
+            <link rel="icon" href={metaData.image} />
           </Helmet>
 
        <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
