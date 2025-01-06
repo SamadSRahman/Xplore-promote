@@ -25,7 +25,7 @@ export default function CampaignPreview() {
   const { campaignId, screen } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
-  const [deviceType, setDeviceType] = useState("");
+  // const [deviceType, setDeviceType] = useState("");
   // const [redirectURL, setRedirectURL] = useState("");
   const [isCameraScreen, setIsCameraScreen] = useState(false);
   const { metaData, getCampaignById, getmetadataCampaignById } = useCampaign();
@@ -71,7 +71,7 @@ export default function CampaignPreview() {
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
   // const androidIntent = `intent:${playStoreUrl}#Intent;package=com.android.chrome;end`; 
-  const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+  // const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
 
   /* useEffect(() => {
 
@@ -239,41 +239,41 @@ export default function CampaignPreview() {
   // }, []);
   
 
-  useEffect(() => {
+  // useEffect(() => {
    
-    const getAndroidVersion = (userAgent: string): string | null => {
-      const match = userAgent.match(/Android (\d+(\.\d+)+)/);
-      return match ? match[1] : null;
-    };
+  //   const getAndroidVersion = (userAgent: string): string | null => {
+  //     const match = userAgent.match(/Android (\d+(\.\d+)+)/);
+  //     return match ? match[1] : null;
+  //   };
   
-    // Extract iOS version from user agent
-    const getIosVersion = (userAgent: string): string | null => {
-      const match = userAgent.match(/OS (\d+(_\d+)+)/);
-      return match ? match[1].replace(/_/g, ".") : null;
-    };
+  //   // Extract iOS version from user agent
+  //   const getIosVersion = (userAgent: string): string | null => {
+  //     const match = userAgent.match(/OS (\d+(_\d+)+)/);
+  //     return match ? match[1].replace(/_/g, ".") : null;
+  //   };
     
-    if (/android/i.test(userAgent)) {
-                  const androidVersion = getAndroidVersion(userAgent);
-                  if (androidVersion && parseFloat(androidVersion) >= 12) {
-                    setDeviceType("android"); 
-                  } else {
-                    setDeviceType("other");
-                  }
-          } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-                  const iosVersion = getIosVersion(userAgent);
-                  if (iosVersion && parseFloat(iosVersion) >= 16.6) {
-                    setDeviceType("ios");
-                  } else {
-                    setDeviceType("other"); // iOS version < 16.6
-                  }
-          } else {
-                    console.log("In-app browser detected on an unsupported platform.");
-                    setDeviceType("other"); // iOS version < 16.6
-          }
+  //   if (/android/i.test(userAgent)) {
+  //                 const androidVersion = getAndroidVersion(userAgent);
+  //                 if (androidVersion && parseFloat(androidVersion) >= 12) {
+  //                   setDeviceType("android"); 
+  //                 } else {
+  //                   setDeviceType("other");
+  //                 }
+  //         } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+  //                 const iosVersion = getIosVersion(userAgent);
+  //                 if (iosVersion && parseFloat(iosVersion) >= 16.6) {
+  //                   setDeviceType("ios");
+  //                 } else {
+  //                   setDeviceType("other"); // iOS version < 16.6
+  //                 }
+  //         } else {
+  //                   console.log("In-app browser detected on an unsupported platform.");
+  //                   setDeviceType("other"); // iOS version < 16.6
+  //         }
 
-          console.log("deviceType", deviceType);
+  //         console.log("deviceType", deviceType);
 
-  }, [userAgent,deviceType])
+  // }, [userAgent,deviceType])
 
 
   useEffect(() => {
@@ -627,11 +627,6 @@ export default function CampaignPreview() {
         <title>{metaData.title}</title>
       </Helmet>
 
-      { 
-        deviceType === "ios" || deviceType === "android" ?
-        (
-         <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
-          ) : (
           <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
               {showPopup && (
@@ -698,9 +693,8 @@ export default function CampaignPreview() {
               </div>
             </div>
           </GoogleOAuthProvider>
-        )
 
-      } 
+       <RidirectComponent universalLink={appClipUrl} playStoreLink={playStoreUrl} />
 
   </div>
 

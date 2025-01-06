@@ -481,7 +481,8 @@ export default function Preview() {
   return (
 
     <div>
-      {deviceType === "ios" || deviceType === "android" ?
+      {
+          deviceType === "ios" || deviceType === "android" ?
         (
           <div className={styles.redirectContainer}>
             <div className={styles.redirectContent}>
