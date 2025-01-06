@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { RecoilRoot } from 'recoil';
-import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import EditorPage from './pages/EditorPage/EditorPage.tsx';
 import ThemeSelection from './pages/ThemeSelection/ThemeSelection.jsx';
 import Campaigns from './pages/Campaigns/Campaigns.jsx';
@@ -19,21 +18,8 @@ import Preview from './pages/Preview/Preview.tsx';
 import AdminLogin from './pages/AdminLogin/AdminLogin.jsx';
 import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx';
 import DeleteInstructions from './pages/DeleteInstructions/DeleteInstructions.jsx';
-import useCampaign from './lib/utils/useCampaign.jsx';
 
 const App = () => {
-  const { shortId } = useParams();
-  const { metaData, getmetadataCampaignById } = useCampaign();
-
-  useEffect(() => {
-    if (shortId) {
-      getmetadataCampaignById(shortId);
-    }
-  }, [shortId, getmetadataCampaignById]);
-
-  useEffect(() => {
-    console.log("metaData", metaData);
-  }, [metaData]);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -61,14 +47,7 @@ const App = () => {
 
   return (
     <div>
-      <Helmet>
-        <meta property="og:title" content={metaData.title} />
-        <meta property="og:description" content={metaData.description} />
-        <meta property="og:image" content={metaData.image} />
-        <title>{metaData.title}</title>
-        <link rel="icon" href={metaData.image} />
-      </Helmet>
-
+    
       {isMobile ? (
         <div style={{
           height: '100vh',

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from "react-router-dom";
 import usePreview from "../../lib/utils/useShortUrl";
 import { blankBackgroundJSON } from "../../lib/utils/splashScreenData";
@@ -11,21 +12,31 @@ import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
 import { uid } from "uid";
 import RidirectComponent from "../CampaignPreview/RedirectComponent"
-
+import useCampaign from "../../lib/utils/useCampaign";
 
 
 export default function Preview() {
   const { shortId } = useParams();
-  const { getLayoutByShortId, layouts, campaignId} = usePreview();
+  const { metaData, getmetadataCampaignById } = useCampaign();
 
+  useEffect(() => {
+    if (shortId) {
+      getmetadataCampaignById(shortId);
+    }
+  }, [shortId, getmetadataCampaignById]);
+
+  useEffect(() => {
+    console.log("metaData", metaData);
+  }, [metaData]);
+
+
+  const { getLayoutByShortId, layouts, campaignId} = usePreview();
   const navigate = useNavigate();
   const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
   const {screen} = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
-
-
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}`;
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&launch=true`;
@@ -35,8 +46,6 @@ export default function Preview() {
     { immediate: true }
   );
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
-
-
 
   useEffect(() => {
     const deviceId = localStorage.getItem("deviceId");
@@ -413,8 +422,13 @@ export default function Preview() {
 
   return (
     <div>
-
-      
+     <Helmet>
+        <meta property="og:title" content={metaData.title} />
+        <meta property="og:description" content={metaData.description} />
+        <meta property="og:image" content={metaData.image} />
+        <title>{metaData.title}</title>
+        <link rel="icon" href={metaData.image} />
+      </Helmet>
 
        <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
