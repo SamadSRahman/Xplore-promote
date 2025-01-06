@@ -18,8 +18,23 @@ import Preview from './pages/Preview/Preview.tsx'
 import AdminLogin from './pages/AdminLogin/AdminLogin.jsx'
 import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx'
 import DeleteInstructions from './pages/DeleteInstructions/DeleteInstructions.jsx'
+import useCampaign from './lib/utils/useCampaign.jsx';
+import { Helmet } from "react-helmet";
+import { useParams } from "react-router-dom";
 
 export default function App() {
+
+  const { shortId } = useParams();
+  const { metaData, getmetadataCampaignById } = useCampaign();
+
+  useEffect(() => {
+    getmetadataCampaignById(shortId);
+  }, [shortId]);
+
+  useEffect(() => {
+    console.log("metaData", metaData);
+  }, [metaData])
+
   const [isMobile, setIsMobile] = React.useState(false);
   // const { data, getData } = useVisitorData(
   //   { extendedResult: true },
@@ -49,8 +64,18 @@ export default function App() {
   }, []);
   
 
+
   return (
     <div>
+
+        <Helmet>
+        <meta property="og:title" content={metaData.title} />
+        <meta property="og:description" content={metaData.description} />
+        <meta property="og:image" content={metaData.image} />
+        <title>{metaData.title}</title>
+        <link rel="icon" href={metaData.image} />
+         </Helmet>
+
       {isMobile ? (
         <div style={{
           height: '100vh',

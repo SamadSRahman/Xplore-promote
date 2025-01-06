@@ -11,8 +11,7 @@ import useEndUser from "../../lib/utils/useEndUser";
 import googleLogo from "../../assets/components/google-icon.webp";
 import { uid } from "uid";
 import RidirectComponent from "../CampaignPreview/RedirectComponent"
-import { Helmet } from "react-helmet";
-import useCampaign from "../../lib/utils/useCampaign";
+
 
 
 export default function Preview() {
@@ -26,15 +25,7 @@ export default function Preview() {
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
 
-  const { metaData, getmetadataCampaignById } = useCampaign();
 
-  useEffect(() => {
-    getmetadataCampaignById(shortId);
-  }, [shortId]);
-
-  useEffect(() => {
-    console.log("metaData", metaData);
-  }, [metaData])
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}`;
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&launch=true`;
@@ -422,13 +413,6 @@ export default function Preview() {
 
   return (
     <div>
-          <Helmet>
-            <meta property="og:title" content={metaData.title} />
-            <meta property="og:description" content={metaData.description} />
-            <meta property="og:image" content={metaData.image} />
-            <title>{metaData.title}</title>
-            <link rel="icon" href={metaData.image} />
-          </Helmet>
 
        <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
