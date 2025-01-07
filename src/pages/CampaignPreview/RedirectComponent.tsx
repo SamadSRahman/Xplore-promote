@@ -95,9 +95,12 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
           iosInstruction.style.display = "block";
         }
         window.stop();
+        return;
       } else if (/android/i.test(userAgent)) {
-        const androidIntent = `intent:${playStoreLink}#Intent;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`; 
+        alert("Android version triggered");
+        const androidIntent = `intent://xplorecampaign?shortId=${campaignId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
         window.location.replace(androidIntent);
+        return;
       }
     } else {
       if (/iPhone|iPad|iPod/i.test(userAgent)) {
@@ -106,12 +109,15 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
           iosInstruction.style.display = "block";
         }
         window.stop();
+        return;
       } else if (/android/i.test(userAgent)) {
-        const androidIntent = `intent:${playStoreLink}#Intent;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`; 
+        alert("Android version triggered");
+        const androidIntent = `intent://xplorecampaign?shortId=${campaignId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
         window.location.replace(androidIntent);
+        return;
       }
     }
-  }, [universalLink, playStoreLink]);
+  }, [universalLink, campaignId]);
 
   return (
     <div id="ios-instruction">
