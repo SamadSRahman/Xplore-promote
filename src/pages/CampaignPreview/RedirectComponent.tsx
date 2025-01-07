@@ -94,10 +94,8 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         if (iosInstruction) {
           iosInstruction.style.display = "block";
         }
-        window.stop();
         return;
       } else if (/android/i.test(userAgent)) {
-        alert("Android version triggered");
         const androidIntent = `intent://xplorecampaign?shortId=${campaignId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
         window.location.replace(androidIntent);
         return;
@@ -108,7 +106,6 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         if (iosInstruction) {
           iosInstruction.style.display = "block";
         }
-        window.stop();
         return;
       } else if (/android/i.test(userAgent)) {
         alert("Android version triggered");
