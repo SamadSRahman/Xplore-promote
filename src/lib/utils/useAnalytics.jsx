@@ -2,18 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function useAnalytics() {
-<<<<<<< HEAD
-    const [users, setUsers] = useState([]);
-    const [data, setData] = useState([]);
-    const [performancedata, setPerformanceData] = useState({})
-    const token = localStorage.getItem('accessToken');
-    const channel = localStorage.getItem('channel');
-=======
   const [users, setUsers] = useState([]);
   const [data, setData] = useState([]);
+  const [performancedata, setPerformanceData] = useState({});
   const token = localStorage.getItem("accessToken");
   const channel = localStorage.getItem("channel");
->>>>>>> 1f43d3586281148e8693d4fd0a022ef40c446e73
 
   let API_BASE_URL = "https://pre.xplore.xircular.io/api";
   if (
@@ -25,32 +18,17 @@ export default function useAnalytics() {
     API_BASE_URL = "https://xplr.live/api";
   }
 
-<<<<<<< HEAD
-
-    const getperformamceAnalyticsData = async (campaignId) => {
-
-        const response = await fetch(`${API_BASE_URL}/v1/analytics/getAll/${campaignId}`
-        );
-        const data = await response.json();
-        console.log("Response of performance analytics",data.data);
-          if(data?.data)
-            {
-                setPerformanceData(data.data);
-            }
-     }
-
-
-    return {
-        getAnalyticsData,
-        data,
-        users,
-        getperformamceAnalyticsData,
-        performancedata
+  const getperformamceAnalyticsData = async (campaignId) => {
+    const response = await fetch(
+      `${API_BASE_URL}/v1/analytics/getAll/${campaignId}`
+    );
+    const data = await response.json();
+    console.log("Response of performance analytics", data.data);
+    if (data?.data) {
+      setPerformanceData(data.data);
     }
+  };
 
-
-}   
-=======
   const getAnalyticsData = async (campaignId) => {
     const response = await fetch(
       `${API_BASE_URL}/v1/user/getSubmittedContact/${campaignId}`,
@@ -86,10 +64,11 @@ export default function useAnalytics() {
     }
   };
   return {
+    getperformamceAnalyticsData,
     getAnalyticsData,
     postAnalyticData,
+    performancedata,
     data,
     users,
   };
 }
->>>>>>> 1f43d3586281148e8693d4fd0a022ef40c446e73
