@@ -1,39 +1,31 @@
+import axios from "axios";
 import { useState } from "react";
 
 export default function useAnalytics() {
+<<<<<<< HEAD
     const [users, setUsers] = useState([]);
     const [data, setData] = useState([]);
     const [performancedata, setPerformanceData] = useState({})
     const token = localStorage.getItem('accessToken');
     const channel = localStorage.getItem('channel');
+=======
+  const [users, setUsers] = useState([]);
+  const [data, setData] = useState([]);
+  const token = localStorage.getItem("accessToken");
+  const channel = localStorage.getItem("channel");
+>>>>>>> 1f43d3586281148e8693d4fd0a022ef40c446e73
 
-    let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
-    if(window.location.origin==="https://xplr.live"||window.location.origin.includes("localhost")||window.location.origin.includes("vercel")){
-        console.log(window.location.origin);  
-     API_BASE_URL = 'https://xplr.live/api';
-    }
-
-    
-    const getAnalyticsData = async (campaignId) => {
-        const response = await fetch(`${API_BASE_URL}/v1/user/getSubmittedContact/${campaignId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    session: channel,
-                },
-            }
-        );
-        const data = await response.json();
-        console.log(data.contacts);
-        if(data?.contacts)
-  {
-    setUsers(data.contacts);
-
-    setData(data.contacts)
+  let API_BASE_URL = "https://pre.xplore.xircular.io/api";
+  if (
+    window.location.origin === "https://xplr.live" ||
+    window.location.origin.includes("localhost") ||
+    window.location.origin.includes("vercel")
+  ) {
+    console.log(window.location.origin);
+    API_BASE_URL = "https://xplr.live/api";
   }
-        console.log("contactUs", contactUsData.map((ele)=>ele.contactInfo));
-    }
 
+<<<<<<< HEAD
 
     const getperformamceAnalyticsData = async (campaignId) => {
 
@@ -58,3 +50,46 @@ export default function useAnalytics() {
 
 
 }   
+=======
+  const getAnalyticsData = async (campaignId) => {
+    const response = await fetch(
+      `${API_BASE_URL}/v1/user/getSubmittedContact/${campaignId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          session: channel,
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data.contacts);
+    if (data?.contacts) {
+      setUsers(data.contacts);
+
+      setData(data.contacts);
+    }
+    console.log(
+      "contactUs",
+      contactUsData.map((ele) => ele.contactInfo)
+    );
+  };
+
+  const postAnalyticData = async (body) => {
+    try {
+      const response = await axios.post(
+        "https://xplr.live/api/v1/analytics/clickCount/create",
+        body
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log("Error posting analytic data", error);
+    }
+  };
+  return {
+    getAnalyticsData,
+    postAnalyticData,
+    data,
+    users,
+  };
+}
+>>>>>>> 1f43d3586281148e8693d4fd0a022ef40c446e73
