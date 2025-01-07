@@ -42,7 +42,7 @@ export default function CampaignPreview() {
       if ("Notification" in window) {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-          console.log("Push notification permission granted.");p
+          console.log("Push notification permission granted."); p
           // You can also register a service worker here if needed
         } else {
           console.log("Push notification permission denied.");
@@ -55,7 +55,7 @@ export default function CampaignPreview() {
     requestPushNotificationPermission();
 
   }, []);
-  
+
 
   const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}`;
   const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&launch=true`;
@@ -160,13 +160,13 @@ export default function CampaignPreview() {
       window.location.href = mailtoLink;
       return;
     }
-    if(btnAction==="share"){
+    if (btnAction === "share") {
       if (navigator.share) {
         try {
           await navigator.share({
             title: "Check this out!",
             text: "Here's something interesting for you.",
-            url: action.attachmentUrl? action.attachmentUrl: `${window.location.origin}/campaign/${campaignId}`, // The URL to share
+            url: action.attachmentUrl ? action.attachmentUrl : `${window.location.origin}/campaign/${campaignId}`, // The URL to share
           });
         } catch (error) {
           console.error("Error sharing:", error);
@@ -420,76 +420,77 @@ export default function CampaignPreview() {
   }
   return (
     <div>
-         {!isMobileDevice &&  <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
-            <div className={styles.container}>
-              {showPopup && (
-                <div className={styles.popupOverlay}>
-                  <div className={styles.popup}>
-                    <h2>Sign in with Google</h2>
-                    <p>Sign in to personalize your experience</p>
-                    <div className={styles.popupButtons}>
-                      {isLoadingPopup ? (
-                        <div className={styles.loader}>Loading...</div>
-                      ) : (
-                        <GoogleLogin
-                          onSuccess={handleGoogleSuccess}
-                          onError={handleGoogleError}
-                          useOneTap
-                          type="standard"
-                          theme="filled_blue"
-                          render={({ onClick }) => (
-                            <button
-                              onClick={onClick}
-                              className={styles.googleButton}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: "8px",
-                                backgroundColor: "blue",
-                              }}
-                            >
-                              <img
-                                src={googleLogo}
-                                alt="google logo"
-                                style={{
-                                  width: "25px",
-                                  height: "25px",
-                                  backgroundColor: "white",
-                                  borderRadius: "50%",
-                                }}
-                              />
-                              Sign in with Google
-                            </button>
-                          )}
-                        />
+      {!isMobileDevice && <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
+        <div className={styles.container}>
+          {showPopup && (
+            <div className={styles.popupOverlay}>
+              <div className={styles.popup}>
+                <h2>Sign in with Google</h2>
+                <p>Sign in to personalize your experience</p>
+                <div className={styles.popupButtons}>
+                  {isLoadingPopup ? (
+                    <div className={styles.loader}>Loading...</div>
+                  ) : (
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleError}
+                      useOneTap
+                      type="standard"
+                      theme="filled_blue"
+                      render={({ onClick }) => (
+                        <button
+                          onClick={onClick}
+                          className={styles.googleButton}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "8px",
+                            backgroundColor: "blue",
+                          }}
+                        >
+                          <img
+                            src={googleLogo}
+                            alt="google logo"
+                            style={{
+                              width: "25px",
+                              height: "25px",
+                              backgroundColor: "white",
+                              borderRadius: "50%",
+                            }}
+                          />
+                          Sign in with Google
+                        </button>
                       )}
-                      <button
-                        className={styles.skipButton}
-                        onClick={handleSkip}
-                        disabled={isLoadingPopup}
-                      >
-                        Skip
-                      </button>
-                    </div>
-                  </div>
+                    />
+                  )}
+                  <button
+                    className={styles.skipButton}
+                    onClick={handleSkip}
+                    disabled={isLoadingPopup}
+                  >
+                    Skip
+                  </button>
                 </div>
-              )}
-              <div className={styles.cardWrapper}>
-                {layout?.layoutJSON && (
-                  // <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
-                  <DivkitRenderer
-                    onClick={handleBtnClick}
-                    divkitJson={layout.layoutJSON}
-                  />
-                )}
               </div>
             </div>
-          </GoogleOAuthProvider>}
+          )}
+          <div className={styles.cardWrapper}>
+            {layout?.layoutJSON && (
+              // <PreviewCard handleInputChange={handleInputChange} handleOnClick={handleBtnClick} jsonData={layout.layoutJSON} />
+              <DivkitRenderer
+                onClick={handleBtnClick}
+                divkitJson={layout.layoutJSON}
+              />
+            )}
+          </div>
+        </div>
+      </GoogleOAuthProvider>}
 
-       <RidirectComponent setIsMobileDevice={setIsMobileDevice} universalLink={appClipUrl} playStoreLink={playStoreUrl} />
+      <RidirectComponent setIsMobileDevice={setIsMobileDevice} universalLink={appClipUrl} playStoreLink={playStoreUrl}
+       campaignId={campaignId} />
 
-  </div>
+    </div>
 
- )
+  )
 }
