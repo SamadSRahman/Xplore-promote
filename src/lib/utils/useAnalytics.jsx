@@ -2,7 +2,8 @@ import { useState } from "react";
 
 export default function useAnalytics() {
     const [users, setUsers] = useState([]);
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
+    const [performancedata, setPerformanceData] = useState({})
     const token = localStorage.getItem('accessToken');
     const channel = localStorage.getItem('channel');
 
@@ -33,9 +34,27 @@ export default function useAnalytics() {
         console.log("contactUs", contactUsData.map((ele)=>ele.contactInfo));
     }
 
+
+    const getperformamceAnalyticsData = async (campaignId) => {
+
+        const response = await fetch(`${API_BASE_URL}/v1/analytics/getAll/${campaignId}`
+        );
+        const data = await response.json();
+        console.log("Response of performance analytics",data.data);
+          if(data?.data)
+            {
+                setPerformanceData(data.data);
+            }
+     }
+
+
     return {
         getAnalyticsData,
         data,
-        users
+        users,
+        getperformamceAnalyticsData,
+        performancedata
     }
+
+
 }   

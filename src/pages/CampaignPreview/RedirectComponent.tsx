@@ -29,7 +29,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
           return;
         } else if (/android/i.test(userAgent)) {
           console.log("Android device in Instagram WebView.");
-          const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.chrome;end`; 
+          const androidIntent = `intent:${playStoreLink}#Intent;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`; 
           window.location.replace(androidIntent);
           return;
         } else {
@@ -47,7 +47,8 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
           window.stop();
           return;
         } else if (/android/i.test(userAgent)) {
-          const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.chrome;end`;           window.location.replace(androidIntent);
+          const androidIntent = `intent:${playStoreLink}#Intent;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;           
+          window.location.replace(androidIntent);
           return;
         } else {
           console.log("Default fallback.");

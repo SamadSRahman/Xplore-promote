@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react';
 import styles from './CampaignAnalytics.module.css';
+import PerformanceAnalytics from './PerformanceAnalytics.jsx';
 import useAnalytics from '../../lib/utils/useAnalytics';
 import { useParams } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 
 const CampaignAnalytics = () => {
-    const { users, getAnalyticsData, data } = useAnalytics();  
+    const { users, getAnalyticsData, data , getperformamceAnalyticsData, performancedata } = useAnalytics();  
     const { campaignId } = useParams();
     
     useEffect(() => {
-        getAnalyticsData(campaignId);
-    }, []);
-useEffect(()=>{
-    console.log("data", data);
-    
-},[data])
+            if(campaignId){
+                getAnalyticsData(campaignId);
+                getperformamceAnalyticsData(campaignId);
+            }
+    }, [campaignId]);
+
+    useEffect(()=>{
+        console.log("data", data);
+    },[data])
 
 const handleExportExcel = () => {
     // Prepare data for export (remove any nested objects or complex structures)
@@ -90,7 +94,10 @@ const handleExportExcel = () => {
     
     return (
         <div className={styles.container}>
+             <PerformanceAnalytics />
+
             <h1 className={styles.title}>Campaign Analytics</h1>
+         
             <div className={styles.analyticsContainer}>
                 <button onClick={handleExportExcel}
                    className={styles.exportButton}
