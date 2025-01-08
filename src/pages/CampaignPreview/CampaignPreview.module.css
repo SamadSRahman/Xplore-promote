@@ -125,14 +125,13 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 4rem;
+    gap: 2rem;
 }
 .redirectContent>img{
     width: 8rem;
 }
 
 .redirectButton{
-    margin-top: 20px;
     background-color: #896BF0;
     padding: 10px 22px;
     font-size: 1.25rem;
