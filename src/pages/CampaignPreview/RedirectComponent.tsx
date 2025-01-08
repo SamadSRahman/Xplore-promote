@@ -7,10 +7,11 @@ interface RedirectComponentProps {
   universalLink: string;
   playStoreLink: string;
   campaignId: string;
+  shortId: string;
   setIsMobileDevice: (isMobile: boolean) => void;
 }
 
-const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, playStoreLink, setIsMobileDevice, campaignId }) => {
+const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, playStoreLink, setIsMobileDevice, campaignId , shortId }) => {
   const [ipAddress, setIpAddress] = useState("");
   const [source, setSource] = useState("");
   const [device, setDevice] = useState("");
@@ -96,7 +97,8 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         }
         window.stop();
       } else if (/android/i.test(userAgent)) {
-        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
+        // const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
+        const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
         window.location.replace(androidIntent);
       }
     } else {
@@ -107,11 +109,13 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         }
         window.stop();
       } else if (/android/i.test(userAgent)) {
-        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
+        // const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
+        const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
+
         window.location.replace(androidIntent);
       }
     }
-  }, [universalLink, playStoreLink]);
+  }, [universalLink,shortId]);
 
 
   return (

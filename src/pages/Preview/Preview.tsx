@@ -517,7 +517,7 @@ export default function Preview() {
           </GoogleOAuthProvider>}
 
        <RidirectComponent setIsMobileDevice={setIsMobileDevice} universalLink={appClipUrl} playStoreLink={playStoreUrl} 
-       campaignId={campaignId} />
+       campaignId={campaignId} shortId={shortId} />
 
   </div>
 
