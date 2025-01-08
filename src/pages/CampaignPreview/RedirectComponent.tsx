@@ -94,11 +94,10 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         if (iosInstruction) {
           iosInstruction.style.display = "block";
         }
-        return;
+        window.stop();
       } else if (/android/i.test(userAgent)) {
-        const androidIntent = `intent://xplorecampaign?shortId=${campaignId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
+        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.chrome;end`;
         window.location.replace(androidIntent);
-        return;
       }
     } else {
       if (/iPhone|iPad|iPod/i.test(userAgent)) {
@@ -106,15 +105,14 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         if (iosInstruction) {
           iosInstruction.style.display = "block";
         }
-        return;
+        window.stop();
       } else if (/android/i.test(userAgent)) {
-        alert("Android version triggered");
-        const androidIntent = `intent://xplorecampaign?shortId=${campaignId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
+        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.chrome;end`;
         window.location.replace(androidIntent);
-        return;
       }
     }
-  }, [universalLink, campaignId]);
+  }, [universalLink, playStoreLink]);
+
 
   return (
     <div id="ios-instruction">
