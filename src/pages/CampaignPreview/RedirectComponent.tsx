@@ -16,7 +16,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
   const [source, setSource] = useState("");
   const [device, setDevice] = useState("");
   const { postAnalyticData } = useAnalytics();
-  const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
+  // const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
 
 
   const fetchIPAddress = async () => {
@@ -99,8 +99,8 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         }
         window.stop();
       } else if (/android/i.test(userAgent)) {
-        // const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
-        const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
+        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
+        // const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
         window.location.replace(androidIntent);
       }
     } else {
@@ -111,13 +111,12 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         }
         window.stop();
       } else if (/android/i.test(userAgent)) {
-        // const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
-        const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
-
+        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
+        // const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
         window.location.replace(androidIntent);
       }
     }
-  }, [universalLink,shortId]);
+  }, [universalLink,playStoreLink]);
 
 
   return (
@@ -125,7 +124,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
       <div className={styles.redirectContainer}>
         <div className={styles.redirectContent}>
           <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
-          <a className={styles.redirectButton} href={androidIntent} target="_blank">Continue</a>
+          <a className={styles.redirectButton} href={universalLink} target="_blank">Continue</a>
         </div>
       </div>
     </div>
