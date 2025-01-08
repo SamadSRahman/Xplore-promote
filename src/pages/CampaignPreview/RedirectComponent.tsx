@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from "./CampaignPreview.module.css";
 import icon from '../../assets/xplore-logo.svg'
 import useAnalytics from '../../lib/utils/useAnalytics';
+import { useNavigate } from 'react-router-dom';
 
 interface RedirectComponentProps {
   universalLink: string;
@@ -16,6 +17,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
   const [source, setSource] = useState("");
   const [device, setDevice] = useState("");
   const { postAnalyticData } = useAnalytics();
+  const navigate = useNavigate();
   // const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
 
 
@@ -124,7 +126,8 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
       <div className={styles.redirectContainer}>
         <div className={styles.redirectContent}>
           <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
-          <a className={styles.redirectButton} href={universalLink} target="_blank">Continue</a>
+          <button className={styles.redirectButton} onClick={() => navigate(universalLink)}> Continue </button>
+          {/* <a className={styles.redirectButton} href={universalLink} target="_blank">Continue</a> */}
         </div>
       </div>
     </div>
