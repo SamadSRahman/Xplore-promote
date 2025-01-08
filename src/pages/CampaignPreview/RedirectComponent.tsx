@@ -96,7 +96,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         }
         window.stop();
       } else if (/android/i.test(userAgent)) {
-        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.chrome;end`;
+        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
         window.location.replace(androidIntent);
       }
     } else {
@@ -107,7 +107,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         }
         window.stop();
       } else if (/android/i.test(userAgent)) {
-        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.chrome;end`;
+        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
         window.location.replace(androidIntent);
       }
     }
