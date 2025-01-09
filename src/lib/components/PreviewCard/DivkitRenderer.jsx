@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { render } from '@divkitframework/divkit/client-hydratable';
 import styles from './PreviewCard.module.css';
 import Image360Viewer from '../../components/ImageViewer/ImageViewer';
-import {vr_exterior_image} from '../../components/ImageViewer/imageData';
+import ChatBotComponent from '../../../customComponent/ChatBotComponent/ChatBotComponent'
 
 const DivkitRenderer = ({ divkitJson, onClick }) => {
   const divkitContainer = useRef(null);
@@ -41,7 +41,7 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
         
         // Render the React component with props
         ReactDOM.createRoot(
-          <Image360Viewer images={vr_exterior_image} />,
+          <Image360Viewer />,
           container
         );
       }
@@ -56,6 +56,29 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
     }
 
     customElements.define('custom-card', CustomCardElement);
+  }
+  if (typeof window !== 'undefined' && !customElements.get('chatbot-card')) {
+    class ChatbotCardElement extends HTMLElement {
+      connectedCallback() {
+        // Create a container for React
+        const container = document.createElement('div');
+        this.appendChild(container);
+        
+        // Render the React component into the container
+        const root = ReactDOM.createRoot(container);
+        root.render(<ChatBotComponent />);
+      }
+  
+      disconnectedCallback() {
+        // Clean up React when the element is removed
+        const container = this.firstElementChild;
+        if (container) {
+          ReactDOM.unmountComponentAtNode(container);
+        }
+      }
+    }
+  
+    customElements.define('chatbot-card', ChatbotCardElement);
   }
 
   useEffect(() => {
@@ -85,7 +108,9 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
         customComponents: new Map([
           ['threesixty_card', {
               element: 'custom-card'
-          }]
+          }
+       
+        ],[ 'chatbot_card',{element:'chatbot-card'}]
       ]),
         onError(details) {
           console.error('Divkit rendering error:', details.error);
