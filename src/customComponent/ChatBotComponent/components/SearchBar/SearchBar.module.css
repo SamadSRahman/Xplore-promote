@@ -1,0 +1,15 @@
+/* src/components/SearchBar/SearchBar.module.css */
+.searchBar {
+    display: flex;
+    margin: 16px;
+  }
+  
+  .input {
+    flex: 1;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
