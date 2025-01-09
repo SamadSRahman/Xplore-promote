@@ -1,7 +1,7 @@
 import styles from "./ChatBox.module.css";
 import ChatBubble from "../ChatBubble/ChatBubble";
 import PropTypes from 'prop-types'
-import React,{ useEffect, useRef } from "react";
+import React,{  useRef } from "react";
 
 const ChatBox = ({ messages }) => {
     const chatEndRef = useRef(null);
