@@ -438,14 +438,18 @@ export default function Preview() {
 
   return (
     <div>
-     <Helmet>
-
-      
+     <Helmet> 
+        <title>{metaData.title}</title>
+       <meta name="description" content={metaData.description} />
+       <meta name="keywords" content="Campaign Management, Marketing Automation, Digital Campaigns, Social Media Ads, ROI Optimization, Performance Tracking, Business Growth, Advertising Tools" />
+        <link rel="icon" href={metaData.image} />
         <meta property="og:title" content={metaData.title} />
         <meta property="og:description" content={metaData.description} />
         <meta property="og:image" content={metaData.image} />
-        <title>{metaData.title}</title>
-        <link rel="icon" href={metaData.image} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaData.title}  />
+        <meta name="twitter:description" content={metaData.description} />
+        <meta name="twitter:image" content={metaData.image} />
       </Helmet>
 
     
