@@ -124,12 +124,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
       <div className={styles.redirectContainer}>
         <div className={styles.redirectContent}>
           <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
-          {/* <a className={styles.redirectButton} href={universalLink} target="_blank">Continue</a> */}
-          <button
-              className={styles.redirectButton}
-              onClick={() => window.open(universalLink, '_blank')}  >
-              Continue
-            </button>
+           <a className={styles.redirectButton} href={universalLink} target="_blank">Continue</a>
         </div>
       </div>
     </div>
