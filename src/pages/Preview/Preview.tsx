@@ -438,17 +438,21 @@ export default function Preview() {
 
   return (
     <div>
-     <Helmet>
-
-      
+     <Helmet> 
+        <title>{metaData.title}</title>
+       <meta name="description" content={metaData.description} />
+       <meta name="keywords" content="Campaign Management, Campaign editor tool,Marketing Automation, Digital Campaigns, Social Media Ads, Social Media Ads campaign Tools, Techie chefs campaigns, Techie chefs campaigns 2025 , Techie Chefs Digital Menu, Best tech-friendly recipes for food enthusiasts,
+          ,Explore innovative dishes with Techie Chefs digital menu" />
+        <link rel="icon" href={metaData.image} />
         <meta property="og:title" content={metaData.title} />
         <meta property="og:description" content={metaData.description} />
         <meta property="og:image" content={metaData.image} />
-        <title>{metaData.title}</title>
-        <link rel="icon" href={metaData.image} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaData.title}  />
+        <meta name="twitter:description" content={metaData.description} />
+        <meta name="twitter:image" content={metaData.image} />
       </Helmet>
 
-    
          {!isMobileDevice &&  <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
             <div className={styles.container}>
               {showPopup && (
