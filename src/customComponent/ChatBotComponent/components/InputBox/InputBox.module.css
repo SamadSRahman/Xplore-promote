@@ -2,30 +2,39 @@
 .inputBox {
     display: flex;
     align-items: center;
-    padding: 8px 16px;
-    background-color: #f8f9fa;
-    border-top: 1px solid #ddd;
+    padding: 8px 10px;
+    background-color: oklch(0.25 0 0);
+    border-radius: 2rem;
+    /* border-top: 1px solid #ddd; */
+    margin-bottom: 1rem;
   }
   
   .input {
     flex: 1;
     padding: 10px;
     font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    /* border: 1px solid #ddd; */
+    /* border-radius: 8px; */
     margin-right: 8px;
+    outline: none;
+    border: none;
+    background-color: transparent;
   }
   
   .sendButton {
-    padding: 10px 16px;
-    background-color: #007bff;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: rgb(55, 55, 53);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 50%;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .sendButton:hover {
-    background-color: #0056b3;
+    background-color: gray;
   }
   
