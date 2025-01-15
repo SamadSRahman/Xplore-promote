@@ -55,7 +55,7 @@ export default function useAnalytics() {
   const postAnalyticData = async (body) => {
     try {
       const response = await axios.post(
-        "https://xplr.live/api/v1/analytics/clickCount/create",
+        `${API_BASE_URL}/v1/analytics/clickCount/create`,
         body
       );
       console.log(response.data);

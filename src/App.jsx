@@ -77,6 +77,7 @@ const App = () => {
               <Route path='/' element={<QRLogin />} />
               <Route path='/:shortId/:screen?' element={<Preview />} />
               <Route path='/campaigns' element={<Campaigns />} />
+              <Route path='/fonts' element={<Campaigns />} />
               <Route path='/createCampaign' element={<CampaignsForm />} />
               <Route path='/themeSelection' element={<ThemeSelection />} />
               <Route path='/editor/:campaignId/:page' element={<EditorPage />} />

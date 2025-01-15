@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from "./CampaignPreview.module.css";
 import icon from '../../assets/xplore-logo.svg'
 import useAnalytics from '../../lib/utils/useAnalytics';
+import { detectDeviceDetails } from './AnalyticsUtils';
 
 interface RedirectComponentProps {
   universalLink: string;
@@ -32,7 +33,8 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
 
   const detectDevice = () => {
     const userAgent = navigator.userAgent;
-    
+ 
+
     if (/(iPhone|iPad|iPod)/i.test(userAgent)) {
       const match = userAgent.match(/(iPhone|iPad|iPod)/i);
       return match ? match[0].toLowerCase() : "ios";
@@ -73,11 +75,25 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
 
   useEffect(() => {
     if (ipAddress && source) {
+      const deviceDetails = detectDeviceDetails();
+      // const source = detectSourceAnalytics();
+  
       postAnalyticData({
        campaignID: campaignId,
         source,
         ipAddress,
-        device
+        device,
+        browser: deviceDetails.browser,
+        browserVersion: deviceDetails.browserVersion,
+        osName: deviceDetails.osName,
+        osVersion: deviceDetails.osVersion,
+        deviceModel: deviceDetails.deviceModel,
+        screenWidth: deviceDetails.screenWidth,
+        screenHeight: deviceDetails.screenHeight,
+        language: deviceDetails.language,
+        timeZone: deviceDetails.timeZone,
+        appName: "Xplore Web App", // Optional, adjust if necessary
+        buildNumber: "1", // Optional, adjust if necessary
       });
     }
   }, [ipAddress, source, device, campaignId]);

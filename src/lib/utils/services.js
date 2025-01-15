@@ -21,3 +21,15 @@ export const isContactUs = () => {
     }
     return false
 }
+
+export const fontWeights = [
+    { text: "Thin", weight: 100 },
+    { text: "Extra Light", weight: 200 },
+    { text: "Light", weight: 300 },
+    { text: "Regular", weight: 400 },
+    { text: "Medium", weight: 500 },
+    { text: "Semi Bold", weight: 600 },
+    { text: "Bold", weight: 700 },
+    { text: "Extra Bold", weight: 800 },
+    { text: "Black", weight: 900 },
+  ];
