@@ -3,6 +3,7 @@ import styles from "./FontsList.module.css";
 import { IoIosAdd } from "react-icons/io";
 import file from "../../../assets/fontFile.svg";
 import useFonts from "../../utils/useFonts";
+import { fontWeights } from "../../utils/services";
 
 export default function FontsList({ selectedFont, setSelectedFont, }) {
   const { getAllFonts, fonts, setFonts } = useFonts();
@@ -44,11 +45,14 @@ export default function FontsList({ selectedFont, setSelectedFont, }) {
       setSelectedFont(fonts[0]);
     }
   }, [fonts]);
+  const handleAddFont = ()=>{
+    setFonts((prev) => [...prev, { name: "Untitled", fontWeight: {} }]);
+  }
   return (
     <div className={styles.container}>
       <div className={styles.listHeader}>
         <span> Fonts </span>
-        <button>
+        <button onClick={handleAddFont}>
           Add <IoIosAdd size={18} />
         </button>
       </div>

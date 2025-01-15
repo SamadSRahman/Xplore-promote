@@ -6,17 +6,15 @@ export default function useFonts() {
   const session = localStorage.getItem("channel");
   const [fonts, setFonts] = useState([])
 
-
   let API_BASE_URL = "https://pre.xplore.xircular.io/api";
-    if (
-      window.location.origin === "https://xplr.live" ||
-      window.location.origin.includes("localhost") ||
-      window.location.origin.includes("vercel")
-    ) {
-      console.log(window.location.origin);
-      API_BASE_URL = "https://xplr.live/api";
-    }
-
+  if (
+    window.location.origin === "https://xplr.live" 
+    // window.location.origin.includes("localhost") ||
+    // window.location.origin.includes("vercel")
+  ) {
+    console.log(window.location.origin);
+    API_BASE_URL = "https://xplr.live/api";
+  }
 
   const handleFontUpload = async (formData, onClose) => {
     console.log("formData", formData);

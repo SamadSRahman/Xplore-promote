@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ChatBotResponse = ({ responseString }) => {
+  const [finalAnswer, setFinalAnswer] = useState('');
+  const [index, setIndex] = useState(0);
+
   const parseData = (input) => {
     try {
       // Clean and parse the input string
@@ -15,7 +18,23 @@ const ChatBotResponse = ({ responseString }) => {
     }
   };
 
-  const finalAnswer = parseData(responseString);
+  useEffect(() => {
+    const parsedAnswer = parseData(responseString);
+
+    if (parsedAnswer) {
+      // Start the streaming process
+      const intervalId = setInterval(() => {
+        if (index < parsedAnswer.length) {
+          setFinalAnswer((prev) => prev + parsedAnswer[index]);
+          setIndex((prev) => prev + 1);
+        } else {
+          clearInterval(intervalId); // Stop the interval when the full answer is displayed
+        }
+      }, 30); // Adjust the delay for smoother or faster streaming
+
+      return () => clearInterval(intervalId); // Cleanup on unmount or response change
+    }
+  }, [responseString, index]); // Reset when response changes
 
   return (
     <div className="final-answer">

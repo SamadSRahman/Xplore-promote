@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./FontDetails.module.css";
 import { IoMdArrowDropdown } from "react-icons/io";
 import file from "../../../assets/fontFile.svg";
@@ -14,10 +14,22 @@ export default function FontDetails({ font }) {
   const [editedFontName, setEditedFontName] = useState(
     font.fontName || "Untitled"
   );
-
-  const handleDelete = (weight) =>{
-    alert(`Are you sure you want to delete ${weight} font weight?`)
-  }
+  useEffect(() => {
+   if(font.name){
+    setEditedFontName(font.name);
+    if(font.name==="Untitled")
+      setIsEditing(true)
+    else
+    setIsEditing(false)
+   }
+   else{
+    setIsEditing(true)
+   }
+  
+  }, [font]);
+  const handleDelete = (weight) => {
+    alert(`Are you sure you want to delete ${weight} font weight?`);
+  };
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -92,7 +104,14 @@ export default function FontDetails({ font }) {
                     </a>
                     <div className={styles.iconSection}>
                       <MdEdit className={styles.icon} />
-                      <MdDelete onClick={()=>handleDelete(key.charAt(0).toUpperCase() + key.slice(1), )} className={styles.icon} />
+                      <MdDelete
+                        onClick={() =>
+                          handleDelete(
+                            key.charAt(0).toUpperCase() + key.slice(1)
+                          )
+                        }
+                        className={styles.icon}
+                      />
                     </div>
                   </span>
                 </div>

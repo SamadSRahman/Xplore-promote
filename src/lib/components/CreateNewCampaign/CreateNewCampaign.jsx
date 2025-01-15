@@ -3,8 +3,10 @@ import styles from '../../../pages/Campaigns/Campaigns.module.css'
 import example1 from "../../../assets/Bottom sheet Image.svg";
 import example2 from "../../../assets/Frame 13822.svg";
 import example3 from "../../../assets/Frame 13816.svg";
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateNewCampaign() {
+  const navigate = useNavigate();
   return (
     <div className={styles.mainBody}>
           <div className={styles.createNewCard}>

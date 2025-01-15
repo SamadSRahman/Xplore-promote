@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import styles from "./CampaignPreview.module.css";
-import icon from '../../assets/xplore-logo.svg'
+// import styles from "./CampaignPreview.module.css";
+// import icon from '../../assets/xplore-logo.svg'
 import useAnalytics from '../../lib/utils/useAnalytics';
 import { detectDeviceDetails } from './AnalyticsUtils';
+import RedirectionPage from '../RedirectionPage/RedirectionPage'
 
 interface RedirectComponentProps {
   universalLink: string;
@@ -13,7 +14,7 @@ interface RedirectComponentProps {
   setIsMobileDevice: (isMobile: boolean) => void;
 }
 
-const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, playStoreLink, setIsMobileDevice, campaignId , shortId }) => {
+const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, playStoreLink, setIsMobileDevice, campaignId  }) => {
   const [ipAddress, setIpAddress] = useState("");
   const [source, setSource] = useState("");
   const [device, setDevice] = useState("");
@@ -138,12 +139,14 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
 
   return (
     <div id="ios-instruction">
-      <div className={styles.redirectContainer}>
+         <RedirectionPage link={universalLink}/>
+      {/* <div className={styles.redirectContainer}>
         <div className={styles.redirectContent}>
           <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
            <a className={styles.redirectButton} href={universalLink} target="_blank">Continue</a>
+        
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

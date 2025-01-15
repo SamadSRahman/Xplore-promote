@@ -3,12 +3,15 @@ import { useState } from 'react';
 
 export default function useChatBot() {
 
-    let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
-    if(window.location.origin==="https://xplr.live"||window.location.origin.includes("localhost")||window.location.origin.includes("vercel")){
-        console.log(window.location.origin);  
-     API_BASE_URL = 'https://xplr.live/api';
-    }
-
+  let API_BASE_URL = "https://pre.xplore.xircular.io/api";
+  if (
+    window.location.origin === "https://xplr.live" 
+    // window.location.origin.includes("localhost") ||
+    // window.location.origin.includes("vercel")
+  ) {
+    console.log(window.location.origin);
+    API_BASE_URL = "https://xplr.live/api";
+  }
     const [generatedText, setGeneratedText] = useState("")
     //https://pre.xplore.xircular.io/api/v1/chatBot/chat
     const postMessage = async (query) => {

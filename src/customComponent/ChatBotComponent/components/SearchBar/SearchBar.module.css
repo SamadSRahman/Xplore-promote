@@ -3,14 +3,16 @@
   width: 90%;
   display: flex;
   margin: auto;
-  align-items: center;
+  align-items: flex-end;
   padding: 8px 10px;
   background-color: oklch(0.25 0 0);
-  border-radius: 2rem;
-  /* border-top: 1px solid #ddd; */
+  border-radius: 0.5rem;
+  border: 1px solid #454444;
 }
 
 .input {
+  font-family: inherit;
+  color: white;
   flex: 1;
   padding: 10px;
   font-size: 1rem;
@@ -18,7 +20,10 @@
   /* border-radius: 8px; */
   margin-right: 8px;
   outline: none;
+  max-width: 100%;
+  
   border: none;
+  height: max-content;
   background-color: transparent;
 }
 

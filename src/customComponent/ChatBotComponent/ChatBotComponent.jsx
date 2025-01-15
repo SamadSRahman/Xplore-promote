@@ -3,6 +3,7 @@ import styles from "./ChatBotComponent.module.css";
 import InputBox from "./components/InputBox/InputBox";
 import ChatBotResponse from "./components/ChatBotResponse/ChatBotResponse";
 import SearchBar from "./components/SearchBar/SearchBar";
+import SampleQuestions from "./components/SampleQuestions/SampleQuestions";
 import Header from "./components/Header/Header";
 import { AiOutlineMessage } from "react-icons/ai";
 import useChatBot from "../../lib/utils/useChatBot";
@@ -94,6 +95,7 @@ const ChatBotComponent = () => {
             <div className={styles.main}>
               <h2 className={styles.heading}>What do you want to know?</h2>
               <SearchBar onSearch={handleSearch} />
+              <SampleQuestions onClick={handleSearch} />
             </div>
           ) : (
             <div className={styles.chatbox}>
