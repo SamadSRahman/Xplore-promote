@@ -1,43 +1,104 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import styles from "./ChatBotResponse.module.css";
+import { RiMenu2Fill } from "react-icons/ri";
+import { MdHeadphones } from "react-icons/md";
+import { HiOutlineSpeakerWave } from "react-icons/hi2";
 
 const ChatBotResponse = ({ responseString }) => {
-  const [finalAnswer, setFinalAnswer] = useState('');
+  const [finalAnswer, setFinalAnswer] = useState("");
   const [index, setIndex] = useState(0);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const parseData = (input) => {
-    try {
-      // Clean and parse the input string
-      const cleanedString = input.replace(/^---\s*/, '').trim();
-      const parsedData = JSON.parse(cleanedString);
+  const startSpeech = () => {
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance(responseString);
+      utterance.lang = "en-US";
+      utterance.rate = 1;
+      utterance.pitch = 1;
 
-      // Return only the final_answer
-      return parsedData.final_answer || "No final answer available";
-    } catch (e) {
-      console.error('Error parsing JSON:', e.message);
-      return "Error processing response data";
+      // Speech started
+      utterance.onstart = () => {
+        setIsSpeaking(true);
+        setIsPaused(false);
+      };
+
+      // Speech ended
+      utterance.onend = () => {
+        setIsSpeaking(false);
+        setIsPaused(false);
+      };
+
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert("Sorry, your browser does not support text-to-speech.");
+    }
+  };
+
+  const pauseSpeech = () => {
+    if ("speechSynthesis" in window && isSpeaking && !isPaused) {
+      window.speechSynthesis.pause();
+      setIsPaused(true);
+    }
+  };
+
+  const resumeSpeech = () => {
+    if ("speechSynthesis" in window && isSpeaking && isPaused) {
+      window.speechSynthesis.resume();
+      setIsPaused(false);
+    }
+  };
+
+  const handleIconClick = () => {
+    if (isSpeaking) {
+      if (isPaused) {
+        resumeSpeech();
+      } else {
+        pauseSpeech();
+      }
+    } else {
+      startSpeech();
     }
   };
 
   useEffect(() => {
-    const parsedAnswer = parseData(responseString);
-
-    if (parsedAnswer) {
-      // Start the streaming process
+    if (responseString) {
       const intervalId = setInterval(() => {
-        if (index < parsedAnswer.length) {
-          setFinalAnswer((prev) => prev + parsedAnswer[index]);
+        if (index < responseString.length) {
+          setFinalAnswer((prev) => prev + responseString[index]);
           setIndex((prev) => prev + 1);
         } else {
-          clearInterval(intervalId); // Stop the interval when the full answer is displayed
+          clearInterval(intervalId);
         }
-      }, 30); // Adjust the delay for smoother or faster streaming
+      }, 10);
 
-      return () => clearInterval(intervalId); // Cleanup on unmount or response change
+      return () => clearInterval(intervalId);
     }
-  }, [responseString, index]); // Reset when response changes
+  }, [responseString, index]);
 
   return (
     <div className="final-answer">
+      <div className={styles.header}>
+        <div className={styles.answerSection}>
+          <RiMenu2Fill size={18} />
+          <span>Answer</span>
+        </div>
+        <div className={styles.actionSection}>
+          {isSpeaking && !isPaused ? (
+            <HiOutlineSpeakerWave
+              className={styles.speakerIcon}
+              size={20}
+              onClick={handleIconClick}
+            />
+          ) : (
+            <MdHeadphones
+              className={styles.headphoneIcon}
+              size={20}
+              onClick={handleIconClick}
+            />
+          )}
+        </div>
+      </div>
       <p>{finalAnswer}</p>
     </div>
   );

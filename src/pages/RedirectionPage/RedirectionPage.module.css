@@ -1,7 +1,7 @@
 .container {
   height: 100vh;
   display: flex;
-  align-items: top;
+  align-items: center;
   justify-content: center;
   width: 100vw;
   text-align: center;
@@ -48,15 +48,15 @@
   line-height: 30px; /* 125% */
 }
 .xploreDiv {
-  margin-top: 1rem;
+  margin-top: 0.3rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 0.6rem;
   align-items: center;
-  padding: 2rem 0.8rem;
-  width: 90%;
+  padding: 1rem 0.8rem;
+  width: 80%;
 }
 .logo {
   width: 60%;
@@ -80,4 +80,8 @@ color: #fff;
 }
 .xploreDiv > a:hover{
     color: #fff;
+}
+.xploreDiv>h2{
+  margin: 0;
+  font-size: 2rem;
 }

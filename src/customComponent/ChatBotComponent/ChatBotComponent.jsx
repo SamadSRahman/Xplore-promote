@@ -29,7 +29,7 @@ const ChatBotComponent = () => {
         setMessages((prevMessages) => {
           const updatedMessages = [...prevMessages];
           updatedMessages[updatedMessages.length - 1] = {
-            text: response.generated_text || "Error getting response from Chatbot.",
+            text: response.final_answer || "Error getting response from Chatbot.",
             isUser: false,
           };
           return updatedMessages;
@@ -66,7 +66,7 @@ const ChatBotComponent = () => {
         setMessages((prevMessages) => {
           const updatedMessages = [...prevMessages];
           updatedMessages[updatedMessages.length - 1] = {
-            text: response.generated_text || "Error getting response from Chatbot.",
+            text: response.final_answer || "Error getting response from Chatbot.",
             isUser: false,
           };
           return updatedMessages;
@@ -90,7 +90,7 @@ const ChatBotComponent = () => {
     
       {showChatBot ? (
         <div className={styles.app}>
-          <Header setChatBot={setShowChatBot} />
+          <Header onClose={()=>setShowChatBot(false)} />
           {isFirstSearch ? (
             <div className={styles.main}>
               <h2 className={styles.heading}>What do you want to know?</h2>

@@ -5,12 +5,12 @@ import PropTypes from 'prop-types'
 import React from "react";
 
 
-const Header = ({setChatBot}) => {
+const Header = ({onClose}) => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>Chat Bot</div>
       <div className={styles.icons}>
-            <MdOutlineClose onClick={()=>setChatBot(false)}/>
+            <MdOutlineClose onClick={onClose}/>
       </div>
     </header>
   );

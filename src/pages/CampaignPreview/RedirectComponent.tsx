@@ -7,6 +7,7 @@ import { detectDeviceDetails } from './AnalyticsUtils';
 import RedirectionPage from '../RedirectionPage/RedirectionPage'
 
 interface RedirectComponentProps {
+  metaData: object;
   universalLink: string;
   playStoreLink: string;
   campaignId: string;
@@ -14,15 +15,18 @@ interface RedirectComponentProps {
   setIsMobileDevice: (isMobile: boolean) => void;
 }
 
-const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, playStoreLink, setIsMobileDevice, campaignId  }) => {
+const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, universalLink, playStoreLink, setIsMobileDevice,
+  campaignId }) => {
   const [ipAddress, setIpAddress] = useState("");
+  const [showRedirectionPage, setShowRedirectionPage] = useState(true)
   const [source, setSource] = useState("");
   const [device, setDevice] = useState("");
   const { postAnalyticData } = useAnalytics();
   // const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
 
-
   const fetchIPAddress = async () => {
+
+
     try {
       const response = await fetch('https://api.ipify.org?format=json');
       const data = await response.json();
@@ -34,13 +38,13 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
 
   const detectDevice = () => {
     const userAgent = navigator.userAgent;
- 
+
 
     if (/(iPhone|iPad|iPod)/i.test(userAgent)) {
       const match = userAgent.match(/(iPhone|iPad|iPod)/i);
       return match ? match[0].toLowerCase() : "ios";
     }
-    
+
     if (/android/i.test(userAgent)) {
       const match = userAgent.match(/Android\s([0-9.]*)/i);
       return match ? `android ${match[1]}` : "android";
@@ -49,18 +53,18 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
     if (/Windows/i.test(userAgent)) return "windows";
     if (/Macintosh/i.test(userAgent)) return "mac";
     if (/Linux/i.test(userAgent)) return "linux";
-    
+
     return "unknown";
   };
 
   const detectSource = () => {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    
+
     if (userAgent.includes("Instagram")) return "instagram";
     if (userAgent.includes('fban') || userAgent.includes('fbav')) return "facebook";
     if (userAgent.includes('linkedin')) return "linkedin";
     if (userAgent.includes("Twitter")) return "twitter";
-    
+
     if (/iPhone|iPad|iPod/i.test(userAgent)) return "ios";
     if (/android/i.test(userAgent)) return "android";
     return "other";
@@ -78,9 +82,9 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
     if (ipAddress && source) {
       const deviceDetails = detectDeviceDetails();
       // const source = detectSourceAnalytics();
-  
+
       postAnalyticData({
-       campaignID: campaignId,
+        campaignID: campaignId,
         source,
         ipAddress,
         device,
@@ -102,11 +106,13 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
     const source = detectSource();
-    
+
     if (/iPhone|iPad|iPod|android/i.test(userAgent)) {
       setIsMobileDevice(true);
+      setShowRedirectionPage(true)
     } else {
       setIsMobileDevice(false);
+      setShowRedirectionPage(false)
     }
 
     if (source === "instagram" || source === "facebook" || source === "linkedin" || source === "twitter") {
@@ -134,12 +140,12 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ universalLink, pl
         window.location.replace(androidIntent);
       }
     }
-  }, [universalLink,playStoreLink]);
+  }, [universalLink, playStoreLink]);
 
 
   return (
     <div id="ios-instruction">
-         <RedirectionPage link={universalLink}/>
+      {showRedirectionPage && <RedirectionPage metaData={metaData} link={universalLink} />}
       {/* <div className={styles.redirectContainer}>
         <div className={styles.redirectContent}>
           <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
