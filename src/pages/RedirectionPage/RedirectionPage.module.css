@@ -1,13 +1,14 @@
 .container {
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: top;
   justify-content: center;
   width: 100vw;
   text-align: center;
 }
 
 .contentSection {
+    margin-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,7 +62,7 @@
   width: 60%;
 }
 .rdctImg {
-  width: 80%;
+  width: 70%;
 }
 .xploreDiv > p {
   font-size: 20px;

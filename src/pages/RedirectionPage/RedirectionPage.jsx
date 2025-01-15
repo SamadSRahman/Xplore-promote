@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./RedirectionPage.module.css";
 import xplore from "../../assets/xplr.svg";
-import redImg from "../../assets/Redirect-img.png";
+import redImg from "../../assets/Redirect-img.svg";
 
 export default function RedirectionPage({link}) {
   return (
