@@ -26,7 +26,7 @@ export default function CampaignPreview() {
   const { campaignId, screen } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
-  // const [isMobileDevice, setIsMobileDevice] = useState(false)
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
   const { getCampaignById, metaData } = useCampaign();
 
@@ -530,7 +530,7 @@ useEffect(() => {
         </div>
       </GoogleOAuthProvider>}
 
-      <RidirectComponent metaData={metaData} universalLink={appclip} playStoreLink={playstore}
+      <RidirectComponent metaData={metaData} setIsMobileDevice={setIsMobileDevice} universalLink={appclip} playStoreLink={playstore}
        campaignId={campaignId} />
 
     </div>
