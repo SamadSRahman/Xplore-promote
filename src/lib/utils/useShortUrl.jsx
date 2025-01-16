@@ -5,12 +5,15 @@ export default function useShortUrl() {
   const [layouts, setLayouts] = useState([]);
   const [campaignId, setCampaignId] = useState("");
 
-  let API_BASE_URL = 'https://pre.xplore.xircular.io/api'; 
-    if(window.location.origin==="https://xplr.live"||window.location.origin.includes("localhost")||window.location.origin.includes("vercel")){
-        console.log(window.location.origin);  
-     API_BASE_URL = 'https://xplr.live/api';
-    }
-
+  let API_BASE_URL = "https://pre.xplore.xircular.io/api";
+  if (
+    window.location.origin === "https://xplr.live" 
+    // window.location.origin.includes("localhost") ||
+    // window.location.origin.includes("vercel")
+  ) {
+    console.log(window.location.origin);
+    API_BASE_URL = "https://xplr.live/api";
+  }
     const getLayoutByShortId = async(id)=>{
        try {
         const response = await axios.get(`${API_BASE_URL}/v1/viewLayout/${id}`);

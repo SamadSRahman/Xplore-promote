@@ -1,0 +1,87 @@
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  text-align: center;
+}
+
+.contentSection {
+    margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.contentSection > h2 {
+  text-align: center;
+  margin: 0;
+
+  font-family: "Pacifico", sans-serif;
+  font-size: 54.21px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 90.623px; /* 167.17% */
+  background: linear-gradient(
+    90deg,
+    #5f2290 0%,
+    #9e1288 23%,
+    #eb484e 49.5%,
+    #f2c33a 75.5%,
+    #2df006 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.contentSection > h4 {
+  overflow: hidden;
+  color: #9a9a9a;
+  text-align: center;
+  margin: 0;
+  text-overflow: ellipsis;
+  font-family: "Pacifico", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px; /* 125% */
+}
+.xploreDiv {
+  margin-top: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* border: 1px solid #ccc; */
+  border-radius: 0.6rem;
+  align-items: center;
+  padding: 1rem 0.8rem;
+  width: 80%;
+}
+.logo {
+  width: 60%;
+}
+.rdctImg {
+  width: 70%;
+}
+.xploreDiv > p {
+  font-size: 20px;
+  margin: 0;
+}
+.xploreDiv > a{
+    padding: 0.8rem 1rem;
+    border-radius: 3rem;
+background: #896BF0;
+border: none;
+width: 90%;
+font-size: 16px;
+text-decoration: none;
+color: #fff;
+}
+.xploreDiv > a:hover{
+    color: #fff;
+}
+.xploreDiv>h2{
+  margin: 0;
+  font-size: 2rem;
+}

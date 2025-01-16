@@ -1,0 +1,159 @@
+.container{
+width: 100%;
+padding: 2rem;
+background-color: #F2F2F2;
+}
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.nameSection> span{
+    color: #484851;
+    font-size: 12px;
+    font-weight: 500;
+    
+}
+.nameSection> h4{
+    color: #000;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    margin-top: 0.2rem;
+}
+.header > button{
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background-color: #7654EE;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+/* Style for the table headers */
+.table{
+    padding-top: 1rem;
+}
+table thead th {
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+ 
+    text-align: center;
+  }
+  
+  /* Style for the table body rows */
+ 
+  /* Style for table body cells to look like cards */
+  table tbody tr {
+    display: table-row; /* Ensure proper alignment */
+    background-color: #ffffff; /* White background for cards */
+    border: 1px solid #000;
+    margin: 10px 0; /* Margin for spacing */
+    padding: 10px; /* Padding inside the cells */
+    border-radius: 1rem !important; /* Rounded corners */
+    height: 3rem;
+    overflow: hidden;
+ 
+  }
+  table tbody tr td{
+    text-align: center;
+ 
+  }
+  
+  /* Table overall layout */
+  table {
+    width: 100%;
+    border-spacing: 0; /* Prevent gaps between cells */
+  }
+  
+  table tbody td a {
+    color: #007bff; /* Blue link color */
+    text-decoration: none;
+  }
+  
+  table tbody td a:hover {
+    text-decoration: underline;
+  }
+
+  .table{
+   margin-top: 1rem;
+
+  }
+  .tableHead{
+    display: flex;
+    align-items: center;
+  
+
+  }
+  .tableHead > span{
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+  }
+  .weightName, .scale{
+    width:15% ;
+    align-self: center;
+  }
+  .url{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .iconSection{
+    display: flex;
+    gap: 0.5rem;
+    margin-right: 1rem;
+  }
+  .icon{
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .tableBody{
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.7rem
+  }
+  .tableRow{
+    width: 100%;
+    border: 1px solid #D9D9D9;
+    background-color: white;
+    display: flex;
+    padding: 0.8rem 0rem;
+    border-radius: 0.6rem;
+  }
+  .tableBody span{
+    text-align: center;
+  }
+  .tableRow span:first-child{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .fontNameInput {
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    padding: 5px 10px;
+    outline: none;
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+  }
+  
+  .fontNameInput:focus {
+    box-shadow: 0 0 5px #007aff; /* Example focus shadow */
+    border-color: #007aff;
+  }
+  

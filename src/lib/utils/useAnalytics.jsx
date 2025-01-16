@@ -10,9 +10,9 @@ export default function useAnalytics() {
 
   let API_BASE_URL = "https://pre.xplore.xircular.io/api";
   if (
-    window.location.origin === "https://xplr.live" ||
-    window.location.origin.includes("localhost") ||
-    window.location.origin.includes("vercel")
+    window.location.origin === "https://xplr.live" 
+    // window.location.origin.includes("localhost") ||
+    // window.location.origin.includes("vercel")
   ) {
     console.log(window.location.origin);
     API_BASE_URL = "https://xplr.live/api";
@@ -55,7 +55,7 @@ export default function useAnalytics() {
   const postAnalyticData = async (body) => {
     try {
       const response = await axios.post(
-        "https://xplr.live/api/v1/analytics/clickCount/create",
+        `${API_BASE_URL}/v1/analytics/clickCount/create`,
         body
       );
       console.log(response.data);

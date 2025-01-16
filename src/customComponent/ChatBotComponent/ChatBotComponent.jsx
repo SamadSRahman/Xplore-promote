@@ -1,45 +1,125 @@
-// src/App.jsx
-import Header from "./components/Header/Header";
-import styles from "./ChatBotComponent.module.css";
 import React, { useState } from "react";
-import ChatBox from "./components/ChatBox/ChatBox";
+import styles from "./ChatBotComponent.module.css";
 import InputBox from "./components/InputBox/InputBox";
+import ChatBotResponse from "./components/ChatBotResponse/ChatBotResponse";
+import SearchBar from "./components/SearchBar/SearchBar";
+import SampleQuestions from "./components/SampleQuestions/SampleQuestions";
+import Header from "./components/Header/Header";
 import { AiOutlineMessage } from "react-icons/ai";
+import useChatBot from "../../lib/utils/useChatBot";
 
 const ChatBotComponent = () => {
-  const [messages, setMessages] = useState([
-    { text: "Hi there! How can I help you?", isUser: false },
-  ]);
-  const [showChatBot, setShowChatBot] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [showChatBot, setShowChatBot] = useState(true);
+  const [isFirstSearch, setIsFirstSearch] = useState(true);
+  const { postMessage } = useChatBot();
 
-  const handleSendMessage = (text) => {
-    setMessages([...messages, { text, isUser: true }]);
-
-    // Simulate AI bot response (replace this with API call for real functionality)
-    setTimeout(() => {
+  const handleSearch = async (query) => {
+    if (query.trim() !== "") {
+      // Add the user's message
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: "Let me look that up for you.", isUser: false },
+        { text: query, isUser: true },
+        { text: "Loading...", isUser: false }, 
       ]);
-    }, 1000);
+
+      try {
+        setIsFirstSearch(false);
+        const response = await postMessage(query);
+        setMessages((prevMessages) => {
+          const updatedMessages = [...prevMessages];
+          updatedMessages[updatedMessages.length - 1] = {
+            text: response.final_answer || "Error getting response from Chatbot.",
+            isUser: false,
+          };
+          return updatedMessages;
+        });
+      } catch (error) {
+        setMessages((prevMessages) => {
+          const updatedMessages = [...prevMessages];
+          updatedMessages[updatedMessages.length - 1] = {
+            text: "Error: Unable to fetch response.",
+            isUser: false,
+          };
+          return updatedMessages;
+        });
+      }
+
+      // setIsFirstSearch(false);
+    }
+  };
+
+  const handleSendMessage = async (query) => {
+    if (query.trim() !== "") {
+      // Display the user's query immediately
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: query, isUser: true },
+        { text: "Loading...", isUser: false }, // Placeholder for the bot's response
+      ]);
+  
+      try {
+        // Fetch the bot's response
+        const response = await postMessage(query);
+  
+        // Replace the loading message with the actual response
+        setMessages((prevMessages) => {
+          const updatedMessages = [...prevMessages];
+          updatedMessages[updatedMessages.length - 1] = {
+            text: response.final_answer || "Error getting response from Chatbot.",
+            isUser: false,
+          };
+          return updatedMessages;
+        });
+      } catch (error) {
+        // Replace the loading message with an error message
+        setMessages((prevMessages) => {
+          const updatedMessages = [...prevMessages];
+          updatedMessages[updatedMessages.length - 1] = {
+            text: "Error: Unable to fetch response.",
+            isUser: false,
+          };
+          return updatedMessages;
+        });
+      }
+    }
   };
 
   return (
-    <> 
+    <>
+    
       {showChatBot ? (
         <div className={styles.app}>
-          <Header  setChatBot={setShowChatBot}/>
-          <main className={styles.main}>
-            <ChatBox messages={messages} />
-            <InputBox onSend={handleSendMessage} />
-          </main>
+          <Header onClose={()=>setShowChatBot(false)} />
+          {isFirstSearch ? (
+            <div className={styles.main}>
+              <h2 className={styles.heading}>What do you want to know?</h2>
+              <SearchBar onSearch={handleSearch} />
+              <SampleQuestions onClick={handleSearch} />
+            </div>
+          ) : (
+            <div className={styles.chatbox}>
+              <div className={styles.messagesContainer}>
+                {messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.message} ${
+                      message.isUser ? styles.userMessage : styles.botMessage
+                    }`}
+                  >
+                  {message.isUser || message.text==="Loading..."? <span>{message.text}</span> : (<ChatBotResponse responseString={message.text}  />)}
+                  </div>
+                ))}
+              </div>
+              <InputBox onSend={handleSendMessage} />
+            </div>
+          )}
         </div>
       ) : (
-       <button
+        <button
           className={styles.floatingButton}
           onClick={() => setShowChatBot(!showChatBot)}
         >
-          {" "}
           <AiOutlineMessage size={24} />
         </button>
       )}

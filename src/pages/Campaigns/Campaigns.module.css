@@ -153,3 +153,18 @@ text-align: center;    height: 100%;
   .campaignList::-webkit-scrollbar{
     display: none;
   }
+  .tabSection{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    border-top: 1px solid #EFEFEF;
+    border-bottom: 1px solid #EFEFEF;
+    padding: 0.7rem;
+  }
+  .tabSection > div{
+    padding: 10px 12px;
+    cursor: pointer;
+    border-radius: 1rem;
+    box-sizing: border-box;
+  }

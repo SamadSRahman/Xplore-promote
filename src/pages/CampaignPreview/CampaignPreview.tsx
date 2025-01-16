@@ -17,6 +17,7 @@ import { uid } from "uid";
 import RidirectComponent from "./RedirectComponent"
 
 
+
 export default function CampaignPreview() {
   const { getAllLayout, layouts } = useLayout();
   const navigate = useNavigate();
@@ -26,10 +27,11 @@ export default function CampaignPreview() {
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false)
   const [isCameraScreen, setIsCameraScreen] = useState(false);
-  const { getCampaignById } = useCampaign();
+  const { getCampaignById, metaData } = useCampaign();
 
   useEffect(() => {
     getCampaignById(campaignId, screen);
+    
   }, [campaignId]);
 
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
@@ -487,7 +489,7 @@ export default function CampaignPreview() {
         </div>
       </GoogleOAuthProvider>}
 
-      <RidirectComponent setIsMobileDevice={setIsMobileDevice} universalLink={appClipUrl} playStoreLink={playStoreUrl}
+      <RidirectComponent metaData={metaData} setIsMobileDevice={setIsMobileDevice} universalLink={appClipUrl} playStoreLink={playStoreUrl}
        campaignId={campaignId} />
 
     </div>
