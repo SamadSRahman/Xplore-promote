@@ -15,10 +15,11 @@ interface RedirectComponentProps {
   setIsMobileDevice: (isMobile: boolean) => void;
 }
 
-const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, universalLink, playStoreLink, setIsMobileDevice,
+const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, universalLink, playStoreLink,
   campaignId }) => {
   const [ipAddress, setIpAddress] = useState("");
   const [showRedirectionPage, setShowRedirectionPage] = useState(false)
+  const [redirectionurl, setRedirectionUrl] = useState("")
   const [source, setSource] = useState("");
   const [device, setDevice] = useState("");
   const { postAnalyticData } = useAnalytics();
@@ -38,8 +39,6 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
 
   const detectDevice = () => {
     const userAgent = navigator.userAgent;
-
-
     if (/(iPhone|iPad|iPod)/i.test(userAgent)) {
       const match = userAgent.match(/(iPhone|iPad|iPod)/i);
       return match ? match[0].toLowerCase() : "ios";
@@ -61,9 +60,12 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
 
     if (userAgent.includes("Instagram")) return "instagram";
+
+    
     if (userAgent.includes('fban') || userAgent.includes('fbav')) return "facebook";
     if (userAgent.includes('linkedin')) return "linkedin";
     if (userAgent.includes("Twitter")) return "twitter";
+    if (userAgent.includes("whatsapp")) return "whatsapp";
 
     if (/iPhone|iPad|iPod/i.test(userAgent)) return "ios";
     if (/android/i.test(userAgent)) return "android";
@@ -105,18 +107,30 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
 
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
     const source = detectSource();
 
-    if (/iPhone|iPad|iPod|android/i.test(userAgent)) {
-      setIsMobileDevice(true);
+    if (/iPhone|iPad|iPod/i.test(userAgent)) {
       setShowRedirectionPage(true)
-    } else {
-      setIsMobileDevice(false);
+      setRedirectionUrl(universalLink);
+    } else if (/android/i.test(userAgent)){
+      setShowRedirectionPage(false)
+      setRedirectionUrl(playStoreLink);
+    } else{
       setShowRedirectionPage(false)
     }
 
-    if (source === "instagram" || source === "facebook" || source === "linkedin" || source === "twitter") {
+
+    if (source === "whatsapp") {
       if (/iPhone|iPad|iPod/i.test(userAgent)) {
+        window.location.replace(universalLink);
+      } else if (/android/i.test(userAgent)) {  
+        window.location.replace(androidIntent);
+      }
+    } else if (source === "instagram" || source === "facebook" || source === "linkedin" || source === "twitter") {
+      if (/iPhone|iPad|iPod/i.test(userAgent)) {
+        setShowRedirectionPage(true)
+        setRedirectionUrl(universalLink);
         const iosInstruction = document.getElementById("ios-instruction");
         if (iosInstruction) {
           iosInstruction.style.display = "block";
@@ -125,8 +139,11 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
       } else if (/android/i.test(userAgent)) {
         const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
         // const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
+        setShowRedirectionPage(true)
+        setRedirectionUrl(androidIntent);
         window.location.replace(androidIntent);
       }
+
     } else {
       if (/iPhone|iPad|iPod/i.test(userAgent)) {
         const iosInstruction = document.getElementById("ios-instruction");
@@ -135,17 +152,16 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
         }
         window.stop();
       } else if (/android/i.test(userAgent)) {
-        const androidIntent = `intent:${playStoreLink}#Intent;package=com.android.vending;end`;
-        // const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
+       // const androidIntent = `intent://xplorecampaign?shortId=${shortId}&launch=true#Intent;scheme=https;action=android.intent.action.VIEW;package=com.xircular.xplorecampaign;end`;
         window.location.replace(androidIntent);
       }
     }
-  }, [universalLink, playStoreLink]);
+  }, [universalLink,playStoreLink]);
 
 
   return (
     <div id="ios-instruction">
-      {showRedirectionPage && <RedirectionPage metaData={metaData} link={universalLink} />}
+      {showRedirectionPage && <RedirectionPage metaData={metaData} link={redirectionurl} />}
       {/* <div className={styles.redirectContainer}>
         <div className={styles.redirectContent}>
           <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
