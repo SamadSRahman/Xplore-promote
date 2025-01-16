@@ -18,7 +18,7 @@ interface RedirectComponentProps {
 const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, universalLink, playStoreLink, setIsMobileDevice,
   campaignId }) => {
   const [ipAddress, setIpAddress] = useState("");
-  const [showRedirectionPage, setShowRedirectionPage] = useState(true)
+  const [showRedirectionPage, setShowRedirectionPage] = useState(false)
   const [source, setSource] = useState("");
   const [device, setDevice] = useState("");
   const { postAnalyticData } = useAnalytics();

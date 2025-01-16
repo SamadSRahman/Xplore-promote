@@ -1,13 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import styles from "./RedirectionPage.module.css";
-import xplore from "../../assets/xplr.svg";
-import redImg from "../../assets/Redirect-img.svg";
 
 export default function RedirectionPage({link, metaData}) {
-  const anchorRef = useRef()
+  const anchorRef = useRef();
   useEffect(()=>{
    if(anchorRef){
-    anchorRef.current.click()
+    anchorRef.current.click();
    }
   },[anchorRef])
   return (
@@ -16,10 +14,9 @@ export default function RedirectionPage({link, metaData}) {
         <h2>Welcome</h2>
         <h4>to</h4>
         <div className={styles.xploreDiv}>
-          {/* <img src={xplore} className={styles.logo} alt="logo" /> */}
           <h2>{metaData.title}</h2>
           <p>{metaData.description}</p>
-          <img src={metaData.image} className={styles.rdctImg} alt="img1" />
+          <img src={metaData.image} className={styles.rdctImg} alt="img" />
           <a ref={anchorRef} href={link} target="_blank">Continue</a>
         </div>
       </div>
