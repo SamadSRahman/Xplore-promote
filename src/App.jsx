@@ -12,6 +12,7 @@ import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx';
 import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
 import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
+import AnalyticsDashboard from './pages/CampaignAnalytics/AnalyticsDashboard.jsx';
 import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx';
 import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx';
 import Preview from './pages/Preview/Preview.tsx';
@@ -72,6 +73,7 @@ const App = () => {
               <Route path='/profile/:userId' element={<ProfilePreview />} />
               <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />} />
               <Route path='/campaignAnalytics/:campaignId' element={<CampaignAnalytics />} />
+              <Route path='/analyticsDashboard/:campaignId' element={<AnalyticsDashboard />} />
               <Route path='/contactus' element={<ContactUs />} />
               <Route path='/terms&conditions' element={<TermsAndConditions />} />
               <Route path='/' element={<QRLogin />} />

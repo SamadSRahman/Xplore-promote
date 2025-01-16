@@ -138,7 +138,7 @@ export default function Campaigns() {
                         </div>
                         <div
                           className={styles.popupItem}
-                          onClick={() => navigate(`/campaignAnalytics/${campaign.campaignID}`)}
+                          onClick={() => navigate(`/analyticsDashboard/${campaign.campaignID}`)}
                         >
                           <FaChartLine size={15} /> Analytics
                         </div>

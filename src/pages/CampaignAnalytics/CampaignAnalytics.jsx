@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react';
 import styles from './CampaignAnalytics.module.css';
-import PerformanceAnalytics from './PerformanceAnalytics.jsx';
 import useAnalytics from '../../lib/utils/useAnalytics';
 import { useParams } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 
 const CampaignAnalytics = () => {
-    const { users, getAnalyticsData, data , getperformamceAnalyticsData, performancedata } = useAnalytics();  
+    const { users, getAnalyticsData, data  } = useAnalytics();  
     const { campaignId } = useParams();
     
     useEffect(() => {
             if(campaignId){
                 getAnalyticsData(campaignId);
-                getperformamceAnalyticsData(campaignId);
             }
     }, [campaignId]);
 
@@ -94,8 +92,6 @@ const handleExportExcel = () => {
     
     return (
         <div className={styles.container}>
-             <PerformanceAnalytics />
-
             <h1 className={styles.title}>Campaign Analytics</h1>
          
             <div className={styles.analyticsContainer}>
@@ -106,7 +102,7 @@ const handleExportExcel = () => {
                     
                 
                 */}
-                <div className={styles.tableContainer}>
+     <div className={styles.tableContainer}>
       <table className={styles.userTable}>
         <thead>
           <tr>

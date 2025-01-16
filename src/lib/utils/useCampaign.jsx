@@ -92,7 +92,7 @@ export default function useCampaign() {
                 },
             }
         );
-        console.log('response from line 77', response.data.data, getScreenName(page));
+        console.log('response from line 77', response.data.data, );
         setCampaignName(response.data.data.name);
         setMetaData({
             title: response.data.data.name,
