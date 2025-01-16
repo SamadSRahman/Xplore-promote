@@ -79,7 +79,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
   }, []);
 
   useEffect(() => {
-    if (ipAddress && source) {
+    if (ipAddress && source && !showRedirectionPage && device) {
       const deviceDetails = detectDeviceDetails();
       // const source = detectSourceAnalytics();
 
