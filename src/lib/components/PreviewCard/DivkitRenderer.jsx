@@ -27,10 +27,6 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(capturedImage);
-  }, [capturedImage]);
-
   // Define the custom element before render
   if (typeof window !== 'undefined' && !customElements.get('custom-card')) {
     class CustomCardElement extends HTMLElement {
@@ -83,39 +79,72 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
 
   useEffect(() => {
     if (divkitContainer.current) {
-      render({
-        hydrate: true,
-        onCustomAction: handleCustomAction,
-        id: 'divkit-root',
-        target: divkitContainer.current,
-        typefaceProvider: (font) => {
-          console.log('font', font);
-          switch (font) {
-            case 'Inter': return '"Inter", sans-serif';
-            case 'Poppins': return '"Poppins", sans-serif';
-            case 'Roboto': return '"Roboto", sans-serif';
-            case 'Open Sans': return '"Open Sans", sans-serif';
-            case 'Lato': return '"Lato", sans-serif';
-            case 'Montserrat': return '"Montserrat", sans-serif';
-            case 'Nunito': return '"Nunito", sans-serif';
-            case 'Raleway': return '"Raleway", sans-serif';
-            case 'Oswald': return '"Oswald", sans-serif';
-            case 'Merriweather': return '"Merriweather", serif';
-            default: return 'inherit';
-          }
-        },
-        json: divkitJson,
-        customComponents: new Map([
-          ['threesixty_card', {
-              element: 'custom-card'
-          }
-       
-        ],[ 'chatbot_card',{element:'chatbot-card'}]
-      ]),
-        onError(details) {
-          console.error('Divkit rendering error:', details.error);
-        },
-      });
+    render({
+  hydrate: true,
+  onCustomAction: handleCustomAction,
+  id: 'divkit-root',
+  target: divkitContainer.current,
+  typefaceProvider: (() => {
+    // Map to store loaded fonts with their family names
+    const loadedFonts = new Map();
+    
+    // Debug counter to track function calls
+    let callCount = 0;
+    
+    return (fontUrl) => {
+      callCount++;
+      console.log(`typefaceProvider called ${callCount} times with URL:`, fontUrl);
+      
+      // Check if font is already loaded
+      if (loadedFonts.has(fontUrl)) {
+        console.log('Font already loaded, returning existing family:', loadedFonts.get(fontUrl));
+        return loadedFonts.get(fontUrl);
+      }
+      
+      // Generate unique font family name
+      const fontFamily = `custom-font-${btoa(fontUrl).substring(0, 8)}`;
+      console.log('Generated new font family:', fontFamily);
+      
+      // Create and append style element if font not loaded
+      const style = document.createElement('style');
+      style.id = fontFamily;
+      style.innerHTML = `
+        @font-face {
+          font-family: ${fontFamily};
+          src: url('${fontUrl}') format('truetype');
+          font-display: swap;
+        }
+      `;
+      
+      document.head.appendChild(style);
+      console.log('Added new style element for font family:', fontFamily);
+      
+      // Store the font family in the map
+      loadedFonts.set(fontUrl, fontFamily);
+      
+      // Log current state of loaded fonts
+      console.log('Currently loaded fonts:', 
+        Array.from(loadedFonts.entries())
+          .map(([url, family]) => `${family} (${url})`)
+          .join('\n')
+      );
+      
+      return fontFamily;
+    };
+  })(), // Added parentheses here to execute the IIFE
+  json: divkitJson,
+  customComponents: new Map([
+    ['threesixty_card', {
+      element: 'custom-card'
+    }],
+    ['chatbot_card', {
+      element: 'chatbot-card'
+    }]
+  ]),
+  onError(details) {
+    console.error('Divkit rendering error:', details.error);
+  },
+});
     }
     return () => {
       if (divkitContainer.current) {

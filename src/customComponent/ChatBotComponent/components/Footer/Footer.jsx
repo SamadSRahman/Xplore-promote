@@ -1,24 +1,32 @@
-// src/components/Footer/Footer.jsx
+import React from "react";
 import styles from "./Footer.module.css";
-import { FaHome, FaSearch, FaUser } from "react-icons/fa";
+import { FaSearch, FaMicrophone, FaKeyboard } from "react-icons/fa";
+import PropTypes from "prop-types";
 
-const Footer = () => {
+const Footer = ({ selectedTab, setSelectedTab }) => {
   return (
     <footer className={styles.footer}>
-      <div className={styles.icon}>
-        <FaHome />
-        <span>Home</span>
+      <div
+        onClick={() => setSelectedTab("chat")}
+        className={`${styles.icon} ${selectedTab === "chat" ? styles.active : ""}`}
+      >
+        <FaKeyboard />
+        <span>Chat</span>
       </div>
-      <div className={styles.icon}>
-        <FaSearch />
-        <span>Search</span>
-      </div>
-      <div className={styles.icon}>
-        <FaUser />
-        <span>Profile</span>
+      <div
+        onClick={() => setSelectedTab("audio")}
+        className={`${styles.icon} ${selectedTab === "audio" ? styles.active : ""}`}
+      >
+        <FaMicrophone />
+        <span>Audio</span>
       </div>
     </footer>
   );
+};
+
+Footer.propTypes = {
+  selectedTab: PropTypes.string.isRequired,
+  setSelectedTab: PropTypes.func.isRequired,
 };
 
 export default Footer;

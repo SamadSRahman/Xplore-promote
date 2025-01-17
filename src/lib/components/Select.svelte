@@ -20,12 +20,14 @@
     export let multiple = false;
     
     const id = 'select' + Math.random();
-
+    console.log("items", items, value, );
+    
     $: text = multiple 
         ? (Array.isArray(value) ? value.map(v => items.find(item => item.value === v)?.text).join(', ') : '')
         : (items.find(item => item.value === value)?.text || value || '');
     $: icon = items.find(item => item.value === value)?.icon;
-
+    $: console.log("text",text);
+    
     const dispatch = createEventDispatcher();
 
     let toggled = false;
@@ -106,6 +108,8 @@
                 control?.focus();
             });
         } else {
+            console.log("val", val);
+            
             value = val;
             Promise.resolve().then(() => dispatch('change', val));
             toggled = false;
@@ -157,7 +161,7 @@
                 />
             </div>
         {/if}
-        {text}
+        {text} 
     </div>
     <div class="select__arrow"></div>
 
@@ -190,7 +194,7 @@
                                 />
                             </div>
                         {/if}
-                        {item.text ?? item.value}
+                        {item.text.length>1?item.text:item.value}
                     </li>
                 {/each}
             </ul>

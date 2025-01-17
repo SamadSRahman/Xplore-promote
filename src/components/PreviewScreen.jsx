@@ -75,6 +75,8 @@ const PreviewScreen = ({ isOpen, onClose, jsonData }) => {
       id: 'preview-divkit-root',
       target: previewContainer.current,
       typefaceProvider: (font) => {
+        console.log("Font", font);
+        
         switch (font) {
           case 'Inter': return '"Inter", sans-serif';
           case 'Poppins': return '"Poppins", sans-serif';

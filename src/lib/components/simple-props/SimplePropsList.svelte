@@ -26,7 +26,7 @@
         // Avoid TypeScript type infinite loop - manual bypass events
         dispatch(event.type, event.detail);
     }
-    console.log("propsList", propsList)
+  
 </script>
 
 <div class="simple-props-group">

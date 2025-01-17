@@ -6,6 +6,7 @@ import fixedVertical from '../../assets/fixedVertical.svg?url';
 import matchParentVertical from '../../assets/matchParentVertical.svg?url';
 import wrapContentVertical from '../../assets/wrapContentVertical.svg?url';
 
+
 export const supportedComponents = new Set([
     'image',
     'gif',
@@ -208,6 +209,8 @@ export type SiblingComponentProperty = ComponentProperty & {
         value: string;
     }[];
 }
+
+
 
 export const BASE_COMPONENT_PROPS: ComponentProperty[] = [{
     type: 'group',
@@ -423,6 +426,7 @@ export const BASE_COMPONENT_PROPS: ComponentProperty[] = [{
 }];
 
 export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
+
     text: [...BASE_COMPONENT_PROPS, {
         type: 'group',
         title: 'textProps.title',
@@ -484,50 +488,52 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
             name: 'props.font_family',
             prop: 'font_family',
             type: 'select',
-            options: [
-                {
-                    name: 'props.font_family_inter',
-                    value: 'Inter'
-                },
-                {
-                    name: 'props.font_family_poppins',
-                    value: 'Poppins'
-                },
-                {
-                    name: 'props.font_family_roboto',
-                    value: 'Roboto'
-                },
-                {
-                    name: 'props.font_family_open_sans',
-                    value: 'Open Sans'
-                },
-                {
-                    name: 'props.font_family_lato',
-                    value: 'Lato'
-                },
-                {
-                    name: 'props.font_family_montserrat',
-                    value: 'Montserrat'
-                },
-                {
-                    name: 'props.font_family_nunito',
-                    value: 'Nunito'
-                },
-                {
-                    name: 'props.font_family_raleway',
-                    value: 'Raleway'
-                },
-                {
-                    name: 'props.font_family_oswald',
-                    value: 'Oswald'
-                },
-                {
-                    name: 'props.font_family_merriweather',
-                    value: 'Merriweather'
-                }
-            ],
+            options:[],
+            // options: [
+            //     {
+            //         name: 'props.font_family_inter',
+            //         value: 'Inter'
+            //     },
+            //     {
+            //         name: 'props.font_family_poppins',
+            //         value: 'Poppins'
+            //     },
+            //     {
+            //         name: 'props.font_family_roboto',
+            //         value: 'Roboto'
+            //     },
+            //     {
+            //         name: 'props.font_family_open_sans',
+            //         value: 'Open Sans'
+            //     },
+            //     {
+            //         name: 'props.font_family_lato',
+            //         value: 'Lato'
+            //     },
+            //     {
+            //         name: 'props.font_family_montserrat',
+            //         value: 'Montserrat'
+            //     },
+            //     {
+            //         name: 'props.font_family_nunito',
+            //         value: 'Nunito'
+            //     },
+            //     {
+            //         name: 'props.font_family_raleway',
+            //         value: 'Raleway'
+            //     },
+            //     {
+            //         name: 'props.font_family_oswald',
+            //         value: 'Oswald'
+            //     },
+            //     {
+            //         name: 'props.font_family_merriweather',
+            //         value: 'Merriweather'
+            //     }
+            // ],
             enableSources: true,
             default: 'Inter'
+            
         },
         {
             name: 'props.text_color',

@@ -1,9 +1,8 @@
 // src/components/InputBox/InputBox.jsx
-import  React,{ useState } from "react";
+import React, { useState } from "react";
 import styles from "./InputBox.module.css";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import { FaArrowUp } from "react-icons/fa6";
-
 
 const InputBox = ({ onSend }) => {
   const [input, setInput] = useState("");
@@ -16,6 +15,7 @@ const InputBox = ({ onSend }) => {
   };
 
   return (
+    // <>
     <div className={styles.inputBox}>
       <input
         type="text"
@@ -26,7 +26,7 @@ const InputBox = ({ onSend }) => {
         onKeyDown={(e) => e.key === "Enter" && handleSend()}
       />
       <button className={styles.sendButton} onClick={handleSend}>
-        <FaArrowUp/>
+        <FaArrowUp />
       </button>
     </div>
   );
@@ -35,5 +35,5 @@ const InputBox = ({ onSend }) => {
 export default InputBox;
 
 InputBox.propTypes = {
-    onSend:PropTypes.func
-}
+  onSend: PropTypes.func,
+};

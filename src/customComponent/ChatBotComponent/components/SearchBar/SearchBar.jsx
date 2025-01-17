@@ -27,7 +27,7 @@ const SearchBar = ({ onSearch }) => {
     <div className={styles.searchBar}>
       <textarea
         ref={textareaRef}
-        placeholder="Ask anything..."
+        placeholder={"Ask anything..."}
         className={styles.input}
         value={input}
         onChange={handleInputChange}
@@ -43,6 +43,7 @@ const SearchBar = ({ onSearch }) => {
       <button className={styles.searchButton} onClick={handleSearch}>
         <FaArrowRightLong />
       </button>
+     
     </div>
   );
 };

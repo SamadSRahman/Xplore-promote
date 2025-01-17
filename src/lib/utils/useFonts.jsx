@@ -8,9 +8,9 @@ export default function useFonts() {
 
   let API_BASE_URL = "https://pre.xplore.xircular.io/api";
   if (
-    window.location.origin === "https://xplr.live" 
-    // window.location.origin.includes("localhost") ||
-    // window.location.origin.includes("vercel")
+    window.location.origin === "https://xplr.live" ||
+    window.location.origin.includes("localhost") ||
+    window.location.origin.includes("vercel")
   ) {
     console.log(window.location.origin);
     API_BASE_URL = "https://xplr.live/api";
@@ -48,6 +48,15 @@ export default function useFonts() {
       alert("Failed to upload font!");
     }
   };
+  const convertData = (data) => {
+    return data.flatMap(item => {
+      return Object.keys(item.fontWeight).map(weight => ({
+        // name: 'props.font_family_inter',
+        text: `${item.name} ${weight}`,
+        value: item.fontWeight[weight]
+      }));
+    });
+  };
 
   const getAllFonts = async () => {
     try {
@@ -59,6 +68,8 @@ export default function useFonts() {
         });
         console.log(response.data);
         setFonts(response.data.data)
+        const formattedData = convertData(response.data.data)
+        return formattedData
     } catch (error) {
         console.log("Error fetching fonts", error);
      

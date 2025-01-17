@@ -21,10 +21,13 @@ import QuizStyleInputPopup from '../../components/QuizStyleInputPopup';
 import { isContactUs } from '../../lib/utils/services';
 import { contactUsJSON } from '../../lib/utils/splashScreenData';
 import PreviewScreen from '../../components/PreviewScreen';
+import { COMPONENT_PROPS } from '../../lib/data/componentProps';
+import useFonts from '../../lib/utils/useFonts';
 
 const EditorPage = () => {
   const { campaignId, page } = useParams();
-  const { getCampaignById, currentLayout, layoutId,  } = useCampaign();
+  const { getAllFonts } = useFonts()
+  const { getCampaignById, currentLayout, layoutId, } = useCampaign();
   const { updateLayout, createLayout, getAllLayout, getAllLayoutNames, screens } = useLayout();
   const navigate = useNavigate();
   const [jsonContent, setJsonContent] = React.useState(null);
@@ -48,11 +51,28 @@ const EditorPage = () => {
       }
     }
   }, [campaignId, page]);
-  React.useEffect(()=>{
+  React.useEffect(() => {
     console.log("line 52", layoutId);
-    
-  },[layoutId])
 
+  }, [layoutId])
+  const handleFonts = async () => {
+    let fontFamilyOptions: object[] | undefined = [];
+    fontFamilyOptions = await getAllFonts() || [];
+    console.log(fontFamilyOptions);
+    
+    const textProps = COMPONENT_PROPS.text.find(
+      (item) => item.title === "textProps.title"
+    );
+  
+const fontFamilyProp = textProps.list.find((item)=>item.name==="props.font_family")
+console.log("font family prop", fontFamilyProp);
+    if (fontFamilyProp) {
+      fontFamilyProp.options = fontFamilyOptions;
+    }
+  }
+  React.useEffect(() => {
+    handleFonts()
+  }, [])
 
   React.useEffect(() => {
     const screenWidth = window.innerWidth;
@@ -198,35 +218,35 @@ const EditorPage = () => {
 
   let isThrottled = false;
 
-    const limitedUpdateLayout = async (layoutId: string, json : string, page : string, alert: boolean) => {
-      if (isThrottled) return; // Ignore changes within the 30-sec window.
-    
-      isThrottled = true; // Set throttle flag to true.
-      
-      // Call the update function immediately.
-      // await updateLayout(layoutId, json, page, alert);
-    
-      // Reset the throttle flag after 30 seconds.
-      setTimeout(() => {
-        isThrottled = false;
-      }, 30000); // 30 seconds
-    };
+  const limitedUpdateLayout = async (layoutId: string, json: string, page: string, alert: boolean) => {
+    if (isThrottled) return; // Ignore changes within the 30-sec window.
+
+    isThrottled = true; // Set throttle flag to true.
+
+    // Call the update function immediately.
+    // await updateLayout(layoutId, json, page, alert);
+
+    // Reset the throttle flag after 30 seconds.
+    setTimeout(() => {
+      isThrottled = false;
+    }, 30000); // 30 seconds
+  };
 
   async function handleQuiz(json: string) {
-    
+
     // Usage:
     limitedUpdateLayout(layoutId, json, page, false);
     const jsonData = JSON.parse(json);
     localStorage.setItem("variables", JSON.stringify(jsonData.card.variables));
     const quizComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_quiz");
     const contactUsComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_template_contact_us");
-    if(contactUsComponent){
-      if(!isContactUs()){
+    if (contactUsComponent) {
+      if (!isContactUs()) {
         await createLayout(JSON.stringify(contactUsJSON), campaignId, "contact_us_screen");
         await getAllLayoutNames(campaignId);
         await getAllLayout(campaignId);
-        console.log("line 204",screens);
-        
+        console.log("line 204", screens);
+
       }
     }
     if (screens.find((ele: { path: string }) => ele.path === "quiz_screen") === undefined) {
@@ -265,7 +285,7 @@ const EditorPage = () => {
   }
   const handleQuizSubmit = (quizData: any) => {
     const currentJson = JSON.parse(editorInstance.getValue());
-    
+
     // Create quiz component structure
     const quizComponent = {
       type: "container",
@@ -279,7 +299,7 @@ const EditorPage = () => {
               text: `Question ${quizData.questionNumber}: ${quizData.question}`,
               font_size: 22,
               font_weight: "bold",
-              margin: { bottom: 16, top:20 },
+              margin: { bottom: 16, top: 20 },
               text_alignment_horizontal: "center"
             }
           ],
@@ -329,7 +349,7 @@ const EditorPage = () => {
 
     // Get the current items or initialize empty array
     const currentItems = currentJson.card.states[0].div.items || [];
-    
+
     // Update the div structure with the new quiz component
     currentJson.card.states[0].div = {
       ...currentJson.card.states[0].div,
@@ -340,7 +360,7 @@ const EditorPage = () => {
 
     updateLayout(layoutId, JSON.stringify(currentJson), page);
     getCampaignById(campaignId, page);
-  
+
     const card = editorInstance.getCard();
     if (card) {
       card.json = currentJson;
@@ -353,7 +373,7 @@ const EditorPage = () => {
   };
 
   return (
-    <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box',  }}>
+    <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box', }}>
       <ReactHeader isScreens={true} isAddScreen={true} screens={screens} refreshScreenNames={refreshScreenNames} />
       <div>
         {showQuizPopup && (
