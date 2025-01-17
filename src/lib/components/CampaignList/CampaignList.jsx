@@ -54,7 +54,7 @@ const CampaignsList = ({ campaigns, onDelete, onGetQr }) => {
               <div
                 className={styles.popupItem}
                 onClick={() =>
-                  navigate(`/campaignAnalytics/${campaign.campaignID}`)
+                  navigate(`/analyticsDashboard/${campaign.campaignID}`)
                 }
               >
                 <FaChartLine size={15} /> Analytics

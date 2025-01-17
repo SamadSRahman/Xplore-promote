@@ -33,8 +33,48 @@ export default function Preview() {
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
 
-  const appClipUrl = `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}`;
-  const playStoreUrl = `https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&launch=true`;
+  const [appclip, setAppClip] = useState(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}&sourcename=qrcode`);
+  const [playstore, setPlayStore] = useState(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&sourcename=qrcode&launch=true`);
+  
+  useEffect(() => {
+      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+  
+      if (userAgent.includes("Instagram")) 
+      {
+        setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}&sourcename=instagram`);
+        setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&sourcename=instagram&launch=true`);
+      }
+       else if (userAgent.includes('fban') || userAgent.includes('fbav')) 
+       {
+         setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}&sourcename=facebook`);
+         setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&sourcename=facebook&launch=true`);
+       }
+      else if (userAgent.includes('linkedin'))  {
+          setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}&sourcename=linkedin`);
+          setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&sourcename=linkedin&launch=true`);
+      }
+     else if(userAgent.includes("Twitter")){
+      setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}&sourcename=twitter`);
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&sourcename=twitter&launch=true`);  
+     } 
+     else if (userAgent.includes("whatsapp")) {
+      setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}&sourcename=whatsapp`);
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&sourcename=whatsapp&launch=true`);
+     }
+     else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+      setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}&sourcename=ios`);    
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&sourcename=ios&launch=true`); 
+     }
+     else if (/android/i.test(userAgent)) {
+        setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}&sourcename=android`);
+        setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&sourcename=android&launch=true`);  
+      }else{
+        setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${shortId}&sourcename=other`);
+        setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&shortId=${shortId}&sourcename=other&launch=true`);  
+      }
+     
+    }, [shortId]);
+  
 
   const { data, getData } = useVisitorData(
     { extendedResult: true },
@@ -520,7 +560,7 @@ export default function Preview() {
             </div>
           </GoogleOAuthProvider>}
 
-       <RidirectComponent metaData={metaData} setIsMobileDevice={setIsMobileDevice} universalLink={appClipUrl} playStoreLink={playStoreUrl} 
+     <RidirectComponent metaData={metaData} setIsMobileDevice={setIsMobileDevice} universalLink={appclip} playStoreLink={playstore} 
        campaignId={campaignId} shortId={shortId} />
 
   </div>
