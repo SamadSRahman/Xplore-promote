@@ -12,7 +12,7 @@ import useChatBot from "../../lib/utils/useChatBot";
 
 const ChatBotComponent = () => {
   const [messages, setMessages] = useState([]);
-  const [showChatBot, setShowChatBot] = useState(true);
+  const [showChatBot, setShowChatBot] = useState(false);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
   const [selectedTab, setSelectedTab] = useState("chat");
   const { postMessage } = useChatBot();

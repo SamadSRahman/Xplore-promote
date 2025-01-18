@@ -4,9 +4,8 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import file from "../../../assets/fontFile.svg";
 import { IoIosAdd } from "react-icons/io";
 import AddFontPopup from "../AddFontPopup/AddFontPopup";
-import { fontWeights } from "../../utils/services";
-import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import useFonts from "../../utils/useFonts";
 
 export default function FontDetails({ font }) {
   const [isAddFontVisible, setIsAddFontVisible] = useState(false);
@@ -14,6 +13,8 @@ export default function FontDetails({ font }) {
   const [editedFontName, setEditedFontName] = useState(
     font.fontName || "Untitled"
   );
+  const {deleteFontFile} = useFonts();
+  
   useEffect(() => {
    if(font.name){
     setEditedFontName(font.name);
@@ -27,8 +28,12 @@ export default function FontDetails({ font }) {
    }
   
   }, [font]);
-  const handleDelete = (weight) => {
-    alert(`Are you sure you want to delete ${weight} font weight?`);
+  const handleDelete = (id, weight) => {
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete ${weight} font weight?`
+    );
+    isConfirmed?deleteFontFile(id):""
+    
   };
   const handleEditClick = () => {
     setIsEditing(true);
@@ -45,9 +50,9 @@ export default function FontDetails({ font }) {
     }
   };
 
-  const weightScales = Object.fromEntries(
-    fontWeights.map((fw) => [fw.text.toLowerCase().replace(" ", ""), fw.weight])
-  );
+  // const weightScales = Object.fromEntries(
+  //   fontWeights.map((fw) => [fw.text.toLowerCase().replace(" ", ""), fw.weight])
+  // );
 
   return (
     <div className={styles.container}>
@@ -80,34 +85,34 @@ export default function FontDetails({ font }) {
         </button>
       </header>
       <div className={styles.body}>
-        {font?.fontWeight && (
+        {font?.fontWeights?.length>0 && (
           <div className={styles.table}>
             <div className={styles.tableHead}>
               <span className={styles.weightName}>Weight Name</span>
-              <span className={styles.scale}>Scale</span>
+              {/* <span className={styles.scale}>Scale</span> */}
               <span className={styles.url}>URL</span>
             </div>
             <div className={styles.tableBody}>
-              {Object.entries(font.fontWeight).map(([key, url]) => (
-                <div className={styles.tableRow} key={key}>
+              {font?.fontWeights.map((fontWeight, ind) => (
+                <div className={styles.tableRow} key={ind}>
                   <span className={styles.weightName}>
                     {" "}
                     <img src={file} alt="" />{" "}
-                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                    {/* {fontWeight.charAt(0).toUpperCase() + key.slice(1)} */}
+                    {fontWeight.specificName}
                   </span>
-                  <span className={styles.scale}>
+                  {/* <span className={styles.scale}>
                     {weightScales[key.toLowerCase()] || "N/A"}
-                  </span>
+                  </span> */}
                   <span className={styles.url}>
-                    <a href={url} target="_blank" rel="noopener noreferrer">
-                      {url}
+                    <a href={fontWeight.fontWeightFile} target="_blank" rel="noopener noreferrer">
+                      {fontWeight.fontWeightFile}
                     </a>
                     <div className={styles.iconSection}>
-                      <MdEdit className={styles.icon} />
                       <MdDelete
                         onClick={() =>
                           handleDelete(
-                            key.charAt(0).toUpperCase() + key.slice(1)
+                           fontWeight.id, fontWeight.specificName
                           )
                         }
                         className={styles.icon}

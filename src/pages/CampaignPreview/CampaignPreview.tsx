@@ -32,7 +32,7 @@ export default function CampaignPreview() {
 
   useEffect(() => {
     getCampaignById(campaignId, screen);
-    
+
   }, [campaignId]);
 
   const { submitContactForm, updateInterestedProduct, saveUserDetails } = useEndUser();
@@ -59,46 +59,44 @@ export default function CampaignPreview() {
 
   }, []);
 
-const [appclip, setAppClip] = useState(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=qrcode`);
-const [playstore, setPlayStore] = useState(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=qrcode&launch=true`);
+  const [appclip, setAppClip] = useState(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=qrcode`);
+  const [playstore, setPlayStore] = useState(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=qrcode&launch=true`);
 
-useEffect(() => {
+  useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
 
-    if (userAgent.includes("Instagram")) 
-    {
+    if (userAgent.includes("Instagram")) {
       setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=instagram`);
       setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=instagram&launch=true`);
     }
-     else if (userAgent.includes('fban') || userAgent.includes('fbav')) 
-     {
-       setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=facebook`);
-       setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=facebook&launch=true`);
-     }
-    else if (userAgent.includes('linkedin'))  {
-        setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=linkedin`);
-        setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=linkedin&launch=true`);
+    else if (userAgent.includes('fban') || userAgent.includes('fbav')) {
+      setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=facebook`);
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=facebook&launch=true`);
     }
-   else if(userAgent.includes("Twitter")){
-    setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=twitter`);
-    setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=twitter&launch=true`);  
-   } 
-   else if (userAgent.includes("whatsapp")) {
-    setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=whatsapp`);
-    setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=whatsapp&launch=true`);
-   }
-   else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-    setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=ios`);    
-    setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=ios&launch=true`); 
-   }
-   else if (/android/i.test(userAgent)) {
+    else if (userAgent.includes('linkedin')) {
+      setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=linkedin`);
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=linkedin&launch=true`);
+    }
+    else if (userAgent.includes("Twitter")) {
+      setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=twitter`);
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=twitter&launch=true`);
+    }
+    else if (userAgent.includes("whatsapp")) {
+      setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=whatsapp`);
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=whatsapp&launch=true`);
+    }
+    else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+      setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=ios`);
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=ios&launch=true`);
+    }
+    else if (/android/i.test(userAgent)) {
       setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=android`);
-      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=android&launch=true`);  
-    }else{
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=android&launch=true`);
+    } else {
       setAppClip(`https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&campaignId=${campaignId}&sourcename=other`);
-      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=other&launch=true`);  
+      setPlayStore(`https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign&campaignId=${campaignId}&sourcename=other&launch=true`);
     }
-   
+
   }, [campaignId]);
 
 
@@ -531,7 +529,7 @@ useEffect(() => {
       </GoogleOAuthProvider>}
 
       <RidirectComponent metaData={metaData} setIsMobileDevice={setIsMobileDevice} universalLink={appclip} playStoreLink={playstore}
-       campaignId={campaignId} />
+        campaignId={campaignId} />
 
     </div>
 

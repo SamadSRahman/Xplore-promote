@@ -4,9 +4,11 @@ import { render } from '@divkitframework/divkit/client-hydratable';
 import styles from './PreviewCard.module.css';
 import Image360Viewer from '../../components/ImageViewer/ImageViewer';
 import ChatBotComponent from '../../../customComponent/ChatBotComponent/ChatBotComponent'
+import useFonts from '../../utils/useFonts';
 
 const DivkitRenderer = ({ divkitJson, onClick }) => {
   const divkitContainer = useRef(null);
+  const {getFontBySpecificName} = useFonts()
   const captureRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
 
@@ -87,51 +89,66 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
   typefaceProvider: (() => {
     // Map to store loaded fonts with their family names
     const loadedFonts = new Map();
-    
+  
     // Debug counter to track function calls
     let callCount = 0;
-    
-    return (fontUrl) => {
+  
+    return async (fontName, fetchFontUrl) => {
       callCount++;
-      console.log(`typefaceProvider called ${callCount} times with URL:`, fontUrl);
-      
+      console.log(`typefaceProvider called ${callCount} times with font name:`, fontName);
+  
       // Check if font is already loaded
-      if (loadedFonts.has(fontUrl)) {
-        console.log('Font already loaded, returning existing family:', loadedFonts.get(fontUrl));
-        return loadedFonts.get(fontUrl);
+      if (loadedFonts.has(fontName)) {
+        console.log('Font already loaded, returning existing family:', loadedFonts.get(fontName));
+        return loadedFonts.get(fontName);
       }
-      
-      // Generate unique font family name
-      const fontFamily = `custom-font-${btoa(fontUrl).substring(0, 8)}`;
-      console.log('Generated new font family:', fontFamily);
-      
-      // Create and append style element if font not loaded
-      const style = document.createElement('style');
-      style.id = fontFamily;
-      style.innerHTML = `
-        @font-face {
-          font-family: ${fontFamily};
-          src: url('${fontUrl}') format('truetype');
-          font-display: swap;
+  
+      try {
+        // Fetch the font URL using the provided API
+        const fontUrl = await getFontBySpecificName(fontName);
+        if (!fontUrl) {
+          console.error('Font URL not found for font name:', fontName);
+          throw new Error(`Font URL not found for font name: ${fontName}`);
         }
-      `;
-      
-      document.head.appendChild(style);
-      console.log('Added new style element for font family:', fontFamily);
-      
-      // Store the font family in the map
-      loadedFonts.set(fontUrl, fontFamily);
-      
-      // Log current state of loaded fonts
-      console.log('Currently loaded fonts:', 
-        Array.from(loadedFonts.entries())
-          .map(([url, family]) => `${family} (${url})`)
-          .join('\n')
-      );
-      
-      return fontFamily;
+  
+        console.log('Fetched font URL:', fontUrl);
+  
+        // Generate unique font family name
+        const fontFamily = `custom-font-${btoa(fontUrl).substring(0, 8)}`;
+        console.log('Generated new font family:', fontFamily);
+  
+        // Create and append style element for the font
+        const style = document.createElement('style');
+        style.id = fontFamily;
+        style.innerHTML = `
+          @font-face {
+            font-family: ${fontFamily};
+            src: url('${fontUrl}') format('truetype');
+            font-display: swap;
+          }
+        `;
+  
+        document.head.appendChild(style);
+        console.log('Added new style element for font family:', fontFamily);
+  
+        // Store the font family in the map
+        loadedFonts.set(fontName, fontFamily);
+  
+        // Log the current state of loaded fonts
+        console.log(
+          'Currently loaded fonts:',
+          Array.from(loadedFonts.entries())
+            .map(([name, family]) => `${family} (${name})`)
+            .join('\n')
+        );
+  
+        return fontFamily;
+      } catch (error) {
+        console.error('Error loading font:', error);
+        throw error;
+      }
     };
-  })(), // Added parentheses here to execute the IIFE
+  })(),
   json: divkitJson,
   customComponents: new Map([
     ['threesixty_card', {

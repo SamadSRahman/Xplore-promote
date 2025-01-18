@@ -28,6 +28,21 @@ h3 {
 .formGroup {
   margin-bottom: 20px;
 }
+.specificNameInput{
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  height: 2.3rem;
+  border-radius: 0.5rem;
+  color: black;
+  outline: none;
+  padding: 0px 1rem;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+.specificNameInput::placeholder{
+  color: #a1a1a1;
+}
 
 label {
   display: block;

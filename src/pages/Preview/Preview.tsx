@@ -422,14 +422,14 @@ export default function Preview() {
       // Get visitorId from localStorage (keep this in localStorage as it's needed across sessions)
       const visitorId = localStorage.getItem("visitorId");
       const deviceId = localStorage.getItem("deviceId");
-      if (!visitorId) {
-        console.error("Visitor ID not found");
-        return;
-      }
+      // if (!visitorId) {
+      //   console.error("Visitor ID not found");
+      //   return;
+      // }
 
       // Make API call
       const response = await fetch(
-        "https://pre.xplore.xircular.io/api/v1/endUser/googleSignin",
+        "https://xplr.live/api/v1/endUser/googleSignin",
         {
           method: "POST",
           headers: {

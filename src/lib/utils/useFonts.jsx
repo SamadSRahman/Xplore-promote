@@ -5,6 +5,7 @@ export default function useFonts() {
   const token = localStorage.getItem("accessToken");
   const session = localStorage.getItem("channel");
   const [fonts, setFonts] = useState([])
+  const [font, setFont] = useState({})
 
   let API_BASE_URL = "https://pre.xplore.xircular.io/api";
   if (
@@ -22,7 +23,8 @@ export default function useFonts() {
     const formDataToSend = new FormData();
     formDataToSend.append("files", formData.file); // Append the file
     formDataToSend.append("name", formData.name);
-    formDataToSend.append("fontWeight", formData.fontWeight);
+    formDataToSend.append("fontWeightName", formData.fontWeight);
+    formDataToSend.append("specificName", formData.specificName);
 
     
     try {
@@ -49,13 +51,13 @@ export default function useFonts() {
     }
   };
   const convertData = (data) => {
-    return data.flatMap(item => {
-      return Object.keys(item.fontWeight).map(weight => ({
-        // name: 'props.font_family_inter',
-        text: `${item.name} ${weight}`,
-        value: item.fontWeight[weight]
-      }));
-    });
+    return data.flatMap(font => 
+      font.fontWeights.map(weight => ({
+        name: weight.specificName,
+        value: weight.specificName
+      }))
+    );
+   
   };
 
   const getAllFonts = async () => {
@@ -76,5 +78,49 @@ export default function useFonts() {
         
     }
   }
-  return { handleFontUpload, getAllFonts, fonts, setFonts };
+
+  const deleteFontFile = async (id) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/v1/font/delete/fontWeight/${id}`,
+        {  headers:{
+          session:session,
+          Authorization : `Bearer ${token}`
+      }}
+      )
+      console.log("Delete successful:", response.data);
+      alert("Font deleted successfully!");
+      getAllFonts();
+    } catch (error) {
+      throw new Error("Error deleting font")
+    }
+  }
+  const getFontById = async (id) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/v1/font/getOne/${id}`)
+      console.log(response.data);
+        setFont(response.data.data)
+    } catch (error) {
+      
+    }
+    
+  }
+
+  const getFontBySpecificName = async (name) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/v1/font/getFontFile?specificName=${name}`);
+      // console.log(response.data)
+      const fontHex = response.data;
+      const fontBase64 = btoa(
+        fontHex.match(/\w{2}/g)
+          .map(byte => String.fromCharCode(parseInt(byte, 16)))
+          .join('')
+      );
+      console.log(fontBase64);
+      
+    } catch (error) {
+      
+    }
+    
+  }
+  return { handleFontUpload, getAllFonts, fonts, setFonts, deleteFontFile, getFontById, font, getFontBySpecificName };
 }

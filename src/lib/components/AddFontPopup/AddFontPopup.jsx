@@ -11,6 +11,7 @@ export default function AddFontPopup({ onClose, fontName }) {
     name: fontName,
     fontWeight: "",
     file: null,
+    specificName: "",
   });
 
   const [selectedWeight, setSelectedWeight] = useState({
@@ -76,6 +77,22 @@ export default function AddFontPopup({ onClose, fontName }) {
     <div className={styles.overlay}>
       <div className={styles.popup}>
         <h3>Add font weight</h3>
+        <div className={styles.formGroup}>
+          <label htmlFor="specificName">Enter name</label>
+          <input
+            className={styles.specificNameInput}
+            type="text"
+            value={formData.specificName}
+            name="specificName"
+            placeholder="Enter name"
+            onChange={(e) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                specificName: e.target.value,
+              }))
+            }
+          />
+        </div>
         <div className={styles.formGroup}>
           <label htmlFor="weightSelect">Select weight</label>
 
