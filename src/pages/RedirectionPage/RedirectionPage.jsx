@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styles from "./RedirectionPage.module.css";
 
-export default function RedirectionPage({link, metaData}) {
+export default function RedirectionPage({link, metaData, isSocial}) {
   const anchorRef = useRef();
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -13,7 +13,7 @@ export default function RedirectionPage({link, metaData}) {
     }, 100); // Delay of 100ms
     return () => clearTimeout(timer);
   }, [anchorRef, link]);
-  
+
   return (
     <div className={styles.container}>
       <div className={styles.contentSection}>
@@ -23,7 +23,7 @@ export default function RedirectionPage({link, metaData}) {
           <h2>{metaData.title}</h2>
           <p>{metaData.description}</p>
           <img src={metaData.image} className={styles.rdctImg} alt="img" />
-          <a ref={anchorRef} href={link} >Continue</a>
+          <a ref={anchorRef} href={link} target={isSocial?"_blank":""} >Continue</a>
         </div>
       </div>
     </div>

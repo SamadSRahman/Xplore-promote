@@ -19,7 +19,8 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
   campaignId }) => {
   const [ipAddress, setIpAddress] = useState("");
   const [showRedirectionPage, setShowRedirectionPage] = useState(false)
-  const [redirectionurl, setRedirectionUrl] = useState("")
+  const [redirectionurl, setRedirectionUrl] = useState("");
+  const [isSocialWebView, setIsSocialWebView] = useState(false)
   const [source, setSource] = useState("");
   const [device, setDevice] = useState("");
   const { postAnalyticData } = useAnalytics();
@@ -128,6 +129,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
         window.location.replace(androidIntent);
       }
     } else if (source === "instagram" || source === "facebook" || source === "linkedin" || source === "twitter") {
+      setIsSocialWebView(true)
       if (/iPhone|iPad|iPod/i.test(userAgent)) {
         setShowRedirectionPage(true)
         setRedirectionUrl(universalLink);
@@ -161,7 +163,7 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
 
   return (
     <div id="ios-instruction">
-      {showRedirectionPage && <RedirectionPage metaData={metaData} link={redirectionurl} />}
+      {showRedirectionPage && <RedirectionPage metaData={metaData} link={redirectionurl} isSocial={isSocialWebView}/>}
       {/* <div className={styles.redirectContainer}>
         <div className={styles.redirectContent}>
           <img src={icon} alt="Apple App Clip" className={styles.platformIcon} />
