@@ -4,6 +4,8 @@ import styles from "./RedirectionPage.module.css";
 export default function RedirectionPage({link, metaData, isSocial}) {
   const anchorRef = useRef();
   useEffect(() => {
+    console.log("Redirection function triggered");
+    alert("Redirection function triggered")
     const timer = setTimeout(() => {
       if (anchorRef.current) {
         anchorRef.current.click();
