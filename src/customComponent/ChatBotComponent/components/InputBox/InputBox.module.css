@@ -6,7 +6,7 @@
     background-color: oklch(0.25 0 0);
     border-radius: 2rem;
     /* border-top: 1px solid #ddd; */
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
     gap: 0.5rem;
   }
   
@@ -22,7 +22,7 @@
     background-color: transparent;
   }
   
-  .sendButton {
+  .sendButton{
     width: 2.5rem;
     height: 2.5rem;
     background-color: rgb(55, 55, 53);

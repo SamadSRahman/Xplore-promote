@@ -17,7 +17,7 @@ export default function RedirectionPage({link, metaData}) {
           <h2>{metaData.title}</h2>
           <p>{metaData.description}</p>
           <img src={metaData.image} className={styles.rdctImg} alt="img" />
-          <a ref={anchorRef} href={link} target="_blank">Continue</a>
+          <a ref={anchorRef} href={link} >Continue</a>
         </div>
       </div>
     </div>

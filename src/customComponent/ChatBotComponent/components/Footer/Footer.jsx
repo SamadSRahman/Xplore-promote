@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Footer.module.css";
-import { FaSearch, FaMicrophone, FaKeyboard } from "react-icons/fa";
+import { FaMicrophone, FaKeyboard } from "react-icons/fa";
 import PropTypes from "prop-types";
 
 const Footer = ({ selectedTab, setSelectedTab }) => {

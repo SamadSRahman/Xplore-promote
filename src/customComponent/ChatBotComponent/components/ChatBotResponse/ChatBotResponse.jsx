@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ChatBotResponse.module.css";
 import { RiMenu2Fill } from "react-icons/ri";
-import { MdHeadphones } from "react-icons/md";
+import { MdHeadphones, MdAdd } from "react-icons/md";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
+import { RiMenuAddLine } from "react-icons/ri";
 
-const ChatBotResponse = ({ responseString }) => {
+const ChatBotResponse = ({ responseString, relatedQuestions, onClick }) => {
   const [finalAnswer, setFinalAnswer] = useState("");
   const [index, setIndex] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -100,6 +101,19 @@ const ChatBotResponse = ({ responseString }) => {
         </div>
       </div>
       <p>{finalAnswer}</p>
+      {finalAnswer.length === responseString.length && (
+        <div className={styles.relatedQuestionsSection}>
+          <div className={styles.relatedQuestionHeader}>
+            <RiMenuAddLine size={20} /> Related Questions
+          </div>
+          {relatedQuestions.map((ques, i) => (
+            <div onClick={()=>onClick(ques)} className={styles.relatedQuestion} key={i}>
+              <span>{ques}</span>
+              <MdAdd size={20} color="#1db8ce" />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

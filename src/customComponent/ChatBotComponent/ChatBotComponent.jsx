@@ -12,17 +12,16 @@ import useChatBot from "../../lib/utils/useChatBot";
 
 const ChatBotComponent = () => {
   const [messages, setMessages] = useState([]);
-  const [showChatBot, setShowChatBot] = useState(false);
+  const [showChatBot, setShowChatBot] = useState(true);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
   const [selectedTab, setSelectedTab] = useState("chat");
-  const { postMessage } = useChatBot();
+  const { postMessage, generatedText } = useChatBot();
 
   const [slideDirection, setSlideDirection] = useState("slide-in");
 
   useEffect(() => {
     if (selectedTab === "audio") {
       setSlideDirection("slide-in");
-      
     } else {
       setSlideDirection("slide-out");
     }
@@ -43,6 +42,7 @@ const ChatBotComponent = () => {
         setMessages((prevMessages) => {
           const updatedMessages = [...prevMessages];
           updatedMessages[updatedMessages.length - 1] = {
+            relatedQuestions: response?.projected_questions?.split(",") || [],
             text:
               response.final_answer || "Error getting response from Chatbot.",
             isUser: false,
@@ -53,6 +53,7 @@ const ChatBotComponent = () => {
         setMessages((prevMessages) => {
           const updatedMessages = [...prevMessages];
           updatedMessages[updatedMessages.length - 1] = {
+            relatedQuestions: [],
             text: "Error: Unable to fetch response.",
             isUser: false,
           };
@@ -81,6 +82,7 @@ const ChatBotComponent = () => {
         setMessages((prevMessages) => {
           const updatedMessages = [...prevMessages];
           updatedMessages[updatedMessages.length - 1] = {
+            relatedQuestions: response?.projected_questions?.split(",") || [],
             text:
               response.final_answer || "Error getting response from Chatbot.",
             isUser: false,
@@ -92,6 +94,7 @@ const ChatBotComponent = () => {
         setMessages((prevMessages) => {
           const updatedMessages = [...prevMessages];
           updatedMessages[updatedMessages.length - 1] = {
+            relatedQuestions: [],
             text: "Error: Unable to fetch response.",
             isUser: false,
           };
@@ -106,6 +109,7 @@ const ChatBotComponent = () => {
       {showChatBot ? (
         <div className={styles.app}>
           <Header onClose={() => setShowChatBot(false)} />
+            <p>{generatedText}</p>
           {selectedTab === "chat" ? (
             isFirstSearch ? (
               <div className={styles.main}>
@@ -126,7 +130,11 @@ const ChatBotComponent = () => {
                       {message.isUser || message.text === "Loading..." ? (
                         <span>{message.text}</span>
                       ) : (
-                        <ChatBotResponse responseString={message.text} />
+                        <ChatBotResponse
+                        onClick={handleSearch}
+                          responseString={message.text}
+                          relatedQuestions={message.relatedQuestions}
+                        />
                       )}
                     </div>
                   ))}
@@ -137,8 +145,8 @@ const ChatBotComponent = () => {
             )
           ) : (
             <div className={`${styles.main} ${styles[slideDirection]}`}>
-            <ElevenLabComponent />
-          </div>
+              <ElevenLabComponent />
+            </div>
           )}{" "}
           <Footer selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </div>

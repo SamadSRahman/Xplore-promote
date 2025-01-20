@@ -10,12 +10,48 @@ export default function useChatBot() {
     }
 
     const [generatedText, setGeneratedText] = useState("")
-    //https://pre.xplore.xircular.io/api/v1/chatBot/chat
     const postMessage = async (query) => {
-        const response= await axios.post(`${API_BASE_URL}/v1/chatBot/chat`, {Question: query})
-        console.log("response from chatbot", response.data)
-        setGeneratedText(response.data)
-        return response.data
+      try {
+        const response = await fetch(
+            `${API_BASE_URL}/v1/chatBot/chat?stream=true`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ Question: query }),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let accumulatedText = "";
+
+        while (true) {
+            const { done, value } = await reader.read();
+
+            if (done) {
+                console.log("Stream finished");
+                break;
+            }
+
+            const chunk = decoder.decode(value, { stream: true });
+            accumulatedText += chunk;
+
+            // Update the UI with the current accumulated text
+            setGeneratedText((prevText) => prevText + chunk);
+        }
+
+        console.log("Final response:", accumulatedText);
+        return accumulatedText;
+    } catch (error) {
+        console.error("Error while calling chatbot streaming API", error);
+        throw error;
+    }
     }
 
     const getSpeechFromText = async (text) => {

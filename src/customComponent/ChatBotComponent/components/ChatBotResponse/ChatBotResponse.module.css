@@ -20,3 +20,21 @@
     border-radius: 4px;
     cursor: pointer;
 }
+.relatedQuestionHeader{
+    display: flex
+;
+    gap: 0.3rem;
+    padding: 0.5rem 0;
+    font-weight: 600;
+}
+.relatedQuestion{
+    padding: 0.7rem 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    border-top: 1px solid oklch(0.35 0 0 );
+}
+.relatedQuestion>span{
+    max-width: 94%;
+}
