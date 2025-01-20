@@ -3,11 +3,17 @@ import styles from "./RedirectionPage.module.css";
 
 export default function RedirectionPage({link, metaData}) {
   const anchorRef = useRef();
-  useEffect(()=>{
-   if(anchorRef){
-    anchorRef.current.click();
-   }
-  },[anchorRef])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (anchorRef.current) {
+        anchorRef.current.click();
+      } else {
+        window.location.href = link;
+      }
+    }, 100); // Delay of 100ms
+    return () => clearTimeout(timer);
+  }, [anchorRef, link]);
+  
   return (
     <div className={styles.container}>
       <div className={styles.contentSection}>
