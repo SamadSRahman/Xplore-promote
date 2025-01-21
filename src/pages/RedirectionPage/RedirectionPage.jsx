@@ -28,7 +28,7 @@ export default function RedirectionPage({link, metaData, isSocial}) {
         anchorRef.current.click();
       } else if (link) {
         console.log("Redirecting to:", link);
-        window.location.href = link;
+        // window.location.href = link;
       } else {
         console.log("Reloading the page");
         window.location.reload();
