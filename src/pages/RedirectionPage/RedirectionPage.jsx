@@ -22,8 +22,8 @@ export default function RedirectionPage({link, metaData, isSocial}) {
       } else if (link) {
         // Fallback to directly setting the window location
         alert("Redirecting to:", link);
-        console.log("Redirecting to:", link);
-        window.location.href = link;
+        // console.log("Redirecting to:", link);
+        // window.location.href = link;
       } else {
         alert("Reloading the page");
         console.log("Reloading the page");
