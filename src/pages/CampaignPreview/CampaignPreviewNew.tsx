@@ -1,42 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-// import useCampaigns from '../../lib/utils/useCampaign'
+import useCampaigns from '../../lib/utils/useCampaign'
 import useLayout from '../../lib/utils/useLayout';
 import DivkitRenderer from '../../lib/components/PreviewCard/DivkitRenderer';
 import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
 import styles from './CampaignPreview.module.css';
-import  {detectEnvironment, appClipURL, playStoreURL } from './PreviewUtils';
+import { detectEnvironment, appClipURL, playStoreURL } from './PreviewUtils';
 import RedirectionPage from '../RedirectionPage/RedirectionPage';
 
 
 export default function () {
     const { campaignId, screen } = useParams();
     const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
-    const [showRedirectionPage, setShowRedirectionPage] = useState(false);  
+    const [showRedirectionPage, setShowRedirectionPage] = useState(false);
     const [redirectUrl, setRedirectUrl] = useState("");
-    // const {getCampaignById} = useCampaigns();
+    const {getCampaignById, metaData} = useCampaigns();
     const { getAllLayout, layouts } = useLayout();
     console.log(campaignId, screen,);
 
     useEffect(() => {
         const enviroment = detectEnvironment();
-       if(enviroment.deviceType==="mobile" && enviroment.isIOS){
+        getCampaignById(campaignId);
+        if (enviroment.deviceType === "mobile" && enviroment.isIOS) {
             setRedirectUrl(`${appClipURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
             setShowRedirectionPage(true);
             console.log(`${appClipURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
-            
-       }
-       else if(enviroment.deviceType==="mobile" && enviroment.isAndroid){
-        setRedirectUrl(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
-        setShowRedirectionPage(true);
-        console.log(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
 
-       }
-       else{
-        getAllLayout(campaignId);
-       }
-              
+        }
+        else if (enviroment.deviceType === "mobile" && enviroment.isAndroid) {
+            setRedirectUrl(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+            setShowRedirectionPage(true);
+            console.log(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+
+        }
+        else {
+            getAllLayout(campaignId);
+        }
+
     }, [campaignId]);
 
 
@@ -103,9 +104,10 @@ export default function () {
     }, [screen, layouts]);
 
     return (
-      <div className={styles.container}>
-        {showRedirectionPage ? <RedirectionPage link={redirectUrl} /> : <DivkitRenderer  divkitJson={layout.layoutJSON} />}
+        <div className={styles.container}>
+            {showRedirectionPage ? <RedirectionPage isSocial={false} metaData={metaData} link={redirectUrl} /> :
+                <DivkitRenderer onClick={(action: any) => console.log("action clicked", action)} divkitJson={layout.layoutJSON} />}
 
-      </div>
+        </div>
     )
 }
