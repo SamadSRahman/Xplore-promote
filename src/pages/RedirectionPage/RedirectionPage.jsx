@@ -5,10 +5,10 @@ export default function RedirectionPage({link, metaData, isSocial}) {
   const anchorRef = useRef();
   useEffect(() => {
     console.log("Redirection function triggered");
-    alert("Redirection function triggered")
+    // alert("Redirection function triggered")
     const timer = setTimeout(() => {
       if (anchorRef.current) {
-        alert("anchor triggered")
+        // alert("anchor triggered")
         anchorRef.current.click();
       } else {
         // window.location.href = link;
@@ -16,7 +16,7 @@ export default function RedirectionPage({link, metaData, isSocial}) {
         window.location.reload();
       }
     }, 100); // Delay of 100ms
-    alert("Reload triggered")
+    // alert("Reload triggered")
     window.location.reload();
     return () => clearTimeout(timer);
   }, [anchorRef, link]);
