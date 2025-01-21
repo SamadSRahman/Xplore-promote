@@ -15,7 +15,7 @@ import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
 import AnalyticsDashboard from './pages/CampaignAnalytics/AnalyticsDashboard.jsx';
 import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx';
 import ProfilePreview from './pages/ProfilePreview/ProfilePreview.tsx';
-import Preview from './pages/Preview/Preview.tsx';
+import PreviewNew from './pages/Preview/PreviewNew.tsx';
 import AdminLogin from './pages/AdminLogin/AdminLogin.jsx';
 import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx';
 import DeleteInstructions from './pages/DeleteInstructions/DeleteInstructions.jsx';
@@ -77,7 +77,7 @@ const App = () => {
               <Route path='/contactus' element={<ContactUs />} />
               <Route path='/terms&conditions' element={<TermsAndConditions />} />
               <Route path='/' element={<QRLogin />} />
-              <Route path='/:shortId/:screen?' element={<Preview />} />
+              <Route path='/:shortId/:screen?' element={<PreviewNew />} />
               <Route path='/campaigns' element={<Campaigns />} />
               <Route path='/fonts' element={<Campaigns />} />
               <Route path='/createCampaign' element={<CampaignsForm />} />

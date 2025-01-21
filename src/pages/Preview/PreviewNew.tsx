@@ -2,39 +2,49 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import useCampaigns from '../../lib/utils/useCampaign'
-import useLayout from '../../lib/utils/useLayout';
+import usePreview from '../../lib/utils/useShortUrl';
 import DivkitRenderer from '../../lib/components/PreviewCard/DivkitRenderer';
 import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
-import styles from './CampaignPreview.module.css';
-import { detectEnvironment, appClipURL, playStoreURL, handleBtnClick } from './PreviewUtils';
+import styles from '../CampaignPreview/CampaignPreview.module.css';
+import { detectEnvironment, appClipURL, playStoreURL, handleBtnClick } from '../CampaignPreview/PreviewUtils';
 import RedirectionPage from '../RedirectionPage/RedirectionPage';
+import useAnalytics from '../../lib/utils/useAnalytics';
 
 export default function () {
-    const { campaignId, screen } = useParams();
+    const { shortId, screen } = useParams();
+    const { postAnalyticData } = useAnalytics();
     const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
     const [showRedirectionPage, setShowRedirectionPage] = useState(false);
     const [redirectUrl, setRedirectUrl] = useState("");
     const { getmetadataCampaignById, metaData } = useCampaigns();
-    const { getAllLayout, layouts } = useLayout();
+    const { getLayoutByShortId, layouts, campaignId } = usePreview();
     const navigate = useNavigate();
     const enviroment = detectEnvironment();
 
     useEffect(() => {
-        getmetadataCampaignById(campaignId);
+        console.log(enviroment);
+
+        getmetadataCampaignById(shortId);
         if (enviroment.deviceType === "mobile" && enviroment.isIOS) {
-            setRedirectUrl(`${appClipURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+            setRedirectUrl(`${appClipURL}&shortId=${shortId}&sourcename=${enviroment.platform}`);
             setShowRedirectionPage(true);
-            console.log(`${appClipURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+            console.log(`${appClipURL}&shortId=${shortId}&sourcename=${enviroment.platform}`);
 
         }
         else if (enviroment.deviceType === "mobile" && enviroment.isAndroid) {
-            setRedirectUrl(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+            setRedirectUrl(`${playStoreURL}&shortId=${shortId}&sourcename=${enviroment.platform}`);
             setShowRedirectionPage(true);
-            console.log(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+            console.log(`${playStoreURL}&shortId=${shortId}&sourcename=${enviroment.platform}`);
 
         }
         else {
-            getAllLayout(campaignId);
+            getLayoutByShortId(shortId);
+        }
+    }, [shortId]);
+
+    useEffect(() => {
+        if (campaignId && enviroment.deviceType !== "mobile") {
+            postAnalyticData({ campaignID: campaignId, source: enviroment.platform === "browser" ? "other" : enviroment.platform })
         }
     }, [campaignId]);
 
@@ -52,8 +62,6 @@ export default function () {
             }
         }
     }, [layout]);
-
-
 
     useEffect(() => {
         if (!layouts.length) return;
