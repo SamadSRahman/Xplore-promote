@@ -32,7 +32,7 @@ export default function RedirectionPage({link, metaData, isSocial}) {
       // alert("fallback");
       console.log("fallback");
       window.location.reload();
-    }, 300); // Increased delay to 300ms for better handling
+    }, 500); // Increased delay to 300ms for better handling
   
     return () => clearTimeout(timer);
   }, [anchorRef, link]);
