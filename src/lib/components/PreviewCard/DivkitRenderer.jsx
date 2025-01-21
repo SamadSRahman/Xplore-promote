@@ -8,7 +8,7 @@ import useFonts from '../../utils/useFonts';
 
 const DivkitRenderer = ({ divkitJson, onClick }) => {
   const divkitContainer = useRef(null);
-  const {getFontBySpecificName} = useFonts()
+  const {getFontBySpecificName} = useFonts();
   const captureRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
 

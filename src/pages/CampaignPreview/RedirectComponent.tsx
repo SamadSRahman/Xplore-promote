@@ -114,11 +114,14 @@ const RedirectComponent: React.FC<RedirectComponentProps> = ({ metaData, univers
     if (/iPhone|iPad|iPod/i.test(userAgent)) {
       setShowRedirectionPage(true)
       setRedirectionUrl(universalLink);
+      alert("iOS detected")
     } else if (/android/i.test(userAgent)){
       setShowRedirectionPage(false)
       setRedirectionUrl(playStoreLink);
+      alert("android detected")
     } else{
       setShowRedirectionPage(false)
+      alert("web fallback")
     }
 
 
