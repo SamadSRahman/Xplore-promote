@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import styles from "./RedirectionPage.module.css";
+import "./styles.css";
 
 export default function RedirectionPage({link, metaData, isSocial}) {
   const anchorRef = useRef();
@@ -12,17 +12,40 @@ export default function RedirectionPage({link, metaData, isSocial}) {
   
 
   return (
-    <div className={styles.container}>
-      <div className={styles.contentSection}>
-        <h2>Welcome</h2>
-        <h4>to</h4>
-        <div className={styles.xploreDiv}>
-          <h2>{metaData?.title}</h2>
-          <p>{metaData?.description}</p>
-          <img src={metaData?.image} className={styles.rdctImg} alt="img" />
-          <a ref={anchorRef} href={link} target={isSocial?"_blank":""} >Continue</a>
+    <div className="container">
+    <div className="content-section">
+      <div className="card">
+        <div className="welcome-header">
+          <h1 className="welcome-title">Welcome</h1>
+          <h2 className="welcome-subtitle">to</h2>
+        </div>
+        
+        <div className="content-container">
+          <h3 className="app-title">{metaData?.title}</h3>
+          {metaData?.description && (
+            <p className="app-description">{metaData?.description}</p>
+          )}
+          
+          {metaData?.image && (
+            <div className="image-container">
+              <img 
+                src={metaData.image}
+                alt={metaData?.title || 'Welcome'}
+                className="app-image"
+              />
+            </div>
+          )}
+          <a
+            ref={anchorRef}
+            href={link}
+            target={isSocial ? "_blank" : ""}
+            className="continue-button"
+          >
+            Continue
+          </a>
         </div>
       </div>
     </div>
+  </div>
   );
 }

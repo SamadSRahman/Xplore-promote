@@ -109,7 +109,7 @@ const ChatBotComponent = () => {
       {showChatBot ? (
         <div className={styles.app}>
           <Header onClose={() => setShowChatBot(false)} />
-            <p>{generatedText}</p>
+            {/* <p>{generatedText}</p> */}
           {selectedTab === "chat" ? (
             isFirstSearch ? (
               <div className={styles.main}>

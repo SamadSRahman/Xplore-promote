@@ -13,7 +13,7 @@ export default function useChatBot() {
     const postMessage = async (query) => {
       try {
         const response = await fetch(
-            `${API_BASE_URL}/v1/chatBot/chat?stream=true`,
+            `${API_BASE_URL}/v1/chatBot/chat`,
             {
                 method: 'POST',
                 headers: {

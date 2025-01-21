@@ -5,7 +5,10 @@ import { MdHeadphones, MdAdd } from "react-icons/md";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { RiMenuAddLine } from "react-icons/ri";
 
-const ChatBotResponse = ({ responseString, relatedQuestions, onClick }) => {
+const ChatBotResponse = ({ responseString,  onClick }) => {
+  const relatedQuestions = [ "Tell me about ADAS in the IONIQ 5.",
+    "Which company manufactures the IONIQ 5?",
+    "Where can more details about the IONIQ 5 be found?",]
   const [finalAnswer, setFinalAnswer] = useState("");
   const [index, setIndex] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
