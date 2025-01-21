@@ -15,13 +15,13 @@ export default function () {
     const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
     const [showRedirectionPage, setShowRedirectionPage] = useState(false);
     const [redirectUrl, setRedirectUrl] = useState("");
-    const {getCampaignById, metaData} = useCampaigns();
+    const { getmetadataCampaignById, metaData } = useCampaigns();
     const { getAllLayout, layouts } = useLayout();
     console.log(campaignId, screen,);
-
+    const enviroment = detectEnvironment();
     useEffect(() => {
-        const enviroment = detectEnvironment();
-        getCampaignById(campaignId);
+      
+        getmetadataCampaignById(campaignId);
         if (enviroment.deviceType === "mobile" && enviroment.isIOS) {
             setRedirectUrl(`${appClipURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
             setShowRedirectionPage(true);
@@ -105,7 +105,7 @@ export default function () {
 
     return (
         <div className={styles.container}>
-            {showRedirectionPage ? <RedirectionPage isSocial={false} metaData={metaData} link={redirectUrl} /> :
+            {showRedirectionPage ? <RedirectionPage isSocial={enviroment.isSocialPlatform} metaData={metaData} link={redirectUrl} /> :
                 <DivkitRenderer onClick={(action: any) => console.log("action clicked", action)} divkitJson={layout.layoutJSON} />}
 
         </div>

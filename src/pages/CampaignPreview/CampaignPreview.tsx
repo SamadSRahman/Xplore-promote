@@ -50,7 +50,7 @@ export default function CampaignPreview() {
       if ("Notification" in window) {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-          console.log("Push notification permission granted."); p
+          console.log("Push notification permission granted."); 
           // You can also register a service worker here if needed
         } else {
           console.log("Push notification permission denied.");
