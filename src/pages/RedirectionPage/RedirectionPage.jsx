@@ -12,10 +12,12 @@ export default function RedirectionPage({link, metaData, isSocial}) {
         anchorRef.current.click();
       } else {
         // window.location.href = link;
-        alert("Reload triggered")
+       
         window.location.reload();
       }
     }, 100); // Delay of 100ms
+    alert("Reload triggered")
+    window.location.reload();
     return () => clearTimeout(timer);
   }, [anchorRef, link]);
 
