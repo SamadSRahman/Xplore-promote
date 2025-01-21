@@ -104,7 +104,7 @@ export default function () {
 
     return (
       <div className={styles.container}>
-        {showRedirectionPage ? <RedirectionPage redirectionurl={redirectUrl} /> : <DivkitRenderer layout={layout.layoutJSON} />}
+        {showRedirectionPage ? <RedirectionPage link={redirectUrl} /> : <DivkitRenderer  divkitJson={layout.layoutJSON} />}
 
       </div>
     )

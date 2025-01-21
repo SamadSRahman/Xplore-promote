@@ -5,7 +5,7 @@ export default function RedirectionPage({link, metaData, isSocial}) {
   const anchorRef = useRef();
   const attemptCount = useRef(0); 
   useEffect(() => {
-    console.log("Redirection function triggered", isSocial);
+    console.log("Redirection function triggered", isSocial, link);
 
     // Ensure the anchorRef and link are available
     if (!anchorRef?.current && !link) {
