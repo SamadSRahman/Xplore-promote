@@ -10,7 +10,7 @@ import TermsAndConditions from './pages/Terms/Terms.jsx';
 import CampaignsForm from './pages/CreateCampaign/CreateCampaign.jsx';
 import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx';
-import CampaignPreview from './pages/CampaignPreview/CampaignPreview.tsx';
+import CampaignPreviewNew from './pages/CampaignPreview/CampaignPreviewNew.tsx';
 import CampaignAnalytics from './pages/CampaignAnalytics/CampaignAnalytics.jsx';
 import AnalyticsDashboard from './pages/CampaignAnalytics/AnalyticsDashboard.jsx';
 import ProfileDesign from './pages/ProfileDesign/ProfileDesign.tsx';
@@ -71,7 +71,7 @@ const App = () => {
               <Route path='/profileDesign/:userId' element={<ProfileDesign />} />
               <Route path='/publish/:campaignId' element={<PublishAndPreview />} />
               <Route path='/profile/:userId' element={<ProfilePreview />} />
-              <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreview />} />
+              <Route path='/campaign/:campaignId/:screen?' element={<CampaignPreviewNew />} />
               <Route path='/campaignAnalytics/:campaignId' element={<CampaignAnalytics />} />
               <Route path='/analyticsDashboard/:campaignId' element={<AnalyticsDashboard />} />
               <Route path='/contactus' element={<ContactUs />} />
