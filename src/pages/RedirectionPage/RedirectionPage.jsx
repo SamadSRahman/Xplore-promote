@@ -44,9 +44,9 @@ export default function RedirectionPage({link, metaData, isSocial}) {
         <h2>Welcome</h2>
         <h4>to</h4>
         <div className={styles.xploreDiv}>
-          <h2>{metaData.title}</h2>
-          <p>{metaData.description}</p>
-          <img src={metaData.image} className={styles.rdctImg} alt="img" />
+          <h2>{metaData?.title}</h2>
+          <p>{metaData?.description}</p>
+          <img src={metaData?.image} className={styles.rdctImg} alt="img" />
           <a ref={anchorRef} href={link} target={isSocial?"_blank":""} >Continue</a>
         </div>
       </div>

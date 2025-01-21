@@ -6,18 +6,41 @@ import useLayout from '../../lib/utils/useLayout';
 import DivkitRenderer from '../../lib/components/PreviewCard/DivkitRenderer';
 import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
 import styles from './CampaignPreview.module.css';
+import  {detectEnvironment, appClipURL, playStoreURL } from './PreviewUtils';
+import RedirectionPage from '../RedirectionPage/RedirectionPage';
+
 
 export default function () {
     const { campaignId, screen } = useParams();
     const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
+    const [showRedirectionPage, setShowRedirectionPage] = useState(false);  
+    const [redirectUrl, setRedirectUrl] = useState("");
     // const {getCampaignById} = useCampaigns();
     const { getAllLayout, layouts } = useLayout();
     console.log(campaignId, screen,);
 
     useEffect(() => {
-        alert("Hi")
+        const enviroment = detectEnvironment();
+       if(enviroment.deviceType==="mobile" && enviroment.isIOS){
+            setRedirectUrl(`${appClipURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+            setShowRedirectionPage(true);
+            console.log(`${appClipURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+            
+       }
+       else if(enviroment.deviceType==="mobile" && enviroment.isAndroid){
+        setRedirectUrl(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+        setShowRedirectionPage(true);
+        console.log(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+
+       }
+       else{
         getAllLayout(campaignId);
-    }, [campaignId])
+       }
+              
+    }, [campaignId]);
+
+
+
     useEffect(() => {
         if (!layouts.length) return;
 
@@ -80,14 +103,8 @@ export default function () {
     }, [screen, layouts]);
 
     return (
-      <div>
-        hi
-          <div >
-            <DivkitRenderer
-                onClick={(action: any) => console.log("clicked", action)}
-                divkitJson={layout.layoutJSON}
-            />
-        </div>
+      <div className={styles.container}>
+        {showRedirectionPage ? <RedirectionPage redirectionurl={redirectUrl} /> : <DivkitRenderer layout={layout.layoutJSON} />}
 
       </div>
     )
