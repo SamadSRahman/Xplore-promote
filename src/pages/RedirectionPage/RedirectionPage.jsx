@@ -8,9 +8,11 @@ export default function RedirectionPage({link, metaData, isSocial}) {
     alert("Redirection function triggered")
     const timer = setTimeout(() => {
       if (anchorRef.current) {
+        alert("anchor triggered")
         anchorRef.current.click();
       } else {
         // window.location.href = link;
+        alert("Reload triggered")
         window.location.reload();
       }
     }, 100); // Delay of 100ms
