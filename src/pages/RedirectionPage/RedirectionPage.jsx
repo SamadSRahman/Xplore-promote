@@ -6,7 +6,6 @@ export default function RedirectionPage({link, metaData, isSocial}) {
   useEffect(()=>{
     if(anchorRef.current){
       anchorRef.current.click();
-      setInterval(() => {anchorRef.current.click();}, 500);
     }
   },[link]) 
   
