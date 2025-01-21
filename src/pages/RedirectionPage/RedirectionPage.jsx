@@ -5,19 +5,28 @@ export default function RedirectionPage({link, metaData, isSocial}) {
   const anchorRef = useRef();
   useEffect(() => {
     console.log("Redirection function triggered");
-    // alert("Redirection function triggered")
+    
+    // Ensure the anchorRef and link are available
+    if (!anchorRef.current && !link) {
+      console.error("No anchorRef or link available for redirection");
+      return;
+    }
+  
     const timer = setTimeout(() => {
       if (anchorRef.current) {
-        // alert("anchor triggered")
+        // Programmatically trigger the anchor click
+        console.log("Triggering anchor click");
         anchorRef.current.click();
+      } else if (link) {
+        // Fallback to directly setting the window location
+        console.log("Redirecting to:", link);
+        window.location.href = link;
       } else {
-        // window.location.href = link;
-       
+        console.log("Reloading the page");
         window.location.reload();
       }
-    }, 100); // Delay of 100ms
-    // alert("Reload triggered")
-    window.location.reload();
+    }, 300); // Increased delay to 300ms for better handling
+  
     return () => clearTimeout(timer);
   }, [anchorRef, link]);
 
