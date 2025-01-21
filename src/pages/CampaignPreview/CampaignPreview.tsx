@@ -15,7 +15,8 @@ import googleLogo from "../../assets/components/google-icon.webp";
 import CameraComponent from "../../customComponent/CameraComponent/CameraComponent";
 import { uid } from "uid";
 import RidirectComponent from "./RedirectComponent"
-import { set } from "date-fns";
+import useApi from "../../lib/utils/useApi";
+
 
 
 
@@ -28,10 +29,14 @@ export default function CampaignPreview() {
   const [isLoadingPopup, setIsLoadingPopup] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
+  const {getSecretKey} = useApi();
   const { getCampaignById, metaData } = useCampaign();
-
+  const key = localStorage.getItem("secretKey");
   useEffect(() => {
     getCampaignById(campaignId, screen);
+    if(!key){
+      getSecretKey();
+    }
 
   }, [campaignId]);
 

@@ -10,7 +10,8 @@ export default function RedirectionPage({link, metaData, isSocial}) {
       if (anchorRef.current) {
         anchorRef.current.click();
       } else {
-        window.location.href = link;
+        // window.location.href = link;
+        window.location.reload();
       }
     }, 100); // Delay of 100ms
     return () => clearTimeout(timer);

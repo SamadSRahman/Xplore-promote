@@ -86,69 +86,40 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
   onCustomAction: handleCustomAction,
   id: 'divkit-root',
   target: divkitContainer.current,
-  typefaceProvider: (() => {
-    // Map to store loaded fonts with their family names
-    const loadedFonts = new Map();
+  typefaceProvider: async (fontName) => {
+    console.log("fontName:", fontName);
   
-    // Debug counter to track function calls
-    let callCount = 0;
+    // Check if the font style is already added
+    if (document.getElementById(fontName)) {
+      return fontName; // Return the font name if it's already added
+    }
   
-    return async (fontName, fetchFontUrl) => {
-      callCount++;
-      console.log(`typefaceProvider called ${callCount} times with font name:`, fontName);
+    try {
+      // Fetch the font URL using your function
+      const fontURL = await getFontBySpecificName(fontName);
+      console.log("fontUrl:", fontURL);
   
-      // Check if font is already loaded
-      if (loadedFonts.has(fontName)) {
-        console.log('Font already loaded, returning existing family:', loadedFonts.get(fontName));
-        return loadedFonts.get(fontName);
-      }
-  
-      try {
-        // Fetch the font URL using the provided API
-        const fontUrl = await getFontBySpecificName(fontName);
-        if (!fontUrl) {
-          console.error('Font URL not found for font name:', fontName);
-          throw new Error(`Font URL not found for font name: ${fontName}`);
-        }
-  
-        console.log('Fetched font URL:', fontUrl);
-  
-        // Generate unique font family name
-        const fontFamily = `custom-font-${btoa(fontUrl).substring(0, 8)}`;
-        console.log('Generated new font family:', fontFamily);
-  
-        // Create and append style element for the font
+      const fontFamily = `custom-font-${btoa(fontURL).substring(0, 8)}`; // Create a unique name
+        
+      // Check if the font has already been added
+      if (!document.getElementById(fontFamily)) {
         const style = document.createElement('style');
         style.id = fontFamily;
         style.innerHTML = `
           @font-face {
-            font-family: ${fontFamily};
-            src: url('${fontUrl}') format('truetype');
-            font-display: swap;
+            font-family: '${fontFamily}';
+            src: url('${fontURL}') format('truetype');
           }
         `;
-  
         document.head.appendChild(style);
-        console.log('Added new style element for font family:', fontFamily);
-  
-        // Store the font family in the map
-        loadedFonts.set(fontName, fontFamily);
-  
-        // Log the current state of loaded fonts
-        console.log(
-          'Currently loaded fonts:',
-          Array.from(loadedFonts.entries())
-            .map(([name, family]) => `${family} (${name})`)
-            .join('\n')
-        );
-  
-        return fontFamily;
-      } catch (error) {
-        console.error('Error loading font:', error);
-        throw error;
       }
-    };
-  })(),
+
+      return `'${fontFamily}'`; // Return the dynamically created font family
+    } catch (error) {
+      console.error('Failed to load font:', error);
+      return null;
+    }
+  },
   json: divkitJson,
   customComponents: new Map([
     ['threesixty_card', {

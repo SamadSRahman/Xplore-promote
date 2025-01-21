@@ -1,7 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
+import crypto from 'crypto-browserify';
+import useApi from "./useApi";
+
 
 export default function useFonts() {
+  const {getSecretKey} = useApi()
   const token = localStorage.getItem("accessToken");
   const session = localStorage.getItem("channel");
   const [fonts, setFonts] = useState([])
@@ -106,17 +110,34 @@ export default function useFonts() {
   }
 
   const getFontBySpecificName = async (name) => {
+    const authKey = localStorage.getItem("secretKey");
+    const timestamp = Date.now().toString();
+    // const textToEncrypt = "Samad"
+    const encryptedHeader = crypto
+    .createHash('sha256')
+    .update(`${authKey}${timestamp}`)
+    .digest('hex');
+
+    console.log("encrypted key", encryptedHeader);
+
     try {
-      const response = await axios.get(`${API_BASE_URL}/v1/font/getFontFile?specificName=${name}`);
-      // console.log(response.data)
-      const fontHex = response.data;
-      const fontBase64 = btoa(
-        fontHex.match(/\w{2}/g)
-          .map(byte => String.fromCharCode(parseInt(byte, 16)))
-          .join('')
+      const response = await axios.get(`${API_BASE_URL}/v1/font/getFontUrl?specificName=${name}`, 
+        {   headers: {
+          'Content-Type': 'application/json',
+          'x-encrypted-auth': encryptedHeader,
+          'x-timestamp': timestamp
+      },
+}
       );
-      console.log(fontBase64);
-      
+      // console.log(response.data)
+      const fontUrl = response.data;
+ 
+      console.log(fontUrl);
+      if(response.status === 401){
+        await getSecretKey();
+        getFontBySpecificName(name);
+            }
+            return fontUrl.data;
     } catch (error) {
       
     }

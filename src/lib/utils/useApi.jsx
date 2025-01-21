@@ -199,6 +199,17 @@ export default function useApi() {
     }
   };
 
+
+  const getSecretKey = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/v1/auth/key`);
+        console.log("secret key: ", response.data);
+        localStorage.setItem("secretKey", response.data.key)
+    } catch (error) {
+      
+    }
+  }
+
   return {
     getCampaigns,
     getUserDetails,
@@ -206,6 +217,7 @@ export default function useApi() {
     updateLayout,
     deleteCampaign,
     createLayout,
+    getSecretKey,
     isBusinessUser,
     name,
     campaigns,
