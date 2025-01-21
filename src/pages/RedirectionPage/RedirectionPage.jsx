@@ -17,16 +17,20 @@ export default function RedirectionPage({link, metaData, isSocial}) {
       if (anchorRef.current) {
         // Programmatically trigger the anchor click
         alert("Triggering anchor click");
+        console.log("Triggering anchor click");
         anchorRef.current.click();
       } else if (link) {
         // Fallback to directly setting the window location
         alert("Redirecting to:", link);
+        console.log("Redirecting to:", link);
         window.location.href = link;
       } else {
         alert("Reloading the page");
+        console.log("Reloading the page");
         window.location.reload();
       }
       alert("fallback");
+      console.log("fallback");
       window.location.reload();
     }, 300); // Increased delay to 300ms for better handling
   
