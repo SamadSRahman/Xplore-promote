@@ -4,7 +4,8 @@ import styles from "./RedirectionPage.module.css";
 export default function RedirectionPage({link, metaData, isSocial}) {
   const anchorRef = useRef();
   useEffect(() => {
-    console.log("Redirection function triggered");
+    console.log("Redirection function triggered", isSocial);
+    alert("Redirection function triggered", isSocial);
     
     // Ensure the anchorRef and link are available
     if (!anchorRef.current && !link) {
@@ -15,16 +16,18 @@ export default function RedirectionPage({link, metaData, isSocial}) {
     const timer = setTimeout(() => {
       if (anchorRef.current) {
         // Programmatically trigger the anchor click
-        console.log("Triggering anchor click");
+        alert("Triggering anchor click");
         anchorRef.current.click();
       } else if (link) {
         // Fallback to directly setting the window location
-        console.log("Redirecting to:", link);
+        alert("Redirecting to:", link);
         window.location.href = link;
       } else {
-        console.log("Reloading the page");
+        alert("Reloading the page");
         window.location.reload();
       }
+      alert("fallback");
+      window.location.reload();
     }, 300); // Increased delay to 300ms for better handling
   
     return () => clearTimeout(timer);
