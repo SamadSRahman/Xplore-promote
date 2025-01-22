@@ -20,7 +20,8 @@
     /* border: 1px solid blue; */
     min-height: 95vh;
     height: 100vh;
-    padding: 1rem 0rem;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
 }
 .renderDiv >div{
     min-height: 100vh;
