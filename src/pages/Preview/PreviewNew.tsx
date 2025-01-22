@@ -4,11 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useCampaigns from '../../lib/utils/useCampaign'
 import usePreview from '../../lib/utils/useShortUrl';
 import DivkitRenderer from '../../lib/components/PreviewCard/DivkitRenderer';
+import CameraComponent from "../../customComponent/CameraComponent/CameraComponent";
 import { blankBackgroundJSON } from '../../lib/utils/splashScreenData';
 import styles from '../CampaignPreview/CampaignPreview.module.css';
 import { detectEnvironment, appClipURL, playStoreURL, handleBtnClick } from '../CampaignPreview/PreviewUtils';
 import RedirectionPage from '../RedirectionPage/RedirectionPage';
 import useAnalytics from '../../lib/utils/useAnalytics';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import googleLogo from "../../assets/components/google-icon.webp";
+import { uid } from 'uid';
 
 export default function () {
     const { shortId, screen } = useParams();
@@ -18,9 +22,12 @@ export default function () {
     const [redirectUrl, setRedirectUrl] = useState("");
     const { getmetadataCampaignById, metaData } = useCampaigns();
     const { getLayoutByShortId, layouts, campaignId } = usePreview();
+    const [isLoadingPopup, setIsLoadingPopup] = useState(false);
     const navigate = useNavigate();
     const enviroment = detectEnvironment();
-
+    const [showPopup, setShowPopup] = useState(false);
+    const [isCameraScreen, setIsCameraScreen] = useState(false);
+    
     useEffect(() => {
         console.log(enviroment);
 
@@ -55,7 +62,7 @@ export default function () {
             const initialLayout = layouts.find((ele: any) => ele.isInitial === true);
             if (initialLayout) {
                 setTimeout(() => {
-                    navigate(`/campaign/${campaignId}/${initialLayout.name}`);
+                    navigate(`/${shortId}/${initialLayout.name}`);
                 }, 2000);
             } else {
                 console.log("No initial screen found");
@@ -63,8 +70,31 @@ export default function () {
         }
     }, [layout]);
 
+
     useEffect(() => {
         if (!layouts.length) return;
+        if (screen === "landing_screen") {
+            // Check if user is already logged in
+            const userData = localStorage.getItem("userData");
+      
+            if (!userData) {
+              // Only show popup if user is not logged in
+              const popupShownCampaigns = JSON.parse(
+                sessionStorage.getItem("popupShownCampaigns") || "[]"
+              );
+      
+              if (!popupShownCampaigns.includes(campaignId)) {
+                setShowPopup(true);
+                sessionStorage.setItem(
+                  "popupShownCampaigns",
+                  JSON.stringify([...popupShownCampaigns, campaignId])
+                );
+              }
+            }
+          }
+          else if (screen === "camera_screen") {
+            setIsCameraScreen(true)
+          }
 
         if (screen === undefined || screen === "splash_screen") {
             const splashLayout = layouts.find(
@@ -124,11 +154,125 @@ export default function () {
         }
     }, [screen, layouts]);
 
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        setIsLoadingPopup(true);
+        console.log("credentialResponse", credentialResponse);
+        try {
+          // Get visitorId from localStorage (keep this in localStorage as it's needed across sessions)
+          const visitorId = localStorage.getItem("visitorId") || uid(8);
+          const deviceId = localStorage.getItem("deviceId")|| uid(8);
+          // if (!visitorId) {
+          //   console.error("Visitor ID not found");
+          //   return;
+          // }
+    
+          // Make API call
+          const response = await fetch(
+            "https://xplr.live/api/v1/endUser/googleSignin",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${credentialResponse.credential}`,
+              },
+              body: JSON.stringify({
+                visitorId: visitorId,
+                campaignID: campaignId,
+                deviceId: deviceId,
+              }),
+            }
+          );
+    
+          const data = await response.json();
+            console.log("Google sign-in response:", data);
+          if (data.status) {
+
+            // Store the user data in localStorage (keep this in localStorage as it's needed across sessions)
+            console.log(data.user);
+            
+            localStorage.setItem("userData", JSON.stringify(data.user));
+            // localStorage.setItem("token", data.data.token);
+    
+            // Close the popup
+            setShowPopup(false);
+          } else {
+            console.error("Login failed:", data.message);
+            setShowPopup(false);
+          }
+        } catch (error) {
+          console.error("Error during Google sign-in:", error);
+        } finally {
+          setIsLoadingPopup(false);
+        }
+      };
+
+
+    if (isCameraScreen) {
+        return (<CameraComponent />)
+      }
+
     return (
         <div className={styles.container}>
 
             {showRedirectionPage ? <RedirectionPage isSocial={enviroment.isSocialPlatform} metaData={metaData} link={redirectUrl} /> :
                 <div className={styles.cardWrapper}>
+                    <GoogleOAuthProvider clientId="1026223734987-p8esfqcf3g2r71p78b2qfapo6hic8jh0.apps.googleusercontent.com">
+           
+              {showPopup && (
+                <div className={styles.popupOverlay}>
+                  <div className={styles.popup}>
+                    <h2>Sign in with Google</h2>
+                    <p>Sign in to personalize your experience</p>
+                    <div className={styles.popupButtons}>
+                      {isLoadingPopup ? (
+                        <div className={styles.loader}>Loading...</div>
+                      ) : (
+                        <GoogleLogin
+                          onSuccess={handleGoogleSuccess}
+                          onError={(error:any) => console.error("Google login error:", error)}
+                          useOneTap
+                          type="standard"
+                          theme="filled_blue"
+                          render={({ onClick }) => (
+                            <button
+                              onClick={onClick}
+                              className={styles.googleButton}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "8px",
+                                backgroundColor: "blue",
+                              }}
+                            >
+                              <img
+                                src={googleLogo}
+                                alt="google logo"
+                                style={{
+                                  width: "25px",
+                                  height: "25px",
+                                  backgroundColor: "white",
+                                  borderRadius: "50%",
+                                }}
+                              />
+                              Sign in with Google
+                            </button>
+                          )}
+                        />
+                      )}
+                      <button
+                        className={styles.skipButton}
+                        onClick={() => setShowPopup(false)}
+                        disabled={isLoadingPopup}
+                      >
+                        Skip
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+          </GoogleOAuthProvider>
                     <DivkitRenderer onClick={(action: any) => handleBtnClick(action, navigate, "", campaignId, layouts,)}
                         divkitJson={layout.layoutJSON} />
                 </div>

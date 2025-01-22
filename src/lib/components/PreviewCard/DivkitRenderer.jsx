@@ -96,14 +96,16 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
   
     try {
       // Fetch the font URL using your function
-      // const fontURL = await getFontBySpecificName(fontName);
-      const fontURL = "https://xplore.objectstore.e2enetworks.net/1737440591175-a21214da2904fa14.ttf";
+      const fontURL = await getFontBySpecificName(fontName);
+      // const fontURL = "https://xplore.objectstore.e2enetworks.net/1737440591175-a21214da2904fa14.ttf";
       console.log("fontUrl:", fontURL);
   
       const fontFamily = `custom-font-${btoa(fontURL).substring(0, 8)}`; // Create a unique name
-        
+      
       // Check if the font has already been added
       if (!document.getElementById(fontFamily)) {
+        console.log("font family:", fontFamily);
+        
         const style = document.createElement('style');
         style.id = fontFamily;
         style.innerHTML = `
