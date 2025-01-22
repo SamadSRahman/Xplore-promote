@@ -50,7 +50,7 @@ export default function () {
     }, [shortId]);
 
     useEffect(() => {
-        if (campaignId && enviroment.deviceType !== "mobile") {
+        if (campaignId && !enviroment.isIOS) {
             postAnalyticData({ campaignID: campaignId, source: enviroment.platform === "browser" ? "other" : enviroment.platform })
         }
     }, [campaignId]);
