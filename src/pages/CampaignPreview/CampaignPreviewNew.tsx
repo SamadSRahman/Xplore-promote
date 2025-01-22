@@ -27,12 +27,12 @@ export default function () {
             console.log(`${appClipURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
 
         }
-        else if (enviroment.deviceType === "mobile" && enviroment.isAndroid) {
-            setRedirectUrl(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
-            setShowRedirectionPage(true);
-            console.log(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+        // else if (enviroment.deviceType === "mobile" && enviroment.isAndroid) {
+        //     setRedirectUrl(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
+        //     setShowRedirectionPage(true);
+        //     console.log(`${playStoreURL}&campaignId=${campaignId}&sourcename=${enviroment.platform}`);
 
-        }
+        // }
         else {
             getAllLayout(campaignId);
         }

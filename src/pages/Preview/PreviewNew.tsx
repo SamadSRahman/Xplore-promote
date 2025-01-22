@@ -273,7 +273,7 @@ export default function () {
               )}
               
           </GoogleOAuthProvider>
-                    <DivkitRenderer onClick={(action: any) => handleBtnClick(action, navigate, "", campaignId, layouts,)}
+                    <DivkitRenderer onClick={(action: any) => handleBtnClick(action, navigate, shortId, campaignId, layouts,)}
                         divkitJson={layout.layoutJSON} />
                 </div>
             }
