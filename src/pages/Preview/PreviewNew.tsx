@@ -38,12 +38,12 @@ export default function () {
             console.log(`${appClipURL}&shortId=${shortId}&sourcename=${enviroment.platform}`);
 
         }
-        else if (enviroment.deviceType === "mobile" && enviroment.isAndroid) {
-            setRedirectUrl(`${playStoreURL}&shortId=${shortId}&sourcename=${enviroment.platform}`);
-            setShowRedirectionPage(true);
-            console.log(`${playStoreURL}&shortId=${shortId}&sourcename=${enviroment.platform}`);
+        // else if (enviroment.deviceType === "mobile" && enviroment.isAndroid) {
+        //     setRedirectUrl(`${playStoreURL}&shortId=${shortId}&sourcename=${enviroment.platform}`);
+        //     setShowRedirectionPage(true);
+        //     console.log(`${playStoreURL}&shortId=${shortId}&sourcename=${enviroment.platform}`);
 
-        }
+        // }
         else {
             getLayoutByShortId(shortId);
         }
