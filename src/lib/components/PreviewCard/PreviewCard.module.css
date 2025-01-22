@@ -24,6 +24,6 @@
     margin-bottom: 1rem;
 }
 .renderDiv >div{
-    min-height: 100vh;
+    min-height: 95vh;
     /* overflow: scroll; */
 }
