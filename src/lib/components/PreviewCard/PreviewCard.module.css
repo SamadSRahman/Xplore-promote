@@ -15,11 +15,11 @@
 .renderDiv{
     background-color: white;
     color: black;
-    max-height: 90vh;
+    max-height: 95vh;
     overflow-y: scroll;
     /* border: 1px solid blue; */
     min-height: 90vh;
-    height: 100vh;
+    height: 95vh;
     /* padding-top: 1rem; */
     margin-bottom: 1rem;
 }
