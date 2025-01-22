@@ -7,7 +7,7 @@ export default function RedirectionPage({link, metaData, isSocial}) {
     if(anchorRef.current){
       anchorRef.current.click();
     }
-  }) 
+  }, [link, anchorRef]) 
   
 
   return (
