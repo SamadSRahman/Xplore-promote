@@ -19,6 +19,7 @@ import PreviewNew from './pages/Preview/PreviewNew.tsx';
 import AdminLogin from './pages/AdminLogin/AdminLogin.jsx';
 import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx';
 import DeleteInstructions from './pages/DeleteInstructions/DeleteInstructions.jsx';
+import BikerBayTermsPage from './pages/BikerBayTermsPage/BikerBayTermsPage.jsx';
 
 const App = () => {
 
@@ -83,6 +84,8 @@ const App = () => {
               <Route path='/createCampaign' element={<CampaignsForm />} />
               <Route path='/themeSelection' element={<ThemeSelection />} />
               <Route path='/editor/:campaignId/:page' element={<EditorPage />} />
+              <Route path='/bikerBayTermsAndConditions' element={<BikerBayTermsPage />} />
+
 
               {/* Admin section */}
               <Route path='/admin' element={<AdminLogin />} />

@@ -6,6 +6,7 @@
     overflow: hidden;
     background-color: white;
     color: black;
+    height: 95vh;
 }
 .renderDiv::-webkit-scrollbar{
     display: none !important;
