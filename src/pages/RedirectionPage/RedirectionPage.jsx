@@ -3,12 +3,12 @@ import "./styles.css";
 
 export default function RedirectionPage({link, metaData, isSocial}) {
   const anchorRef = useRef();
+
   useEffect(()=>{
     if(anchorRef.current){
       anchorRef.current.click();
     }
-  }, [link, anchorRef]) 
-  
+  }, [link, anchorRef]);
 
   return (
     <div className="container">
@@ -18,7 +18,6 @@ export default function RedirectionPage({link, metaData, isSocial}) {
           <h1 className="welcome-title">Welcome</h1>
           <h2 className="welcome-subtitle">to</h2>
         </div>
-        
         <div className="content-container">
           <h3 className="app-title">{metaData?.title}</h3>
           {metaData?.description && (

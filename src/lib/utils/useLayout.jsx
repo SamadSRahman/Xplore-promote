@@ -79,7 +79,6 @@ export default function useLayout() {
         }
     }
 
-
     const updateLayout = async (id, layout, name, isAlert) => {
         try {
             const response = await axios.put(
