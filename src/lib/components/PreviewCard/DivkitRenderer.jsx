@@ -86,43 +86,25 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
   onCustomAction: handleCustomAction,
   id: 'divkit-root',
   target: divkitContainer.current,
-  typefaceProvider: async (fontName) => {
-    console.log("fontName:", fontName);
-  
-    // Check if the font style is already added
-    if (document.getElementById(fontName)) {
-      return fontName; // Return the font name if it's already added
-    }
-  
-    try {
-      // Fetch the font URL using your function
-      const fontURL = await getFontBySpecificName(fontName);
-      // const fontURL = "https://xplore.objectstore.e2enetworks.net/1737440591175-a21214da2904fa14.ttf";
-      console.log("fontUrl:", fontURL);
-  
-      const fontFamily = `custom-font-${btoa(fontURL).substring(0, 8)}`; // Create a unique name
-      
-      // Check if the font has already been added
-      if (!document.getElementById(fontFamily)) {
-        console.log("font family:", fontFamily);
-        
-        const style = document.createElement('style');
-        style.id = fontFamily;
-        style.innerHTML = `
-          @font-face {
-            font-family: '${fontFamily}';
-            src: url('${fontURL}') format('truetype');
-          }
-        `;
-        document.head.appendChild(style);
-      }
+  typefaceProvider : (fontName) => {
+    const fontFamily = `custom-font-${fontName}`;
+    console.log(fontFamily);
+    
+    // Only add the style if it doesn't exist
+    if (!document.getElementById(fontFamily)) {
+  const style = document.createElement('style');
+      style.textContent = `
+        @font-face {
+          font-family: 'custom-font-${fontName}';
+          src: url(https://xplr.live/api/v1/font/getFontFile?specificName=${fontName}) format('truetype');
+        }
+      `;
+      document.head.appendChild(style);
 
-      return `'${fontFamily}'`; // Return the dynamically created font family
-    } catch (error) {
-      console.error('Failed to load font:', error);
-      return null;
     }
+    return `"custom-font-${fontName}", sans-serif`;
   },
+  
   json: divkitJson,
   customComponents: new Map([
     ['threesixty_card', {
