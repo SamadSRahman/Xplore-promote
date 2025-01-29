@@ -100,7 +100,6 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
         }
       `;
       document.head.appendChild(style);
-
     }
     return `"custom-font-${fontName}", sans-serif`;
   },

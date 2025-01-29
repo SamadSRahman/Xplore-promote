@@ -49,14 +49,14 @@ export const additionalComponentsList: ComponentListItem[] = Object.keys(MAP)
         };
     });
 
-// export const fullComponentsList: ComponentListItem[] = Object.keys(MAP).map(type => {
-//     return {
-//         nameKey: `components.${type}`,
-//         type,
-//         description: MAP[type]
-//     };
-// });
-export const fullComponentsList: ComponentListItem[] = smallComponentsList;
+export const fullComponentsList: ComponentListItem[] = Object.keys(MAP).map(type => {
+    return {
+        nameKey: `components.${type}`,
+        type,
+        description: MAP[type]
+    };
+});
+// export const fullComponentsList: ComponentListItem[] = smallComponentsList;
 
 for (const key in namedTemplates) {
     const obj = namedTemplates[key];
