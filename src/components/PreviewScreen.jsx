@@ -74,28 +74,23 @@ const PreviewScreen = ({ isOpen, onClose, jsonData }) => {
       onCustomAction: (e) => console.log('Custom action:', e),
       id: 'preview-divkit-root',
       target: previewContainer.current,
-      typefaceProvider: (font) => {
-        console.log("Font", font);
+      typefaceProvider : (fontName) => {
+        const fontFamily = `custom-font-${fontName}`;
+        console.log(fontFamily);
         
-        switch (font) {
-          case 'Inter': return '"Inter", sans-serif';
-          case 'Poppins': return '"Poppins", sans-serif';
-          case 'Roboto': return '"Roboto", sans-serif';
-          case 'Open Sans': return '"Open Sans", sans-serif';
-          case 'Lato': return '"Lato", sans-serif';
-          case 'Montserrat': return '"Montserrat", sans-serif';
-          case 'Nunito': return '"Nunito", sans-serif';
-          case 'Raleway': return '"Raleway", sans-serif';
-          case 'Oswald': return '"Oswald", sans-serif';
-          case 'Merriweather': return '"Merriweather", serif';
-          default: return 'inherit';
+        // Only add the style if it doesn't exist
+        if (!document.getElementById(fontFamily)) {
+      const style = document.createElement('style');
+          style.textContent = `
+            @font-face {
+              font-family: 'custom-font-${fontName}';
+              src: url(https://xplr.live/api/v1/font/getFontFile?specificName=${fontName}) format('truetype');
+            }
+          `;
+          document.head.appendChild(style);
         }
+        return `"custom-font-${fontName}", sans-serif`;
       },
-        customComponents: new Map([
-          ['threesixty_card', {
-              element: 'custom-card'
-          }]
-      ]),
       json: parsedJson,
       onError(details) {
         console.error('Preview rendering error:', details.error);
