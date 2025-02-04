@@ -3,13 +3,16 @@ import { getTypeBySchemaName, schema, translation } from './schema';
 import { namedTemplates } from './templates';
 
 export const DEFAULT_ALLOWED_COMPONENTS = [
+    
     'image',
     'gif',
     'text',
+    'select',
     'container',
     'gallery',
     'separator',
     'video',
+    
 ];
 
 const MAP = (schema.div.anyOf || []).reduce((acc, item) => {

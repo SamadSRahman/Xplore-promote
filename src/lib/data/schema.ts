@@ -54,14 +54,14 @@ const editors = new Map([
     ['div-video-source.json', '__video-source-item'],
     ['div-list.json', '__list-item'], 
     ['div-border.json', '__border-item'],
+    ['div-select.json#/definitions/option', '__option-item'],
 ]);
 
 const arrayEditors = new Map([
     ['__background-item', 'background2'],
     ['__action-item', 'actions2'],
     ['__video-source-item', 'video_sources'],
-    ['list-items', 'list'],
-    ['__list-item', 'list'],
+    ['__option-item', 'options2'],
 ]);
 
 const resolveLinkCache = new Map<string, any>();
@@ -603,9 +603,9 @@ export const resolveEditor = (root: any, schemaItem: Schema): ComponentProperty 
             items = resolveLink(root, items.$ref, 0);
         }
         // Check if this is a list component
-        if (items?.__editor === '__list-item') {
+        if (items?.__editor === '__option-item') {
             return {
-                type: 'list'
+                type: 'options2'
             };
         }
     }

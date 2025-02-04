@@ -11,7 +11,7 @@ import { blankBackgroundJSON, contactUsJSON } from '../../lib/utils/splashScreen
 
 
 const CampaignForm = () => {
-  let API_BASE_URL = "https://pre.xplore.xircular.io/api";
+  let API_BASE_URL = "https://xplr.live/api";
   if (
     window.location.origin === "https://xplr.live" 
     // window.location.origin.includes("localhost") ||

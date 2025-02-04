@@ -6,6 +6,7 @@ import wrapContentHorizontal from "../../assets/wrapContentHorizontal.svg?url";
 import fixedVertical from "../../assets/fixedVertical.svg?url";
 import matchParentVertical from "../../assets/matchParentVertical.svg?url";
 import wrapContentVertical from "../../assets/wrapContentVertical.svg?url";
+import { createOption } from "./options";
 
 export const supportedComponents = new Set([
   "image",
@@ -49,6 +50,7 @@ export type PropertyType =
   | "background2"
   | "color"
   | "actions2"
+  | "options2"
   | "video_sources"
   | "file"
   | "alignment"
@@ -74,7 +76,6 @@ export interface BaseProperty {
   enableSources?: boolean;
   min?: number;
   max?: number;
-  
 }
 
 export interface RadioProperty extends BaseProperty {
@@ -94,12 +95,13 @@ export interface RadioProperty extends BaseProperty {
 //   fields: BaseProperty[]; // Specify that each array contains other properties
 // }
 export interface ArrayProperty extends BaseProperty {
-    type: "array";
-    arrayType: "object"; // Specify the array contains objects
-    fields: BaseProperty[]; // Define the nested fields within the objects
-    minItems?: number;
-    maxItems?: number;
-  }
+  type: "array";
+  arrayType: "object";
+  fields: BaseProperty[];
+  minItems?: number;
+  maxItems?: number;
+  _template_map?: boolean;
+}
 export interface IntegerProperty extends BaseProperty {
   type: "integer";
   min: number;
@@ -119,28 +121,21 @@ export interface BooleanProperty extends BaseProperty {
   theme?: "sibling";
 }
 
-// export interface SelectProperty extends BaseProperty {
-//   type: "select";
-//   options: {
-//     rawName?: string;
-//     name?: string;
-//     value: string;
-//     icon?: string;
-//     show?: ConditionObject;
-//   }[];
-// }
-
-// export interface SelectProperty extends BaseProperty {
-//     type: "select";
-//     options: {
-//       value: string; // The value of each option
-//       text?: string; // The display text for the option (optional)
-//     }[]; // Array of objects defining the options
-//   }
 export interface SelectProperty extends BaseProperty {
-    type: "select";
-    options: ArrayProperty | object[]; // Use ArrayProperty to allow dynamic options
-  }
+  type: "select";
+  options: {
+    rawName?: string;
+    name?: string;
+    value: string;
+    icon?: string;
+    show?: ConditionObject;
+  }[];
+}
+
+export interface Options2Property extends BaseProperty {
+  type: "options2";
+  _template_map?: boolean;
+}
 
 export interface PercentProperty extends BaseProperty {
   type: "percent";
@@ -237,7 +232,8 @@ export type ComponentProperty =
   | VideoSourcesProperty
   | NumberProperty
   | ArrayProperty
-  | MapProperty;
+  | MapProperty
+  | Options2Property;
 
 export type SiblingComponentProperty = ComponentProperty & {
   related?: {
@@ -610,7 +606,6 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
           name: "props.actions",
           prop: "actions",
           type: "actions2",
-          _template_map: true,
         },
       ],
     },
@@ -751,6 +746,12 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
           enableSources: true,
         },
         {
+          name: "props.hint_text_color",
+          prop: "hint_color",
+          type: "color",
+          enableSources: true,
+        },
+        {
           name: "props.hint_text",
           prop: "hint_text",
           type: "string",
@@ -768,16 +769,31 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
         },
       ],
     },
-  {  name: "props.select_component",
-    prop: "select_component",
-    type: "select",
-    options: [
-      { value: "value_for_option_1", text: "Option 1" },
-      { value: "value_for_option_2", text: "Option 2" },
-      { value: "value_for_option_3", text: "Option 3" },
-    ],}
-    
-   
+    // {
+    //   type: "group",
+    //   title: "props.actions",
+    //   list: [
+    //     {
+    //       name: "props.actions",
+    //       prop: "actions",
+    //       type: "actions2",
+    //       _template_map: true,
+    //     },
+    //   ],
+    // },
+    {
+      type: "group",
+      title: "props.options",
+      list: [
+        {
+          name: "props.options",
+          prop: "options",
+          type: "options2",
+          _template_map: true,
+          default: [createOption()],
+        }
+      ],
+    }
   ],
   image: [
     ...BASE_COMPONENT_PROPS,
@@ -855,9 +871,11 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
           name: "props.actions",
           prop: "actions",
           type: "actions2",
+          _template_map: true,
         },
       ],
     },
+   
   ],
   gif: [
     ...BASE_COMPONENT_PROPS,

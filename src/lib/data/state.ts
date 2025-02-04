@@ -626,7 +626,7 @@ export class State {
         if (type === 'text') {
             json = {
                 type,
-                text: 'text',
+                text: 'samad',
                 font_size: 20
             };
         } else if (type === 'image') {
@@ -719,7 +719,33 @@ export class State {
                     value: 200
                 }
             };
-        } else if (type in namedTemplates && namedTemplates[type].newNode) {
+        } 
+        else if (type === 'select') {
+            json = {
+                type,
+                width: {
+                    type: 'fixed',
+                    value:150
+                },
+                height: {
+                    type: 'fixed',
+                    value: 30
+                },
+                hint_text:"Select an option",
+                hint_color:"#ccc",
+                font_size:16,
+                value_variable :"{@}",
+                accessibility:{
+                    description:"select component"
+                },
+                options:[
+                    {value:"", text:""},
+                    {value:"option1", text:"Option 1"},
+                    {value:"option2", text:"Option 2"},
+                ]
+            };
+        }
+        else if (type in namedTemplates && namedTemplates[type].newNode) {
             json = { ...namedTemplates[type].newNode, type };
         } else {
             json = { type };

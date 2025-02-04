@@ -8,11 +8,10 @@ import buttonIcon from "../../assets/components/button.svg?url";
 import closeIcon from "../../assets/components/close.svg?url";
 import ThreeSixtyIcon from "../../assets/components/360View.svg?url";
 import backIcon from "../../assets/components/back-button.svg";
-import shareIcon from "../../assets/share-icon.svg";
-import listItemIcon from "../../assets/components/list-item.svg?url";
+
 import listIcon from "../../assets/list.svg.svg";
 import { type ComponentProperty } from "./componentProps";
-import { EMPTY_IMAGE } from "./doc";
+
 
 interface TemplateDescription {
   nameKey: string;
@@ -121,6 +120,38 @@ const screens = JSON.parse(localStorage.getItem("screens") || "[]").map(
 );
 
 export const namedTemplates: Record<string, TemplateDescription> = {
+  _template_lottie:{
+    nameKey: "templates.lottie",
+    visible: true,
+    inShortList: true,
+    icon: lottieIcon, 
+    description: { en: "Customizable gallery component" },
+    props:[
+      {
+        type:"group",
+        title:"lottieProps.title",
+        list:[
+          {
+            name:"props.lottie_url",
+            prop:"lottie_params.lottie_url",
+            type:"file",
+            subtype:"lottie",
+            enableSources:true
+          },
+          {
+            name:"props.repeat_count",
+            prop:"lottie_params.repeat_count",
+            type:"number",
+            min:-1,
+            enableSources:true
+          }
+        ]
+
+      }
+    ],
+    newNode:{},
+    template:{}
+  },
   _template_gallery: {
     nameKey: "templates.gallery",
     visible: true,

@@ -31,6 +31,7 @@
         item.type === 'text-align' ||
         item.type === 'radio' ||
         item.type === 'background2' ||
+        item.type === 'options2' ||
         item.type === 'actions2' ||
         item.type === 'string' && item.enableTanker ||
         item.type === 'video_sources' ||

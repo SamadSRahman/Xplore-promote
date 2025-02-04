@@ -562,19 +562,17 @@ export const blankBackgroundJSON = {
   text_alignment_horizontal: "left",
   text_alignment_vertical: "center"
   },
- 
-
-    // _template_lottie: {
-    //   type: "gif",
-    //   scale: "fit",
-    //   extensions: [
-    //     {
-    //       id: "lottie",
-    //       $params: "lottie_params",
-    //     },
-    //   ],
-    //   gif_url: "https://yastatic.net/s3/home/divkit/empty2.png",
-    // },
+    _template_lottie: {
+      type: "gif",
+      scale: "fit",
+      extensions: [
+        {
+          id: "lottie",
+          $params: "lottie_params",
+        },
+      ],
+      gif_url: "https://yastatic.net/s3/home/divkit/empty2.png",
+    },
     _template_button: {
       type: "text",
       text_alignment_horizontal: "center",
