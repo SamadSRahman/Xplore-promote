@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { render } from '@divkitframework/divkit/client';
+import { render,  lottieExtensionBuilder} from '@divkitframework/divkit/client';
+import Lottie from 'lottie-web/build/player/lottie';
 import ReactDOM from 'react-dom';
 import './styles.css';
 import Image360Viewer from '../lib/components/ImageViewer/ImageViewer';
@@ -57,6 +58,11 @@ if (typeof window !== 'undefined' && !customElements.get('custom-card')) {
 const PreviewScreen = ({ isOpen, onClose, jsonData }) => {
   const previewContainer = useRef(null);
 
+  const extensions = new Map();
+extensions.set('lottie', lottieExtensionBuilder(Lottie.loadAnimation));
+
+
+
   useEffect(() => {
     if (!isOpen || !previewContainer.current || !jsonData) {
       return;
@@ -92,6 +98,7 @@ const PreviewScreen = ({ isOpen, onClose, jsonData }) => {
         return `"custom-font-${fontName}", sans-serif`;
       },
       json: parsedJson,
+      extensions,
       onError(details) {
         console.error('Preview rendering error:', details.error);
       },

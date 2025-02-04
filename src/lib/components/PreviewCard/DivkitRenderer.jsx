@@ -79,6 +79,7 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
   useEffect(() => {
     if (divkitContainer.current) {
       render({
+        extensions:[],
         hydrate: true,
         onCustomAction: handleCustomAction,
         id: "divkit-root",
