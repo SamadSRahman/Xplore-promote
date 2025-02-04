@@ -5,8 +5,13 @@ import styles from "./PreviewCard.module.css";
 import Image360Viewer from "../../components/ImageViewer/ImageViewer";
 import ChatBotComponent from "../../../customComponent/ChatBotComponent/ChatBotComponent";
 import useFonts from "../../utils/useFonts";
+import { lottieExtensionBuilder } from "@divkitframework/divkit/client";
+import Lottie from 'lottie-web/build/player/lottie';
 
 const DivkitRenderer = ({ divkitJson, onClick }) => {
+  const extensions = new Map();
+  extensions.set('lottie', lottieExtensionBuilder(Lottie.loadAnimation));
+
   const divkitContainer = useRef(null);
   const { getFontBySpecificName } = useFonts();
   const captureRef = useRef(null);
@@ -79,7 +84,7 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
   useEffect(() => {
     if (divkitContainer.current) {
       render({
-        extensions:[],
+          extensions:extensions,
         hydrate: true,
         onCustomAction: handleCustomAction,
         id: "divkit-root",
