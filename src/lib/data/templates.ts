@@ -132,6 +132,31 @@ export const namedTemplates: Record<string, TemplateDescription> = {
         title:"lottieProps.title",
         list:[
           {
+            name: "props.image_scale",
+            prop: "scale",
+            type: "select",
+            default: "fill",
+            options: [
+              {
+                name: "props.scale_fit",
+                value: "fit",
+              },
+              {
+                name: "props.scale_fill",
+                value: "fill",
+              },
+              {
+                name: "props.scale_no_scale",
+                value: "no_scale",
+              },
+              {
+                name: "props.scale_stretch",
+                value: "stretch",
+              },
+            ],
+            enableSources: true,
+          },
+          {
             name:"props.lottie_url",
             prop:"lottie_params.lottie_url",
             type:"file",
@@ -144,7 +169,8 @@ export const namedTemplates: Record<string, TemplateDescription> = {
             type:"number",
             min:-1,
             enableSources:true
-          }
+          },
+         
         ]
 
       }
