@@ -11,14 +11,9 @@ export default function useFonts() {
   const [fonts, setFonts] = useState([])
   const [font, setFont] = useState({})
 
-  let API_BASE_URL = "https://pre.xplore.xircular.io/api";
-  if (
-    window.location.origin === "https://xplr.live" ||
-    window.location.origin.includes("localhost") ||
-    window.location.origin.includes("vercel")
-  ) {
-    console.log(window.location.origin);
-    API_BASE_URL = "https://xplr.live/api";
+  let API_BASE_URL = 'https://xplr.live/api'; 
+  if(window.location.origin==="https://pre.xplore.xircular.io"){ 
+   API_BASE_URL = 'https://pre.xplore.xircular.io/api';
   }
 
   const handleFontUpload = async (formData, onClose) => {

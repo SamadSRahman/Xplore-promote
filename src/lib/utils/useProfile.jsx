@@ -6,15 +6,11 @@ export default function useProfile() {
     const [profileLayout, setProfileLayout] = useState( JSON.stringify(blankBackgroundJSON))
     const token = localStorage.getItem("accessToken");
 
-    let API_BASE_URL = "https://pre.xplore.xircular.io/api";
-    if (
-      window.location.origin === "https://xplr.live" 
-      // window.location.origin.includes("localhost") ||
-      // window.location.origin.includes("vercel")
-    ) {
-      console.log(window.location.origin);
-      API_BASE_URL = "https://xplr.live/api";
+    let API_BASE_URL = 'https://xplr.live/api'; 
+    if(window.location.origin==="https://pre.xplore.xircular.io"){ 
+     API_BASE_URL = 'https://pre.xplore.xircular.io/api';
     }
+  
 
     
   const getProfileLayout = async (id) => {

@@ -8,15 +8,11 @@ export default function useAnalytics() {
   const token = localStorage.getItem("accessToken");
   const channel = localStorage.getItem("channel");
 
-  let API_BASE_URL = "https://pre.xplore.xircular.io/api";
-  if (
-    window.location.origin === "https://xplr.live" || 
-    window.location.origin.includes("localhost") ||
-    window.location.origin.includes("vercel")
-  ) {
-    console.log(window.location.origin);
-    API_BASE_URL = "https://xplr.live/api";
+  let API_BASE_URL = 'https://xplr.live/api'; 
+  if(window.location.origin==="https://pre.xplore.xircular.io"){ 
+   API_BASE_URL = 'https://pre.xplore.xircular.io/api';
   }
+
 
   const getperformamceAnalyticsData = async (campaignId) => {
     const response = await fetch(
