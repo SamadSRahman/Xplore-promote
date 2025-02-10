@@ -13,7 +13,7 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
   extensions.set('lottie', lottieExtensionBuilder(Lottie.loadAnimation));
 
   const divkitContainer = useRef(null);
-  const { getFontBySpecificName } = useFonts();
+ 
   const captureRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
 

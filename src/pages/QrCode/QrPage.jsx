@@ -25,6 +25,7 @@ const QRLogin = () => {
         console.log(window.location.origin);  
      API_BASE_URL = 'https://xplr.live/api';
     }
+    API_BASE_URL = 'https://xplr.live/api';
 
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');

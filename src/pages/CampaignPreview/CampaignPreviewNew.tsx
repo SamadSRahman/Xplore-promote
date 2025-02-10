@@ -46,7 +46,7 @@ export default function () {
             if (initialLayout) {
                 setTimeout(() => {
                     navigate(`/campaign/${campaignId}/${initialLayout.name}`);
-                }, 2000);
+                }, 4000);
             } else {
                 console.log("No initial screen found");
             }

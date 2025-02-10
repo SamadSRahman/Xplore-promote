@@ -371,8 +371,10 @@ export default function CampaignPreview() {
       const initialLayout = layouts.find((ele) => ele.isInitial === true);
       if (initialLayout) {
         setTimeout(() => {
-          navigate(`/campaign/${campaignId}/${initialLayout.name}`);
-        }, 2000);
+          console.log("teiggered");
+          
+          // navigate(`/campaign/${campaignId}/${initialLayout.name}`);
+        }, 5000);
       } else {
         console.log("No initial screen found");
       }
