@@ -7,7 +7,7 @@ import { FiMail, FiPhone, FiGlobe, FiImage } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import styles from './CreateCampaign.module.css';
 import useLayout from '../../lib/utils/useLayout';
-import { blankBackgroundJSON, contactUsJSON } from '../../lib/utils/splashScreenData';
+import { blankBackgroundJSON, contactUsJSON, landingScreenJSON, splashScreenJSON } from '../../lib/utils/splashScreenData';
 
 
 const CampaignForm = () => {
@@ -79,8 +79,8 @@ const CampaignForm = () => {
                 data,
                 { headers: { Authorization: `Bearer ${token}`, session: channel, 'Content-Type': 'multipart/form-data' } }
             );
-            await createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Splash Screen');
-            await createLayout(JSON.stringify(blankBackgroundJSON), response.data.data.campaignID, 'Landing Screen', true);
+            await createLayout(JSON.stringify(splashScreenJSON), response.data.data.campaignID, 'Splash Screen');
+            await createLayout(JSON.stringify(landingScreenJSON), response.data.data.campaignID, 'Landing Screen', true);
             await createLayout(JSON.stringify(contactUsJSON), response.data.data.campaignID, 'Contact Us Screen');
             alert('Campaign created successfully');
             navigate(`/editor/${response.data.data.campaignID}/splash_screen`);

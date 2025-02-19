@@ -110,6 +110,11 @@ function onSubtypeChange(): void {
       value.url = "xplore-promote://share";
       value.attachmentUrl = "";
     }
+    else if(subtype === 'chatbot'){
+      value.url = "xplore-promote://chatbot";
+      value.model_name = "";
+      // value.attachmentUrl = "";
+    }
     else if (subtype === "email") {
       value.url = "xplore-promote://emailAddress";
       value.email = ""; // Add email field to value
@@ -235,6 +240,7 @@ let selectedVariables: string[] = [];
     { value: "social", text: "Social links" },
     { value: "webLink", text: "Web link" },
     { value: "share", text: "Share" },
+    { value: "chatbot", text: "Chatbot" },
   ].concat(
     $customActions.map((actionDesc, i) => ({
       value: `custom:${i}`,
@@ -498,6 +504,35 @@ function onProductChange(): void {
             />
           </label>
         </div>
+      {:else if subtype === "chatbot"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Select adapter for chatbot
+            </div>
+            <Select
+              items={[
+                { value: "adapter1", text: "Adapter 1" },
+                { value: "adapter2", text: "Adapter 2" },
+                { value: "adapter3", text: "Adapter 3" },
+              ]}
+              bind:value={value.model_name}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={(e) => {
+                value.url = `xplore-promote://chatbot?model_name=${e.detail}`;
+                value.log_url = value.url;
+              }}
+            />
+          </label>
+          <label>
+            <div class="actions2-dialog__label">
+              Action URL
+            </div>
+            <Text bind:value={value.url} disabled={readOnly} on:change={onMapCoordinatesChange} />
+          </label>
+        </div>
       {:else if subtype === "productDetails"}
         <div>
           <label>
@@ -582,6 +617,8 @@ function onProductChange(): void {
     flex-direction: column;
     gap: 24px;
     margin: 16px; 
+    /* border: 1px solid; */
+    height: 20rem;
   }
 
   .actions2-dialog__label {

@@ -8,10 +8,10 @@ import buttonIcon from "../../assets/components/button.svg?url";
 import closeIcon from "../../assets/components/close.svg?url";
 import ThreeSixtyIcon from "../../assets/components/360View.svg?url";
 import backIcon from "../../assets/components/back-button.svg";
+import chatbotIcon from "../../assets/components/chatbot-icon.svg";
 
 import listIcon from "../../assets/list.svg.svg";
 import { type ComponentProperty } from "./componentProps";
-
 
 interface TemplateDescription {
   nameKey: string;
@@ -120,17 +120,17 @@ const screens = JSON.parse(localStorage.getItem("screens") || "[]").map(
 );
 
 export const namedTemplates: Record<string, TemplateDescription> = {
-  _template_lottie:{
+  _template_lottie: {
     nameKey: "templates.lottie",
     visible: true,
     inShortList: true,
-    icon: lottieIcon, 
+    icon: lottieIcon,
     description: { en: "Customizable gallery component" },
-    props:[
+    props: [
       {
-        type:"group",
-        title:"lottieProps.title",
-        list:[
+        type: "group",
+        title: "lottieProps.title",
+        list: [
           {
             name: "props.image_scale",
             prop: "scale",
@@ -157,26 +157,24 @@ export const namedTemplates: Record<string, TemplateDescription> = {
             enableSources: true,
           },
           {
-            name:"props.lottie_url",
-            prop:"lottie_params.lottie_url",
-            type:"file",
-            subtype:"lottie",
-            enableSources:true
+            name: "props.lottie_url",
+            prop: "lottie_params.lottie_url",
+            type: "file",
+            subtype: "lottie",
+            enableSources: true,
           },
           {
-            name:"props.repeat_count",
-            prop:"lottie_params.repeat_count",
-            type:"number",
-            min:-1,
-            enableSources:true
+            name: "props.repeat_count",
+            prop: "lottie_params.repeat_count",
+            type: "number",
+            min: -1,
+            enableSources: true,
           },
-         
-        ]
-
-      }
+        ],
+      },
     ],
-    newNode:{},
-    template:{}
+    newNode: {},
+    template: {},
   },
   _template_gallery: {
     nameKey: "templates.gallery",
@@ -554,8 +552,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     },
     template: {
       type: "text",
-      text_alignment_horizontal: "center",
-      text_alignment_vertical: "center",
+
       border: { $corner_radius: "corners" },
       paddings: {
         bottom: 15,
@@ -884,15 +881,13 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       custom_type: "threesixty_card",
       width: { type: "match_parent" },
       height: { type: "fixed", value: 200 },
-      
+
       items: [],
     },
     newNode: {
       productId: "",
       corners: 8,
-      custom_props: {
-       
-      },
+      custom_props: {},
     },
   },
   _template_map: {
@@ -1301,7 +1296,6 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     ],
     newNode: {
       text: "Button",
-
       animation_action: "none",
       actions: [],
     },
@@ -1527,6 +1521,111 @@ export const namedTemplates: Record<string, TemplateDescription> = {
           },
         },
       ],
+    },
+  },
+  _template_chatbot: {
+    nameKey: "templates.chatbot",
+    visible: true,
+    inShortList: true,
+    icon: chatbotIcon,
+    description: { en: "Image component with customizable properties" },
+    props: [
+      {
+        type: "group",
+        title: "image.title",
+        list: [
+          {
+            name: "props.image_scale",
+            prop: "scale",
+            type: "select",
+            default: "fill",
+            options: [
+              {
+                name: "props.scale_fit",
+                value: "fit",
+              },
+              {
+                name: "props.scale_fill",
+                value: "fill",
+              },
+              {
+                name: "props.scale_no_scale",
+                value: "no_scale",
+              },
+              {
+                name: "props.scale_stretch",
+                value: "stretch",
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: "props.image_url",
+            prop: "image_url",
+            type: "file",
+            subtype: "image",
+            default:
+              "https://xplore.objectstore.e2enetworks.net/1739858212180-fc3ddc3169e45e96.png",
+            enableSources: true,
+          },
+          {
+            name: "props.actions",
+            prop: "actions",
+            type: "actions2",
+          },
+        ],
+      },
+    ],
+    newNode: {
+      image_url:
+        "https://xplore.objectstore.e2enetworks.net/1739858212180-fc3ddc3169e45e96.png",
+      width: {
+        type: "fixed",
+        value: 50,
+      },
+      height: {
+        type: "fixed",
+        value: 50,
+      },
+      background_color: "#5959e8",
+      paddings: {
+        right: 10,
+        bottom: 10,
+        left: 10,
+        top: 10,
+      },
+      alignment_horizontal: "top",
+      alignment_vertical: "right",
+      actions: [
+        {
+          log_id: "open_chatbot",
+          url: "xplore-promote://chatbot",
+          _template_map: true,  
+        },
+      ],
+    },
+
+    template: {
+      type: "image",
+      background: [
+        {
+          type: "solid",
+          $color: "background_color",
+        },
+      ],
+      $image_url: "image_url",
+      preload_required: true,
+      scale: "fit",
+
+      border: {
+        corner_radius: 50,
+      },
+      $alignment_horizontal: "alignment_horizontal",
+      $alignment_vertical: "alignment_vertical",
+      margins: {
+        right: 20,
+        bottom: 20,
+      },
     },
   },
 };
