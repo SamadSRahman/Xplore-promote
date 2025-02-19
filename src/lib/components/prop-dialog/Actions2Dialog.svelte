@@ -521,7 +521,7 @@ function onProductChange(): void {
               size="medium"
               disabled={readOnly}
               on:change={(e) => {
-                value.url = `xplore-promote://chatbot?model_name=${e.detail}`;
+                value.url = `xplore-promote://chatbot?adapter_name=${e.detail}`;
                 value.log_url = value.url;
               }}
             />
