@@ -72,6 +72,7 @@
     "date-fns": "2.30.0",
     "elevenlabs": "1.50.2",
     "firebase": "11.0.2",
+    "html2canvas": "1.4.1",
     "monaco-editor": "0.52.0",
     "qrcode.react": "4.1.0",
     "react": "18.3.1",
@@ -83,6 +84,7 @@
     "recoil": "0.7.7",
     "socket.io-client": "4.8.1",
     "uid": "2.0.2",
+    "use-react-screenshot": "4.0.0",
     "vite-plugin-node-polyfills": "0.23.0",
     "xlsx": "0.18.5"
   }

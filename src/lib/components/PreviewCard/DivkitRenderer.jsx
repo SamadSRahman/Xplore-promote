@@ -6,14 +6,15 @@ import Image360Viewer from "../../components/ImageViewer/ImageViewer";
 import ChatBotComponent from "../../../customComponent/ChatBotComponent/ChatBotComponent";
 import useFonts from "../../utils/useFonts";
 import { lottieExtensionBuilder } from "@divkitframework/divkit/client";
-import Lottie from 'lottie-web/build/player/lottie';
+import Lottie from "lottie-web/build/player/lottie";
+import { useScreenshot } from "use-react-screenshot";
 
 const DivkitRenderer = ({ divkitJson, onClick }) => {
   const extensions = new Map();
-  extensions.set('lottie', lottieExtensionBuilder(Lottie.loadAnimation));
+  extensions.set("lottie", lottieExtensionBuilder(Lottie.loadAnimation));
 
   const divkitContainer = useRef(null);
- 
+
   const captureRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
 
@@ -80,11 +81,14 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
 
     customElements.define("chatbot-card", ChatbotCardElement);
   }
+  const [image, takeScreenshot] = useScreenshot();
 
+  useEffect(() => {console.log(image);
+  },[image])
   useEffect(() => {
     if (divkitContainer.current) {
       render({
-          extensions:extensions,
+        extensions: extensions,
         hydrate: true,
         onCustomAction: handleCustomAction,
         id: "divkit-root",
@@ -134,7 +138,24 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
     };
   }, [divkitJson]);
 
-  return <div className={styles.renderDiv} ref={divkitContainer} />;
+  const getImage = async () => {
+    const img = await takeScreenshot(divkitContainer.current);
+    if (img) {
+      const link = document.createElement("a");
+      link.href = img;
+      link.download = "screenshot.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  return( <>
+    <div className={styles.renderDiv} ref={divkitContainer} />{" "}
+    <button style={{ marginBottom: '10px' }} onClick={getImage}>
+    Take screenshot
+  </button>
+  </>)
 };
 
 export default DivkitRenderer;

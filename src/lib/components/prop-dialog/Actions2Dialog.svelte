@@ -115,6 +115,11 @@ function onSubtypeChange(): void {
       value.model_name = "";
       // value.attachmentUrl = "";
     }
+    else if(subtype === 'camera'){
+      value.url = "xplore-promote://camera";
+      value.screen_name = "";
+      // value.attachmentUrl = "";
+    }
     else if (subtype === "email") {
       value.url = "xplore-promote://emailAddress";
       value.email = ""; // Add email field to value
@@ -231,6 +236,7 @@ let selectedVariables: string[] = [];
       text: $l10n("actions-url"),
     },
     { value: "submit-form", text: "Submit" },
+    { value: "camera", text: "Camera" },
     { value: "backBtn", text: "Back" },
     { value: "map", text: "Open Map" },
     { value: "contact", text: "Contact" },
@@ -530,7 +536,32 @@ function onProductChange(): void {
             <div class="actions2-dialog__label">
               Action URL
             </div>
-            <Text bind:value={value.url} disabled={readOnly} on:change={onMapCoordinatesChange} />
+            <Text bind:value={value.url} disabled={true} />
+          </label>
+        </div>
+      {:else if subtype === "camera"}
+        <div>
+          <label>
+            <div class="actions2-dialog__label">
+              Select screen to redirect after capturing image
+            </div>
+            <Select
+              items={updatedScreens}
+              bind:value={value.screen_name}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={(e) => {
+                value.url = `xplore-promote://camera?screen_name=${e.detail}`;
+                value.log_url = value.url;
+              }}
+            />
+          </label>
+          <label>
+            <div class="actions2-dialog__label">
+              Action URL
+            </div>
+            <Text bind:value={value.url} disabled={true} />
           </label>
         </div>
       {:else if subtype === "productDetails"}

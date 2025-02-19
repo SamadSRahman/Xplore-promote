@@ -9,6 +9,8 @@ import closeIcon from "../../assets/components/close.svg?url";
 import ThreeSixtyIcon from "../../assets/components/360View.svg?url";
 import backIcon from "../../assets/components/back-button.svg";
 import chatbotIcon from "../../assets/components/chatbot-icon.svg";
+import checkboxIcon from "../../assets/components/checkbox-icon.svg";
+import inputIcon from "../../assets/components/input-icon.svg";
 
 import listIcon from "../../assets/list.svg.svg";
 import { type ComponentProperty } from "./componentProps";
@@ -568,7 +570,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     nameKey: "templates.input",
     visible: true,
     inShortList: true,
-    icon: buttonIcon,
+    icon: inputIcon,
     props: [
       {
         type: "group",
@@ -652,11 +654,18 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     newNode: {
       hint_text: "Enter text here",
       text_variable: "input_text",
+      width:{
+        type:"fixed",
+        value:200
+      },
       font_size: 16,
       font_weight: "medium",
       text_color: "#000000",
       hint_color: "#888888",
       corners: 8,
+      accessibility:{
+description:"Input field"
+      },
       background: [
         {
           type: "solid",
@@ -1178,8 +1187,8 @@ export const namedTemplates: Record<string, TemplateDescription> = {
 
   _template_native_signup: {
     nameKey: "templates.native_signup",
-    visible: true,
-    inShortList: true,
+    visible: false,
+    inShortList: false,
     icon: buttonIcon,
     description: { en: "Native authentication button (Google/Apple Sign In)" },
     props: [
@@ -1321,7 +1330,7 @@ export const namedTemplates: Record<string, TemplateDescription> = {
     nameKey: "templates.checkbox",
     visible: true,
     inShortList: true,
-    icon: listIcon,
+    icon: checkboxIcon,
     description: { en: "Customizable checkbox component" },
     props: [
       {

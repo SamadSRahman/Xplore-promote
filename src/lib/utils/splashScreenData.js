@@ -494,7 +494,7 @@ export const blankBackgroundJSON = {
     ],
   },
   templates: {
-    input_text: {
+    _template_input: {
       type: "input",
       text_variable: "my_borderless_text",
       width: {
@@ -708,7 +708,7 @@ export const landingScreenJSON = {
     ],
   },
   templates: {
-    input_text: {
+    _template_input: {
       type: "input",
       text_variable: "my_borderless_text",
       width: {
@@ -894,7 +894,7 @@ export const splashScreenJSON = {
     ],
   },
   templates: {
-    input_text: {
+    _template_input: {
       type: "input",
       text_variable: "my_borderless_text",
       width: {
