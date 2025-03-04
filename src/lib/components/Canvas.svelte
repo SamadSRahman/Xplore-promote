@@ -17,6 +17,7 @@
     import Text from './controls/Text.svelte';
     import ErrorsDialog from './ErrorsDialog.svelte';
     import { encodeBackground } from '../utils/encodeBackground';
+  import ScreensSelector from './ScreensSelector.svelte';
 
     const { l10n, l10nString, lang } = getContext<LanguageContext>(LANGUAGE_CTX);
     const { cardLocales, state, setShowErrors, showErrors } = getContext<AppContext>(APP_CTX);
@@ -128,21 +129,28 @@
         [undoShortcut, () => state.undo()],
         [redoShortcut, () => state.redo()]
     ];
+ 
+    
+
+
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div
+
+    <div
     class="canvas"
     bind:this={canvas}
     on:mousedown={onOuterMousedown}
     on:click={onOuterClick}
     use:shortcuts={SHORTCUTS}
 >
+<!-- <asset-navbar-web-component component-type="ScreensSection"></asset-navbar-web-component> -->
+ <ScreensSelector/>
     <div class="canvas__topbar" bind:this={topbar}>
         <Select
             bind:value={selectViewport}
-            items={viewportList}
+             items={viewportList}
             theme="canvas"
             title={$l10nString('previewSize')}
             on:change={onViewportSelectChange}

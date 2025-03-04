@@ -8,7 +8,8 @@
         key?: string;
         props?: Record<string, unknown>;
     }[];
-
+    $:console.log("Component ", components);
+    
     export let orientation: 'horizontal' | 'vertical' = 'horizontal';
 
     const MIN_SIZE = 300;
@@ -16,9 +17,15 @@
     let parts: HTMLElement[] = [];
 
     // Add a computed property to check if any component is custom-variables
-    $: hasCustomVariables = components.some(comp => 
-        comp.component.name === 'custom-variables' || 
-        comp.component.__name === 'CustomVariables'  // backup check depending on how component name is stored
+    $: hasCustomVariables = components.some(comp => {
+        console.log("line 21", comp.component.name);
+       return comp.component.name === 'custom-variables ' || 
+        comp.component.__name === 'CustomVariables' 
+    }
+    // backup check depending on how component name is stored
+    );
+    $: hasComponentTree = components.some(comp => 
+        comp.component.name === 'Proxy<ComponentsTree>' // backup check depending on how component name is stored
     );
 
     function onPointerdown(event: PointerEvent, movedIndex: number): void {
@@ -31,9 +38,9 @@
         const startX = event[eventProp];
         const startSizes = parts.map(it => it[sizeProp]);
 
-        const currentMinSize = components[movedIndex].minSize ?? MIN_SIZE;
+        const currentMinSize = components[movedIndex].minSize  ?? MIN_SIZE ;
         const nextMinSize = components[movedIndex + 1].minSize ?? MIN_SIZE;
-
+        
         const pointermove = (event: PointerEvent) => {
             event.preventDefault();
 
@@ -81,7 +88,9 @@
     class="split-view" 
     class:split-view_vertical={orientation === 'vertical'}
     class:split-view_custom-variables={hasCustomVariables}
+    class:split-view_component-tree={hasComponentTree}
 >
+
     {#each components as item, index (item.key || index)}
         {#if index > 0}
             <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -107,7 +116,7 @@
     .split-view {
         display: flex;
         flex-direction: row;
-        flex: 1 1 auto;
+        flex: 1 2 auto;
         width: 100%;
         height: 100%;
         min-height: 0;
@@ -122,7 +131,7 @@
     .split-view__part {
         display: flex;
         flex-direction: column;
-        flex: var(--grow, 1) 1 0;
+        flex: var(--grow, 1) 0 0;
         overflow: auto;
 
     }
@@ -174,6 +183,9 @@
 
     /* Add new style for custom-variables */
     .split-view_custom-variables {
-        height: 70%; /* or whatever specific height you want */
+        height: 50%; /* or whatever specific height you want */
+    }
+    .split-view_component-tree {
+        height: 10%; /* or whatever specific height you want */
     }
 </style>

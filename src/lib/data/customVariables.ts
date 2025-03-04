@@ -9,6 +9,7 @@ export interface Variable {
     name: string;
     type: string;
     value: string;
+    isInput?: boolean;
 }
 
 export function parseVariableValue(variable: Variable): unknown {

@@ -11,6 +11,8 @@ import backIcon from "../../assets/components/back-button.svg";
 import chatbotIcon from "../../assets/components/chatbot-icon.svg";
 import checkboxIcon from "../../assets/components/checkbox-icon.svg";
 import inputIcon from "../../assets/components/input-icon.svg";
+import whatsAppIcon from "../../assets/whatsapp-icon.svg";
+import otpIcon from "../../assets/otp-icon.svg";
 
 import listIcon from "../../assets/list.svg.svg";
 import { type ComponentProperty } from "./componentProps";
@@ -28,98 +30,9 @@ interface TemplateDescription {
   baseType?: string | undefined;
 }
 
-interface TemplateProps {
-  list_items: ListItemProps[];
-}
-
-interface ListItemProps {
-  list_text: string;
-  list_color: string;
-  list_text_size: number;
-  list_font_weight: "light" | "regular" | "medium" | "bold";
-  image_url: string;
-}
-
 // Example of Action (can be further expanded as per your needs)
 
 // Sample props data
-const props: TemplateProps = {
-  list_items: [
-    {
-      list_text: "Item 1",
-      list_color: "#FF5733",
-      list_text_size: 14,
-      list_font_weight: "bold",
-      image_url: "https://example.com/item1.png",
-    },
-    {
-      list_text: "Item 2",
-      list_color: "#33FF57",
-      list_text_size: 18,
-      list_font_weight: "medium",
-      image_url: "https://example.com/item2.png",
-    },
-    {
-      list_text: "Item 3",
-      list_color: "#3357FF",
-      list_text_size: 16,
-      list_font_weight: "light",
-      image_url: "https://example.com/item3.png",
-    },
-  ],
-};
-const createTemplate = (props: TemplateProps): Record<string, unknown> => {
-  const items = (props.list_items || []).map((item) => ({
-    type: "container",
-    orientation: "horizontal",
-    items: [
-      {
-        type: "image",
-        image_url: item.image_url,
-        $tint_color: item.list_color,
-        width: {
-          type: "fixed",
-          value: 28,
-          unit: "sp",
-        },
-        height: {
-          type: "fixed",
-          value: 28,
-          unit: "sp",
-        },
-        margins: {
-          top: 2,
-          right: 12,
-          bottom: 2,
-        },
-      },
-      {
-        type: "text",
-        $text: item.list_text,
-        $text_color: item.list_color,
-        $font_size: item.list_text_size,
-        line_height: 32,
-        $font_weight: item.list_font_weight,
-        width: {
-          type: "wrap_content",
-          constrained: true,
-        },
-      },
-    ],
-  }));
-
-  return {
-    type: "container",
-    orientation: "vertical",
-    items,
-  };
-};
-const screens = JSON.parse(localStorage.getItem("screens") || "[]").map(
-  (screen: { name: string; path: string }) => ({
-    name: screen.name,
-    value: screen.path,
-  })
-);
 
 export const namedTemplates: Record<string, TemplateDescription> = {
   _template_lottie: {
@@ -175,153 +88,28 @@ export const namedTemplates: Record<string, TemplateDescription> = {
         ],
       },
     ],
-    newNode: {},
-    template: {},
-  },
-  _template_gallery: {
-    nameKey: "templates.gallery",
-    visible: true,
-    inShortList: false,
-    icon: listIcon, // You'll need to create this icon
-    description: { en: "Customizable gallery component" },
-    props: [
-      {
-        type: "group",
-        title: "galleryProps.title",
-        list: [
-          {
-            name: "props.orientation",
-            prop: "orientation",
-            type: "select",
-            default: "horizontal",
-            options: [
-              {
-                name: "props.orientation_horizontal",
-                value: "horizontal",
-              },
-              {
-                name: "props.orientation_vertical",
-                value: "vertical",
-              },
-              {
-                name: "props.orientation_overlap",
-                value: "overlap",
-              },
-            ],
-            enableSources: true,
-          },
-          {
-            name: "props.item_spacing",
-            prop: "item_spacing",
-            type: "number",
-            default: 8,
-            enableSources: true,
-          },
-          {
-            name: "props.items_count",
-            prop: "items_count",
-            type: "number",
-            default: 4,
-            min: 1,
-            max: 10,
-            enableSources: true,
-          },
-        ],
-      },
-      {
-        type: "group",
-        title: "itemProps.title",
-        list: [
-          {
-            name: "props.image",
-            prop: "image_url",
-            type: "file",
-            subtype: "image",
-            enableSources: true,
-          },
-          {
-            name: "props.text",
-            prop: "item_text",
-            type: "string",
-            enableTanker: true,
-            enableSources: true,
-          },
-          {
-            name: "props.text_color",
-            prop: "text_color",
-            type: "color",
-            enableSources: true,
-          },
-          {
-            name: "props.font_size",
-            prop: "font_size",
-            type: "number",
-            default: 22,
-            enableSources: true,
-          },
-          {
-            name: "props.actions",
-            prop: "actions",
-            type: "actions2",
-            sizeValue: "width",
-          },
-        ],
-      },
-    ],
     newNode: {
-      type: "_template_gallery",
-      orientation: "horizontal",
-      item_spacing: 8,
-      items_count: 4,
-      image_url:
-        "https://images.unsplash.com/photo-1504274066651-8d31a536b11a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fHByb2R1Y3R8ZW58MHx8MHx8fDA%3D",
-      item_text: "Gallery Item",
-      text_color: "#000000",
-      font_size: 22,
+      type: "_template_lottie",
+      width: {
+        type: "wrap_content",
+        constrained: true,
+      },
+      alignment_horizontal: "center",
+      alignment_vertical: "center",
+      lottie_params: {
+        lottie_url: "https://yastatic.net/s3/home/divkit/empty2.png",
+      },
     },
     template: {
-      type: "gallery",
-      $orientation: "orientation",
-      $item_spacing: "item_spacing",
-      width: { type: "fixed", value: 180 },
-      height: { type: "fixed", value: 200 },
-      items: {
-        type: "repeat_times",
-        $count: "items_count",
-        items: [
-          {
-            type: "container",
-            width: { type: "fixed", value: 180 },
-            height: { type: "fixed", value: 200 },
-            items: [
-              {
-                type: "image",
-                width: { type: "fixed", value: 120 },
-                height: { type: "match_parent" },
-                preload_required: true,
-                $image_url: "image_url",
-              },
-              {
-                type: "text",
-                $text: "item_text",
-                width: { type: "match_parent" },
-                height: { type: "wrap_content" },
-                text_alignment_horizontal: "center",
-                font_weight: "medium",
-                $font_size: "font_size",
-                alpha: 1,
-                $text_color: "text_color",
-                margins: { bottom: 10 },
-                $actions: "actions",
-              },
-            ],
-            orientation: "overlap",
-            alignment_vertical: "bottom",
-            content_alignment_horizontal: "center",
-            content_alignment_vertical: "bottom",
-          },
-        ],
-      },
+      type: "gif",
+      scale: "fit",
+      extensions: [
+        {
+          id: "lottie",
+          $params: "lottie_url",
+        },
+      ],
+      gif_url: "https://yastatic.net/s3/home/divkit/empty2.png",
     },
   },
   _quiz: {
@@ -648,23 +436,71 @@ export const namedTemplates: Record<string, TemplateDescription> = {
             default: 8,
             enableSources: true,
           },
+          {
+            name: "props.keyboard_type",
+            prop: "keyboard_type",
+            type: "select",
+            default: {
+              name: "props.single_line_text",
+              value: "single_line_text",
+            },
+            options: [
+              {
+                name: "props.single_line_text",
+                value: "single_line_text",
+              },
+              {
+                name: "props.multi_line_text",
+                value: "multi_line_text",
+              },
+              {
+                name: "props.phone",
+                value: "phone",
+              },
+              {
+                name: "props.number",
+                value: "number",
+              },
+              {
+                name: "props.email",
+                value: "email",
+              },
+              {
+                name: "props.uri",
+                value: "uri",
+              },
+              {
+                name: "props.password",
+                value: "password",
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: "props.text_variable",
+            prop: "text_variable",
+            type: "select",
+            options: [],
+            enableSources: true,
+            default: "Inter",
+          },
         ],
       },
     ],
     newNode: {
       hint_text: "Enter text here",
       text_variable: "input_text",
-      width:{
-        type:"fixed",
-        value:200
+      width: {
+        type: "fixed",
+        value: 200,
       },
       font_size: 16,
       font_weight: "medium",
       text_color: "#000000",
       hint_color: "#888888",
       corners: 8,
-      accessibility:{
-description:"Input field"
+      accessibility: {
+        description: "Input field",
       },
       background: [
         {
@@ -802,6 +638,233 @@ description:"Input field"
       preload_required: true,
     },
   },
+  // _template_whatsappLogin: {
+  //   nameKey: "templates.whatsappLogin",
+  //   visible: true,
+  //   inShortList: true,
+  //   icon: whatsAppIcon,
+  //   props: [
+  //     {
+  //       type: "group",
+  //       title: " ",
+  //       list: [
+  //         {
+  //           name: "props.text",
+  //           prop: "text",
+  //           type: "string",
+  //           enableTanker: true,
+  //           enableSources: true,
+  //           // zero-width space
+  //           default: "WhatsApp Login​",
+  //         },
+  //         {
+  //           type: "split",
+  //           list: [
+  //             {
+  //               name: "props.font_size",
+  //               prop: "font_size",
+  //               type: "integer",
+  //               min: 1,
+  //               max: 1000,
+  //               enableSources: true,
+  //             },
+  //             {
+  //               name: "props.line_height",
+  //               prop: "line_height",
+  //               type: "integer",
+  //               min: 0,
+  //               max: 1000,
+  //               enableSources: true,
+  //             },
+  //           ],
+  //         },
+  //         {
+  //           name: "props.font_weight",
+  //           prop: "font_weight",
+  //           type: "select",
+  //           options: [
+  //             {
+  //               name: "props.font_weight_light",
+  //               value: "light",
+  //             },
+  //             {
+  //               name: "props.font_weight_normal",
+  //               value: "regular",
+  //             },
+  //             {
+  //               name: "props.font_weight_medium",
+  //               value: "medium",
+  //             },
+  //             {
+  //               name: "props.font_weight_bold",
+  //               value: "bold",
+  //             },
+  //           ],
+  //           default:"bold",
+  //           enableSources: true,
+  //         },
+  //         {
+  //           name: "props.text_color",
+  //           prop: "text_color",
+  //           type: "color",
+  //           default:"#ffffff",
+  //           enableSources: true,
+  //         },
+  //         {
+  //           name: "props.corners",
+  //           prop: "corners",
+  //           type: "integer",
+  //           min: 0,
+  //           max: 100,
+  //           enableSources: true,
+  //         },
+  //         {
+  //           name: "props.actions",
+  //           prop: "actions",
+  //           type: "actions2",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       type: "group",
+  //       title: "image.title",
+  //       list: [
+  //         {
+  //           name: "props.image_scale",
+  //           prop: "scale",
+  //           type: "select",
+  //           default: "fill",
+  //           options: [
+  //             {
+  //               name: "props.scale_fit",
+  //               value: "fit",
+  //             },
+  //             {
+  //               name: "props.scale_fill",
+  //               value: "fill",
+  //             },
+  //             {
+  //               name: "props.scale_no_scale",
+  //               value: "no_scale",
+  //             },
+  //             {
+  //               name: "props.scale_stretch",
+  //               value: "stretch",
+  //             },
+  //           ],
+  //           enableSources: true,
+  //         },
+  //         {
+  //           name: "props.image_url",
+  //           prop: "image_url",
+  //           type: "file",
+  //           subtype: "image",
+  //           default:
+  //             "https://xplore.objectstore.e2enetworks.net/1741067701029-d8cd29f273948d86.png",
+  //           enableSources: true,
+  //         },
+  //         {
+  //           name: "props.actions",
+  //           prop: "actions",
+  //           type: "actions2",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  //   newNode: {
+  //     type: "container",
+  //     width: {
+  //       type: "fixed",
+  //       value: 200,
+  //     },
+  //     height: {
+  //       type: "fixed",
+  //       value: 40,
+  //     },
+  //     alignment_horizontal: "center",
+  //     alignment_vertical: "center",
+  //     items: [
+  //       {
+  //         type: "image",
+  //        $image_url:"image_url",
+  //         width: {
+  //           type: "fixed",
+  //           value: 39,
+  //         },
+  //         height: {
+  //           type: "fixed",
+  //           value: 35,
+  //         },
+  //         preload_required: true,
+  //         scale: "fit",
+  //       },
+  //       {
+  //         type: "text",
+  //         $text: "text",
+  //         // width: {
+  //         //   type: "fixed",
+  //         //   value: 100,
+  //         // },
+  //         // font_weight: "bold",
+  //         // text_color: "#ffffff",
+  //         // margins: {
+  //         //   left: 9,
+  //         // },
+  //       },
+  //     ],
+  //     orientation: "horizontal",
+  //     content_alignment_horizontal: "left",
+  //     content_alignment_vertical: "center",
+  //     paddings: {
+  //       right: 20,
+  //       left: 20,
+  //     },
+  //     background: [
+  //       {
+  //         type: "solid",
+  //         color: "#25d366",
+  //       },
+  //     ],
+  //     border: {
+  //       corner_radius: 5,
+  //     },
+  //   },
+
+  //   template: {
+  //     type:"container",
+  //     accessibility: {
+  //       description: "WhatsApp Login",
+  //       mode: "merge",
+  //       type: "button",
+  //     },
+  //     items:[
+  //       {
+  //         type: "image",
+  //         $image_url:"image_url",
+  //         width: {
+  //           type: "fixed",
+  //           value: 39,
+  //         },
+  //         height: {
+  //           type: "fixed",
+  //           value: 35,
+  //         },
+  //         preload_required: true,
+  //         scale: "fit",
+  //       },
+  //       {
+  //         type:"text",
+  //         $text:"text",
+  //         $font_weight: "font_weight",
+  //         $text_color: "text_color",
+  //         $font_size: "font_size",
+  //         margins: {
+  //           left: 9,
+  //         },
+  //       }
+  //     ]
+  //   },
+  // },
   // _template_share: {
   //   nameKey: 'templates.share',
   //   visible: true,
@@ -1326,6 +1389,199 @@ description:"Input field"
       },
     },
   },
+  whatsapp_button: {
+    nameKey: "templates.whatsappLogin",
+
+    visible: true,
+    inShortList: true,
+    icon: whatsAppIcon,
+    description: { en: "Login via WhatsApp OTP" },
+    props: [
+      {
+        name: "props.font_weight",
+        prop: "font_weight",
+        type: "select",
+        default: "medium",
+        options: [
+          {
+            name: "props.font_weight_light",
+            value: "light",
+          },
+          {
+            name: "props.font_weight_normal",
+            value: "regular",
+          },
+          {
+            name: "props.font_weight_medium",
+            value: "medium",
+          },
+          {
+            name: "props.font_weight_bold",
+            value: "bold",
+          },
+        ],
+        enableSources: true,
+      },
+      {
+        type: "group",
+        title: "buttonProps.title",
+        list: [
+          {
+            name: "props.text",
+            prop: "text",
+            type: "string",
+            default: "Button",
+            enableSources: true,
+          },
+          {
+            name: "props.actions",
+            prop: "actions",
+            type: "actions2",
+          },
+        ],
+      },
+    ],
+    newNode: {
+      text: "WhatsApp Login",
+      animation_action: "none",
+      background: [
+        {
+          type: "solid",
+          color: "#25d366",
+        },
+      ],
+      width: {
+        type: "fixed",
+        value: 150,
+      },
+      actions: [
+        {
+          log_id: "action_id",
+          url: "xplore-promote://whatsappOtpIntegration/getOtp?phone=@{phone}&country_code=@{country_code}",
+          function: "getOtp",
+          log_url: "getOtp",
+        },
+      ],
+      height: {
+        type: "fixed",
+        value: 40,
+      },
+      text_color: "#fff",
+      font_weight: "bold",
+      border: {
+        corner_radius: "8",
+      },
+    },
+    template: {
+      $actions: "actions",
+      type: "text",
+      text_alignment_horizontal: "center",
+      text_alignment_vertical: "center",
+      border: {
+        $corner_radius: "corners",
+      },
+      width: {
+        type: "wrap_content",
+      },
+    },
+  },
+  sms_button: {
+    nameKey: "templates.smsLogin",
+
+    visible: true,
+    inShortList: true,
+    icon: otpIcon,
+    description: { en: "Login via SMS OTP" },
+    props: [
+      {
+        name: "props.font_weight",
+        prop: "font_weight",
+        type: "select",
+        default: "medium",
+        options: [
+          {
+            name: "props.font_weight_light",
+            value: "light",
+          },
+          {
+            name: "props.font_weight_normal",
+            value: "regular",
+          },
+          {
+            name: "props.font_weight_medium",
+            value: "medium",
+          },
+          {
+            name: "props.font_weight_bold",
+            value: "bold",
+          },
+        ],
+        enableSources: true,
+      },
+      {
+        type: "group",
+        title: "buttonProps.title",
+        list: [
+          {
+            name: "props.text",
+            prop: "text",
+            type: "string",
+            default: "Button",
+            enableSources: true,
+          },
+          {
+            name: "props.actions",
+            prop: "actions",
+            type: "actions2",
+          },
+        ],
+      },
+    ],
+    newNode: {
+      text: "Get OTP",
+      animation_action: "none",
+      actions: [
+        {
+          log_id: "action_id",
+          url: "xplore-promote://smsIntegration/getOtp?provider=''?phone=@{phone}&country_code=@{country_code}",
+          function: "getOtp",
+          log_url: "getOtp",
+        },
+      ],
+      background: [
+        {
+          type: "solid",
+          color: "#39A6F5",
+        },
+      ],
+      width: {
+        type: "fixed",
+        value: 150,
+      },
+      height: {
+        type: "fixed",
+        value: 40,
+      },
+      text_color: "#fff",
+      font_weight: "bold",
+      border: {
+        corner_radius: "8",
+      },
+    },
+    template: {
+      $actions: "actions",
+      type: "text",
+      text_alignment_horizontal: "center",
+      text_alignment_vertical: "center",
+      border: {
+        $corner_radius: "corners",
+      },
+      width: {
+        type: "wrap_content",
+      },
+    },
+  },
+
   _template_checkbox: {
     nameKey: "templates.checkbox",
     visible: true,
@@ -1537,7 +1793,7 @@ description:"Input field"
     visible: true,
     inShortList: true,
     icon: chatbotIcon,
-    description: { en: "Image component with customizable properties" },
+    description: { en: "Chatbot Component" },
     props: [
       {
         type: "group",
@@ -1609,7 +1865,7 @@ description:"Input field"
         {
           log_id: "open_chatbot",
           url: "xplore-promote://chatbot",
-          _template_map: true,  
+          _template_map: true,
         },
       ],
     },

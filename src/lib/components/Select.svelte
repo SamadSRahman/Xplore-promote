@@ -20,13 +20,13 @@
     export let multiple = false;
     
     const id = 'select' + Math.random();
-    console.log("items", items, value, );
+   
     
     $: text = multiple 
         ? (Array.isArray(value) ? value.map(v => items.find(item => item.value === v)?.text).join(', ') : '')
         : (items.find(item => item.value === value)?.text || value || '');
     $: icon = items.find(item => item.value === value)?.icon;
-    $: console.log("text",text);
+  
     
     const dispatch = createEventDispatcher();
 

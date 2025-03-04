@@ -8,6 +8,7 @@
     import { supportedComponents } from '../data/componentProps';
     import { APP_CTX, type AppContext } from '../ctx/appContext';
 
+
     const { l10n, lang } = getContext<LanguageContext>(LANGUAGE_CTX);
     const { state } = getContext<AppContext>(APP_CTX);
     const { highlightLeaf, highlightElem, highlightRanges, tree } = state;
@@ -64,10 +65,11 @@
     }
 </script>
 
-<PanelTitle title={$l10n('components')} />
-
+<!-- <PanelTitle title={$l10n('components')} /> -->
+<ReactHeader/>
 {#if $tree}
     {#key $lang}
+    
         <ComponentsTree
             {highlightLeafs}
             {getText}

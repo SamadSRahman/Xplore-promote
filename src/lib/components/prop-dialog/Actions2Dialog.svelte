@@ -27,23 +27,23 @@
     }
     callback(value);
   }
-  let updatedScreens = [];
-  interface screen{
+  let updatedScreens: { text: string; value: string }[] = [];
+  interface screen {
     name: string;
     path: string;
   }
 
-$: {
+  $: {
     const screens = JSON.parse(localStorage.getItem("screens") || "[]");
     console.log("screens", screens);
-    
+
     updatedScreens = screens
       .filter((screen: screen) => screen.path !== "splash_screen")
       .map((screen: screen) => ({
         text: screen.name,
         value: screen.path,
       }));
-}
+  }
 
   export function show(props: Actions2DialogShowProps): void {
     callback = props.callback;
@@ -65,7 +65,7 @@ $: {
   let subtype = "url";
   let actionArgs: ArgResult[] = [];
   let isShown = false;
-  let value: Action;
+  let value: Action = { model_name: "", url: "" } as Action;
   let callback: ((val: Action) => void) | undefined;
   let readOnly: boolean | undefined;
   let customDesc: ActionDesc | undefined;
@@ -84,7 +84,7 @@ $: {
       const value = arg.value;
       if (value) {
         // Special handling for screen ID parameter
-        if (arg.desc.name === 'id') {
+        if (arg.desc.name === "id") {
           return `xplore-promote://open?screen_name=${value}`;
         }
         searchParams.set(arg.desc.name, value);
@@ -95,32 +95,28 @@ $: {
     );
   }
 
-function onSubtypeChange(): void {
+  function onSubtypeChange(): void {
     if (subtype === "submit-form") {
-        value.url = "submit-form";
-        if (!value.selected_variables) {
-            value.selected_variables = [];
-        }
-    }
-    else if(subtype === 'webLink'){
+      value.url = "submit-form";
+      if (!value.selected_variables) {
+        value.selected_variables = [];
+      }
+    } else if (subtype === "webLink") {
       value.url = "xplore-promote://webLink";
-      value.webUrl=""
-    }
-    else if(subtype === 'share'){
+      value.webUrl = "";
+    } else if (subtype === "share") {
       value.url = "xplore-promote://share";
       value.attachmentUrl = "";
-    }
-    else if(subtype === 'chatbot'){
+    } else if (subtype === "chatbot") {
       value.url = "xplore-promote://chatbot";
       value.model_name = "";
+      value.name = "";
       // value.attachmentUrl = "";
-    }
-    else if(subtype === 'camera'){
+    } else if (subtype === "camera") {
       value.url = "xplore-promote://camera";
       value.screen_name = "";
       // value.attachmentUrl = "";
-    }
-    else if (subtype === "email") {
+    } else if (subtype === "email") {
       value.url = "xplore-promote://emailAddress";
       value.email = ""; // Add email field to value
     } else if (subtype === "phone") {
@@ -130,83 +126,87 @@ function onSubtypeChange(): void {
       value.url = "xplore-promote://socialMedia";
       value.socialPlatform = ""; // Add platform selection
       value.socialProfile = ""; // Add profile URL field
-    }
-    else if (subtype === "map") {
-        value.url = "xplore-promote://map";
-        value.latitude = "";
-        value.longitude = "";
+    } else if (subtype === "map") {
+      value.url = "xplore-promote://map";
+      value.latitude = 0;
+      value.longitude = 0;
     } else if (subtype === "backBtn") {
-        value.url = "xplore-promote://backBtn";  // Default backBtn URL
-        actionArgs = [{
-            value: "",
-            desc: {
-                name: "screen_name",
-                text: { en: "Select screen to go back to" }
-            }
-        }];
+      value.url = "xplore-promote://backBtn"; // Default backBtn URL
+      actionArgs = [
+        {
+          value: "",
+          desc: {
+            name: "screen_name",
+            text: { en: "Select screen to go back to" },
+            type: "string",
+          },
+        },
+      ];
     } else if (subtype === "contact") {
-        value.url = "xplore-promote://contact?screen_name=contact_us_screen";
-        value.interested_product = "";
+      value.url = "xplore-promote://contact?screen_name=contact_us_screen";
+      value.interested_product = "";
     } else if (subtype === "productDetails") {
-        value.url = "xplore-promote://productDetails";
-        actionArgs = [{
-            value: "",
-            desc: {
-                name: "screen_name",
-                text: { en: "Select screen to open" }
-            }
-        }];
+      value.url = "xplore-promote://productDetails";
+      actionArgs = [
+        {
+          value: "",
+          desc: {
+            name: "screen_name",
+            text: { en: "Select screen to open" },
+            type: "string",
+          },
+        },
+      ];
     } else {
-        customDesc = subtype.startsWith("custom:")
-            ? $customActions[Number(subtype.split(":")[1])]
-            : undefined;
+      customDesc = subtype.startsWith("custom:")
+        ? $customActions[Number(subtype.split(":")[1])]
+        : undefined;
 
-        if (customDesc) {
-            value.url = customActionToUrl(customDesc, []);
-            actionArgs =
-                customDesc.args?.map((desc) => {
-                    return {
-                        value: "",
-                        desc,
-                    };
-                }) || [];
-        } else {
-            actionArgs = [];
-        }
+      if (customDesc) {
+        value.url = customActionToUrl(customDesc, []);
+        actionArgs =
+          customDesc.args?.map((desc) => {
+            return {
+              value: "",
+              desc,
+            };
+          }) || [];
+      } else {
+        actionArgs = [];
+      }
     }
-}
+  }
 
-  function onArgChange(): void {
+  function onArgChange(index: number): void {
     if (!customDesc) {
       return;
     }
 
     value.url = customActionToUrl(customDesc, actionArgs);
   }
-let selectedVariables: string[] = [];
+  let selectedVariables: string[] = [];
   // $: types = [{
   //     value: 'url',
   //     text: $l10n('actions-url')
   // }]  // Action list removed
 
-
   const socialPlatforms = [
     { value: "linkedIn", text: "LinkedIn" },
     { value: "twitter", text: "Twitter" },
     { value: "facebook", text: "Facebook" },
-    { value: "instagram", text: "Instagram" }
+    { value: "instagram", text: "Instagram" },
   ];
 
   function onWebLinkChange(): void {
-    if(value.webUrl){
+    if (value.webUrl) {
       value.url = `xplore-promote://webLink?webUrl=${value.webUrl}`;
       value.log_url = value.webUrl;
     }
   }
   function onShareChange(): void {
     console.log(value);
-    
-    if(value.attachmentUrl){
+
+    if (value.attachmentUrl) {
       value.url = `xplore-promote://share?attachment_link=${value.attachmentUrl}`;
     }
   }
@@ -226,7 +226,7 @@ let selectedVariables: string[] = [];
 
   function onSocialChange(): void {
     if (value.socialPlatform && value.socialProfile) {
-      value.url = `xplore-promote://socialMedia?${value.socialPlatform}=${(value.socialProfile)}`;
+      value.url = `xplore-promote://socialMedia?${value.socialPlatform}=${value.socialProfile}`;
       value.log_url = value.url;
     }
   }
@@ -247,6 +247,8 @@ let selectedVariables: string[] = [];
     { value: "webLink", text: "Web link" },
     { value: "share", text: "Share" },
     { value: "chatbot", text: "Chatbot" },
+    { value: "whatsapp-login", text: "WhatsApp Login" },
+    { value: "sms-integration", text: "SMS Login" },
   ].concat(
     $customActions.map((actionDesc, i) => ({
       value: `custom:${i}`,
@@ -274,7 +276,7 @@ let selectedVariables: string[] = [];
     if (storedVars && Array.isArray(storedVars)) {
       variables = storedVars.map((variable) => ({
         text: variable.name,
-        value: variable.name
+        value: variable.name,
       }));
       console.log("Variables after mapping:", variables);
     } else {
@@ -285,33 +287,37 @@ let selectedVariables: string[] = [];
   function onVariableChange(selectedVars: string[]): void {
     console.log("line 170", selectedVars);
     value.selected_variables = selectedVars;
-    const variableParams = selectedVars.map(v => `${v}=@{${v}}`).join('&');
-    const screenParam = value.screen_name ? `&screen_name=${value.screen_name}` : '';
+    const variableParams = selectedVars.map((v) => `${v}=@{${v}}`).join("&");
+    const screenParam = value.screen_name
+      ? `&screen_name=${value.screen_name}`
+      : "";
     value.url = `xplore-promote://submit?${variableParams}${screenParam}`;
     value.log_url = value.url;
   }
 
   function onScreenChange(screenName: string): void {
     value.screen_name = screenName;
-    const variableParams = value.selected_variables?.map(v => `${v}=@{${v}}`).join('&') || '';
+    const variableParams =
+      value.selected_variables?.map((v: string) => `${v}=@{${v}}`).join("&") ||
+      "";
     value.url = `xplore-promote://submit?${variableParams}&screen_name=${screenName}`;
     value.log_url = value.url;
   }
 
-function onMapCoordinatesChange(): void {
-  console.log("line 183", value.latitude, value.longitude);
+  function onMapCoordinatesChange(): void {
+    console.log("line 183", value.latitude, value.longitude);
     if (value.latitude && value.longitude) {
-        value.url = `xplore-promote://map?lat=${value.latitude}&lng=${value.longitude}`;
-        value.log_url = value.url;
+      value.url = `xplore-promote://map?lat=${value.latitude}&lng=${value.longitude}`;
+      value.log_url = value.url;
     }
-}
+  }
 
-function onProductChange(): void {
+  function onProductChange(): void {
     if (value.interested_product) {
-        value.url = `xplore-promote://contact?screen_name=contact_us_screen&interested_product=${value.interested_product}`;
-        value.log_url = value.url;
+      value.url = `xplore-promote://contact?screen_name=contact_us_screen&interested_product=${value.interested_product}`;
+      value.log_url = value.url;
     }
-}
+  }
 </script>
 
 {#if isShown && target}
@@ -336,38 +342,33 @@ function onProductChange(): void {
             <Text bind:value={value.url} disabled={readOnly} />
           </label>
         </div>
-        {:else if subtype === "webLink"}
+      {:else if subtype === "webLink"}
+        <div>
+          <label for="webUrl">
+            <div class="actions2-dialog__label">Web URL</div>
+          </label>
+          <Text
+            id="webUrl"
+            bind:value={value.webUrl}
+            disabled={readOnly}
+            on:change={onWebLinkChange}
+          />
+        </div>
+      {:else if subtype === "share"}
         <div>
           <label>
-            <div class="actions2-dialog__label">
-              Web URL
-            </div>
-            <Text 
-              bind:value={value.webUrl} 
-              disabled={readOnly} 
-              on:change={onWebLinkChange}
+            <div class="actions2-dialog__label">Attachment URL</div>
+            <Text
+              bind:value={value.attachmentUrl}
+              disabled={readOnly}
+              on:change={onShareChange}
             />
           </label>
-        </div>
-        {:else if subtype === "share"}
-        <div>
           <label>
-            <div class="actions2-dialog__label">
-            Attachment URL
-            </div>
-            <Text 
-            bind:value={value.attachmentUrl} 
-            disabled={readOnly} 
-            on:change={onShareChange}
-          />
-        </label>
-        <label >
-            <div class="actions2-dialog__label">
-              Url
-            </div>
-            <Text 
-              bind:value={value.url} 
-              disabled={readOnly} 
+            <div class="actions2-dialog__label">Url</div>
+            <Text
+              bind:value={value.url}
+              disabled={readOnly}
               on:change={onWebLinkChange}
             />
           </label>
@@ -375,12 +376,10 @@ function onProductChange(): void {
       {:else if subtype === "contact"}
         <div>
           <label>
-            <div class="actions2-dialog__label">
-              Interested Product
-            </div>
-            <Text 
-              bind:value={value.interested_product} 
-              disabled={readOnly} 
+            <div class="actions2-dialog__label">Interested Product</div>
+            <Text
+              bind:value={value.interested_product}
+              disabled={readOnly}
               on:change={onProductChange}
             />
           </label>
@@ -388,9 +387,7 @@ function onProductChange(): void {
       {:else if subtype === "submit-form"}
         <div>
           <label>
-            <div class="actions2-dialog__label">
-              Select Variables
-            </div>
+            <div class="actions2-dialog__label">Select Variables</div>
             <Select
               items={variables}
               bind:value={selectedVariables}
@@ -417,40 +414,32 @@ function onProductChange(): void {
             />
           </label>
         </div>
-        {:else if subtype === "email"}
+      {:else if subtype === "email"}
         <div>
           <label>
-            <div class="actions2-dialog__label">
-              Email Address
-            </div>
-            <Text 
-              bind:value={value.email} 
-              disabled={readOnly} 
+            <div class="actions2-dialog__label">Email Address</div>
+            <Text
+              bind:value={value.email}
+              disabled={readOnly}
               on:change={onEmailChange}
             />
           </label>
         </div>
-
       {:else if subtype === "phone"}
         <div>
           <label>
-            <div class="actions2-dialog__label">
-              Phone Number
-            </div>
-            <Text 
-              bind:value={value.phone} 
-              disabled={readOnly} 
+            <div class="actions2-dialog__label">Phone Number</div>
+            <Text
+              bind:value={value.phone}
+              disabled={readOnly}
               on:change={onPhoneChange}
             />
           </label>
         </div>
-
       {:else if subtype === "social"}
         <div>
           <label>
-            <div class="actions2-dialog__label">
-              Social Platform
-            </div>
+            <div class="actions2-dialog__label">Social Platform</div>
             <Select
               items={socialPlatforms}
               bind:value={value.socialPlatform}
@@ -463,32 +452,33 @@ function onProductChange(): void {
         </div>
         <div>
           <label>
-            <div class="actions2-dialog__label">
-              Profile URL
-            </div>
-            <Text 
-              bind:value={value.socialProfile} 
-              disabled={readOnly} 
+            <div class="actions2-dialog__label">Profile URL</div>
+            <Text
+              bind:value={value.socialProfile}
+              disabled={readOnly}
               on:change={onSocialChange}
             />
           </label>
         </div>
-
       {:else if subtype === "map"}
         <div>
           <label>
-            <div class="actions2-dialog__label">
-              Latitude
-            </div>
-            <Text bind:value={value.latitude} disabled={readOnly} on:change={onMapCoordinatesChange} />
+            <div class="actions2-dialog__label">Latitude</div>
+            <Text
+              bind:value={value.latitude}
+              disabled={readOnly}
+              on:change={onMapCoordinatesChange}
+            />
           </label>
         </div>
         <div>
           <label>
-            <div class="actions2-dialog__label">
-              Longitude
-            </div>
-            <Text bind:value={value.longitude} disabled={readOnly} on:change={onMapCoordinatesChange} />
+            <div class="actions2-dialog__label">Longitude</div>
+            <Text
+              bind:value={value.longitude}
+              disabled={readOnly}
+              on:change={onMapCoordinatesChange}
+            />
           </label>
         </div>
       {:else if subtype === "backBtn"}
@@ -512,10 +502,19 @@ function onProductChange(): void {
         </div>
       {:else if subtype === "chatbot"}
         <div>
-          <label>
-            <div class="actions2-dialog__label">
-              Select adapter for chatbot
-            </div>
+          <label for="chatbot_name">
+            <div class="actions2-dialog__label">Name</div>
+            <Text
+              bind:value={value.name}
+              id="chatbot_name"
+              on:change={(e) => {
+                value.url = `xplore-promote://chatbot?adapter_name=${value.model_name}&&chatbot_name=${e.detail}`;
+                value.log_url = value.url;
+              }}
+            />
+          </label>
+          <label for="adapter_name">
+            <div class="actions2-dialog__label">Select adapter for chatbot</div>
             <Select
               items={[
                 { value: "adapter1", text: "Adapter 1" },
@@ -527,16 +526,15 @@ function onProductChange(): void {
               size="medium"
               disabled={readOnly}
               on:change={(e) => {
-                value.url = `xplore-promote://chatbot?adapter_name=${e.detail}`;
+                value.url = `xplore-promote://chatbot?adapter_name=${e.detail}&&chatbot_name=${value.name}`;
                 value.log_url = value.url;
               }}
             />
           </label>
-          <label>
-            <div class="actions2-dialog__label">
-              Action URL
-            </div>
-            <Text bind:value={value.url} disabled={true} />
+
+          <label for="action_url">
+            <div class="actions2-dialog__label">Action URL</div>
+            <Text id="action_url" bind:value={value.url} disabled={true} />
           </label>
         </div>
       {:else if subtype === "camera"}
@@ -558,18 +556,14 @@ function onProductChange(): void {
             />
           </label>
           <label>
-            <div class="actions2-dialog__label">
-              Action URL
-            </div>
+            <div class="actions2-dialog__label">Action URL</div>
             <Text bind:value={value.url} disabled={true} />
           </label>
         </div>
       {:else if subtype === "productDetails"}
         <div>
-          <label>
-            <div class="actions2-dialog__label">
-              Select screen to open
-            </div>
+          <label for="screens">
+            <div class="actions2-dialog__label">Select screen to open</div>
             <Select
               items={updatedScreens}
               bind:value={value.url}
@@ -580,6 +574,79 @@ function onProductChange(): void {
                 value.url = `xplore-promote://productDetails?screen_name=${e.detail}`;
                 value.log_url = value.url;
               }}
+            />
+          </label>
+        </div>
+      {:else if subtype === "whatsapp-login"}
+        <div>
+          <label for="function">
+            <div class="actions2-dialog__label">Select function</div>
+            <Select
+              items={[
+                { value: "getOtp", text: "Get OTP" },
+                { value: "verifyOtp", text: "Verify OTP" },
+              ]}
+              bind:value={value.function}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={(e) => {
+                value.url = `xplore-promote://whatsappOtpIntegration/${e.detail}${value.function==="verifyOtp"?"?otp=@{otp_value}":"?phone=@{phone}&country_code=@{country_code}"}`;
+                value.log_url = value.function;
+              }}
+            />
+          </label>
+          <label for="url">
+            <div class="actions2-dialog__label">URL</div>
+            <Text
+              id="webUrl"
+              value={`xplore-promote://whatsappOtpIntegration/${value.function}${value.function==="verifyOtp"?"?otp=@{otp_value}":"?phone=@{phone}&country_code=@{country_code}"}`}
+              disabled={true}
+            />
+          </label>
+        </div>
+      {:else if subtype === "sms-integration"}
+        <div class="actions-field-container">
+          <label for="service">
+            <div class="actions2-dialog__label">Select service</div>
+            <Select
+              items={[
+                { value: "twillo", text: "Twillo" },
+                { value: "kaleyra", text: "Kaleyra" },
+              ]}
+              bind:value={value.service}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={(e) => {
+                value.url = `xplore-promote://smsIntegration/${value.function}?provider=${e.detail}${value.function==="verifyOtp"?"?otp=@{otp_value}":"?phone=@{phone}&country_code=@{country_code}"}`;
+                value.log_url = value.service;
+              }}
+            />
+          </label>
+          <label for="function">
+            <div class="actions2-dialog__label">Select function</div>
+            <Select
+              items={[
+                { value: "getOtp", text: "Get OTP" },
+                { value: "verifyOtp", text: "Verify OTP" },
+              ]}
+              bind:value={value.function}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={(e) => {
+                value.url = `xplore-promote://smsIntegration/${e.detail}?provider=${value.service}${value.function==="verifyOtp"?"?otp=@{otp_value}":"?phone=@{phone}&country_code=@{country_code}"}`;
+                value.log_url = value.function;
+              }}
+            />
+          </label>
+          <label for="url">
+            <div class="actions2-dialog__label">URL</div>
+            <Text
+              id="webUrl"
+              value={`xplore-promote://whatsappOtpIntegration/${value.function}?provider=${value.service}${value.function==="verifyOtp"?"?otp=@{otp_value}":"?phone=@{phone}&country_code=@{country_code}"}`}
+              disabled={true}
             />
           </label>
         </div>
@@ -594,11 +661,11 @@ function onProductChange(): void {
                   ? "Select screen to open"
                   : arg.desc.text[$lang] || arg.desc.name}
               </div>
-              
+
               <!-- Conditional Select or Text Input based on argument type -->
               {#if (arg.desc.text[$lang] || arg.desc.name) === "ID"}
                 <!-- Dropdown for selecting screen names when argument is 'ID' -->
-               
+
                 <Select
                   items={updatedScreens}
                   bind:value={arg.value}
@@ -620,8 +687,8 @@ function onProductChange(): void {
         {/each}
       {/if}
       <!-- <div> -->
-        <!-- svelte-ignore a11y-label-has-associated-control -->
-        <!-- <label>
+      <!-- svelte-ignore a11y-label-has-associated-control -->
+      <!-- <label>
           <div class="actions2-dialog__label">
             {$l10n("actions-log-id")}
           </div>
@@ -630,8 +697,8 @@ function onProductChange(): void {
       </div> -->
 
       <!-- <div> -->
-        <!-- svelte-ignore a11y-label-has-associated-control -->
-        <!-- <label>
+      <!-- svelte-ignore a11y-label-has-associated-control -->
+      <!-- <label>
           <div class="actions2-dialog__label">
             {$l10n("actions-log-url")}
           </div>
@@ -647,16 +714,22 @@ function onProductChange(): void {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    margin: 16px; 
+    margin: 16px;
     /* border: 1px solid; */
     height: 20rem;
   }
 
   .actions2-dialog__label {
     margin-bottom: 6px;
+    margin-top: 6px;
     font-size: 14px;
     line-height: 20px;
     color: var(--text-secondary);
+  }
+  .actions-field-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .map-inputs {

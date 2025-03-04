@@ -159,10 +159,11 @@
     }
 
 async function uploadFile(file: File): Promise<string> {
-    console.log("Upload triggered");
+    console.log("Upload triggered", subtype);
 
     const formData = new FormData();
     formData.append('files', file);
+    formData.append('fileType', subtype);
     let API_BASE_URL = 'https://xplr.live/api'; 
   if(window.location.origin==="https://pre.xplore.xircular.io"){ 
    API_BASE_URL = 'https://pre.xplore.xircular.io/api';

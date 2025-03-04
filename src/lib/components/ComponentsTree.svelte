@@ -13,6 +13,8 @@
     import { AddLeafCommand } from '../data/commands/addLeaf';
     import { MoveLeafCommand } from '../data/commands/moveLeaf';
     import { APP_CTX, type AppContext } from '../ctx/appContext';
+  import type { Variable } from '../data/customVariables';
+  import { ChangeCustomVariablesCommand } from '../data/commands/changeCustomVariables';
 
     export let showRoot = true;
     export let getText: TreeGetText;
@@ -26,7 +28,7 @@
 
     
     const { state, rendererApi } = getContext<AppContext>(APP_CTX);
-    const { tree, copiedLeaf, selectedLeaf, readOnly } = state;
+    const { tree, copiedLeaf, selectedLeaf, readOnly, customVariables } = state;
 
     let rootNode: HTMLElement;
 
@@ -386,9 +388,27 @@
         leaf: TreeLeaf;
     }>): void {
         const leaf = event.detail.leaf;
-
+        console.log("Delete 389");
+        deleteVariable(leaf.id);
         state.deleteLeaf(leaf);
     }
+
+    function deleteVariable(id: string): void {
+        const newList = $customVariables.slice();
+        const variableName = `${id}_value`;
+        console.log("newList", newList);
+        const index =    newList.findIndex((ele)=>ele.name===variableName);
+      console.log("index", index)
+        newList.splice(index, 1);
+
+        updateList(newList);
+    }
+    function updateList(list: Variable[]): void {
+        state.pushCommand(new ChangeCustomVariablesCommand(state, list));
+        $customVariables = list;
+        $tree = $tree;
+    }
+
 
     function onChildDuplicate(event: CustomEvent<{
         leaf: TreeLeaf;
@@ -487,7 +507,7 @@
         position: relative;
         flex: 1 1 auto;
         min-width: max-content;
-        /* padding-bottom: 24px; */
+        padding-bottom: 24px;
         outline: none;
     }
 </style>

@@ -20,7 +20,8 @@ import AdminLogin from './pages/AdminLogin/AdminLogin.jsx';
 import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx';
 import DeleteInstructions from './pages/DeleteInstructions/DeleteInstructions.jsx';
 import BikerBayTermsPage from './pages/BikerBayTermsPage/BikerBayTermsPage.jsx';
-
+// import {AssetsNavbarWebWrapper} from './webComponents/AssetsNavbarWebWrapper.jsx';
+import "rsuite/dist/rsuite.min.css"; 
 const App = () => {
 
   const [isMobile, setIsMobile] = useState(false);

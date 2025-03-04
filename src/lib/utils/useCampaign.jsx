@@ -48,7 +48,7 @@ export default function useCampaign() {
             setCampaigns(response.data.campaigns);
         } catch (error) {
             console.log(error);
-            if (error.response.data.message === 'Session expired, Please login again' || error.response.data.message=== 'jwt expired') {
+            if (error.response.data.message === 'Session expired, Please login again' || error.response.data.message=== 'Token expired') {
                 alert("Session expired, Please login again")
                 localStorage.removeItem('accessToken');
                 navigate('/');
@@ -79,9 +79,8 @@ export default function useCampaign() {
     };
 
 
-    const getCampaignById = async (id, page) => {
-        console.log("API call triggered", id, page);
-        
+        const getCampaignById = async (id, page) => {
+       
        try {
         const response = await axios.get(
             `${API_BASE_URL}/v1/campaign/getOne/${id}`,
@@ -92,8 +91,6 @@ export default function useCampaign() {
                 },
             }
         );
-
-        console.log('response from line 77', response.data.data );
 
         setCampaignName(response.data.data.name);
         setMetaData({

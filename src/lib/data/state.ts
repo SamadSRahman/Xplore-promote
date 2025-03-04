@@ -660,7 +660,7 @@ export class State {
     if (type === "text") {
       json = {
         type,
-        text: "samad",
+        text: "text", //samad
         font_size: 20,
       };
     } else if (type === "image") {

@@ -8,7 +8,6 @@ import App from './App.jsx';
 import './main.css';
 import Clarity from '@microsoft/clarity';
 import { FpjsProvider, FingerprintJSPro} from '@fingerprintjs/fingerprintjs-pro-react';
-
 const projectId = "owr1zf7tue"
 
 Clarity.init(projectId);

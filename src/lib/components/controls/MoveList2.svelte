@@ -150,6 +150,7 @@
 
 <ul class="move-list__list" bind:this={listElem}>
     {#each (list || []) as item (item.__key)}
+   
         {@const isMoving = movedItem && item.__key === movedItem.__key}
 
         <li
@@ -159,6 +160,7 @@
             transition:slide|local={{ duration: 200 }}
             animate:flip|local={{ duration: isMoving ? 0 : 200 }}
         >
+       
             <MoveItem2
                 bind:value={item}
                 {itemView}

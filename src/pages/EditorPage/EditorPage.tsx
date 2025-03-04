@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosSave, IoMdEye } from 'react-icons/io';
 import styles from './EditorPage.module.css';
 import { MdPublish } from "react-icons/md";
-
 import {
   addTemplatesSuffix,
   convertDictToPalette,
@@ -36,7 +33,7 @@ const EditorPage = () => {
   const [showQuizPopup, setShowQuizPopup] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-
+ 
   React.useEffect(() => {
     const token = localStorage.getItem('accessToken')
     if (!token) {
@@ -52,8 +49,7 @@ const EditorPage = () => {
     }
   }, [campaignId, page]);
   React.useEffect(() => {
-    console.log("line 52", layoutId);
-
+   localStorage.setItem("layoutId", layoutId)
   }, [layoutId])
   const handleFonts = async () => {
     let fontFamilyOptions: object[] | undefined = [];
@@ -76,7 +72,7 @@ console.log("font family prop", fontFamilyProp);
 
   React.useEffect(() => {
     const screenWidth = window.innerWidth;
-    const leftRightWidth = 0.25 * screenWidth;
+    const leftRightWidth = 0.28 * screenWidth;
     const middleWidth = 0.4 * screenWidth;
     if (!editorContainerRef.current) return;
     const editor = (window.editor = DivProEditor.init({
@@ -91,8 +87,9 @@ console.log("font family prop", fontFamilyProp);
       theme: 'dark',
       layout: [
         {
-          items: ['new-component', 'component-tree'],
+          items: ['new-component'],
           minWidth: leftRightWidth,
+          weight:2,
         },
         {
           items: ['preview'],
@@ -169,7 +166,7 @@ console.log("font family prop", fontFamilyProp);
 
       // readOnly: true,
       api: {
-        onChange: (newJson) => handleQuiz(newJson),
+        // onChange: (newJson) => handleQuiz(newJson),
         getTranslationKey(key) {
           return new Promise(resolve => {
             console.log("key", key, resolve);
@@ -232,34 +229,34 @@ console.log("font family prop", fontFamilyProp);
     }, 30000); // 30 seconds
   };
 
-  async function handleQuiz(json: string) {
+  // async function handleQuiz(json: string) {
 
-    // Usage:
-    limitedUpdateLayout(layoutId, json, page, false);
-    const jsonData = JSON.parse(json);
-    localStorage.setItem("variables", JSON.stringify(jsonData.card.variables));
-    const quizComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_quiz");
-    const contactUsComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_template_contact_us");
-    if (contactUsComponent) {
-      if (!isContactUs()) {
-        await createLayout(JSON.stringify(contactUsJSON), campaignId, "contact_us_screen");
-        await getAllLayoutNames(campaignId);
-        await getAllLayout(campaignId);
-        console.log("line 204", screens);
+  //   // Usage:
+  //   limitedUpdateLayout(layoutId, json, page, false);
+  //   const jsonData = JSON.parse(json);
+  //   localStorage.setItem("variables", JSON.stringify(jsonData.card.variables));
+  //   const quizComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_quiz");
+  //   const contactUsComponent = jsonData?.card?.states[0]?.div?.items?.find((ele: string) => ele.type === "_template_contact_us");
+  //   if (contactUsComponent) {
+  //     if (!isContactUs()) {
+  //       await createLayout(JSON.stringify(contactUsJSON), campaignId, "contact_us_screen");
+  //       await getAllLayoutNames(campaignId);
+  //       await getAllLayout(campaignId);
+  //       console.log("line 204", screens);
 
-      }
-    }
-    if (screens.find((ele: { path: string }) => ele.path === "quiz_screen") === undefined) {
-      try {
-        // await handleLogJSON();
-        // await createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
-        // refreshScreenNames();
-        // navigate(`/editor/${campaignId}/quiz_screen`);
-      } catch (error) {
-        console.error('Error handling quiz:', error);
-      }
-    }
-  }
+  //     }
+  //   }
+  //   if (screens.find((ele: { path: string }) => ele.path === "quiz_screen") === undefined) {
+  //     try {
+  //       // await handleLogJSON();
+  //       // await createLayout(JSON.stringify(quizJSON), campaignId, "quiz_screen");
+  //       // refreshScreenNames();
+  //       // navigate(`/editor/${campaignId}/quiz_screen`);
+  //     } catch (error) {
+  //       console.error('Error handling quiz:', error);
+  //     }
+  //   }
+  // }
 
 
 
@@ -278,11 +275,6 @@ console.log("font family prop", fontFamilyProp);
     }
   };
 
-
-  function refreshScreenNames() {
-    console.log("refreshScreenNames");
-    getAllLayout(campaignId)
-  }
   const handleQuizSubmit = (quizData: any) => {
     const currentJson = JSON.parse(editorInstance.getValue());
 
@@ -374,7 +366,7 @@ console.log("font family prop", fontFamilyProp);
 
   return (
     <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box', }}>
-      <ReactHeader isScreens={true} isAddScreen={true} screens={screens} refreshScreenNames={refreshScreenNames} />
+      {/* <ReactHeader isScreens={true} isAddScreen={true} screens={screens} refreshScreenNames={refreshScreenNames} /> */}
       <div>
         {showQuizPopup && (
           <QuizStyleInputPopup
@@ -383,7 +375,7 @@ console.log("font family prop", fontFamilyProp);
             onClose={() => setShowQuizPopup(false)}
           />
         )}
-        <div className="flex gap-2 absolute bottom-4 right-4">
+        {/* <div className="flex gap-2 absolute bottom-4 right-4">
           <button
             onClick={() => setIsPreviewOpen(true)}
             className={styles.addQuestionBtn}
@@ -403,7 +395,7 @@ console.log("font family prop", fontFamilyProp);
         >
           <MdPublish />
           Publish
-        </button>
+        </button> */}
       </div>
 
       <PreviewScreen

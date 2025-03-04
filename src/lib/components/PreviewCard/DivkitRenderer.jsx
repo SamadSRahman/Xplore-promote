@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef} from "react";
 import ReactDOM from "react-dom/client";
 import { render } from "@divkitframework/divkit/client-hydratable";
 import styles from "./PreviewCard.module.css";
 import Image360Viewer from "../../components/ImageViewer/ImageViewer";
-import ChatBotComponent from "../../../customComponent/ChatBotComponent/ChatBotComponent";
-import useFonts from "../../utils/useFonts";
 import { lottieExtensionBuilder } from "@divkitframework/divkit/client";
 import Lottie from "lottie-web/build/player/lottie";
 import { useScreenshot } from "use-react-screenshot";
@@ -15,25 +13,9 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
 
   const divkitContainer = useRef(null);
 
-  const captureRef = useRef(null);
-  const [capturedImage, setCapturedImage] = useState(null);
-
   function handleCustomAction(e) {
-    const btnAction = e.url?.split("://")[1].split("?")[0];
-    if (btnAction === "capture") {
-      console.log("camera");
-      handleCaptureClick();
-      return;
-    }
     onClick(e);
   }
-
-  const handleCaptureClick = () => {
-    if (captureRef.current) {
-      const imageData = captureRef.current();
-      setCapturedImage(imageData);
-    }
-  };
 
   // Define the custom element before render
   if (typeof window !== "undefined" && !customElements.get("custom-card")) {
@@ -58,33 +40,9 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
 
     customElements.define("custom-card", CustomCardElement);
   }
-  if (typeof window !== "undefined" && !customElements.get("chatbot-card")) {
-    class ChatbotCardElement extends HTMLElement {
-      connectedCallback() {
-        // Create a container for React
-        const container = document.createElement("div");
-        this.appendChild(container);
 
-        // Render the React component into the container
-        const root = ReactDOM.createRoot(container);
-        root.render(<ChatBotComponent />);
-      }
-
-      disconnectedCallback() {
-        // Clean up React when the element is removed
-        const container = this.firstElementChild;
-        if (container) {
-          ReactDOM.unmountComponentAtNode(container);
-        }
-      }
-    }
-
-    customElements.define("chatbot-card", ChatbotCardElement);
-  }
   const [image, takeScreenshot] = useScreenshot();
 
-  useEffect(() => {console.log(image);
-  },[image])
   useEffect(() => {
     if (divkitContainer.current) {
       render({
@@ -119,12 +77,6 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
               element: "custom-card",
             },
           ],
-          [
-            "chatbot_card",
-            {
-              element: "chatbot-card",
-            },
-          ],
         ]),
         onError(details) {
           console.error("Divkit rendering error:", details.error);
@@ -150,12 +102,14 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
     }
   };
 
-  return( <>
-    <div className={styles.renderDiv} ref={divkitContainer} />{" "}
-    <button style={{ marginBottom: '10px' }} onClick={getImage}>
-    Take screenshot
-  </button>
-  </>)
+  return (
+    <>
+      <div className={styles.renderDiv} ref={divkitContainer} />{" "}
+      <button style={{ marginBottom: "10px" }} onClick={getImage}>
+        Take screenshot
+      </button>
+    </>
+  );
 };
 
 export default DivkitRenderer;

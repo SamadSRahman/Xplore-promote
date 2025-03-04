@@ -70,7 +70,7 @@
   import { SetPropertyCommand } from "../data/commands/setProperty";
   import type { SetPropertyItem } from "../data/commands/setProperty";
   import { degToRad } from "../utils/degToRad";
-  import { type JsonVariable } from "../data/customVariables";
+  import { type JsonVariable, type Variable } from "../data/customVariables";
   import type { ViewerError } from "../utils/errors";
   import { isUserTemplateWithoutChilds } from "../data/userTemplates";
   import { getGridPosition, getGridProps, type GridProps } from "../utils/grid";
@@ -79,7 +79,9 @@
   import { Truthy } from "../utils/truthy";
   import type { TankerMeta } from "../../lib";
   import { getRotationFromMatrix } from "../utils/getRotationFromMatrix";
-
+  import { ChangeCustomVariablesCommand } from "../data/commands/changeCustomVariables";
+import {createLayout, isVerifyOTPScreenAvailable} from "../utils/svelteUtils"
+  import { smsVerifyOTPScreenJSON, whatsAppVerifyOTPScreenJSON } from "../utils/splashScreenData";
   export let viewport: string;
   export let theme: "light" | "dark";
 
@@ -91,7 +93,7 @@
     setRendererApi,
     inplaceEditor,
     file2Dialog,
-    videoSource2Dialog
+    videoSource2Dialog,
   } = getContext<AppContext>(APP_CTX);
 
   const {
@@ -330,15 +332,14 @@
       .filter((elem) => elem.isConnected)
       .map((elem) => {
         const props = components.get(elem);
-   
-        
+
         const processedJson = props?.processedJson;
 
         const computedStyle = getComputedStyle(elem);
 
         // Add this line to get the font-family
-        const fontFamily =props?.json.font_family;
-   
+        const fontFamily = props?.json.font_family;
+
         const margin = computedStyle.margin;
         const marginTop = parseInt(computedStyle.marginTop);
         const marginRight = parseInt(computedStyle.marginRight);
@@ -478,8 +479,7 @@
           insets,
           visibleText: elem === clone ? componentCloneText : "",
           fontFamily,
-       
-          
+
           // Add this line to include font-family in the returned object
           grid:
             (gridProps &&
@@ -808,9 +808,12 @@
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     origJson?: any;
   }) {
+   
+    
     let shouldUpdate = type === "mount" || type === "destroy";
     if ((type === "update" || type === "mount") && origJson.__leafId) {
       mountedAndUpdatedLeafs.add(origJson.__leafId);
+     
     }
 
     if ((type === "mount" || type === "update") && origJson.__leafId) {
@@ -1115,13 +1118,32 @@
     bestDragTarget = null;
   }
 
-  function onDrop(event: DragEvent): void {
-  
+  function updateList(list: Variable[]): void {
+    state.pushCommand(new ChangeCustomVariablesCommand(state, list));
+    $customVariables = list;
+    $tree = $tree;
+  }
+
+  function deleteVariable(id: string): void {
+    const newList = $customVariables.slice();
+    const variableName = `${id}_value`;
+    console.log("newList", newList);
+    const index = newList.findIndex((ele) => ele.name === variableName);
+    console.log("index", index);
+    newList.splice(index, 1);
+
+    updateList(newList);
+  }
+
+ async function onDrop(event: DragEvent): Promise<void> {
     if ($readOnly) {
       return;
     }
-
+    const campaignId = window.location.pathname.split("/")[2]
     const movedChildId = event.dataTransfer?.getData("application/divnode");
+    const url = event.dataTransfer?.getData("text/uri-list");
+    console.log("movedChildId", url);
+    
     if (!movedChildId) {
       return;
     }
@@ -1130,7 +1152,59 @@
     if (!movedChild) {
       return;
     }
+    console.log("renderer- movedChild", movedChild);
+    const childType = movedChild.props.json.type;
+    const childId = movedChild.id;
+    if(childType ==="sms_button"){
+      const isOTPScreenAvailable = await isVerifyOTPScreenAvailable("verify_otp_screen");
+      console.log("isOTPScreenAvailable:", isOTPScreenAvailable);
+      if(!isOTPScreenAvailable){
+        const isScreenAdded =  await createLayout(JSON.stringify(smsVerifyOTPScreenJSON),campaignId, "verify_otp_screen", false )
+        if(isScreenAdded){
+          alert("Verify OTP screen has been added to this campaign");
+        }
+      }
+    }
+    if(childType ==="whatsapp_button"){
+      const isOTPScreenAvailable = await isVerifyOTPScreenAvailable("verify_whatsapp_otp_screen");
+      console.log("isOTPScreenAvailable:", isOTPScreenAvailable);
+      if(!isOTPScreenAvailable){
+        const isScreenAdded =  await createLayout(JSON.stringify(whatsAppVerifyOTPScreenJSON),campaignId, "verify_whatsapp_otp_screen", false )
+        if(isScreenAdded){
+          alert("Verify OTP screen has been added to this campaign");
+        }
+      }
+    }
 
+    if(childType ==="image" && url){
+      movedChild.props.json.image_url = url;
+    }
+  
+    if(childType ==="gif" && url){
+      movedChild.props.json.gif_url = url;
+    }
+    if(childType ==="_template_lottie" && url){
+      movedChild.props.json.lottie_params.lottie_url = url;
+    }
+    if (childType === "_template_input" || childType === "select") {
+      const variableName = `${childId}_value`;
+
+      const newList = $customVariables.slice();
+      newList.push({
+        id: state.genVariableId(),
+        name: variableName,
+        type: "string",
+        value: "",
+        isInput: true,
+      });
+
+      updateList(newList);
+      if (childType === "_template_input") {
+        movedChild.props.json.text_variable = variableName;
+      } else {
+        movedChild.props.json.value_variable = variableName;
+      }
+    }
     let leafTarget;
     let insertIndex: number | null = null;
     let targetIndex: number | null = null;
@@ -1496,7 +1570,6 @@
       preventScroll: true,
     });
 
-    
     selectedLeaf.set(leaf);
     selectedElem.set(node);
     highlightLeaf.set(null);
@@ -3043,6 +3116,8 @@
 
     if (deleteComponent.isPressed(event)) {
       if (leaf.parent) {
+        console.log("deleteLeaf", leaf);
+        deleteVariable(leaf.id);
         state.deleteLeaf(leaf);
       }
     } else if (moveUp || moveDown || moveLeft || moveRight) {
@@ -3097,7 +3172,6 @@
   }
 
   function onRootClick(event: MouseEvent): void {
-   
     const dist =
       (event.pageX - mousedownX) * (event.pageX - mousedownX) +
       (event.pageY - mousedownY) * (event.pageY - mousedownY);
@@ -3132,7 +3206,7 @@
           namedTemplates[json.type].inlineTextEditorProp)
       )
     ) {
-        return;
+      return;
     }
 
     const node = leaf.props.node;
@@ -3259,8 +3333,7 @@
     }
 
     const text = value.text;
-  
-    
+
     const ranges = value.ranges;
     const images = value.images;
     const textAlign = value.textAlign;
@@ -3276,8 +3349,7 @@
         : namedTemplates[json.type].inlineTextEditorProp;
 
     node.style.opacity = "";
-   
-    
+
     if ($readOnly || !prop) {
       return;
     }
@@ -3407,12 +3479,11 @@
     if (!leaf || !elem) {
       return;
     }
-  
+
     const json = leaf.props.json;
-  
 
     const processedJson = leaf.props.processedJson;
- 
+
     if (!processedJson) {
       return;
     }
@@ -3440,68 +3511,67 @@
       return;
     }
     if (processedJson.type === "video") {
-        videoSource2Dialog().show({
-          target: elem,
-          value: {
-            url,
-          },
-          callback(value) {
-        let property;
-        if (subtype === "image") {
-          property = "image_url";
-        } else if (subtype === "gif") {
-          property = "gif_url";
-        } else if (subtype === "lottie") {
-          property = "lottie_params.lottie_url";
-        }
+      videoSource2Dialog().show({
+        target: elem,
+        value: {
+          url,
+        },
+        callback(value) {
+          let property;
+          if (subtype === "image") {
+            property = "image_url";
+          } else if (subtype === "gif") {
+            property = "gif_url";
+          } else if (subtype === "lottie") {
+            property = "lottie_params.lottie_url";
+          }
 
-        if (property) {
-          state.pushCommand(
-            new SetPropertyCommand($tree, [
-              {
-                leafId: leaf.id,
-                property,
-                value: value.url,
-              },
-            ])
-          );
-        }
-      },
-        });
+          if (property) {
+            state.pushCommand(
+              new SetPropertyCommand($tree, [
+                {
+                  leafId: leaf.id,
+                  property,
+                  value: value.url,
+                },
+              ])
+            );
+          }
+        },
+      });
+    } else {
+      file2Dialog().show({
+        target: elem,
+        title,
+        value: {
+          url,
+        },
+        subtype,
+        hasSize: false,
+        callback(value) {
+          let property;
+          if (subtype === "image") {
+            property = "image_url";
+          } else if (subtype === "gif") {
+            property = "gif_url";
+          } else if (subtype === "lottie") {
+            property = "lottie_params.lottie_url";
+          }
+
+          if (property) {
+            state.pushCommand(
+              new SetPropertyCommand($tree, [
+                {
+                  leafId: leaf.id,
+                  property,
+                  value: value.url,
+                },
+              ])
+            );
+          }
+        },
+      });
     }
-else{
-    file2Dialog().show({
-      target: elem,
-      title,
-      value: {
-        url,
-      },
-      subtype,
-      hasSize: false,
-      callback(value) {
-        let property;
-        if (subtype === "image") {
-          property = "image_url";
-        } else if (subtype === "gif") {
-          property = "gif_url";
-        } else if (subtype === "lottie") {
-          property = "lottie_params.lottie_url";
-        }
-
-        if (property) {
-          state.pushCommand(
-            new SetPropertyCommand($tree, [
-              {
-                leafId: leaf.id,
-                property,
-                value: value.url,
-              },
-            ])
-          );
-        }
-      },
-    });
-  }
   }
 
   function onWindowResize(): void {
@@ -3656,13 +3726,13 @@ else{
                 style:height="{highlight.heightNum}px"
                 style:margin-top="{-scrollY}px"
                 style:margin-left="{-scrollX}px"
-                style:font-family = "{`${highlight.fontFamily}, sans-serif`}"
+                style:font-family={`${highlight.fontFamily}, sans-serif`}
               >
                 <div
                   class="renderer__highlight-border"
                   class:renderer__highlight-border_insets={highlight.insets}
                   style:transform="rotate({highlight.rotation}deg)"
-                    style:font-family = "{`${highlight.fontFamily}, sans-serif`}"
+                  style:font-family={`${highlight.fontFamily}, sans-serif`}
                 >
                   {#if highlight.insets}
                     <svg
@@ -3795,7 +3865,6 @@ else{
 
                   {#if highlight.visibleText}
                     <div class="renderer__highlight-text">
-                      
                       {highlight.visibleText}
                     </div>
                   {/if}
@@ -3885,9 +3954,9 @@ else{
     position: relative;
     width: 100%;
     height: 100%;
-    margin-bottom:5rem;
+    margin-bottom: 5rem;
     outline: none;
-    
+
     --resizer-size: 16px;
   }
 
@@ -4507,5 +4576,3 @@ else{
     pointer-events: auto;
   }
 </style>
-
-

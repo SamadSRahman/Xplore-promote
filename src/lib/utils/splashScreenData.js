@@ -2416,3 +2416,628 @@ export const profileJSON = {
     },
   },
 };
+
+export const whatsAppVerifyOTPScreenJSON = {
+  card: {
+    log_id: "div2_sample_card",
+    states: [
+      {
+        state_id: 0,
+        div: {
+          visibility_action: {
+            log_id: "visible",
+          },
+          background: [
+            {
+              color:
+                "@{getDictOptColor('#00ffffff', local_palette, 'bg_primary', theme)}",
+              type: "solid",
+            },
+          ],
+          height: {
+            type: "match_parent",
+          },
+          orientation: "overlap",
+          type: "container",
+          items: [
+            {
+              text: "Resend OTP",
+              animation_action: "none",
+              background: [
+                {
+                  type: "solid",
+                  color: "#ffffff",
+                },
+              ],
+              width: {
+                type: "fixed",
+                value: 150,
+              },
+              actions: [
+                {
+                  log_id: "action_id",
+                  url: "xplore-promote://whatsappOtpIntegration/getOtp",
+                  function: "getOtp",
+                  log_url: "getOtp",
+                },
+              ],
+              height: {
+                type: "fixed",
+                value: 40,
+              },
+              text_color: "#25d366",
+              font_weight: "bold",
+              border: {
+                corner_radius: "8",
+                stroke: {
+                  color: "#25d366",
+                },
+              },
+              type: "whatsapp_button",
+              alignment_horizontal: "left",
+              alignment_vertical: "top",
+              margins: {
+                left: 24,
+                top: 276,
+              },
+            },
+            {
+              text: "Submit OTP",
+              animation_action: "none",
+              background: [
+                {
+                  type: "solid",
+                  color: "#25d366",
+                },
+              ],
+              width: {
+                type: "fixed",
+                value: 150,
+              },
+              actions: [
+                {
+                  log_id: "action_id",
+                  url: "xplore-promote://whatsappOtpIntegration/verifyOtp?otp=@{otp_value}",
+                  function: "verifyOtp",
+                  log_url: "verifyOtp",
+                },
+              ],
+              height: {
+                type: "fixed",
+                value: 40,
+              },
+              text_color: "#fff",
+              font_weight: "bold",
+              border: {
+                corner_radius: "8",
+              },
+              type: "whatsapp_button",
+              alignment_horizontal: "left",
+              alignment_vertical: "top",
+              margins: {
+                left: 203,
+                top: 276,
+              },
+            },
+            {
+              hint_text: "Enter OTP here",
+              text_variable: "otp_value",
+              width: {
+                type: "fixed",
+                value: 200,
+              },
+              font_size: 16,
+              font_weight: "medium",
+              text_color: "#000000",
+              hint_color: "#888888",
+              corners: 8,
+              accessibility: {
+                description: "Input field",
+              },
+              background: [
+                {
+                  type: "solid",
+                  color: "#f8f8f8",
+                },
+              ],
+              type: "_template_input",
+              alignment_horizontal: "center",
+              alignment_vertical: "top",
+              margins: {
+                top: 206,
+              },
+            },
+          ],
+        },
+      },
+    ],
+    variables: [
+      {
+        type: "dict",
+        name: "local_palette",
+        value: {
+          bg_primary: {
+            name: "Primary background",
+            light: "#fff",
+            dark: "#000",
+          },
+          color0: {
+            name: "Secondary background",
+            light: "#eeeeee",
+            dark: "#000",
+          },
+        },
+      },
+      {
+        type: "string",
+        name: "otp_value",
+        value: "",
+      },
+    ],
+  },
+  templates: {
+    _template_input: {
+      type: "input",
+      text_variable: "my_borderless_text",
+      width: {
+        type: "match_parent",
+      },
+      height: {
+        type: "wrap_content",
+      },
+      text_alignment_horizontal: "left",
+      margins: {
+        left: 16,
+        top: 20,
+        right: 16,
+        bottom: 16,
+      },
+      paddings: {
+        left: 16,
+        top: 10,
+        right: 16,
+        bottom: 10,
+      },
+      alignment_horizontal: "center",
+      alignment_vertical: "center",
+      font_size: 16,
+      font_weight: "medium",
+      text_color: "#000000",
+      hint_color: "#888888",
+      highlight_color: "#e0bae3",
+      line_height: 22,
+      accessibility: {
+        description: "Enter text here",
+        hint: "Type your response",
+        state_description: "Active input field",
+      },
+      autocapitalization: "sentences",
+      keyboard_type: "default",
+      background: [
+        {
+          type: "solid",
+          color: "#f8f8f8",
+        },
+      ],
+      border: {
+        corner_radius: 8,
+        stroke: {
+          color: "#cccccc",
+          width: 1,
+        },
+      },
+      enter_key_type: "done",
+      on_focus: [
+        {
+          type: "highlight",
+          highlight_color: "#d3d3d3",
+        },
+      ],
+      visibility: "visible",
+      max_length: 100,
+      mask: {
+        type: "text",
+        pattern: "[A-Za-z0-9 ]*",
+      },
+      text_alignment_vertical: "center",
+    },
+    _template_lottie: {
+      type: "gif",
+      scale: "fit",
+      extensions: [
+        {
+          id: "lottie",
+          $params: "lottie_params",
+        },
+      ],
+      gif_url: "https://yastatic.net/s3/home/divkit/empty2.png",
+    },
+    _template_chatbot: {
+      type: "image",
+      image_url:
+        "https://xplore.objectstore.e2enetworks.net/1739858212180-fc3ddc3169e45e96.png",
+      preload_required: true,
+      scale: "fit",
+      background: [
+        {
+          type: "solid",
+          $color: "background_color",
+        },
+      ],
+      border: {
+        corner_radius: 50,
+      },
+      $alignment_horizontal: "alignment_horizontal",
+      $alignment_vertical: "alignment_vertical",
+      margins: {
+        right: 20,
+        bottom: 20,
+      },
+      actions: [
+        {
+          log_id: "open_chatbot",
+          url: "xplore-promote://chatbot",
+        },
+      ],
+    },
+    _template_button: {
+      type: "text",
+      text_alignment_horizontal: "center",
+      text_alignment_vertical: "center",
+      border: {
+        $corner_radius: "corners",
+      },
+      paddings: {
+        bottom: 0,
+        left: 0,
+        right: 0,
+        top: 0,
+      },
+      width: {
+        type: "wrap_content",
+      },
+    },
+    _template_close: {
+      accessibility: {
+        description: "Закрыть",
+        mode: "merge",
+        type: "button",
+      },
+      actions: [
+        {
+          log_id: "close_popup",
+          url: "div-screen://close",
+        },
+      ],
+      image_url:
+        "https://yastatic.net/s3/home/div/div_fullscreens/cross2.3.png",
+      tint_color: "#73000000",
+      type: "image",
+    },
+    whatsapp_button: {
+      $actions: "actions",
+      type: "text",
+      text_alignment_horizontal: "center",
+      text_alignment_vertical: "center",
+      border: {
+        $corner_radius: "corners",
+      },
+      width: {
+        type: "wrap_content",
+      },
+    },
+  },
+};
+export const smsVerifyOTPScreenJSON = {
+  card: {
+    log_id: "div2_sample_card",
+    states: [
+      {
+        state_id: 0,
+        div: {
+          visibility_action: {
+            log_id: "visible",
+          },
+          background: [
+            {
+              color:
+                "@{getDictOptColor('#00ffffff', local_palette, 'bg_primary', theme)}",
+              type: "solid",
+            },
+          ],
+          height: {
+            type: "match_parent",
+          },
+          orientation: "overlap",
+          type: "container",
+          items: [
+            {
+              text: "Resend OTP",
+              animation_action: "none",
+              background: [
+                {
+                  type: "solid",
+                  color: "#ffffff",
+                },
+              ],
+              width: {
+                type: "fixed",
+                value: 150,
+              },
+              actions: [
+                {
+                  log_id: "action_id",
+                  url: "xplore-promote://smsIntegration/getOtp?kaleyra",
+                  function: "getOtp",
+                  log_url: "getOtp",
+                  service: "kaleyra",
+                },
+              ],
+              height: {
+                type: "fixed",
+                value: 40,
+              },
+              text_color: "#39a6f5",
+              font_weight: "bold",
+              border: {
+                corner_radius: "8",
+                stroke: {
+                  color: "#39a6f5",
+                },
+              },
+              type: "whatsapp_button",
+              alignment_horizontal: "left",
+              alignment_vertical: "top",
+              margins: {
+                left: 24,
+                top: 276,
+              },
+            },
+            {
+              text: "Submit OTP",
+              animation_action: "none",
+              background: [
+                {
+                  type: "solid",
+                  color: "#39a6f5",
+                },
+              ],
+              width: {
+                type: "fixed",
+                value: 150,
+              },
+              actions: [
+                {
+                  log_id: "action_id",
+                  url: "xplore-promote://smsIntegration/verifyOtp?kaleyra&otp=@{otp_value}",
+                  function: "verifyOtp",
+                  log_url: "verifyOtp",
+                  service: "kaleyra",
+                },
+              ],
+              height: {
+                type: "fixed",
+                value: 40,
+              },
+              text_color: "#fff",
+              font_weight: "bold",
+              border: {
+                corner_radius: "8",
+              },
+              type: "whatsapp_button",
+              alignment_horizontal: "left",
+              alignment_vertical: "top",
+              margins: {
+                left: 203,
+                top: 276,
+              },
+            },
+            {
+              hint_text: "Enter OTP here",
+              text_variable: "otp_value",
+              width: {
+                type: "fixed",
+                value: 200,
+              },
+              font_size: 16,
+              font_weight: "medium",
+              text_color: "#000000",
+              hint_color: "#888888",
+              corners: 8,
+              accessibility: {
+                description: "Input field",
+              },
+              background: [
+                {
+                  type: "solid",
+                  color: "#f8f8f8",
+                },
+              ],
+              type: "_template_input",
+              alignment_horizontal: "center",
+              alignment_vertical: "top",
+              margins: {
+                top: 206,
+              },
+            },
+          ],
+        },
+      },
+    ],
+    variables: [
+      {
+        type: "dict",
+        name: "local_palette",
+        value: {
+          bg_primary: {
+            name: "Primary background",
+            light: "#fff",
+            dark: "#000",
+          },
+          color0: {
+            name: "Secondary background",
+            light: "#eeeeee",
+            dark: "#000",
+          },
+        },
+      },
+      {
+        type: "string",
+        name: "otp_value",
+        value: "",
+      },
+    ],
+  },
+  templates: {
+    _template_input: {
+      type: "input",
+      text_variable: "my_borderless_text",
+      width: {
+        type: "match_parent",
+      },
+      height: {
+        type: "wrap_content",
+      },
+      text_alignment_horizontal: "left",
+      margins: {
+        left: 16,
+        top: 20,
+        right: 16,
+        bottom: 16,
+      },
+      paddings: {
+        left: 16,
+        top: 10,
+        right: 16,
+        bottom: 10,
+      },
+      alignment_horizontal: "center",
+      alignment_vertical: "center",
+      font_size: 16,
+      font_weight: "medium",
+      text_color: "#000000",
+      hint_color: "#888888",
+      highlight_color: "#e0bae3",
+      line_height: 22,
+      accessibility: {
+        description: "Enter text here",
+        hint: "Type your response",
+        state_description: "Active input field",
+      },
+      autocapitalization: "sentences",
+      keyboard_type: "default",
+      background: [
+        {
+          type: "solid",
+          color: "#f8f8f8",
+        },
+      ],
+      border: {
+        corner_radius: 8,
+        stroke: {
+          color: "#cccccc",
+          width: 1,
+        },
+      },
+      enter_key_type: "done",
+      on_focus: [
+        {
+          type: "highlight",
+          highlight_color: "#d3d3d3",
+        },
+      ],
+      visibility: "visible",
+      max_length: 100,
+      mask: {
+        type: "text",
+        pattern: "[A-Za-z0-9 ]*",
+      },
+      text_alignment_vertical: "center",
+    },
+    _template_lottie: {
+      type: "gif",
+      scale: "fit",
+      extensions: [
+        {
+          id: "lottie",
+          $params: "lottie_params",
+        },
+      ],
+      gif_url: "https://yastatic.net/s3/home/divkit/empty2.png",
+    },
+    _template_chatbot: {
+      type: "image",
+      image_url:
+        "https://xplore.objectstore.e2enetworks.net/1739858212180-fc3ddc3169e45e96.png",
+      preload_required: true,
+      scale: "fit",
+      background: [
+        {
+          type: "solid",
+          $color: "background_color",
+        },
+      ],
+      border: {
+        corner_radius: 50,
+      },
+      $alignment_horizontal: "alignment_horizontal",
+      $alignment_vertical: "alignment_vertical",
+      margins: {
+        right: 20,
+        bottom: 20,
+      },
+      actions: [
+        {
+          log_id: "open_chatbot",
+          url: "xplore-promote://chatbot",
+        },
+      ],
+    },
+    _template_button: {
+      type: "text",
+      text_alignment_horizontal: "center",
+      text_alignment_vertical: "center",
+      border: {
+        $corner_radius: "corners",
+      },
+      paddings: {
+        bottom: 0,
+        left: 0,
+        right: 0,
+        top: 0,
+      },
+      width: {
+        type: "wrap_content",
+      },
+    },
+    _template_close: {
+      accessibility: {
+        description: "Закрыть",
+        mode: "merge",
+        type: "button",
+      },
+      actions: [
+        {
+          log_id: "close_popup",
+          url: "div-screen://close",
+        },
+      ],
+      image_url:
+        "https://yastatic.net/s3/home/div/div_fullscreens/cross2.3.png",
+      tint_color: "#73000000",
+      type: "image",
+    },
+    whatsapp_button: {
+      $actions: "actions",
+      type: "text",
+      text_alignment_horizontal: "center",
+      text_alignment_vertical: "center",
+      border: {
+        $corner_radius: "corners",
+      },
+      width: {
+        type: "wrap_content",
+      },
+    },
+  },
+};

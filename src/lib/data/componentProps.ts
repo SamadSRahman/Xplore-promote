@@ -725,6 +725,14 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
       enableSources: true,
     },
     {
+      name: "props.font_family",
+      prop: "font_family",
+      type: "select",
+      options: [],
+      enableSources: true,
+      default: "Inter",
+    },
+    {
       name: "props.hint_text",
       prop: "hint_text",
       type: "string",

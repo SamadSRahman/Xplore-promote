@@ -10,8 +10,11 @@ const CampaignsList = ({ campaigns, onDelete, onGetQr }) => {
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const popupRef = useRef();
 
-  const handleEdit = (campaignId) => {
+  const handleEdit = (campaignId, name, code) => {
     navigate(`/editor/${campaignId}/splash_screen`);
+    localStorage.setItem("currentCampaign",name )
+    localStorage.setItem("currentCampaignCode",code )
+
     setSelectedCampaign(null);
   };
 
@@ -41,7 +44,7 @@ const CampaignsList = ({ campaigns, onDelete, onGetQr }) => {
             <div ref={popupRef} className={styles.popupMenu}>
               <div
                 className={styles.popupItem}
-                onClick={() => handleEdit(campaign.campaignID)}
+                onClick={() => handleEdit(campaign.campaignID, campaign.name, campaign.shortCode)}
               >
                 <FaEdit size={15} /> Change Layout
               </div>

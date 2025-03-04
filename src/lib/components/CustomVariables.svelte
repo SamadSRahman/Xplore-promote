@@ -26,6 +26,7 @@
     }
 
     function add(): void {
+        console.log('add', customVariables);
         const newList = $customVariables.slice();
         newList.push({
             id: state.genVariableId(),
@@ -171,7 +172,7 @@
                             value={variable.name}
                             pattern="[a-zA-Z_][a-zA-Z_0-9.]*"
                             placeholder="[a-zA-Z_][a-zA-Z_0-9.]*"
-                            disabled={$readOnly}
+                            disabled={variable.isInput}
                             on:change={event => onNameChange(index, event)}
                         />
                     </label>
