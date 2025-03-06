@@ -26,9 +26,9 @@ const ContactUs = () => {
         <p className={styles.contactInfo}>
           <strong>PIN Code:</strong> 560011
         </p>
-        <p className={styles.contactInfo}>
+        {/* <p className={styles.contactInfo}>
           <strong>Telephone:</strong> +91 8951142369
-        </p>
+        </p> */}
         <p className={styles.contactInfo}>
           <strong>Email:</strong> <a href="mailto:info@xircular.io" className={styles.emailLink}>info@xircular.io</a>
         </p>
