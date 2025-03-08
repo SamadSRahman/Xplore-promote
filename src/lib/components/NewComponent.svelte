@@ -158,7 +158,7 @@
 
 <div>
   <div class="header-container">
-    <button class="header-logo-button" on:click={()=>window.location.href=`${window.location.origin}/campaigns`}>
+    <button class="header-logo-button" on:click={()=>window.location.href=`${window.location.origin}/home`}>
       <img src={headerIcon} alt="logo" />
     </button>
    <h6> {localStorage.getItem("currentCampaign") || ""}</h6>

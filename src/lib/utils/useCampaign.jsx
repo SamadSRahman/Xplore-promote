@@ -17,6 +17,9 @@ export default function useCampaign() {
     const [layoutId, setLayoutId] = useState('');
     const [campaigns, setCampaigns] = useState([]);
     const [screens, setScreens] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
 
     const [metaData, setMetaData] = useState({
         title: "Loading...",
@@ -31,12 +34,14 @@ export default function useCampaign() {
     
 
     
-    const getCampaigns = async() => {
+    const getCampaigns = async(pageNum = page) => {
+        if (loading || pageNum >= totalPages) return; 
         const token = localStorage.getItem('accessToken');
 
         try {
+            setLoading(true)
             const response = await axios.get(
-                `${API_BASE_URL}/v1/campaign/getAll?page=0&size=50`,
+                `${API_BASE_URL}/v1/campaign/getAll?page=${pageNum}&size=6`,
                 {
                     headers: {
                         authorization: token,
@@ -44,10 +49,19 @@ export default function useCampaign() {
                     },
                 }
             );
-            console.log('response', response);
-            setCampaigns(response.data.campaigns);
+            if (response.data.campaigns) {
+                setCampaigns((prev) => [...prev, ...response.data.campaigns]);
+                setPage(response.data.currentPage + 1); // Increment based on API response
+                setTotalPages(response.data.totalPages); // Set total pages
+              }
+             
         } catch (error) {
             console.log(error);
+            if(error.status === 401){
+                alert("Session expired, Please login again")
+                localStorage.removeItem('accessToken');
+                navigate('/');
+              }
             if (error.response.data.message === 'Session expired, Please login again' || error.response.data.message=== 'Token expired') {
                 alert("Session expired, Please login again")
                 localStorage.removeItem('accessToken');
@@ -55,6 +69,9 @@ export default function useCampaign() {
             }
 
 
+        }
+        finally{
+            setLoading(false)
         }
     };
 
@@ -139,6 +156,7 @@ export default function useCampaign() {
                 }
             );
             console.log('campaign deleted successfuly', response);
+            setCampaigns((prev) => prev.filter((c) => c.campaignID !== id));
             getCampaigns();
         } catch (error) {
             console.log(error);
@@ -156,5 +174,7 @@ export default function useCampaign() {
         currentLayout,
         layoutId,
         screens,
+        loading,
+        page, totalPages 
     };
 }

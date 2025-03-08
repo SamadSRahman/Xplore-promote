@@ -1,0 +1,61 @@
+.container{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    background-color: #F2F2F2;
+    font-family: "Sora", sans-serif;
+}
+.sidebar{
+    width: 20%;
+    background-color: #fff;
+}
+.sidebarHeader{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+}
+.popup{
+    position: absolute;
+    right: 1rem;
+    top: 3rem;
+    background-color: #fff;
+    border-radius: 0.4rem;
+    padding: 0.6rem;
+    box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.30);
+}
+.popup>button{
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 12px;
+}
+.logo{
+    width: 6rem;
+    cursor: pointer;
+}
+.profileIcon{
+    width: 1.5rem;
+    cursor: pointer;
+}
+.sidebarBody{
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1rem;
+}
+.sidebarBody > button{
+    padding: 0.6rem;
+    text-align: left;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    transition: all 0.2s linear;
+}
+.body{
+    width: 80%;
+}

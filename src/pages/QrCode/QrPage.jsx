@@ -29,7 +29,7 @@ const QRLogin = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
-      navigate("/campaigns");
+      navigate("/home");
     }
     // Initialize socket connection
     const socketInstance = io(
@@ -124,7 +124,7 @@ const QRLogin = () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("userId", userId);
       localStorage.setItem("socketToken", token);
-      navigate("/campaigns");
+      navigate("/home");
       console.log("Processing login event with data:", { token, userId });
     } catch (error) {
       console.error("Login verification error:", error);

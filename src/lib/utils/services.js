@@ -32,3 +32,22 @@ export const fontWeights = [
   { text: "Medium", weight: 500 },
   { text: "Bold", weight: 700 },
 ];
+
+
+export const convertDate = (data) =>{
+  const date = new Date(data);
+
+const options = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: true,
+  timeZone: 'UTC' // Remove this line to show in local time
+};
+
+const readableDate = date.toLocaleString('en-US', options);
+// Outputs: "March 7, 2025, 6:30 PM"
+return readableDate
+}

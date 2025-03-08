@@ -7,7 +7,8 @@ export default function useAdmin() {
   if(window.location.origin==="https://pre.xplore.xircular.io"){ 
    API_BASE_URL = 'https://pre.xplore.xircular.io/api';
   }
-
+  const channel = localStorage.getItem('channel');
+  const token = localStorage.getItem('accessToken');
 
   const adminLogin = async (email, pass) => {
     try {
@@ -24,5 +25,25 @@ export default function useAdmin() {
       alert(error.response.data.message);
     }
   };
-  return { adminLogin };
+  const logoutUser = async () =>{
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/v1/user/logout`, {
+        headers:{
+          authorization: token,
+          session: channel,
+        }
+      })
+      console.log(response.data);
+        if(response.data.message==="User Logout successful"){
+          alert("Logout Successful")
+          return true
+        }
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
+  }
+  return { adminLogin, logoutUser};
 }

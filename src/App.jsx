@@ -20,6 +20,7 @@ import AdminLogin from './pages/AdminLogin/AdminLogin.jsx';
 import AdminHomepage from './pages/AdminHomepage/AdminHomepage.jsx';
 import DeleteInstructions from './pages/DeleteInstructions/DeleteInstructions.jsx';
 import BikerBayTermsPage from './pages/BikerBayTermsPage/BikerBayTermsPage.jsx';
+import NewCampaigns from './pages/NewCampaigns/NewCampaigns.jsx'
 // import {AssetsNavbarWebWrapper} from './webComponents/AssetsNavbarWebWrapper.jsx';
 import "rsuite/dist/rsuite.min.css"; 
 const App = () => {
@@ -80,7 +81,7 @@ const App = () => {
               <Route path='/terms&conditions' element={<TermsAndConditions />} />
               <Route path='/' element={<QRLogin />} />
               <Route path='/:shortId/:screen?' element={<PreviewNew />} />
-              <Route path='/campaigns' element={<Campaigns />} />
+              <Route path='/home' element={<NewCampaigns />} />
               <Route path='/fonts' element={<Campaigns />} />
               <Route path='/createCampaign' element={<CampaignsForm />} />
               <Route path='/themeSelection' element={<ThemeSelection />} />
