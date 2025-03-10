@@ -1460,6 +1460,9 @@ export const namedTemplates: Record<string, TemplateDescription> = {
           url: "xplore-promote://whatsappOtpIntegration/getOtp?phone=@{phone}&country_code=@{country_code}",
           function: "getOtp",
           log_url: "getOtp",
+          otp: "@{otp_value}",
+          phone: "@{phone}",
+          country_code: "@{country_code}",
         },
       ],
       height: {
@@ -1543,9 +1546,12 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       actions: [
         {
           log_id: "action_id",
-          url: "xplore-promote://smsIntegration/getOtp?provider=''?phone=@{phone}&country_code=@{country_code}",
+          url: "xplore-promote://smsIntegration/getOtp?provider=kaleyra&phone=@{phone}&country_code=@{country_code}",
           function: "getOtp",
           log_url: "getOtp",
+          otp: "@{otp_value}",
+          phone: "@{phone}",
+          country_code: "@{country_code}",
         },
       ],
       background: [

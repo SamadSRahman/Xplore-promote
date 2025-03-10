@@ -619,7 +619,7 @@
               size="medium"
               disabled={readOnly}
               on:change={(e) => {
-                value.url = `xplore-promote://smsIntegration/${value.function}?provider=${e.detail}${value.function==="verifyOtp"?"?otp=@{otp_value}":"?phone=@{phone}&country_code=@{country_code}"}`;
+                value.url = `xplore-promote://smsIntegration/${value.function}?provider=${e.detail}${value.function==="verifyOtp"?"&otp=@{otp_value}":"&phone=@{phone}&country_code=@{country_code}"}`;
                 value.log_url = value.service;
               }}
             />
@@ -636,8 +636,12 @@
               size="medium"
               disabled={readOnly}
               on:change={(e) => {
-                value.url = `xplore-promote://smsIntegration/${e.detail}?provider=${value.service}${value.function==="verifyOtp"?"?otp=@{otp_value}":"?phone=@{phone}&country_code=@{country_code}"}`;
+                value.url = `xplore-promote://smsIntegration/${e.detail}?provider=${value.service}${value.function==="verifyOtp"?"&otp=@{otp_value}":"&phone=@{phone}&country_code=@{country_code}"}`;
                 value.log_url = value.function;
+                value.function = e.detail;
+                value.otp = "@{otp_value}"
+                value.phone = "@{phone}"
+                value.country_code = "@{country_code}"
               }}
             />
           </label>
@@ -645,8 +649,9 @@
             <div class="actions2-dialog__label">URL</div>
             <Text
               id="webUrl"
-              value={`xplore-promote://whatsappOtpIntegration/${value.function}?provider=${value.service}${value.function==="verifyOtp"?"?otp=@{otp_value}":"?phone=@{phone}&country_code=@{country_code}"}`}
+              value={`xplore-promote://whatsappOtpIntegration/${value.function}?provider=${value.service}${value.function==="verifyOtp"?"&otp=@{otp_value}":"&phone=@{phone}&country_code=@{country_code}"}`}
               disabled={true}
+              
             />
           </label>
         </div>

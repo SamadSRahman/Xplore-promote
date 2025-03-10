@@ -2482,44 +2482,6 @@ export const whatsAppVerifyOTPScreenJSON = {
               },
             },
             {
-              text: "Submit OTP",
-              animation_action: "none",
-              background: [
-                {
-                  type: "solid",
-                  color: "#25d366",
-                },
-              ],
-              width: {
-                type: "fixed",
-                value: 150,
-              },
-              actions: [
-                {
-                  log_id: "action_id",
-                  url: "xplore-promote://whatsappOtpIntegration/verifyOtp?otp=@{otp_value}",
-                  function: "verifyOtp",
-                  log_url: "verifyOtp",
-                },
-              ],
-              height: {
-                type: "fixed",
-                value: 40,
-              },
-              text_color: "#fff",
-              font_weight: "bold",
-              border: {
-                corner_radius: "8",
-              },
-              type: "whatsapp_button",
-              alignment_horizontal: "left",
-              alignment_vertical: "top",
-              margins: {
-                left: 203,
-                top: 276,
-              },
-            },
-            {
               hint_text: "Enter OTP here",
               text_variable: "otp_value",
               width: {
@@ -2545,6 +2507,47 @@ export const whatsAppVerifyOTPScreenJSON = {
               alignment_vertical: "top",
               margins: {
                 top: 206,
+              },
+            },
+            {
+              text: "Verify OTP",
+              animation_action: "none",
+              background: [
+                {
+                  type: "solid",
+                  color: "#25d366",
+                },
+              ],
+              width: {
+                type: "fixed",
+                value: 150,
+              },
+              actions: [
+                {
+                  log_id: "action_id",
+                  url: "xplore-promote://whatsappOtpIntegration/verifyOtp?otp=@{otp_value}",
+                  function: "verifyOtp",
+                  log_url: "verifyOtp",
+                  otp: "@{otp_value}",
+                  phone: "@{phone}",
+                  country_code: "@{country_code}",
+                },
+              ],
+              height: {
+                type: "fixed",
+                value: 40,
+              },
+              text_color: "#fff",
+              font_weight: "bold",
+              border: {
+                corner_radius: "8",
+              },
+              type: "whatsapp_button",
+              alignment_horizontal: "left",
+              alignment_vertical: "top",
+              margins: {
+                left: 214,
+                top: 276,
               },
             },
           ],
@@ -2728,6 +2731,7 @@ export const whatsAppVerifyOTPScreenJSON = {
     },
   },
 };
+
 export const smsVerifyOTPScreenJSON = {
   card: {
     log_id: "div2_sample_card",
@@ -2794,45 +2798,6 @@ export const smsVerifyOTPScreenJSON = {
               },
             },
             {
-              text: "Submit OTP",
-              animation_action: "none",
-              background: [
-                {
-                  type: "solid",
-                  color: "#39a6f5",
-                },
-              ],
-              width: {
-                type: "fixed",
-                value: 150,
-              },
-              actions: [
-                {
-                  log_id: "action_id",
-                  url: "xplore-promote://smsIntegration/verifyOtp?kaleyra&otp=@{otp_value}",
-                  function: "verifyOtp",
-                  log_url: "verifyOtp",
-                  service: "kaleyra",
-                },
-              ],
-              height: {
-                type: "fixed",
-                value: 40,
-              },
-              text_color: "#fff",
-              font_weight: "bold",
-              border: {
-                corner_radius: "8",
-              },
-              type: "whatsapp_button",
-              alignment_horizontal: "left",
-              alignment_vertical: "top",
-              margins: {
-                left: 203,
-                top: 276,
-              },
-            },
-            {
               hint_text: "Enter OTP here",
               text_variable: "otp_value",
               width: {
@@ -2859,6 +2824,48 @@ export const smsVerifyOTPScreenJSON = {
               margins: {
                 top: 206,
               },
+            },
+            {
+              text: "Verify OTP",
+              animation_action: "none",
+              background: [
+                {
+                  type: "solid",
+                  color: "#39A6F5",
+                },
+              ],
+              width: {
+                type: "fixed",
+                value: 150,
+              },
+              height: {
+                type: "fixed",
+                value: 40,
+              },
+              text_color: "#fff",
+              font_weight: "bold",
+              border: {
+                corner_radius: "8",
+              },
+              type: "sms_button",
+              alignment_horizontal: "left",
+              alignment_vertical: "top",
+              margins: {
+                left: 194,
+                top: 276,
+              },
+              actions: [
+                {
+                  log_id: "action_id",
+                  url: "xplore-promote://smsIntegration/verifyOtp?provider=kaleyra&otp=@{otp_value}",
+                  service: "kaleyra",
+                  log_url: "verifyOtp",
+                  function: "verifyOtp",
+                  otp: "@{otp_value}",
+                  phone: "@{phone}",
+                  country_code: "@{country_code}",
+                },
+              ],
             },
           ],
         },
@@ -3028,6 +3035,18 @@ export const smsVerifyOTPScreenJSON = {
       type: "image",
     },
     whatsapp_button: {
+      $actions: "actions",
+      type: "text",
+      text_alignment_horizontal: "center",
+      text_alignment_vertical: "center",
+      border: {
+        $corner_radius: "corners",
+      },
+      width: {
+        type: "wrap_content",
+      },
+    },
+    sms_button: {
       $actions: "actions",
       type: "text",
       text_alignment_horizontal: "center",

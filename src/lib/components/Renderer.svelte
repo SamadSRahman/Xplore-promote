@@ -3117,6 +3117,7 @@ import {createLayout, isVerifyOTPScreenAvailable} from "../utils/svelteUtils"
     if (deleteComponent.isPressed(event)) {
       if (leaf.parent) {
         console.log("deleteLeaf", leaf);
+        if(leaf.props.json.type==="_template_input")
         deleteVariable(leaf.id);
         state.deleteLeaf(leaf);
       }
