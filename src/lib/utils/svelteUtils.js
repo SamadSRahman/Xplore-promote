@@ -174,6 +174,25 @@ export const deleteLayout = async (id)=>{
     }
 }
 
+export const updateProfile = async (id, jsonData) => {
+    const formData = new FormData();
+    formData.append("layoutJSON",jsonData)
+    try {
+      const response = await axios.put(`${API_BASE_URL}/v1/user/profile/update/${id}`, formData, {
+        headers:{
+            Authorization: `Bearer ${token}`,
+            session: channel,
+        }
+      })
+      console.log("response:", response.data);
+      alert("Profile layout saved successfully!")
+      
+    } catch (error) {
+      
+    }
+    
+  }
+
 export const isVerifyOTPScreenAvailable = async(screenName)=>{
     const campaignId = window.location.pathname.split("/")[2]
     const screens = await getAllLayoutNames(campaignId);

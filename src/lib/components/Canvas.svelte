@@ -64,7 +64,8 @@
     let viewportHeight = 100;
     let errorButtonNode: HTMLElement;
     let errorsDialog: ErrorsDialog;
-
+    let path = window.location.pathname.split("/")[1]
+    
     $: if (VIEWPORT_LIST.includes(viewport)) {
         selectViewport = viewport;
     } else {
@@ -146,7 +147,9 @@
     use:shortcuts={SHORTCUTS}
 >
 <!-- <asset-navbar-web-component component-type="ScreensSection"></asset-navbar-web-component> -->
+ {#if path !=="profileDesign"}
  <ScreensSelector/>
+ {/if}
     <div class="canvas__topbar" bind:this={topbar}>
         <Select
             bind:value={selectViewport}

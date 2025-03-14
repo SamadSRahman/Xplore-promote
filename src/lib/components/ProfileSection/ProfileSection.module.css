@@ -1,0 +1,28 @@
+.container {
+  height: 100vh;
+  width: 100%;
+}
+.header {
+  margin-top: 2.2rem;
+  padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+  box-sizing: border-box;
+}
+.addNewBtn {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #39a6f5;
+  color: #fff;
+  transition: all 0.2s linear;
+}
+.addNewBtn:hover {
+  background-color: #2c99e7;
+}
+.body{
+  display: flex;
+  align-items: top;
+  flex-wrap: wrap;
+  padding: 1rem;
+  gap: 1rem;
+}

@@ -3,6 +3,8 @@ import styles from './NewCampaigns.module.css';
 import profileIcon from '../../assets/profile-icon.svg';
 import logo from '../../assets/xplr.svg';
 import CampaignsGrid from '../../lib/components/CampaignsGrid/CampaignsGrid';
+import AccountSection from '../../lib/components/AccountSection/AccountSection';
+import ProfileSection from '../../lib/components/ProfileSection/ProfileSection';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import FontsList from '../../lib/components/FontsList/FontsList';
 import { FiLogOut } from "react-icons/fi";
@@ -52,6 +54,7 @@ useEffect(() => {
 
   return (
     <div className={styles.container}>
+
       <div className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
           <img src={logo} alt="logo" className={styles.logo} />
@@ -74,8 +77,8 @@ useEffect(() => {
       </div>
       <div className={styles.body}>
         {selectedTab === "Campaigns" && <CampaignsGrid />}
-        {selectedTab === "Profiles" && <div>Profiles content goes here</div>}
-        {selectedTab === "Accounts" && <div>Accounts content goes here</div>}
+        {selectedTab === "Profiles" && <ProfileSection/>}
+        {selectedTab === "Accounts" && <AccountSection/>}
         {selectedTab === "Fonts" && <FontsList selectedFont={selectedFont} setSelectedFont={setSelectedFont}/>}
       </div>
     </div>

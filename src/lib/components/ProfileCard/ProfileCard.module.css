@@ -1,0 +1,49 @@
+.profileCard{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.7rem;
+    background-color: #fff;
+    box-shadow: 2px 2px 12px 0px rgba(178, 178, 178, 0.20);
+    border-radius: 0.6rem;
+    width: 27%;
+  }
+  .profileCard>img{
+    width: 4rem;
+  }
+  .contentSection>p{
+    color: #666666;
+    font-size: 12px;
+  }
+  .menuIcon{
+    position: absolute;
+    padding: 0.1rem;
+    right: 1rem;
+    top: 1rem;
+    border-radius: 0.5rem;
+  background: #F5F5F5;
+  box-shadow: 0.778px 1.556px 1.556px 0px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  }.popup{
+    position: absolute;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    top: 3rem;
+    right: 1rem;
+    gap: 0.5rem;
+    box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.30);
+    border-radius: 0.4rem;
+  }
+  .popup > button{
+    background-color: transparent;
+    text-align: start;
+    display: flex;
+    gap: 0.3rem;
+    font-size: 12px;
+  }
+  .popup img{
+    width: 1rem;
+  }

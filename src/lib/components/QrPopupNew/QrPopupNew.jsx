@@ -58,7 +58,7 @@ function QrPopup({ onClose, isOpen, campaign }) {
       <div className="popup">
         <div className="headers">
          <div className="title-section">
-            <img src={campaign.images[0].url} alt="" />
+           {campaign?.images &&  <img src={campaign?.images[0].url} alt="" />}
          <span>{campaign.name}</span>
          </div>
           <button className="closeButton" onClick={onClose} aria-label="Close">

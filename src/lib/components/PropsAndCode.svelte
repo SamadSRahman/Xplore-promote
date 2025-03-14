@@ -12,7 +12,7 @@
   import publishIcon from "../../assets/publish.svg";
   import saveIcon from "../../assets/save.svg";
   import previewIcon from "../../assets/visibility.svg";
-  import { saveLayout } from "../utils/svelteUtils";
+  import { saveLayout, updateProfile } from "../utils/svelteUtils";
   import QrPopup from "./QrPopup.svelte";
 
   let shortCode = "";
@@ -29,7 +29,6 @@
   const { l10n } = getContext<LanguageContext>(LANGUAGE_CTX);
   const { state } = getContext<AppContext>(APP_CTX);
   let panel = "props";
-  // const {updateLayout} = useLayout();
   const { divjsonStore } = state;
 
   
@@ -41,10 +40,17 @@
   }
   function handleSave() {
     layoutId = localStorage.getItem("layoutId") || "";
-    console.log("truggered handleSave with layout id", layoutId);
+    console.log("triggered handleSave with layout id", layoutId);
+    const page = window.location.pathname.split("/")[1];
+    const profileId = window.location.pathname.split("/")[2]
+    console.log("page", page);
     
-    if (layoutId) {
+    if (layoutId && page!=="profileDesign") {
       saveLayout(layoutId, $divjsonStore.fullString, screenName, true);
+    }
+    if(page==="profileDesign" && profileId){
+      console.log(profileId)
+      updateProfile(profileId,$divjsonStore.fullString )
     }
   }
 </script>

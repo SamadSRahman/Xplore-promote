@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-
 import React, {useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IoIosSave, IoMdEye } from 'react-icons/io';
-import styles from './Profile.module.css';
-import { MdPublish } from "react-icons/md";
+
 
 import {
   addTemplatesSuffix,
@@ -16,16 +13,13 @@ import {
 } from '../../lib'; // Adjust this import path as needed
 
 import useProfile from '../../lib/utils/useProfile';
-import ReactHeader from '../../lib/components/ReactHeader';
-
 import PreviewScreen from '../../components/PreviewScreen';
 import QrPopup from '../../lib/components/QrPopup/QrPopup';
 
 const ProfileDesign = () => {
   const { campaignId, page, userId } = useParams();
-  const {getProfileLayout, profileLayout, updateProfileLayout} = useProfile()
+  const {getProfile, profileLayout, updateProfileLayout} = useProfile()
   const navigate = useNavigate();
-  const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
   const editorContainerRef = React.useRef(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -42,8 +36,7 @@ const ProfileDesign = () => {
     }
     if(userId){
       console.log(userId);
-      
-      getProfileLayout(userId)
+      getProfile(userId)
     }
   }, [campaignId, page]);
 
@@ -188,58 +181,11 @@ const ProfileDesign = () => {
       }
     };
   }, [profileLayout]);
-
-
-
-
-
-  const handleLogJSON = async () => {
-    if (!editorInstance) {
-      console.log('Editor not initialized');
-      return;
-    }
-
-    try {
-      const currentJSON = editorInstance.getValue();
-      setJsonContent(currentJSON);
-      updateProfileLayout(currentJSON);
-    
-    } catch (error) {
-      console.error('Error handling JSON:', error);
-    }
-  };
-
-
- 
-
-
-  return (
+return (
     <div ref={editorContainerRef} style={{ maxWidth: '100vw', height: '100vh', boxSizing: 'border-box',  }}>
    {isPopupVisible && <QrPopup type={"profile"} campaignId={userId} onClose={()=>setIsPopupVisible(false)} campaignName={JSON.parse(localStorage.getItem(("user")))?.name}  shortUrl={JSON.parse(localStorage.getItem(("user")))?.shortUrl} shortCode={JSON.parse(localStorage.getItem(("user")))?.shortCode} />}
-      <ReactHeader screens={[]} />
-      <div>
-        <div className="flex gap-2 absolute bottom-4 right-4">
-          <button
-            onClick={() => setIsPreviewOpen(true)}
-            className={styles.addQuestionBtn}
-          >
-            <IoMdEye /> Preview
-          </button>
-          <button
-            className={styles.saveBtn}
-            onClick={handleLogJSON}
-          >
-            <IoIosSave />
-            Save
-          </button>
-        </div>
-        <button className={styles.finishBtn}
-          onClick={() =>setIsPopupVisible(pre=>!pre)}
-        >
-          <MdPublish />
-          Publish
-        </button>
-      </div>
+      {/* <ReactHeader screens={[]} /> */}
+   
 
       <PreviewScreen
         isOpen={isPreviewOpen}

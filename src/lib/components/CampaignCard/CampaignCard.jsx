@@ -7,10 +7,16 @@ import deleteIcon from "../../../assets/delete.svg";
 import threeDotsIcon from "../../../assets/more_vert.svg";
 import QrPopupNew from "../QrPopupNew/QrPopupNew";
 import { useNavigate } from "react-router-dom";
+import DeleteAlert from "../DeleteAlert/DeleteAlert";
+import { Loader } from "rsuite";
+import useLayout from "../../utils/useLayout";
 
 export default function CampaignCard({ campaign, onDelete }) {
   const [isPopupVisble, setIsPopupVisible] = useState(false);
   const [isQrPopupVisible, setIsQrPopupVisible] = useState(false);
+  const [isDeleteAlertVisible, setIsDeleteAlertVisible] = useState(false);
+  const [isLoadScreenVisible, setIsLoadScreenVisible] = useState(false);
+  const {addDefaultLayouts} = useLayout()
   const popupRef = useRef(null);
   const navigate = useNavigate();
   const togglePopup = (e) => {
@@ -34,29 +40,69 @@ export default function CampaignCard({ campaign, onDelete }) {
     };
   }, [isPopupVisble]);
 
+  const handleDelete = () => {
+    setIsDeleteAlertVisible(true);
+  };
+  const handleNavigate = async () => {
+    try {
+      console.log("campaign", campaign);
+      if (campaign.layouts.length === 0) {
+        setIsLoadScreenVisible(true);
+        await addDefaultLayouts(campaign.campaignID);
+      }
+      setIsLoadScreenVisible(false);
+      navigate(`/editor/${campaign.campaignID}/splash_screen`);
+    } catch (error) {
+      console.error("Error navigating to editor:", error);
+      setIsLoadScreenVisible(false);
+    }
+  }
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container}     >
+      {isDeleteAlertVisible && (
+        <DeleteAlert
+          title={`Delete ${campaign.name} campaign?`}
+          text="Are you sure, you want to delete campaign?"
+          onClose={() => setIsDeleteAlertVisible(false)}
+          onDelete={async () => {
+            await onDelete(campaign.campaignID);
+            setIsDeleteAlertVisible(false);
+          }}
+        />
+      )}
       <QrPopupNew
         campaign={campaign}
         isOpen={isQrPopupVisible}
         onClose={() => setIsQrPopupVisible(false)}
         shortCode={campaign.shortCode}
       />
-      <div className={styles.menuIcon} onClick={togglePopup}>
-        <img src={threeDotsIcon} alt="" />
+    {isLoadScreenVisible &&  <div className={styles.loadingScreen}>
+      <Loader size="md" content="Loading Screens..."/> 
+      </div>}
+     <div className={styles.menuIcon} onClick={(e) => {
+        e.stopPropagation();
+        togglePopup(e);
+      }}>
+        <img src={threeDotsIcon} alt="menu" />
       </div>
-      <img src={campaign.images[0].url} alt="" />
-      <strong> {campaign.name}</strong>
-      <span className={styles.date}>
-        {convertDate(campaign.timing.startDate)} -{" "}
-        {convertDate(campaign.timing.endDate)}
-      </span>
+      <div 
+        className={styles.mainContent}
+        onClick={() => window.open(`https://xplr.live/${campaign.shortCode}`, '_blank')}
+      >
+        {/* Keep your existing content here */}
+        <img src={campaign.images[0].url} alt="" />
+        <strong>{campaign.name}</strong>
+        <span className={styles.date}>
+          {convertDate(campaign.timing.startDate)} -{" "}
+          {convertDate(campaign.timing.endDate)}
+        </span>
+      </div>
+
       {isPopupVisble && (
         <div ref={popupRef} className={styles.popup}>
           <button
-            onClick={() =>
-              navigate(`/editor/${campaign.campaignID}/splash_screen`)
-            }
+            onClick={handleNavigate}
           >
             <img src={browseIcon} alt="" />
             Edit Layout
@@ -65,7 +111,10 @@ export default function CampaignCard({ campaign, onDelete }) {
             <img src={qrcodeIcon} alt="" />
             Get QR Code
           </button>
-          <button onClick={() => onDelete(campaign.campaignID, campaign.name)}>
+          <button
+            // onClick={() => onDelete(campaign.campaignID, campaign.name)}
+            onClick={handleDelete}
+          >
             <img src={deleteIcon} alt="" />
             Delete
           </button>

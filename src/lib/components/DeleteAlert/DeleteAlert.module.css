@@ -1,0 +1,64 @@
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.container{
+    background-color: white;
+    width: 25%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+      0 1px 3px rgba(0, 0, 0, 0.06);
+    position: relative;
+}
+.container>header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    padding-bottom :0.5rem;
+}
+.container >header>img{
+    width: 1.3rem;
+    cursor: pointer;
+}
+.body{
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    padding-top: 0px;
+    color: #676767;
+}
+.footer{
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.footer >button{
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    width: 50%;
+    transition: all 0.2s linear;
+}
+.deleteBtn{
+ background-color: #FF5B5E;   
+}
+.deleteBtn:hover{
+    background-color:#ea4346 ;
+}
+.cancelBtn:hover{
+    background-color:#3c3c3c ;
+}
+.cancelBtn{
+background-color: #595959;
+}

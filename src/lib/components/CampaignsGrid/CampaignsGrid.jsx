@@ -3,6 +3,7 @@ import styles from "./CampaignsGrid.module.css";
 import useCampaign from "../../utils/useCampaign";
 import CampaignCard from "../CampaignCard/CampaignCard";
 import { Loader } from "rsuite";
+import DeleteAlert from '../DeleteAlert/DeleteAlert'
 
 export default function CampaignsGrid() {
   const { getCampaigns, campaigns, loading, page, totalPages, deleteCampaign } = useCampaign();
@@ -17,15 +18,9 @@ export default function CampaignsGrid() {
     pageRef.current = page; // Update ref when page state changes
   }, [page]);
 
-    const handleDelete = async(id, name)=>{
-          const isDeleteConfirmed = confirm(`Are you sure you want to delete ${name} campaign?`);
-          if(isDeleteConfirmed){
+    const handleDelete = async(id)=>{
              await deleteCampaign(id)
              alert("Campaign Deleted");
-          }
-          else{
-              alert("Deletion cancelled")
-          }
         }
 
   const lastCampaignRef = useCallback(
@@ -50,7 +45,6 @@ export default function CampaignsGrid() {
 
   return (
     <div className={styles.container}>
-       
       <div className={styles.header}>
         <h4>Campaigns</h4>
       </div>

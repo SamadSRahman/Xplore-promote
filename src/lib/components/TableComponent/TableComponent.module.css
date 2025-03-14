@@ -1,0 +1,81 @@
+.tableContainer {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    /* padding: 1rem; */
+    box-shadow: 0px 1.333px 2.667px 0px rgba(10, 13, 18, 0.05);
+    border: 1px solid #DFE0E2;
+    overflow: hidden;
+
+
+    /* Adjust padding, margins, etc. to match your design needs */
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+  }
+  
+  /* Header styles */
+  .table thead tr {
+    background-color: #ffffff; /* White header row */
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0.5rem !important;
+  }
+
+  .table th {
+    text-align: center;
+    padding: 1.3rem;
+    font-weight: 600;
+  }
+  
+  /* Body rows */
+  .table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e5e5;
+    vertical-align: middle;
+  }
+  
+  /* Alternating row colors */
+  .evenRow {
+    background-color: #f5f6f8; /* Light grey background for even rows */
+  }
+  .oddRow {
+    background-color: #ffffff; /* White background for odd rows */
+  }
+  
+  /* Buttons */
+  .addKeyBtn {
+    background-color: #1d9bf0; /* Blue button for "Add key" */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  .table tbody tr{
+    border: none;
+  }
+  
+  .deleteBtn {
+    background-color: transparent;
+    color: #ff4d4f; /* Red button for "Delete" */
+    border: 2px solid;
+    padding: 8px 16px;
+    border-radius: 0.3rem;
+
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  /* Optional hover states */
+  .addKeyBtn:hover {
+    background-color: #0c7cd5;
+  }
+  
+  .deleteBtn:hover {
+    background-color: #dadada;
+  }
+  
