@@ -75,6 +75,7 @@
   }
 
   function onClick(type: string): void {
+    console.log("type line 92", type);
     let phoneInput = state.getChild(`_new:_template_input`, true)
     let countryCodeInput = state.getChild(`_new:_template_input`, true)
    
@@ -89,7 +90,8 @@
      phoneInput.props.json.text_variable = "phone"
     const childType = newChild.props.json.type;
     const childId = newChild.id;
-    if (childType === "_template_input" || childType === "select"||childType==="whatsapp_button") {
+    if (childType === "_template_input" || childType === "select"||childType==="whatsapp_button"||childType==="sms_button"
+    ) {
       const variableName = `${childId}_value`;
 
       const newList = $customVariables.slice();
@@ -102,9 +104,10 @@
         isInput: true,
       });
     }
-      console.log("type line 92", type);
+
       
-      if(type==="whatsapp_button"){
+      if(type==="whatsapp_button" || type==="sms_button"
+      ){
         newList.push({
         id: state.genVariableId(),
         name: "phone",
@@ -153,12 +156,21 @@
 
     rendererApi().focus();
   }
+  const handleNavigate = ()=>{
+    const page = window.location.pathname.split('/')[1]
+    console.log("page", page);
+    if(page !== "profileDesign"){
+      window.location.href=`${window.location.origin}/home`;
+    }
+    else
+    window.location.href=`${window.location.origin}/home?tab=Profiles`;
+  }
   
 </script>
 
 <div>
   <div class="header-container">
-    <button class="header-logo-button" on:click={()=>window.location.href=`${window.location.origin}/home`}>
+    <button class="header-logo-button" on:click={handleNavigate}>
       <img src={headerIcon} alt="logo" />
     </button>
    <h6> {localStorage.getItem("currentCampaign") || ""}</h6>

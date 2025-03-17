@@ -45,12 +45,13 @@ export default function CampaignCard({ campaign, onDelete }) {
   };
   const handleNavigate = async () => {
     try {
-      console.log("campaign", campaign);
       if (campaign.layouts.length === 0) {
         setIsLoadScreenVisible(true);
         await addDefaultLayouts(campaign.campaignID);
       }
       setIsLoadScreenVisible(false);
+      localStorage.setItem("currentCampaign",campaign.name )
+      localStorage.setItem("currentCampaignCode",campaign.shortCode )
       navigate(`/editor/${campaign.campaignID}/splash_screen`);
     } catch (error) {
       console.error("Error navigating to editor:", error);

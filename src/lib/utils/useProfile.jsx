@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { blankBackgroundJSON } from "./splashScreenData";
+import { blankBackgroundJSON, newProfileLayout } from "./splashScreenData";
 
 export default function useProfile() {
     const [profileLayout, setProfileLayout] = useState( JSON.stringify(blankBackgroundJSON))
@@ -30,11 +30,39 @@ export default function useProfile() {
 
   const getProfile = async (id) => {
       try {
-        const response = await axios.get(`https://xplr.live/api/v1/user/profile/getOne/${id}`);
-        console.log(JSON.parse(response.data.data.layoutJSON))
-        setProfileLayout((response.data.data.layoutJSON))
-      } catch (error) {
+        const response = await axios.get(`${API_BASE_URL}/v1/user/profile/getOne/${id}`);
+        console.log("API response:", response.data?.data);
         
+        // Check if layoutJSON exists and is not null
+        if (response.data?.data?.layoutJSON) {
+          setProfileLayout(JSON.stringify(response.data.data.layoutJSON));
+        } else {
+          // Use the newProfileLayout as fallback and update with API data
+          const defaultLayout = JSON.parse(JSON.stringify(newProfileLayout)); // Deep clone to avoid modifying the original
+          
+          // Find the variables array
+          if (defaultLayout.card && defaultLayout.card.variables) {
+            // Update the name, designation and image if they exist in the API response
+            defaultLayout.card.variables.forEach(variable => {
+              if (variable.name === "name" && response.data?.data?.name) {
+                variable.value = response.data.data.name;
+              }
+              if (variable.name === "designation" && response.data?.data?.designation) {
+                variable.value = response.data.data.designation;
+              }
+              if (variable.name === "image" && response.data?.data?.userImage?.cdnUrl) {
+                variable.value = response.data.data.userImage.cdnUrl;
+              }
+            });
+          }
+          
+          console.log("Updated defaultLayout:", defaultLayout);
+          setProfileLayout(JSON.stringify(defaultLayout));
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        // Use the blank background JSON as fallback on error
+        setProfileLayout(JSON.stringify(blankBackgroundJSON));
       }
   }
 
@@ -66,17 +94,30 @@ export default function useProfile() {
   };
 
   const updateProfile = async (id, jsonData) => {
-    const formData = new FormData();
-    formData.append("layoutJSON", jsonData)
-    try {
-      const response = await axios.post(`${API_BASE_URL}/v1/user/profile/update/${id}`)
-      console.log("response:", response.data);
-
-      
-    } catch (error) {
-      
-    }
+    console.log("JSON Data", jsonData);
     
+    try {
+      const response = await axios.put(`${API_BASE_URL}/v1/user/profile/update/${id}`, 
+        {
+          data: {
+            layoutJSON: JSON.parse(jsonData)
+          }
+        }, 
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            session: session,
+          }
+        }
+      );
+      console.log("response:", response.data);
+      alert("Profile updated successfully!");
+      return response.data;
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile. Please try again.");
+    }
   }
 
   const createProfileLayout = async (name, designation, image) => {
@@ -86,7 +127,7 @@ export default function useProfile() {
         const data = {
           name:name,
           designation:designation,
-          layoutJSON:blankBackgroundJSON
+          // layoutJSON:blankBackgroundJSON
         }
         console.log("data received", data, image);
         const formData = new FormData();

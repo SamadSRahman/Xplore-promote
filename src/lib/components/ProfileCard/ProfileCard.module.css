@@ -12,6 +12,9 @@
   .profileCard>img{
     width: 4rem;
   }
+  .contentSection{
+    width: 100%;
+  }
   .contentSection>p{
     color: #666666;
     font-size: 12px;
@@ -36,6 +39,7 @@
     gap: 0.5rem;
     box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.30);
     border-radius: 0.4rem;
+    z-index: 2  ;
   }
   .popup > button{
     background-color: transparent;
@@ -46,4 +50,21 @@
   }
   .popup img{
     width: 1rem;
+  }
+  .addLayoutWrapper{
+    display: flex;
+    justify-content: end;
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+
+  }
+  .addLayoutWrapper > button{
+    background-color: #D7EEFF;
+     color: #39A6F5;
+      font-weight: "bold" ;
+      border-radius: 0.4rem;
+      padding: 0.2rem 0.3rem;
+      font-size: 12px;
+
   }

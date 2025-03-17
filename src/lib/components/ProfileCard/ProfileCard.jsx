@@ -26,6 +26,10 @@ export default function ProfileCard({ profile }) {
     await deleteProfile(profile.shortCode);
   };
   const handleNavigate = () => {
+    console.log("profile", profile);
+
+    localStorage.setItem("currentCampaign", profile.name);
+    localStorage.setItem("currentCampaignCode", profile.shortCode);
     navigate(`/profileDesign/${profile.id}`);
   };
 
@@ -72,10 +76,15 @@ export default function ProfileCard({ profile }) {
       >
         <img src={threeDotsIcon} alt="menu" />
       </div>
-      <img src={profileImage} alt="" />
+      <img src={profile?.userImage?.cdnUrl || profileImage} alt="" />
       <div className={styles.contentSection}>
         <h6>{profile.name}</h6>
         <p>{profile.designation}</p>
+        {!profile.layoutJSON && (
+          <div className={styles.addLayoutWrapper}>
+            <button onClick={handleNavigate} >Create your design</button>
+          </div>
+        )}
       </div>
       {isDropDownVisble && (
         <div ref={popupRef} className={styles.popup}>

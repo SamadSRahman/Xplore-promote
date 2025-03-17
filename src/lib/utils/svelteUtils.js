@@ -176,7 +176,12 @@ export const deleteLayout = async (id)=>{
 
 export const updateProfile = async (id, jsonData) => {
     const formData = new FormData();
-    formData.append("layoutJSON",jsonData)
+    console.log("jsonData", JSON.parse(jsonData));
+    formData.append("data", JSON.stringify(
+        {
+            layoutJSON:JSON.parse(jsonData)
+        }
+    ))
     try {
       const response = await axios.put(`${API_BASE_URL}/v1/user/profile/update/${id}`, formData, {
         headers:{

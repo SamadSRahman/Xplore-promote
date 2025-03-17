@@ -80,8 +80,14 @@
   import type { TankerMeta } from "../../lib";
   import { getRotationFromMatrix } from "../utils/getRotationFromMatrix";
   import { ChangeCustomVariablesCommand } from "../data/commands/changeCustomVariables";
-import {createLayout, isVerifyOTPScreenAvailable} from "../utils/svelteUtils"
-  import { smsVerifyOTPScreenJSON, whatsAppVerifyOTPScreenJSON } from "../utils/splashScreenData";
+  import {
+    createLayout,
+    isVerifyOTPScreenAvailable,
+  } from "../utils/svelteUtils";
+  import {
+    smsVerifyOTPScreenJSON,
+    whatsAppVerifyOTPScreenJSON,
+  } from "../utils/splashScreenData";
   export let viewport: string;
   export let theme: "light" | "dark";
 
@@ -808,12 +814,9 @@ import {createLayout, isVerifyOTPScreenAvailable} from "../utils/svelteUtils"
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     origJson?: any;
   }) {
-   
-    
     let shouldUpdate = type === "mount" || type === "destroy";
     if ((type === "update" || type === "mount") && origJson.__leafId) {
       mountedAndUpdatedLeafs.add(origJson.__leafId);
-     
     }
 
     if ((type === "mount" || type === "update") && origJson.__leafId) {
@@ -1135,15 +1138,15 @@ import {createLayout, isVerifyOTPScreenAvailable} from "../utils/svelteUtils"
     updateList(newList);
   }
 
- async function onDrop(event: DragEvent): Promise<void> {
+  async function onDrop(event: DragEvent): Promise<void> {
     if ($readOnly) {
       return;
     }
-    const campaignId = window.location.pathname.split("/")[2]
+    const campaignId = window.location.pathname.split("/")[2];
     const movedChildId = event.dataTransfer?.getData("application/divnode");
     const url = event.dataTransfer?.getData("text/uri-list");
     console.log("movedChildId", url);
-    
+
     if (!movedChildId) {
       return;
     }
@@ -1155,35 +1158,81 @@ import {createLayout, isVerifyOTPScreenAvailable} from "../utils/svelteUtils"
     console.log("renderer- movedChild", movedChild);
     const childType = movedChild.props.json.type;
     const childId = movedChild.id;
-    if(childType ==="sms_button"){
-      const isOTPScreenAvailable = await isVerifyOTPScreenAvailable("verify_otp_screen");
+    if (childType === "sms_button") {
+      const isOTPScreenAvailable =
+        await isVerifyOTPScreenAvailable("verify_otp_screen");
       console.log("isOTPScreenAvailable:", isOTPScreenAvailable);
-      if(!isOTPScreenAvailable){
-        const isScreenAdded =  await createLayout(JSON.stringify(smsVerifyOTPScreenJSON),campaignId, "verify_otp_screen", false )
-        if(isScreenAdded){
+      if (!isOTPScreenAvailable) {
+        const isScreenAdded = await createLayout(
+          JSON.stringify(smsVerifyOTPScreenJSON),
+          campaignId,
+          "verify_otp_screen",
+          false
+        );
+        if (isScreenAdded) {
           alert("Verify OTP screen has been added to this campaign");
         }
       }
     }
-    if(childType ==="whatsapp_button"){
-      const isOTPScreenAvailable = await isVerifyOTPScreenAvailable("verify_whatsapp_otp_screen");
+    if (childType === "whatsapp_button") {
+      const isOTPScreenAvailable = await isVerifyOTPScreenAvailable(
+        "verify_whatsapp_otp_screen"
+      );
       console.log("isOTPScreenAvailable:", isOTPScreenAvailable);
-      if(!isOTPScreenAvailable){
-        const isScreenAdded =  await createLayout(JSON.stringify(whatsAppVerifyOTPScreenJSON),campaignId, "verify_whatsapp_otp_screen", false )
-        if(isScreenAdded){
+      if (!isOTPScreenAvailable) {
+        const isScreenAdded = await createLayout(
+          JSON.stringify(whatsAppVerifyOTPScreenJSON),
+          campaignId,
+          "verify_whatsapp_otp_screen",
+          false
+        );
+        if (isScreenAdded) {
           alert("Verify OTP screen has been added to this campaign");
         }
       }
-    }
 
-    if(childType ==="image" && url){
+      // Add phone number and country code input fields for WhatsApp button
+      const phoneInput = state.getChild(`_new:_template_input`, true);
+      const countryCodeInput = state.getChild(`_new:_template_input`, true);
+
+      if (phoneInput && countryCodeInput) {
+        // Configure phone input
+        phoneInput.props.json.hint_text = "Enter phone number";
+        phoneInput.props.json.text_variable = "phone";
+
+        // Configure country code input
+        countryCodeInput.props.json.hint_text = "Enter country code";
+        countryCodeInput.props.json.text_variable = "country_code";
+
+        // Add variables for phone and country code
+        // const newList = $customVariables.slice();
+        // newList.push(
+        //   {
+        //     id: state.genVariableId(),
+        //     name: "phone",
+        //     type: "string",
+        //     value: "",
+        //     isInput: true,
+        //   },
+        //   {
+        //     id: state.genVariableId(),
+        //     name: "country_code",
+        //     type: "string",
+        //     value: "",
+        //     isInput: true,
+        //   }
+        // );
+        // updateList(newList);
+      }
+    }
+    if (childType === "image" && url) {
       movedChild.props.json.image_url = url;
     }
-  
-    if(childType ==="gif" && url){
+
+    if (childType === "gif" && url) {
       movedChild.props.json.gif_url = url;
     }
-    if(childType ==="_template_lottie" && url){
+    if (childType === "_template_lottie" && url) {
       movedChild.props.json.lottie_params.lottie_url = url;
     }
     if (childType === "_template_input" || childType === "select") {
@@ -1296,6 +1345,56 @@ import {createLayout, isVerifyOTPScreenAvailable} from "../utils/svelteUtils"
           leaf: movedChild,
         })
       );
+
+      // Add phone and country code input fields if this is a WhatsApp button
+      if (childType === "whatsapp_button" || childType ==="sms_button") {
+        const phoneInput = state.getChild(`_new:_template_input`, true);
+        const countryCodeInput = state.getChild(`_new:_template_input`, true);
+
+        if (phoneInput && countryCodeInput) {
+          // Add phone input field
+          phoneInput.props.json.hint_text = "Enter phone number";
+
+          countryCodeInput.props.json.hint_text = "Enter country code";
+          // countryCodeInput.props.json.margins.top = 294; Not working properly
+          countryCodeInput.props.json.text_variable = "country_code";
+          phoneInput.props.json.text_variable = "phone";
+          state.pushCommand(
+            new AddLeafCommand({
+              parentId: leafTarget.id,
+              insertIndex: insertIndex + 1,
+              leaf: phoneInput,
+            })
+          );
+
+          // Add country code input field
+          state.pushCommand(
+            new AddLeafCommand({
+              parentId: leafTarget.id,
+              insertIndex: insertIndex + 2,
+              leaf: countryCodeInput,
+            })
+          );
+        }
+        const newList = $customVariables.slice();
+        newList.push(
+          {
+            id: state.genVariableId(),
+            name: "phone",
+            type: "string",
+            value: "",
+            isInput: true,
+          },
+          {
+            id: state.genVariableId(),
+            name: "country_code",
+            type: "string",
+            value: "",
+            isInput: true,
+          }
+        );
+        updateList(newList);
+      }
     }
 
     tick().then(() => {
@@ -3117,8 +3216,7 @@ import {createLayout, isVerifyOTPScreenAvailable} from "../utils/svelteUtils"
     if (deleteComponent.isPressed(event)) {
       if (leaf.parent) {
         console.log("deleteLeaf", leaf);
-        if(leaf.props.json.type==="_template_input")
-        deleteVariable(leaf.id);
+        if (leaf.props.json.type === "_template_input") deleteVariable(leaf.id);
         state.deleteLeaf(leaf);
       }
     } else if (moveUp || moveDown || moveLeft || moveRight) {

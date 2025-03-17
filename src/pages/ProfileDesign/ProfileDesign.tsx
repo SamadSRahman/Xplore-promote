@@ -27,7 +27,7 @@ const ProfileDesign = () => {
 
 
   React.useEffect(() => {
-    console.log("userId", userId);
+    // console.log("userId", userId, profileLayout);
     
     const token = localStorage.getItem('accessToken')
     if (!token) {
@@ -46,6 +46,8 @@ const ProfileDesign = () => {
     const leftRightWidth = 0.25 * screenWidth;
     // const middleWidth = 0.4 * screenWidth;
     if (!editorContainerRef.current) return;
+    console.log("line 50", profileLayout);
+    
     const editor = (window.editor = DivProEditor.init({
       renderTo: editorContainerRef.current,
       locale: 'en',

@@ -3060,3 +3060,367 @@ export const smsVerifyOTPScreenJSON = {
     },
   },
 };
+
+export const newProfileLayout = {
+  card: {
+    log_id: "div2_sample_card",
+    states: [
+      {
+        state_id: 0,
+        div: {
+          type: "container",
+          orientation: "vertical",
+          width: {
+            type: "match_parent",
+          },
+          height: {
+            type: "match_parent",
+          },
+          background: [
+            {
+              type: "solid",
+              color: "#F5F7FA",
+            },
+          ],
+          items: [
+            {
+              type: "container",
+              orientation: "vertical",
+              width: {
+                type: "match_parent",
+              },
+              height: {
+                type: "wrap_content",
+              },
+              margins: {
+                left: 16,
+                right: 16,
+                top: 16,
+                bottom: 16,
+              },
+              border: {
+                corner_radius: 16,
+              },
+              shadow: [
+                {
+                  color: "#0000001A",
+                  blur_radius: 12,
+                  offset: {
+                    dx: 0,
+                    dy: 4,
+                  },
+                },
+              ],
+              items: [
+                {
+                  type: "container",
+                  width: {
+                    type: "match_parent",
+                  },
+                  height: {
+                    type: "fixed",
+                    value: 240,
+                  },
+                  border: {
+                    corner_radius: 16,
+                  },
+                  background: [
+                    {
+                      type: "gradient",
+                      colors: ["#4F46E5", "#818CF8"],
+                      angle: 45,
+                    },
+                  ],
+                  items: [
+                    {
+                      type: "image",
+                      image_url: "@{image}",
+                      width: {
+                        type: "fixed",
+                        value: 100,
+                      },
+                      height: {
+                        type: "fixed",
+                        value: 100,
+                      },
+                      alignment_horizontal: "center",
+                      margins: {
+                        top: 36,
+                      },
+                      border: {
+                        corner_radius: 50,
+                      },
+                      scale: "fit",
+                    },
+                    {
+                      type: "text",
+                      text: "@{name}",
+                      font_size: 24,
+                      font_weight: "bold",
+                      text_color: "#FFFFFF",
+                      alignment_horizontal: "center",
+                      margins: {
+                        top: 16,
+                      },
+                    },
+                    {
+                      type: "text",
+                      text: "@{designation}",
+                      font_size: 16,
+                      text_color: "#E0E7FF",
+                      alignment_horizontal: "center",
+                      margins: {
+                        top: 6,
+                      },
+                    },
+                  ],
+                  paddings: {
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20,
+                  },
+                },
+                {
+                  type: "container",
+                  orientation: "vertical",
+                  width: {
+                    type: "match_parent",
+                  },
+                  height: {
+                    type: "wrap_content",
+                  },
+                  margins: {
+                    top: 24,
+                  },
+                  items: [
+                    {
+                      type: "container",
+                      width: {
+                        type: "match_parent",
+                      },
+                      height: {
+                        type: "wrap_content",
+                      },
+                      background: [
+                        {
+                          type: "solid",
+                          color: "#FFFFFF",
+                        },
+                      ],
+                      border: {
+                        corner_radius: 16,
+                      },
+                      shadow: [
+                        {
+                          color: "#0000000D",
+                          blur_radius: 8,
+                          offset: {
+                            dx: 0,
+                            dy: 4,
+                          },
+                        },
+                      ],
+                      margins: {
+                        left: 16,
+                        right: 16,
+                      },
+                      paddings: {
+                        top: 24,
+                        bottom: 24,
+                      },
+                      items: [
+                        {
+                          type: "text",
+                          text: "About Me",
+                          font_size: 20,
+                          font_weight: "600",
+                          text_color: "#1F2937",
+                          margins: {
+                            left: 24,
+                            bottom: 16,
+                          },
+                        },
+                        {
+                          type: "text",
+                          text: "Passionate designer with 8+ years experience in creating user-centric digital products. Specialized in UX/UI design and design system architecture.",
+                          font_size: 15,
+                          line_height: 22,
+                          text_color: "#64748B",
+                          margins: {
+                            left: 24,
+                            right: 24,
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      type: "container",
+                      orientation: "horizontal",
+                      width: {
+                        type: "match_parent",
+                      },
+                      height: {
+                        type: "wrap_content",
+                      },
+                      margins: {
+                        top: 16,
+                        left: 16,
+                        right: 16,
+                        bottom: 16,
+                      },
+                      item_spacing: 16,
+                      items: [
+                        {
+                          type: "container",
+                          width: {
+                            type: "match_parent",
+                            weight: 1,
+                          },
+                          height: {
+                            type: "fixed",
+                            value: 100,
+                          },
+                          background: [
+                            {
+                              type: "solid",
+                              color: "#FFFFFF",
+                            },
+                          ],
+                          border: {
+                            corner_radius: 12,
+                            stroke: {
+                              color: "#E2E8F0",
+                              width: 1,
+                            },
+                          },
+                          paddings: {
+                            left: 16,
+                            right: 16,
+                            top: 12,
+                            bottom: 12,
+                          },
+                          items: [
+                            {
+                              type: "text",
+                              text: "8+",
+                              font_size: 22,
+                              font_weight: "bold",
+                              text_color: "#4F46E5",
+                              alignment_horizontal: "center",
+                            },
+                            {
+                              type: "text",
+                              text: "Years Experience",
+                              font_size: 14,
+                              text_color: "#64748B",
+                              alignment_horizontal: "center",
+                              margins: {
+                                top: 6,
+                              },
+                            },
+                          ],
+                          margins: {
+                            right: 5,
+                          },
+                        },
+                        {
+                          type: "container",
+                          width: {
+                            type: "match_parent",
+                            weight: 1,
+                          },
+                          height: {
+                            type: "fixed",
+                            value: 100,
+                          },
+                          background: [
+                            {
+                              type: "solid",
+                              color: "#FFFFFF",
+                            },
+                          ],
+                          border: {
+                            corner_radius: 12,
+                            stroke: {
+                              color: "#E2E8F0",
+                              width: 1,
+                            },
+                          },
+                          paddings: {
+                            left: 16,
+                            right: 16,
+                            top: 12,
+                            bottom: 12,
+                          },
+                          items: [
+                            {
+                              type: "text",
+                              text: "50+",
+                              font_size: 22,
+                              font_weight: "bold",
+                              text_color: "#4F46E5",
+                              alignment_horizontal: "center",
+                            },
+                            {
+                              type: "text",
+                              text: "Projects Completed",
+                              font_size: 14,
+                              text_color: "#64748B",
+                              alignment_horizontal: "center",
+                              margins: {
+                                top: 6,
+                              },
+                            },
+                          ],
+                          margins: {
+                            left: 5,
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      },
+    ],
+    variables: [
+      {
+        type: "dict",
+        name: "local_palette",
+        value: {
+          bg_primary: {
+            name: "Primary background",
+            light: "#fff",
+            dark: "#000",
+          },
+          color0: {
+            name: "Secondary background",
+            light: "#eeeeee",
+            dark: "#000",
+          },
+        },
+      },
+      {
+        type: "string",
+        name: "name",
+        value: "John Smith",
+      },
+      {
+        type: "string",
+        name: "designation",
+        value: "Software Engineer",
+      },
+      {
+        type: "string",
+        name: "image",
+        value:
+          "https://xplore.objectstore.e2enetworks.net/1742204008582-6aa4d5d3a29b57fa.svg",
+      },
+    ],
+  },
+  templates: {},
+};

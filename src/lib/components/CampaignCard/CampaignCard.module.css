@@ -19,6 +19,8 @@
 } */
 .mainContent > strong {
   font-size: 15px;
+  display: block;
+  margin-bottom: 0.8rem;
 }
 .mainContent > img {
   width: 100%;
