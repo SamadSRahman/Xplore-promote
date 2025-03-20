@@ -198,6 +198,26 @@ export const updateProfile = async (id, jsonData) => {
     
   }
 
+  export const getChatBots = async () => {
+    try {
+      
+      const response = await fetch(
+        "https://xplr.live/api/v1/user/chatBot/getAllConfig",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            session: `${channel}`,
+          },
+        }
+      );
+      const data = await response.json();
+      return data.configurations;
+    } catch (error) {
+      console.error("Error fetching chat bots:", error);
+    }
+  };
+
 export const isVerifyOTPScreenAvailable = async(screenName)=>{
     const campaignId = window.location.pathname.split("/")[2]
     const screens = await getAllLayoutNames(campaignId);

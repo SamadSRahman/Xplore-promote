@@ -76,73 +76,59 @@
 
   function onClick(type: string): void {
     console.log("type line 92", type);
-    let phoneInput = state.getChild(`_new:_template_input`, true)
-    let countryCodeInput = state.getChild(`_new:_template_input`, true)
-   
+    
     const newChild = state.getChild(`_new:${type}`, true);
-    if (!newChild || !phoneInput || !countryCodeInput) {
+    if (!newChild) {
       return;
     }
-     phoneInput.props.json.hint_text = "Enter phone number"
-     
-     countryCodeInput.props.json.hint_text = "Enter country code"
-     countryCodeInput.props.json.text_variable = "country_code"
-     phoneInput.props.json.text_variable = "phone"
+    
     const childType = newChild.props.json.type;
     const childId = newChild.id;
-    if (childType === "_template_input" || childType === "select"||childType==="whatsapp_button"||childType==="sms_button"
-    ) {
+    
+    // Handle variables for different component types
+    if (childType === "_template_input" || childType === "select" || childType === "whatsapp_button" || childType === "sms_button") {
       const variableName = `${childId}_value`;
-
       const newList = $customVariables.slice();
-      if (childType === "_template_input" || childType === "select") {
-      newList.push({
-        id: state.genVariableId(),
-        name: variableName,
-        type: "string",
-        value: "",
-        isInput: true,
-      });
-    }
-
       
-      if(type==="whatsapp_button" || type==="sms_button"
-      ){
+      // Add variable for input and select components
+      if (childType === "_template_input" || childType === "select") {
         newList.push({
-        id: state.genVariableId(),
-        name: "phone",
-        type: "string",
-        value: "",
-        isInput: true,
-      },{
-        id: state.genVariableId(),
-        name: "country_code",
-        type: "string",
-        value: "",
-        isInput: true,
-      });
+          id: state.genVariableId(),
+          name: variableName,
+          type: "string",
+          value: "",
+          isInput: true,
+        });
       }
+      
+      // Add phone and country_code variables for whatsapp_button and sms_button
+      if (childType === "whatsapp_button" || childType === "sms_button") {
+        newList.push({
+          id: state.genVariableId(),
+          name: "phone",
+          type: "string",
+          value: "",
+          isInput: true,
+        }, {
+          id: state.genVariableId(),
+          name: "country_code",
+          type: "string",
+          value: "",
+          isInput: true,
+        });
+      }
+      
       updateList(newList);
-      if(childType === "select") {
+      
+      // Set the appropriate variable property
+      if (childType === "select") {
         newChild.props.json.value_variable = variableName;
       } else {
-      newChild.props.json.text_variable = variableName;
+        newChild.props.json.text_variable = variableName;
+      }
     }
-  }
-    state.pushCommand(
-      new AddLeafCommand({
-        parentId: $tree.id,
-        insertIndex: $tree.childs.length,
-        leaf: phoneInput,
-      })
-    );
-    state.pushCommand(
-      new AddLeafCommand({
-        parentId: $tree.id,
-        insertIndex: $tree.childs.length,
-        leaf: countryCodeInput,
-      })
-    );
+    
+    // Add the component to the tree
     state.pushCommand(
       new AddLeafCommand({
         parentId: $tree.id,
@@ -150,10 +136,40 @@
         leaf: newChild,
       })
     );
+    
+    // Add phone and country code inputs for whatsapp_button and sms_button
+    if (childType === "whatsapp_button" || childType === "sms_button") {
+      let phoneInput = state.getChild(`_new:_template_input`, true);
+      let countryCodeInput = state.getChild(`_new:_template_input`, true);
+      
+      if (phoneInput && countryCodeInput) {
+        // Configure the inputs
+        phoneInput.props.json.hint_text = "Enter phone number";
+        phoneInput.props.json.text_variable = "phone";
+        
+        countryCodeInput.props.json.hint_text = "Enter country code";
+        countryCodeInput.props.json.text_variable = "country_code";
+        
+        // Add the inputs to the tree
+        state.pushCommand(
+          new AddLeafCommand({
+            parentId: $tree.id,
+            insertIndex: $tree.childs.length,
+            leaf: phoneInput,
+          })
+        );
+        state.pushCommand(
+          new AddLeafCommand({
+            parentId: $tree.id,
+            insertIndex: $tree.childs.length,
+            leaf: countryCodeInput,
+          })
+        );
+      }
+    }
+    
     console.log("newChild", newChild);
-
     $selectedLeaf = findLeaf($tree, newChild.id) || null;
-
     rendererApi().focus();
   }
   const handleNavigate = ()=>{

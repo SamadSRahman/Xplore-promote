@@ -1139,272 +1139,223 @@
   }
 
   async function onDrop(event: DragEvent): Promise<void> {
-    if ($readOnly) {
-      return;
-    }
-    const campaignId = window.location.pathname.split("/")[2];
-    const movedChildId = event.dataTransfer?.getData("application/divnode");
-    const url = event.dataTransfer?.getData("text/uri-list");
-    console.log("movedChildId", url);
+  if ($readOnly) return;
 
-    if (!movedChildId) {
-      return;
-    }
+  const campaignId = window.location.pathname.split("/")[2];
+  const movedChildId = event.dataTransfer?.getData("application/divnode");
+  const url = event.dataTransfer?.getData("text/uri-list");
+  console.log("movedChildId", url);
 
-    const movedChild = state.getChild(movedChildId);
-    if (!movedChild) {
-      return;
-    }
-    console.log("renderer- movedChild", movedChild);
-    const childType = movedChild.props.json.type;
-    const childId = movedChild.id;
-    if (childType === "sms_button") {
-      const isOTPScreenAvailable =
-        await isVerifyOTPScreenAvailable("verify_otp_screen");
-      console.log("isOTPScreenAvailable:", isOTPScreenAvailable);
-      if (!isOTPScreenAvailable) {
-        const isScreenAdded = await createLayout(
-          JSON.stringify(smsVerifyOTPScreenJSON),
-          campaignId,
-          "verify_otp_screen",
-          false
-        );
-        if (isScreenAdded) {
-          alert("Verify OTP screen has been added to this campaign");
-        }
-      }
-    }
-    if (childType === "whatsapp_button") {
-      const isOTPScreenAvailable = await isVerifyOTPScreenAvailable(
-        "verify_whatsapp_otp_screen"
-      );
-      console.log("isOTPScreenAvailable:", isOTPScreenAvailable);
-      if (!isOTPScreenAvailable) {
-        const isScreenAdded = await createLayout(
-          JSON.stringify(whatsAppVerifyOTPScreenJSON),
-          campaignId,
-          "verify_whatsapp_otp_screen",
-          false
-        );
-        if (isScreenAdded) {
-          alert("Verify OTP screen has been added to this campaign");
-        }
-      }
+  if (!movedChildId) return;
+  const movedChild = state.getChild(movedChildId);
+  if (!movedChild) return;
 
-      // Add phone number and country code input fields for WhatsApp button
-      const phoneInput = state.getChild(`_new:_template_input`, true);
-      const countryCodeInput = state.getChild(`_new:_template_input`, true);
+  const childType = movedChild.props.json.type;
+  const childId = movedChild.id;
 
-      if (phoneInput && countryCodeInput) {
-        // Configure phone input
-        phoneInput.props.json.hint_text = "Enter phone number";
-        phoneInput.props.json.text_variable = "phone";
+  // For sms_button and whatsapp_button, ensure the OTP screen exists.
+  if (childType === "sms_button") {
+    await ensureOTPVerificationScreen(
+      "verify_otp_screen",
+      JSON.stringify(smsVerifyOTPScreenJSON),
+      campaignId,
+      "Verify OTP screen has been added to this campaign"
+    );
+  } else if (childType === "whatsapp_button") {
+    await ensureOTPVerificationScreen(
+      "verify_whatsapp_otp_screen",
+      JSON.stringify(whatsAppVerifyOTPScreenJSON),
+      campaignId,
+      "Verify OTP screen has been added to this campaign"
+    );
+  }
 
-        // Configure country code input
-        countryCodeInput.props.json.hint_text = "Enter country code";
-        countryCodeInput.props.json.text_variable = "country_code";
-
-        // Add variables for phone and country code
-        // const newList = $customVariables.slice();
-        // newList.push(
-        //   {
-        //     id: state.genVariableId(),
-        //     name: "phone",
-        //     type: "string",
-        //     value: "",
-        //     isInput: true,
-        //   },
-        //   {
-        //     id: state.genVariableId(),
-        //     name: "country_code",
-        //     type: "string",
-        //     value: "",
-        //     isInput: true,
-        //   }
-        // );
-        // updateList(newList);
-      }
-    }
-    if (childType === "image" && url) {
+  // Assign URLs for image, gif, or lottie components.
+  if (url) {
+    if (childType === "image") {
       movedChild.props.json.image_url = url;
-    }
-
-    if (childType === "gif" && url) {
+    } else if (childType === "gif") {
       movedChild.props.json.gif_url = url;
-    }
-    if (childType === "_template_lottie" && url) {
+    } else if (childType === "_template_lottie") {
       movedChild.props.json.lottie_params.lottie_url = url;
     }
-    if (childType === "_template_input" || childType === "select") {
-      const variableName = `${childId}_value`;
+  }
 
-      const newList = $customVariables.slice();
-      newList.push({
+  // For input/select components, create a new variable and bind it.
+  if (childType === "_template_input" || childType === "select") {
+    const variableName = `${childId}_value`;
+    const newList = $customVariables.slice();
+    newList.push({
+      id: state.genVariableId(),
+      name: variableName,
+      type: "string",
+      value: "",
+      isInput: true,
+    });
+    updateList(newList);
+
+    if (childType === "_template_input") {
+      movedChild.props.json.text_variable = variableName;
+    } else {
+      movedChild.props.json.value_variable = variableName;
+    }
+  }
+
+  // Determine drop target and positioning.
+  let leafTarget;
+  let insertIndex: number | null = null;
+  let targetIndex: number | null = null;
+  let changes;
+
+  if (bestDragTarget) {
+    const target = bestDragTarget;
+    bestDragTarget = null;
+    leafTarget = target.leaf;
+    if (target.target.targetIndex !== undefined) {
+      targetIndex = target.target.targetIndex;
+    } else if (target.target.index !== undefined) {
+      targetIndex = target.target.index;
+    } else {
+      return;
+    }
+    insertIndex = targetIndex;
+    // Remove any preset margins.
+    delete movedChild.props.json.margins;
+  } else {
+    leafTarget = $tree;
+    insertIndex = $tree.childs.length;
+    const pageX = event.pageX - window.scrollX;
+    const pageY = event.pageY - window.scrollY;
+    const previewBbox = previewWrapper.getBoundingClientRect();
+
+    changes = [
+      { property: "alignment_horizontal", value: "left" },
+      { property: "alignment_vertical", value: "top" },
+      {
+        property: "margins",
+        value: {
+          top: Math.max(0, Math.round(pageY - previewBbox.top - 20)),
+          left: Math.max(0, Math.round(pageX - previewBbox.left - 20)),
+        },
+      },
+    ];
+  }
+
+  if (!leafTarget) return;
+  if (treeLeafContains(movedChild, leafTarget)) return;
+
+  const deleteIndex = movedChild.parent
+    ? movedChild.parent.childs.indexOf(movedChild)
+    : -1;
+  // Adjust insertIndex if moving within the same parent.
+  if (movedChild.parent && insertIndex !== null && insertIndex > deleteIndex) {
+    insertIndex--;
+  }
+
+  // If the node is already part of the tree, move it.
+  if (movedChild.parent) {
+    state.pushCommand(
+      new MoveLeafCommand(state, {
+        newParentId: leafTarget.id,
+        insertIndex,
+        leafId: movedChild.id,
+        changes,
+      })
+    );
+  } else {
+    if (changes) {
+      changes.forEach(({ property, value }) => {
+        setObjectProperty(movedChild.props.json, property, value);
+      });
+    }
+    state.pushCommand(
+      new AddLeafCommand({
+        parentId: leafTarget.id,
+        insertIndex,
+        leaf: movedChild,
+      })
+    );
+
+    // For sms or WhatsApp buttons, add phone and country code input fields.
+    if (childType === "sms_button" || childType === "whatsapp_button") {
+      addPhoneAndCountryInputs(leafTarget.id, insertIndex);
+    }
+  }
+
+  tick().then(() => {
+    $selectedLeaf = findLeaf($tree, movedChild.id) || null;
+    root.focus({ preventScroll: true });
+  });
+}
+
+// Helper: Checks for an OTP screen and creates one if needed.
+async function ensureOTPVerificationScreen(
+  screenType: string,
+  screenJSON: string,
+  campaignId: string,
+  alertMessage: string
+): Promise<void> {
+  const isAvailable = await isVerifyOTPScreenAvailable(screenType);
+  console.log("isOTPScreenAvailable:", isAvailable);
+  if (!isAvailable) {
+    const isScreenAdded = await createLayout(screenJSON, campaignId, screenType, false);
+    if (isScreenAdded) {
+      alert(alertMessage);
+    }
+  }
+}
+
+// Helper: Adds phone and country code input fields and variables.
+function addPhoneAndCountryInputs(parentId: string, insertIndex: number): void {
+  const phoneInput = state.getChild(`_new:_template_input`, true);
+  const countryCodeInput = state.getChild(`_new:_template_input`, true);
+  if (phoneInput && countryCodeInput) {
+    // Configure phone input.
+    phoneInput.props.json.hint_text = "Enter phone number";
+    phoneInput.props.json.text_variable = "phone";
+
+    // Configure country code input.
+    countryCodeInput.props.json.hint_text = "Enter country code";
+    countryCodeInput.props.json.text_variable = "country_code";
+
+    // Add input fields to the tree.
+    state.pushCommand(
+      new AddLeafCommand({
+        parentId,
+        insertIndex: insertIndex + 1,
+        leaf: phoneInput,
+      })
+    );
+    state.pushCommand(
+      new AddLeafCommand({
+        parentId,
+        insertIndex: insertIndex + 2,
+        leaf: countryCodeInput,
+      })
+    );
+
+    // Add variables for phone and country code.
+    const newList = $customVariables.slice();
+    newList.push(
+      {
         id: state.genVariableId(),
-        name: variableName,
+        name: "phone",
         type: "string",
         value: "",
         isInput: true,
-      });
-
-      updateList(newList);
-      if (childType === "_template_input") {
-        movedChild.props.json.text_variable = variableName;
-      } else {
-        movedChild.props.json.value_variable = variableName;
+      },
+      {
+        id: state.genVariableId(),
+        name: "country_code",
+        type: "string",
+        value: "",
+        isInput: true,
       }
-    }
-    let leafTarget;
-    let insertIndex: number | null = null;
-    let targetIndex: number | null = null;
-    let changes;
-    if (bestDragTarget) {
-      const target = bestDragTarget;
-      bestDragTarget = null;
-
-      leafTarget = target.leaf;
-      if (target.target.targetIndex !== undefined) {
-        targetIndex = target.target.targetIndex;
-      } else if (target.target.index !== undefined) {
-        insertIndex = target.target.index;
-      } else {
-        return;
-      }
-      delete movedChild.props.json.margins;
-    } else {
-      leafTarget = $tree;
-      insertIndex = $tree.childs.length;
-      const pageX = event.pageX - window.scrollX;
-      const pageY = event.pageY - window.scrollY;
-      const previewBbox = previewWrapper.getBoundingClientRect();
-
-      changes = [
-        {
-          property: "alignment_horizontal",
-          value: "left",
-        },
-        {
-          property: "alignment_vertical",
-          value: "top",
-        },
-        {
-          property: "margins",
-          value: {
-            top: Math.max(0, Math.round(pageY - previewBbox.top - 20)),
-            left: Math.max(0, Math.round(pageX - previewBbox.left - 20)),
-          },
-        },
-      ];
-    }
-
-    if (!leafTarget) {
-      return;
-    }
-
-    if (treeLeafContains(movedChild, leafTarget)) {
-      return;
-    }
-
-    const deleteIndex = movedChild.parent
-      ? movedChild.parent.childs.indexOf(movedChild)
-      : -1;
-
-    if (targetIndex !== null) {
-      insertIndex = targetIndex;
-    } else if (
-      movedChild.parent &&
-      movedChild.parent === leafTarget &&
-      insertIndex !== null &&
-      insertIndex > deleteIndex
-    ) {
-      --insertIndex;
-    } else {
-      insertIndex = leafTarget.childs.length;
-    }
-
-    if (movedChild.parent) {
-      state.pushCommand(
-        new MoveLeafCommand(state, {
-          newParentId: leafTarget.id,
-          insertIndex,
-          leafId: movedChild.id,
-          changes,
-        })
-      );
-    } else {
-      if (changes) {
-        changes.forEach(({ property, value }) => {
-          setObjectProperty(movedChild.props.json, property, value);
-        });
-      }
-
-      state.pushCommand(
-        new AddLeafCommand({
-          parentId: leafTarget.id,
-          insertIndex,
-          leaf: movedChild,
-        })
-      );
-
-      // Add phone and country code input fields if this is a WhatsApp button
-      if (childType === "whatsapp_button" || childType ==="sms_button") {
-        const phoneInput = state.getChild(`_new:_template_input`, true);
-        const countryCodeInput = state.getChild(`_new:_template_input`, true);
-
-        if (phoneInput && countryCodeInput) {
-          // Add phone input field
-          phoneInput.props.json.hint_text = "Enter phone number";
-
-          countryCodeInput.props.json.hint_text = "Enter country code";
-          // countryCodeInput.props.json.margins.top = 294; Not working properly
-          countryCodeInput.props.json.text_variable = "country_code";
-          phoneInput.props.json.text_variable = "phone";
-          state.pushCommand(
-            new AddLeafCommand({
-              parentId: leafTarget.id,
-              insertIndex: insertIndex + 1,
-              leaf: phoneInput,
-            })
-          );
-
-          // Add country code input field
-          state.pushCommand(
-            new AddLeafCommand({
-              parentId: leafTarget.id,
-              insertIndex: insertIndex + 2,
-              leaf: countryCodeInput,
-            })
-          );
-        }
-        const newList = $customVariables.slice();
-        newList.push(
-          {
-            id: state.genVariableId(),
-            name: "phone",
-            type: "string",
-            value: "",
-            isInput: true,
-          },
-          {
-            id: state.genVariableId(),
-            name: "country_code",
-            type: "string",
-            value: "",
-            isInput: true,
-          }
-        );
-        updateList(newList);
-      }
-    }
-
-    tick().then(() => {
-      $selectedLeaf = findLeaf($tree, movedChild.id) || null;
-
-      root.focus({
-        preventScroll: true,
-      });
-    });
+    );
+    updateList(newList);
   }
+}
+
 
   $: if ($customVariables && instance) {
     instance.$destroy();

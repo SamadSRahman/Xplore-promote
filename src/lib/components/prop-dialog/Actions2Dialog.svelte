@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import type { Action } from "@divkitframework/divkit/typings/common";
   import {
     LANGUAGE_CTX,
@@ -15,8 +15,9 @@
     type AppContext,
   } from "../../ctx/appContext";
   import type { ActionDesc } from "../../../lib";
-  import { sub } from "date-fns";
-
+  import { getChatBots } from "../../utils/svelteUtils";
+ 
+let chatbots: {value: string, text: string}[] = []
   const { l10n, lang } = getContext<LanguageContext>(LANGUAGE_CTX);
   const { state } = getContext<AppContext>(APP_CTX);
   const { customActions } = state;
@@ -45,6 +46,9 @@
       }));
   }
 
+
+
+
   export function show(props: Actions2DialogShowProps): void {
     callback = props.callback;
     target = props.target;
@@ -72,6 +76,15 @@
 
   function onClose(): void {
     isShown = false;
+  }
+
+  async function getAllChatbots(){
+   const options = await getChatBots();
+   chatbots = options.map((option: {name: string}) => ({
+     text: option.name,
+     value: option.name
+   }));
+   console.log("chatbots", chatbots);
   }
 
   interface variables {
@@ -318,6 +331,10 @@
       value.log_url = value.url;
     }
   }
+
+  onMount(() => {
+    getAllChatbots();
+  });
 </script>
 
 {#if isShown && target}
@@ -516,11 +533,7 @@
           <label for="adapter_name">
             <div class="actions2-dialog__label">Select adapter for chatbot</div>
             <Select
-              items={[
-                { value: "adapter1", text: "Adapter 1" },
-                { value: "adapter2", text: "Adapter 2" },
-                { value: "adapter3", text: "Adapter 3" },
-              ]}
+              items={chatbots}
               bind:value={value.model_name}
               theme="normal"
               size="medium"

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import TableComponent from "../TableComponent/TableComponent";
 import AddChatbotPopup from "../AddChatbotPopup/AddChatbotPopup";
 import styles from "./ChatbotSection.module.css";
-import useChatBotConfig from "../../utils/useChatBotConfig";
+import useConfig from "../../utils/useConfig";
 
 export default function ChatbotSection() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false)
   const [selectedConfig, setSelectedConfig] = useState(null)
  
-  const {chatBots, getChatBots} = useChatBotConfig();
+  const {chatBots, getChatBots} = useConfig();
 
   useEffect(()=>{
     getChatBots();

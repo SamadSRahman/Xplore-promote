@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IoIosSave, IoMdEye } from 'react-icons/io';
-import styles from './EditorPage.module.css';
-import { MdPublish } from "react-icons/md";
+
 import {
   addTemplatesSuffix,
   convertDictToPalette,
@@ -13,10 +11,7 @@ import {
 } from '../../lib'; // Adjust this import path as needed
 import useCampaign from '../../lib/utils/useCampaign'
 import useLayout from '../../lib/utils/useLayout';
-import ReactHeader from '../../lib/components/ReactHeader';
 import QuizStyleInputPopup from '../../components/QuizStyleInputPopup';
-import { isContactUs } from '../../lib/utils/services';
-import { contactUsJSON } from '../../lib/utils/splashScreenData';
 import PreviewScreen from '../../components/PreviewScreen';
 import { COMPONENT_PROPS } from '../../lib/data/componentProps';
 import useFonts from '../../lib/utils/useFonts';
@@ -25,7 +20,7 @@ const EditorPage = () => {
   const { campaignId, page } = useParams();
   const { getAllFonts } = useFonts()
   const { getCampaignById, currentLayout, layoutId, } = useCampaign();
-  const { updateLayout, createLayout, getAllLayout, getAllLayoutNames, screens } = useLayout();
+  const { updateLayout,  getAllLayoutNames,  } = useLayout();
   const navigate = useNavigate();
   const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
@@ -87,7 +82,7 @@ console.log("font family prop", fontFamilyProp);
       theme: 'dark',
       layout: [
         {
-          items: ['new-component'],
+          items: ['new-component', 'component-tree'],
           minWidth: leftRightWidth,
           weight:2,
         },
@@ -101,6 +96,7 @@ console.log("font family prop", fontFamilyProp);
           minWidth: leftRightWidth,
         },
       ],
+      
       // actionLogUrlVariable: 'on_click_log_url',
       paletteEnabled: true,
       cardLocales: [
