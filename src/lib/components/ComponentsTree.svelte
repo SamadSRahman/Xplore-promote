@@ -165,9 +165,120 @@
                 });
             }
         } else if (copy.isPressed(event) && $selectedLeaf) {
+            // Set in memory
             copiedLeaf.set($selectedLeaf);
-        } else if (paste.isPressed(event) && $selectedLeaf && $copiedLeaf && !$readOnly) {
-            state.pasteLeaf($copiedLeaf, $selectedLeaf);
+            
+            // Use system clipboard for component sharing
+            try {
+                // Create a simplified, serializable version of the component
+                const serializableComponent = {
+                    id: $selectedLeaf.id,
+                    type: $selectedLeaf.props.json.type,
+                    props: JSON.parse(JSON.stringify($selectedLeaf.props.json)), // Deep clone to remove circular references
+                };
+                
+                // Ensure the component has a type property for proper reconstruction
+                if (!serializableComponent.props.type) {
+                    serializableComponent.props.type = serializableComponent.type;
+                }
+                
+                // Write to system clipboard using stringified JSON
+                navigator.clipboard.writeText(JSON.stringify(serializableComponent, null, 2))
+                    .then(() => {
+                        console.log('Component copied to clipboard successfully');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy to clipboard:', err);
+                    });
+            } catch (error) {
+                console.error('Failed to serialize component for clipboard:', error);
+            }
+        } else if (paste.isPressed(event) && $selectedLeaf && !$readOnly) {
+            // Check if we have a component in memory first
+            const targetLeaf = $selectedLeaf;
+            if (!targetLeaf) return;
+            
+            if ($copiedLeaf) {
+                state.pasteLeaf($copiedLeaf, targetLeaf);
+            } 
+            // If not, try to get from clipboard
+            else {
+                navigator.clipboard.readText()
+                    .then(text => {
+                        try {
+                            console.log('Clipboard content:', text);
+                            const parsedComponent = JSON.parse(text);
+                            
+                            // Detect and validate component data format
+                            let clipboardLeaf: TreeLeaf;
+                            
+                            // Case 1: Full leaf structure (from copying JSON)
+                            if (parsedComponent.props && parsedComponent.props.json) {
+                                clipboardLeaf = {
+                                    id: parsedComponent.id || state.genId(),
+                                    childs: [],
+                                    props: parsedComponent.props,
+                                    parent: undefined
+                                };
+                            } 
+                            // Case 2: Simple component with props object
+                            else if (parsedComponent.props || parsedComponent.type) {
+                                clipboardLeaf = {
+                                    id: parsedComponent.id || state.genId(),
+                                    childs: [],
+                                    props: {
+                                        json: parsedComponent.props || {}
+                                    },
+                                    parent: undefined
+                                };
+                                
+                                // Ensure we have a type property
+                                if (!clipboardLeaf.props.json.type && parsedComponent.type) {
+                                    clipboardLeaf.props.json.type = parsedComponent.type;
+                                }
+                                
+                                // If the component itself is the props
+                                if (!parsedComponent.props && parsedComponent.type) {
+                                    clipboardLeaf.props.json = parsedComponent;
+                                }
+                            }
+                            // Case 3: Direct JSON object with type 
+                            else if (typeof parsedComponent === 'object') {
+                                clipboardLeaf = {
+                                    id: state.genId(),
+                                    childs: [],
+                                    props: {
+                                        json: parsedComponent
+                                    },
+                                    parent: undefined
+                                };
+                            }
+                            else {
+                                console.error('Invalid component data in clipboard:', parsedComponent);
+                                return;
+                            }
+                            
+                            // Validate that we have a type
+                            if (!clipboardLeaf.props.json.type) {
+                                console.error('Cannot paste: Component missing type property', clipboardLeaf);
+                                return;
+                            }
+                            
+                            console.log('Pasting component from clipboard:', clipboardLeaf);
+                            
+                            // Set in memory first so it's available for future pastes
+                            copiedLeaf.set(clipboardLeaf);
+                            
+                            // Paste the component
+                            state.pasteLeaf(clipboardLeaf, targetLeaf);
+                        } catch (error) {
+                            console.error('Failed to parse clipboard content:', error, text);
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Failed to read from clipboard:', err);
+                    });
+            }
         } else {
             return;
         }
@@ -376,10 +487,95 @@
         } else if (event.detail.action === 'duplicate') {
             onChildDuplicate(event);
         } else if (event.detail.action === 'copy') {
-            copiedLeaf.set(event.detail.leaf);
+            const leaf = event.detail.leaf;
+            if (leaf) {
+                copiedLeaf.set(leaf);
+            }
         } else if (event.detail.action === 'paste') {
+            // Check if we have a component in memory first
+            const targetLeaf = event.detail.leaf;
+            if (!targetLeaf) return;
+            
             if ($copiedLeaf) {
-                state.pasteLeaf($copiedLeaf, event.detail.leaf);
+                state.pasteLeaf($copiedLeaf, targetLeaf);
+            } 
+            // If not, try to get from clipboard
+            else {
+                navigator.clipboard.readText()
+                    .then(text => {
+                        try {
+                            console.log('Clipboard content:', text);
+                            const parsedComponent = JSON.parse(text);
+                            
+                            // Detect and validate component data format
+                            let clipboardLeaf: TreeLeaf;
+                            
+                            // Case 1: Full leaf structure (from copying JSON)
+                            if (parsedComponent.props && parsedComponent.props.json) {
+                                clipboardLeaf = {
+                                    id: parsedComponent.id || state.genId(),
+                                    childs: [],
+                                    props: parsedComponent.props,
+                                    parent: undefined
+                                };
+                            } 
+                            // Case 2: Simple component with props object
+                            else if (parsedComponent.props || parsedComponent.type) {
+                                clipboardLeaf = {
+                                    id: parsedComponent.id || state.genId(),
+                                    childs: [],
+                                    props: {
+                                        json: parsedComponent.props || {}
+                                    },
+                                    parent: undefined
+                                };
+                                
+                                // Ensure we have a type property
+                                if (!clipboardLeaf.props.json.type && parsedComponent.type) {
+                                    clipboardLeaf.props.json.type = parsedComponent.type;
+                                }
+                                
+                                // If the component itself is the props
+                                if (!parsedComponent.props && parsedComponent.type) {
+                                    clipboardLeaf.props.json = parsedComponent;
+                                }
+                            }
+                            // Case 3: Direct JSON object with type 
+                            else if (typeof parsedComponent === 'object') {
+                                clipboardLeaf = {
+                                    id: state.genId(),
+                                    childs: [],
+                                    props: {
+                                        json: parsedComponent
+                                    },
+                                    parent: undefined
+                                };
+                            }
+                            else {
+                                console.error('Invalid component data in clipboard:', parsedComponent);
+                                return;
+                            }
+                            
+                            // Validate that we have a type
+                            if (!clipboardLeaf.props.json.type) {
+                                console.error('Cannot paste: Component missing type property', clipboardLeaf);
+                                return;
+                            }
+                            
+                            console.log('Pasting component from clipboard:', clipboardLeaf);
+                            
+                            // Set in memory first so it's available for future pastes
+                            copiedLeaf.set(clipboardLeaf);
+                            
+                            // Paste the component
+                            state.pasteLeaf(clipboardLeaf, targetLeaf);
+                        } catch (error) {
+                            console.error('Failed to parse clipboard content:', error, text);
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Failed to read from clipboard:', err);
+                    });
             }
         }
     }

@@ -6,7 +6,7 @@ import CampaignsGrid from '../../lib/components/CampaignsGrid/CampaignsGrid';
 import AccountSection from '../../lib/components/AccountSection/AccountSection';
 import ProfileSection from '../../lib/components/ProfileSection/ProfileSection';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import FontsList from '../../lib/components/FontsList/FontsList';
+// import FontsList from '../../lib/components/FontsList/FontsList';
 import { FiLogOut } from "react-icons/fi";
 import useAdmin from '../../lib/utils/useAdmin';
 
@@ -15,8 +15,8 @@ export default function NewCampaigns() {
   const [searchParams, setSearchParams] = useSearchParams();
   // Derive the selected tab from the query param, default to "Campaigns"
   const selectedTab = searchParams.get('tab') || 'Campaigns';
-  const tabs = ["Campaigns", "Profiles", "Accounts", "Fonts"];
-  const [selectedFont, setSelectedFont] = useState({});
+  const tabs = ["Campaigns", "Profiles", "Accounts"];
+  // const [selectedFont, setSelectedFont] = useState({});
   const [isPopupOpen, setIsPopupOpen] = useState(false);
    const popupRef = useRef(null);
    const {logoutUser} = useAdmin();
@@ -79,7 +79,7 @@ useEffect(() => {
         {selectedTab === "Campaigns" && <CampaignsGrid />}
         {selectedTab === "Profiles" && <ProfileSection/>}
         {selectedTab === "Accounts" && <AccountSection/>}
-        {selectedTab === "Fonts" && <FontsList selectedFont={selectedFont} setSelectedFont={setSelectedFont}/>}
+        {/* {selectedTab === "Fonts" && <FontsList selectedFont={selectedFont} setSelectedFont={setSelectedFont}/>} */}
       </div>
     </div>
   );

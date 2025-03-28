@@ -25,6 +25,13 @@ let screenName = "";
         return;
       }
       if (screenName.length > 5) {
+        // Check for special characters that could affect routing
+        const invalidChars = /[\/\\?%*:|"<>]/;
+        if (invalidChars.test(screenName)) {
+          alert("Screen name cannot contain special characters like /, \\, ?, %, *, :, |, \", <, or >");
+          return;
+        }
+
         const segments = window.location.pathname.split("/");
         
         // You can replace the JSON below with your blankBackgroundJSON.
@@ -46,8 +53,6 @@ let screenName = "";
       <div class="headers">
         <span>Add new screen</span>
         <button class="close-button" on:click={onClose} aria-label="Close">
-          <!-- <IoMdClose size={24} /> -->
-           <!-- ❌ -->
             <img src={closeIcon} alt="">
         </button>
       </div>
@@ -78,7 +83,7 @@ let screenName = "";
     .popup {
       background: #fff;
       border-radius: 8px;
-      padding: 1.5rem;
+      /* padding: 1rem; */
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       width: 400px;
       max-width: 90%;
@@ -90,10 +95,19 @@ let screenName = "";
       font-size: 1.25rem;
       font-weight: bold;
       margin-bottom: 1rem;
+      padding:0.8rem
+    }
+    .content{
+      padding: 1rem;
+      gap:0.8rem;
+
     }
     .close-button {
       cursor: pointer;
       background-color: transparent;
+    }
+    .close-button > img{
+      width: 1.4rem;
     }
     .content label {
       display: block;
@@ -108,11 +122,13 @@ let screenName = "";
       border-radius: 4px;
       margin-bottom: 1rem;
       background-color: #F5F5F5;
+      outline: none;
     }
     .btn-container{
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      width: 100%;
     }
     
     .submit-button, .cancel-button {
@@ -124,10 +140,22 @@ let screenName = "";
       cursor: pointer;
       border: none;
       width: 100%;
+      min-width: fit-content;
       height: 2.5rem;
+      transition: all 0.2s ease-in-out;
     }
     .cancel-button{
       background-color: #595959;
+    }
+    .submit-button:hover {
+      background-color: #2B8CD9;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(57, 166, 245, 0.2);
+    }
+    .cancel-button:hover {
+      background-color: #404040;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(89, 89, 89, 0.2);
     }
   </style>
   

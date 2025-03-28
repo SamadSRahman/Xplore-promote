@@ -4,6 +4,7 @@ import styles from './AccountSection.module.css';
 import ChatbotSection from '../ChatbotSection/ChatbotSection';
 import SmsSection from '../SmsSection/SmsSection';
 import WhatsAppSection from '../WhatsAppSection/WhatsAppSection';
+import PaymentGatewaySection from '../../components/PaymentGatewaySection'
 
 export default function AccountSection() {
     console.log('AccountSection mounted');
@@ -51,7 +52,7 @@ export default function AccountSection() {
                 {selectedSection === "Chatbot" && <ChatbotSection />}
                 {selectedSection === "SMS" && <SmsSection />}
                 {selectedSection === "WhatsApp" && <WhatsAppSection/>}
-                {selectedSection === "Payment Gateways" && <div>Payment Gateways content goes here</div>}
+                {selectedSection === "Payment Gateways" && <PaymentGatewaySection/>}
             </div>
         </div>
     );

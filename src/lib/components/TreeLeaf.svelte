@@ -78,10 +78,35 @@
         enabled: Boolean(leaf.parent),
         callback() {
             dispatch('action', { action: 'copy', leaf, node });
+            // Use system clipboard for component sharing
+            try {
+                // Create a simplified, serializable version of the component
+                const serializableComponent = {
+                    id: leaf.id,
+                    type: leaf.props.json.type,
+                    props: JSON.parse(JSON.stringify(leaf.props.json)), // Deep clone to remove circular references
+                };
+                
+                // Ensure the component has a type property for proper reconstruction
+                if (!serializableComponent.props.type) {
+                    serializableComponent.props.type = serializableComponent.type;
+                }
+                
+                // Write to system clipboard using stringified JSON
+                navigator.clipboard.writeText(JSON.stringify(serializableComponent, null, 2))
+                    .then(() => {
+                        console.log('Component copied to clipboard successfully');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy to clipboard:', err);
+                    });
+            } catch (error) {
+                console.error('Failed to serialize component for clipboard:', error);
+            }
         }
     }, {
         text: $l10nString('pasteComponent'),
-        enabled: Boolean($copiedLeaf),
+        enabled: true, // Always enable since we can't check clipboard content beforehand
         callback() {
             dispatch('action', { action: 'paste', leaf, node });
         }
@@ -171,6 +196,8 @@
                 return leaf;
             }
         });
+        
+        // Remove localStorage restoration since we're using clipboard now
     });
 
     onDestroy(() => {
@@ -265,6 +292,7 @@
 
 {#if expanded}
     <div class="tree-leaf__children" transition:slide|local>
+        
         {#each leaf.childs as child (child.id)}
             <svelte:self
                 leaf={child}

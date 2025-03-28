@@ -10,12 +10,16 @@ import { useNavigate } from "react-router-dom";
 import DeleteAlert from "../DeleteAlert/DeleteAlert";
 import { Loader } from "rsuite";
 import useLayout from "../../utils/useLayout";
+import share from '../../../assets/share.svg'
+import ShareCampaignPopup from "../ShareCampaignPopup"
+
 
 export default function CampaignCard({ campaign, onDelete }) {
   const [isPopupVisble, setIsPopupVisible] = useState(false);
   const [isQrPopupVisible, setIsQrPopupVisible] = useState(false);
   const [isDeleteAlertVisible, setIsDeleteAlertVisible] = useState(false);
   const [isLoadScreenVisible, setIsLoadScreenVisible] = useState(false);
+  const [isSharePopupVisible, setIsSharePopupVisible] = useState(false)
   const {addDefaultLayouts} = useLayout()
   const popupRef = useRef(null);
   const navigate = useNavigate();
@@ -58,9 +62,14 @@ export default function CampaignCard({ campaign, onDelete }) {
       setIsLoadScreenVisible(false);
     }
   }
-
+ 
   return (
     <div className={styles.container}     >
+      {
+        isSharePopupVisible && (<ShareCampaignPopup
+          campaignId={campaign.campaignID}
+          onClose={()=>setIsSharePopupVisible(false)}/>)
+      }
       {isDeleteAlertVisible && (
         <DeleteAlert
           title={`Delete ${campaign.name} campaign?`}
@@ -108,12 +117,17 @@ export default function CampaignCard({ campaign, onDelete }) {
             <img src={browseIcon} alt="" />
             Edit Layout
           </button>
+          <button
+            onClick={()=>setIsSharePopupVisible(true)}
+          >
+            <img style={{width:'0.8rem'}} src={share} alt="" />
+            Share Campaign
+          </button>
           <button onClick={() => setIsQrPopupVisible(true)}>
             <img src={qrcodeIcon} alt="" />
             Get QR Code
           </button>
           <button
-            // onClick={() => onDelete(campaign.campaignID, campaign.name)}
             onClick={handleDelete}
           >
             <img src={deleteIcon} alt="" />

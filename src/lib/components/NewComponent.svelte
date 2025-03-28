@@ -19,6 +19,7 @@
   import AssetsStore from "./AssetsStore.svelte";
   import Screens from "./Screens.svelte";
   import Text from "./controls/Text.svelte";
+  import FontList from "./FontList.svelte";
 
   onMount(() => {
     import("../../webComponents/AssetsNavbarWebWrapper");
@@ -47,7 +48,7 @@
       description: it.description,
     };
   });
-  let activeSection : "design"|"assets"|"screens" = "design";
+  let activeSection : "design"|"assets"|"screens"|"fonts" = "design";
 
   const extraItems = additionalComponentsList
     .filter((it) => it.type === "input") // Filter items with type 'input'
@@ -197,6 +198,7 @@
       <button on:click={()=>activeSection="design"} class= {activeSection==="design"? "navbar-button-active":"navbar-button-inactive"} >Design</button>
       <button on:click={()=>activeSection="assets"}  class= {activeSection==="assets"? "navbar-button-active":"navbar-button-inactive"}>Assets</button>
       <button on:click={()=>activeSection="screens"}  class= {activeSection==="screens"? "navbar-button-active":"navbar-button-inactive"}>Screens</button>
+      <button on:click={()=>activeSection="fonts"}  class= {activeSection==="fonts"? "navbar-button-active":"navbar-button-inactive"}>Fonts</button>
     </div>
     <!-- <asset-navbar-web-component component-type={"AssetsNavber"}></asset-navbar-web-component> -->
     <!-- <Spoiler2 theme="props"> -->
@@ -209,6 +211,10 @@
     {#if activeSection==="screens"}
     <Screens/>
     {/if}
+    {#if activeSection==="fonts"}
+    <FontList/>
+    {/if}
+
     {#if activeSection==="design"}
     <div class="search-wrapper">
       <Text
