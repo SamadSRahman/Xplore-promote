@@ -55,8 +55,33 @@ export default function useShareCampaign() {
       console.error(error);
     }
   };
+
+  const handleRemoveAccess = async (userId, campaignId) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/v1/campaign/removeAccess`,
+            {
+                userId,
+                campaignId
+            },
+            {
+                headers:{
+                    Authorization: `Bearer ${token}`,
+                    session:session
+                }
+            }
+        );
+        console.log("response:", response.data);
+        return response.data
+        
+    } catch (error) {
+        console.error(error);
+        
+    }
+    
+  }
   return {
     userLogin,
     fetchSharedUsers,
+    handleRemoveAccess,
   };
 }

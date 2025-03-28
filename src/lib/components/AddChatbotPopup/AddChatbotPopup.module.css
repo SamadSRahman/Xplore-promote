@@ -108,3 +108,56 @@ background-color: #595959;
     color: #666;
     padding: 2px 0;
   }
+  .userList{
+    width: 100%;
+    color: black;
+  }
+  .userList>h6{
+    margin-bottom: 1rem;
+  }
+  .ownerSection{
+   
+    margin: 1rem 0;
+  }
+  .ownerCard, .userCard{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 0.6rem;
+    background-color: #F5F5F5;
+  }
+  .ownerCard>img, .leftSection>img{
+    width: 1.5rem;
+  }
+
+  .ownerCard>span{
+    color: #7D7D7D;
+    background-color: white;
+    font-size: 0.7rem;
+    padding: 0.2rem;
+    border-radius: 0.6rem;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+  }
+  .userCard{
+    border: 1px solid #ccc;
+background: #FFF;
+box-shadow: 2.659px 2.659px 15.954px 0px rgba(178, 178, 178, 0.20);
+justify-content: space-between;
+  }
+  .leftSection{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .userCard>button{
+    justify-self: flex-end;
+    background-color: #595959;
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.5rem;
+    color: white;
+    font-size: 0.8rem;
+  }

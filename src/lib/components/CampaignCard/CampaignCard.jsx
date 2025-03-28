@@ -10,17 +10,17 @@ import { useNavigate } from "react-router-dom";
 import DeleteAlert from "../DeleteAlert/DeleteAlert";
 import { Loader } from "rsuite";
 import useLayout from "../../utils/useLayout";
-import share from '../../../assets/share.svg'
-import ShareCampaignPopup from "../ShareCampaignPopup"
-
+import share from "../../../assets/share.svg";
+import ShareCampaignPopup from "../ShareCampaignPopup";
+import placeholderImg from "../../../assets/placeholder-image.png";
 
 export default function CampaignCard({ campaign, onDelete }) {
   const [isPopupVisble, setIsPopupVisible] = useState(false);
   const [isQrPopupVisible, setIsQrPopupVisible] = useState(false);
   const [isDeleteAlertVisible, setIsDeleteAlertVisible] = useState(false);
   const [isLoadScreenVisible, setIsLoadScreenVisible] = useState(false);
-  const [isSharePopupVisible, setIsSharePopupVisible] = useState(false)
-  const {addDefaultLayouts} = useLayout()
+  const [isSharePopupVisible, setIsSharePopupVisible] = useState(false);
+  const { addDefaultLayouts } = useLayout();
   const popupRef = useRef(null);
   const navigate = useNavigate();
   const togglePopup = (e) => {
@@ -54,22 +54,23 @@ export default function CampaignCard({ campaign, onDelete }) {
         await addDefaultLayouts(campaign.campaignID);
       }
       setIsLoadScreenVisible(false);
-      localStorage.setItem("currentCampaign",campaign.name )
-      localStorage.setItem("currentCampaignCode",campaign.shortCode )
+      localStorage.setItem("currentCampaign", campaign.name);
+      localStorage.setItem("currentCampaignCode", campaign.shortCode);
       navigate(`/editor/${campaign.campaignID}/splash_screen`);
     } catch (error) {
       console.error("Error navigating to editor:", error);
       setIsLoadScreenVisible(false);
     }
-  }
- 
+  };
+
   return (
-    <div className={styles.container}     >
-      {
-        isSharePopupVisible && (<ShareCampaignPopup
+    <div className={styles.container}>
+      {isSharePopupVisible && (
+        <ShareCampaignPopup
           campaignId={campaign.campaignID}
-          onClose={()=>setIsSharePopupVisible(false)}/>)
-      }
+          onClose={() => setIsSharePopupVisible(false)}
+        />
+      )}
       {isDeleteAlertVisible && (
         <DeleteAlert
           title={`Delete ${campaign.name} campaign?`}
@@ -87,21 +88,35 @@ export default function CampaignCard({ campaign, onDelete }) {
         onClose={() => setIsQrPopupVisible(false)}
         shortCode={campaign.shortCode}
       />
-    {isLoadScreenVisible &&  <div className={styles.loadingScreen}>
-      <Loader size="md" content="Loading Screens..."/> 
-      </div>}
-     <div className={styles.menuIcon} onClick={(e) => {
-        e.stopPropagation();
-        togglePopup(e);
-      }}>
+      {isLoadScreenVisible && (
+        <div className={styles.loadingScreen}>
+          <Loader size="md" content="Loading Screens..." />
+        </div>
+      )}
+      <div
+        className={styles.menuIcon}
+        onClick={(e) => {
+          e.stopPropagation();
+          togglePopup(e);
+        }}
+      >
         <img src={threeDotsIcon} alt="menu" />
       </div>
-      <div 
+      <div
         className={styles.mainContent}
-        onClick={() => window.open(`https://xplr.live/${campaign.shortCode}`, '_blank')}
+        onClick={() =>
+          window.open(`https://xplr.live/${campaign.shortCode}`, "_blank")
+        }
       >
         {/* Keep your existing content here */}
-        <img src={campaign.images[0].url} alt="" />
+        <img
+          src={campaign.images?.[0]?.url || placeholderImg}
+          alt="Campaign visual"
+          onError={(e) => {
+            e.target.src = placeholderImg; // Fallback when image fails to load
+            e.target.style.objectFit = "contain"; // Adjust styling for placeholder
+          }}
+        />
         <strong>{campaign.name}</strong>
         <span className={styles.date}>
           {convertDate(campaign.timing.startDate)} -{" "}
@@ -111,25 +126,19 @@ export default function CampaignCard({ campaign, onDelete }) {
 
       {isPopupVisble && (
         <div ref={popupRef} className={styles.popup}>
-          <button
-            onClick={handleNavigate}
-          >
+          <button onClick={handleNavigate}>
             <img src={browseIcon} alt="" />
             Edit Layout
           </button>
-          <button
-            onClick={()=>setIsSharePopupVisible(true)}
-          >
-            <img style={{width:'0.8rem'}} src={share} alt="" />
+          <button onClick={() => setIsSharePopupVisible(true)}>
+            <img style={{ width: "0.8rem" }} src={share} alt="" />
             Share Campaign
           </button>
           <button onClick={() => setIsQrPopupVisible(true)}>
             <img src={qrcodeIcon} alt="" />
             Get QR Code
           </button>
-          <button
-            onClick={handleDelete}
-          >
+          <button onClick={handleDelete}>
             <img src={deleteIcon} alt="" />
             Delete
           </button>
