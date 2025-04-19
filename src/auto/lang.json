@@ -475,6 +475,7 @@
         "components.lottie": "Lottie",
         "components.list": "List",
         "templates.chatbot": "Chatbot",
+        "templates.paymentGateway": "Payment Component", 
         "templates.whatsappLogin": "WhatsApp",
         "templates.smsLogin": "SMS",
         "templates.input": "Text field",

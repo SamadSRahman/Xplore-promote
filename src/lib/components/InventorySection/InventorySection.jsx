@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styles from './AccountSection.module.css';
-import ChatbotSection from '../ChatbotSection/ChatbotSection';
-import SmsSection from '../SmsSection/SmsSection';
-import WhatsAppSection from '../WhatsAppSection/WhatsAppSection';
-import PaymentGatewaySection from '../../components/PaymentGatewaySection'
+import React, { useEffect, useState } from "react";
+import styles from "../AccountSection/AccountSection.module.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import ProductsSection from '../ProductsSection/ProductsSection';
+import CollectionsSection from '../CollectionsSection/CollectionsSection';
 
-export default function AccountSection() {
-    const sections = ["Chatbot", "SMS", "WhatsApp", "Payment Gateways"];
+export default function InventorySection() {
+ 
+    const sections = ["Collections", "Products"];
     const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
-    const initialSection = queryParams.get('section') || "Chatbot";
+    const initialSection = queryParams.get('section') || "Collections";
     const [selectedSection, setSelectedSection] = useState(initialSection);
 
     useEffect(() => {
-      console.log('useEffect triggered');
       const params = new URLSearchParams(location.search);
       // Keep the existing tab parameter case
       const currentTab = params.get('tab');
@@ -27,12 +25,12 @@ export default function AccountSection() {
       navigate({ search: params.toString() }, { replace: true });
   }, [selectedSection, navigate, location.search]);
 
-    return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <h4>Keys</h4>
-            </div>
-            <div className={styles.tabsSection}>
+  return (
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h4>Inventory</h4>
+       </header>
+      <div className={styles.tabsSection}>
                 {sections.map((section) => (
                     <button
                         key={section}
@@ -47,12 +45,12 @@ export default function AccountSection() {
                     </button>
                 ))}
             </div>
-            <div className={styles.body}>
-                {selectedSection === "Chatbot" && <ChatbotSection />}
-                {selectedSection === "SMS" && <SmsSection />}
-                {selectedSection === "WhatsApp" && <WhatsAppSection/>}
-                {selectedSection === "Payment Gateways" && <PaymentGatewaySection/>}
-            </div>
-        </div>
-    );
+
+      <div className={styles.body}>
+
+        {selectedSection === "Collections" && <CollectionsSection/>}
+        {selectedSection === "Products" && <ProductsSection/>}
+      </div>
+    </div>
+  );
 }

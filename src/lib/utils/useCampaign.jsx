@@ -74,7 +74,6 @@ export default function useCampaign() {
             setLoading(false)
         }
     };
-
      
     const getmetadataCampaignById = async (id) => {
         console.log("API call triggered for meta data", id); 

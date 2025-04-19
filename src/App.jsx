@@ -6,6 +6,8 @@ import ThemeSelection from './pages/ThemeSelection/ThemeSelection.jsx';
 import Campaigns from './pages/Campaigns/Campaigns.jsx';
 import QRLogin from './pages/QrCode/QrPage.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy.jsx';
+import PricingPage from './pages/PricingPage/PricingPage.jsx';
+import PaymentStatus from './pages/PaymentStatus/PaymentStatus.jsx';
 import TermsAndConditions from './pages/Terms/Terms.jsx';
 import CampaignsForm from './pages/CreateCampaign/CreateCampaign.jsx';
 import PublishAndPreview from './pages/PublishAndPreview/PublishAndPreview.jsx';
@@ -70,6 +72,8 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
+              <Route path='/pricing' element={<PricingPage />} />
+              <Route path='/paymentStatus' element={<PaymentStatus />} />
               <Route path='/deleteInstructions' element={<DeleteInstructions />} />
               <Route path='/profileDesign/:userId' element={<ProfileDesign />} />
               <Route path='/publish/:campaignId' element={<PublishAndPreview />} />

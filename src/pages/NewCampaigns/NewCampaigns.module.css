@@ -27,11 +27,14 @@
     border-radius: 0.4rem;
     padding: 0.6rem;
     box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.30);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 .popup>button{
     background-color: #fff;
     display: flex;
-    align-items: center;
+    align-items: left;
     gap: 0.3rem;
     font-size: 12px;
 }

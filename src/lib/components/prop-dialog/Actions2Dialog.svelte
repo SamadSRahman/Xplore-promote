@@ -15,12 +15,22 @@
     type AppContext,
   } from "../../ctx/appContext";
   import type { ActionDesc } from "../../../lib";
-  import { getChatBots } from "../../utils/svelteUtils";
- 
-let chatbots: {value: string, text: string}[] = []
+  import {
+    assignPaymentConfigToCampaign,
+    assignWhatsAppConfigToCampaign,
+    getAllPaymentConfigs,
+    getAllWhatsAppConfigs,
+    getChatBots,
+  } from "../../utils/svelteUtils";
+
+  let chatbots: { value: string; text: string }[] = [];
+  let paymentConfigs: { value: string; text: string }[] = [];
+  let whatsAppConfigs: { value: string; text: string }[] = [];
   const { l10n, lang } = getContext<LanguageContext>(LANGUAGE_CTX);
   const { state } = getContext<AppContext>(APP_CTX);
   const { customActions } = state;
+
+  const campaignId = window.location.pathname.split("/")[2];
 
   $: if (isShown && !readOnly && callback) {
     if (!value.log_url) {
@@ -45,9 +55,6 @@ let chatbots: {value: string, text: string}[] = []
         value: screen.path,
       }));
   }
-
-
-
 
   export function show(props: Actions2DialogShowProps): void {
     callback = props.callback;
@@ -78,15 +85,37 @@ let chatbots: {value: string, text: string}[] = []
     isShown = false;
   }
 
-  async function getAllChatbots(){
-   const options = await getChatBots();
-   chatbots = options.map((option: {name: string}) => ({
-     text: option.name,
-     value: option.name
-   }));
-   console.log("chatbots", chatbots);
+  async function getAllChatbots() {
+    const options = await getChatBots();
+    chatbots = options.map((option: { name: string }) => ({
+      text: option.name,
+      value: option.name,
+    }));
+    console.log("chatbots", chatbots);
   }
 
+  async function getAllPaymentConfigurations() {
+    try {
+      const options = await getAllPaymentConfigs();
+      paymentConfigs = options.map((option: { name: string; id: string }) => ({
+        text: option.name,
+        value: option.id,
+      }));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async function getAllWhatsAppConfigurations() {
+    try {
+      const options = await getAllWhatsAppConfigs();
+      whatsAppConfigs = options.map((option: { name: string; id: string }) => ({
+        text: option.name,
+        value: option.id,
+      }));
+    } catch (error) {
+      console.error(error);
+    }
+  }
   interface variables {
     value: string;
     text: string;
@@ -262,6 +291,7 @@ let chatbots: {value: string, text: string}[] = []
     { value: "chatbot", text: "Chatbot" },
     { value: "whatsapp-login", text: "WhatsApp Login" },
     { value: "sms-integration", text: "SMS Login" },
+    { value: "payment-gateway", text: "Payment Gateway" },
   ].concat(
     $customActions.map((actionDesc, i) => ({
       value: `custom:${i}`,
@@ -334,6 +364,8 @@ let chatbots: {value: string, text: string}[] = []
 
   onMount(() => {
     getAllChatbots();
+    getAllPaymentConfigurations();
+    getAllWhatsAppConfigurations();
   });
 </script>
 
@@ -604,12 +636,32 @@ let chatbots: {value: string, text: string}[] = []
               size="medium"
               disabled={readOnly}
               on:change={(e) => {
-                value.url = `xplore-promote://whatsappOtpIntegration/${e.detail}${value.function==="verifyOtp"?"?otp=@{otp_value}":"?phone=@{phone}&country_code=@{country_code}"}`;
+                value.url = `xplore-promote://whatsappOtpIntegration/${e.detail}${value.function === "verifyOtp" ? "?otp=@{otp_value}" : "?phone=@{phone}&country_code=@{country_code}"}`;
                 value.log_url = value.function;
               }}
             />
           </label>
-            {#if value.function==="verifyOtp"}
+          {#if value.function === "getOtp"}
+            <div>
+              <label>
+                <div class="actions2-dialog__label">Select WhatsApp Config</div>
+                <Select
+                bind:value={value.config}
+                  items={whatsAppConfigs}
+                  theme="normal"
+                  size="medium"
+
+                  disabled={readOnly}
+                  on:change={(e) => {
+                    console.log(e.detail);
+                    
+                    assignWhatsAppConfigToCampaign(campaignId, e.detail)
+                  }}
+                />
+              </label>
+            </div>
+          {/if}
+          {#if value.function === "verifyOtp"}
             <div>
               <label>
                 <div class="actions2-dialog__label">
@@ -622,18 +674,18 @@ let chatbots: {value: string, text: string}[] = []
                   size="medium"
                   disabled={readOnly}
                   on:change={(e) => {
-                  value.url = `xplore-promote://whatsappOtpIntegration/${value.function==="verifyOtp"?`?otp=@{otp_value}&screen_name=${e.detail}`:"?phone=@{phone}&country_code=@{country_code}"}`;
-                  value.log_url = value.url;
+                    value.url = `xplore-promote://whatsappOtpIntegration/${value.function === "verifyOtp" ? `?otp=@{otp_value}&screen_name=${e.detail}` : "?phone=@{phone}&country_code=@{country_code}"}`;
+                    value.log_url = value.url;
                   }}
                 />
               </label>
             </div>
-            {/if}
+          {/if}
           <label for="url">
             <div class="actions2-dialog__label">URL</div>
             <Text
               id="webUrl"
-              value={`xplore-promote://whatsappOtpIntegration/${value.function}${value.function==="verifyOtp"?`?otp=@{otp_value}&screen_name=${value.screen_name}`:"?phone=@{phone}&country_code=@{country_code}"}`}
+              value={`xplore-promote://whatsappOtpIntegration/${value.function}${value.function === "verifyOtp" ? `?otp=@{otp_value}&screen_name=${value.screen_name}` : "?phone=@{phone}&country_code=@{country_code}"}`}
               disabled={true}
             />
           </label>
@@ -652,7 +704,7 @@ let chatbots: {value: string, text: string}[] = []
               size="medium"
               disabled={readOnly}
               on:change={(e) => {
-                value.url = `xplore-promote://smsIntegration/${value.function}?provider=${e.detail}${value.function==="verifyOtp"?"&otp=@{otp_value}":"&phone=@{phone}&country_code=@{country_code}"}`;
+                value.url = `xplore-promote://smsIntegration/${value.function}?provider=${e.detail}${value.function === "verifyOtp" ? "&otp=@{otp_value}" : "&phone=@{phone}&country_code=@{country_code}"}`;
                 value.log_url = value.service;
               }}
             />
@@ -669,42 +721,60 @@ let chatbots: {value: string, text: string}[] = []
               size="medium"
               disabled={readOnly}
               on:change={(e) => {
-                value.url = `xplore-promote://smsIntegration/${e.detail}?provider=${value.service}${value.function==="verifyOtp"?"&otp=@{otp_value}":"&phone=@{phone}&country_code=@{country_code}"}`;
+                value.url = `xplore-promote://smsIntegration/${e.detail}?provider=${value.service}${value.function === "verifyOtp" ? "&otp=@{otp_value}" : "&phone=@{phone}&country_code=@{country_code}"}`;
                 value.log_url = value.function;
                 value.function = e.detail;
-                value.otp = "@{otp_value}"
-                value.phone = "@{phone}"
-                value.country_code = "@{country_code}"
+                value.otp = "@{otp_value}";
+                value.phone = "@{phone}";
+                value.country_code = "@{country_code}";
               }}
             />
           </label>
-          {#if value.function==="verifyOtp"}
-          <div>
-            <label>
-              <div class="actions2-dialog__label">
-                Select screen to redirect after OTP verification
-              </div>
-              <Select
-                items={updatedScreens}
-                bind:value={value.screen_name}
-                theme="normal"
-                size="medium"
-                disabled={readOnly}
-                on:change={(e) => {
-                value.url = `xplore-promote://smsIntegration/${value.service}?provider=${value.service}${value.function==="verifyOtp"?`&otp=@{otp_value}&screen_name=${value.screen_name}`:"&phone=@{phone}&country_code=@{country_code}"}`;
-                value.log_url = value.url;
-                }}
-              />
-            </label>
-          </div>
+          {#if value.function === "verifyOtp"}
+            <div>
+              <label>
+                <div class="actions2-dialog__label">
+                  Select screen to redirect after OTP verification
+                </div>
+                <Select
+                  items={updatedScreens}
+                  bind:value={value.screen_name}
+                  theme="normal"
+                  size="medium"
+                  disabled={readOnly}
+                  on:change={(e) => {
+                    value.url = `xplore-promote://smsIntegration/${value.service}?provider=${value.service}${value.function === "verifyOtp" ? `&otp=@{otp_value}&screen_name=${value.screen_name}` : "&phone=@{phone}&country_code=@{country_code}"}`;
+                    value.log_url = value.url;
+                  }}
+                />
+              </label>
+            </div>
           {/if}
           <label for="url">
             <div class="actions2-dialog__label">URL</div>
             <Text
               id="webUrl"
-              value={`xplore-promote://whatsappOtpIntegration/${value.function}?provider=${value.service}${value.function==="verifyOtp"?`&otp=@{otp_value}&screen_name=${value.screen_name}`:"&phone=@{phone}&country_code=@{country_code}"}`}
+              value={`xplore-promote://whatsappOtpIntegration/${value.function}?provider=${value.service}${value.function === "verifyOtp" ? `&otp=@{otp_value}&screen_name=${value.screen_name}` : "&phone=@{phone}&country_code=@{country_code}"}`}
               disabled={true}
-              
+            />
+          </label>
+        </div>
+      {:else if subtype === "payment-gateway"}
+        <div class="actions-field-container">
+          <label for="service">
+            <div class="actions2-dialog__label">Select Payment Config</div>
+            <Select
+              items={paymentConfigs}
+              bind:value={value.config}
+              theme="normal"
+              size="medium"
+              disabled={readOnly}
+              on:change={(e) => {
+                console.log(e.detail);
+                assignPaymentConfigToCampaign(campaignId, e.detail);
+
+                value.url = `xplore-promote://paymentGateway?productPrice=@{product.getString('price')}&productName=@{product.getString('title')}&productDesc=@{product.getString('description')}`;
+              }}
             />
           </label>
         </div>

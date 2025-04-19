@@ -1899,6 +1899,71 @@ export const namedTemplates: Record<string, TemplateDescription> = {
       },
     },
   },
+  _template_payment_gateway: {
+    nameKey: "templates.paymentGateway",
+    visible: true,
+    inShortList: true,
+    icon: chatbotIcon,
+    description: { en: "Payment Component" },
+    props: [
+      {
+        type: "group",
+        title: "buttonProps.title",
+        list: [
+          {
+            name: "props.text",
+            prop: "text",
+            type: "string",
+            default: "Button",
+            enableSources: true,
+          },
+          {
+            name: "props.actions",
+            prop: "actions",
+            type: "actions2",
+          },
+          {
+            name: "props.text_color",
+            prop: "text_color",
+            type: "color",
+            default: "#fff",
+            enableSources: true,
+          },
+        ],
+      },
+    ],
+    newNode: {
+      text: "Buy now",
+      animation_action: "none",
+      actions: [],
+      text_color: "#ffffff",
+      background: [
+        {
+          type: "solid",
+          color: "#000",
+        },
+      ],
+    },
+
+    template: {
+      type: "text",
+      text_alignment_horizontal: "center",
+      text_alignment_vertical: "center",
+      border: {
+        $corner_radius: "corners",
+      },
+      paddings: {
+        bottom: 18,
+        left: 18,
+        right: 18,
+        top: 18,
+      },
+    
+      width: {
+        type: "wrap_content",
+      },
+    },
+  },
 };
 
 export function isTemplate(name: string): boolean {

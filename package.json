@@ -60,6 +60,7 @@
   },
   "dependencies": {
     "@11labs/client": "0.0.4",
+    "@cashfreepayments/cashfree-js": "1.0.5",
     "@emotion/react": "11.13.3",
     "@emotion/styled": "11.13.0",
     "@fingerprintjs/fingerprintjs-pro-react": "2.6.3",

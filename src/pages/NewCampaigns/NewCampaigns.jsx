@@ -5,9 +5,12 @@ import logo from '../../assets/xplr.svg';
 import CampaignsGrid from '../../lib/components/CampaignsGrid/CampaignsGrid';
 import AccountSection from '../../lib/components/AccountSection/AccountSection';
 import ProfileSection from '../../lib/components/ProfileSection/ProfileSection';
+import InventorySection from '../../lib/components/InventorySection/InventorySection';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 // import FontsList from '../../lib/components/FontsList/FontsList';
 import { FiLogOut } from "react-icons/fi";
+import { HiOutlineCurrencyRupee } from "react-icons/hi";
+
 import useAdmin from '../../lib/utils/useAdmin';
 
 export default function NewCampaigns() {
@@ -15,7 +18,7 @@ export default function NewCampaigns() {
   const [searchParams, setSearchParams] = useSearchParams();
   // Derive the selected tab from the query param, default to "Campaigns"
   const selectedTab = searchParams.get('tab') || 'Campaigns';
-  const tabs = ["Campaigns", "Profiles", "Accounts"];
+  const tabs = ["Campaigns", "Profiles", "Accounts", "Inventory"];
   // const [selectedFont, setSelectedFont] = useState({});
   const [isPopupOpen, setIsPopupOpen] = useState(false);
    const popupRef = useRef(null);
@@ -60,6 +63,7 @@ useEffect(() => {
           <img src={logo} alt="logo" className={styles.logo} />
           <img src={profileIcon} alt="profile-icon" className={styles.profileIcon} onClick={togglePopup} />
           {isPopupOpen && <div ref={popupRef} className={styles.popup}>
+            <button onClick={()=>navigate("/pricing")}><HiOutlineCurrencyRupee size={19}/> Pricing</button>
             <button onClick={handleLogout}><FiLogOut size={16}/> Logout</button>
           </div>}
         </div>
@@ -79,6 +83,7 @@ useEffect(() => {
         {selectedTab === "Campaigns" && <CampaignsGrid />}
         {selectedTab === "Profiles" && <ProfileSection/>}
         {selectedTab === "Accounts" && <AccountSection/>}
+        {selectedTab === "Inventory" && <InventorySection/>}
         {/* {selectedTab === "Fonts" && <FontsList selectedFont={selectedFont} setSelectedFont={setSelectedFont}/>} */}
       </div>
     </div>
