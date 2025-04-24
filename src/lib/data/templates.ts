@@ -16,8 +16,7 @@ import otpIcon from "../../assets/otp-icon.svg";
 import productIcon from "../../assets/product.svg?url";
 
 import listIcon from "../../assets/list.svg.svg";
-import { COMPONENT_PROPS, type ComponentProperty } from "./componentProps";
-import useProducts from "../utils/useProducts";
+import {  type ComponentProperty } from "./componentProps";
 
 interface TemplateDescription {
   nameKey: string;
@@ -34,10 +33,7 @@ interface TemplateDescription {
 
 // Example of Action (can be further expanded as per your needs)
 
-const { getAllProducts } = useProducts();
 
-const products = (await getAllProducts()) || [];
-console.log("products 41", products);
 
 export const namedTemplates: Record<string, TemplateDescription> = {
   _template_lottie: {
@@ -2112,9 +2108,9 @@ export const namedTemplates: Record<string, TemplateDescription> = {
         type: "fixed",
         value: 180,
       },
-      product_name: products[0].name,
-      product_image: products[0].images[0].url,
-      product_price: products[0]?.ProductVariants[0]?.price,
+      product_name: "Your product",
+      product_image: "https://yastatic.net/s3/home/divkit/empty2.png",
+      product_price: "product price",
       background: [
         {
           type: "solid",
