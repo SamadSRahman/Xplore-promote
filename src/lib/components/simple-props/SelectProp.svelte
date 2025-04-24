@@ -27,6 +27,8 @@
         it => it.show === undefined ||
             evalCondition(processedJson, parentProcessedJson, it.show)
     );
+console.log("option",  options);
+console.log("filteredOption",  filteredOptions);
 
     const { l10nString } = getContext<LanguageContext>(LANGUAGE_CTX);
 

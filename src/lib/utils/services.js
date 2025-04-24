@@ -26,6 +26,16 @@ export const isContactUs = () => {
   return false;
 };
 
+export const convertData = (data) => {
+  return data.map(product => ({
+    name: product.name,
+    rawName: product.name,
+      value: product.id
+    })
+  );
+ 
+};
+
 export const fontWeights = [
   { text: "Light", weight: 300 },
   { text: "Regular", weight: 400 },

@@ -1168,6 +1168,44 @@ export const COMPONENT_PROPS: Record<string, ComponentProperty[]> = {
     },
   ],
   list: [...BASE_COMPONENT_PROPS],
+  productCard:[...BASE_COMPONENT_PROPS,
+    {
+      type: "group",
+      title: "productCardProps.title",
+      list: [
+        {
+          name: "props.product_id",
+          prop: "product_id",
+          type: "select",
+          options: [],
+          enableSources: true,
+          default: "",
+        },
+        {
+          name: "props.product_image",
+          prop: "product_image",
+          type: "file",
+          subtype: "image",
+          enableSources: true,
+        },
+        {
+          name: "props.product_name",
+          prop: "product_name",
+          type: "string",
+          enableTanker: true,
+          enableSources: true,
+        },
+        {
+          name: "props.product_price",
+          prop: "product_price",
+          type: "string",
+          enableTanker: true,
+          enableSources: true,
+        },
+       
+      ],
+    },
+  ],
 };
 
 export const ROOT_PROPS: ComponentProperty[] = [

@@ -13,9 +13,11 @@ import checkboxIcon from "../../assets/components/checkbox-icon.svg";
 import inputIcon from "../../assets/components/input-icon.svg";
 import whatsAppIcon from "../../assets/whatsapp-icon.svg";
 import otpIcon from "../../assets/otp-icon.svg";
+import productIcon from "../../assets/product.svg?url";
 
 import listIcon from "../../assets/list.svg.svg";
-import { type ComponentProperty } from "./componentProps";
+import { COMPONENT_PROPS, type ComponentProperty } from "./componentProps";
+import useProducts from "../utils/useProducts";
 
 interface TemplateDescription {
   nameKey: string;
@@ -32,7 +34,10 @@ interface TemplateDescription {
 
 // Example of Action (can be further expanded as per your needs)
 
-// Sample props data
+const { getAllProducts } = useProducts();
+
+const products = (await getAllProducts()) || [];
+console.log("products 41", products);
 
 export const namedTemplates: Record<string, TemplateDescription> = {
   _template_lottie: {
@@ -1958,10 +1963,282 @@ export const namedTemplates: Record<string, TemplateDescription> = {
         right: 18,
         top: 18,
       },
-    
+
       width: {
         type: "wrap_content",
       },
+    },
+  },
+  _template_product_card: {
+    nameKey: "templates.productCard",
+    visible: false,
+    inShortList: false,
+
+    icon: productIcon,
+    description: { en: "Product Card Component" },
+    props: [
+      {
+        type: "group",
+        title: "containerProps.title",
+        list: [
+          {
+            name: "props.orientation",
+            prop: "orientation",
+            type: "select",
+            default: "vertical",
+            options: [
+              {
+                name: "props.orientation_horizontal",
+                value: "horizontal",
+              },
+              {
+                name: "props.orientation_vertical",
+                value: "vertical",
+              },
+              {
+                name: "props.orientation_overlap",
+                value: "overlap",
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: "props.content_alignment",
+            type: "alignment",
+            horizontalProp: "content_alignment_horizontal",
+            verticalProp: "content_alignment_vertical",
+            orientationProp: "orientation",
+            isContent: true,
+          },
+          {
+            type: "group",
+            title: "props.actions",
+            list: [
+              {
+                name: "props.actions",
+                prop: "actions",
+                type: "actions2",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "group",
+        title: "productCardProps.title",
+        list: [
+          {
+            name: "props.product_name_color",
+            prop: "product_name_color",
+            type: "color",
+            default: "#000",
+          },
+          {
+            name: "props.product_price_color",
+            prop: "product_price_color",
+            type: "color",
+            default: "#000",
+          },
+          {
+            name: "props.preview",
+            prop: "preview",
+            type: "file",
+            subtype: "image_preview",
+            enableSources: true,
+          },
+          {
+            name: "props.image_scale",
+            prop: "scale",
+            type: "select",
+            default: "fill",
+            options: [
+              {
+                name: "props.scale_fit",
+                value: "fit",
+              },
+              {
+                name: "props.scale_fill",
+                value: "fill",
+              },
+              {
+                name: "props.scale_no_scale",
+                value: "no_scale",
+              },
+              {
+                name: "props.scale_stretch",
+                value: "stretch",
+              },
+            ],
+            enableSources: true,
+          },
+          {
+            name: "props.image_alignment",
+            type: "alignment",
+            horizontalProp: "content_alignment_horizontal",
+            verticalProp: "content_alignment_vertical",
+            enableSources: true,
+          },
+          {
+            name: "props.image_corner_radius",
+            prop: "image_corner_radius",
+            type: "integer",
+            min: 0,
+            max: 100,
+            default:0,
+            enableSources: true,
+          },
+          {
+            name: "props.product_name_text_size",
+            prop: "product_name_text_size",
+            type: "integer",
+            min: 0,
+            max: 100,
+            default: 17,
+          },
+          {
+            name: "props.product_price_text_size",
+            prop: "product_price_text_size",
+            type: "integer",
+            min: 0,
+            max: 100,
+            default: 17,
+          },
+        ],
+      },
+    ],
+    newNode: {
+      type: "container",
+      width:{
+        type: "fixed",
+        value: 180,
+      },
+      product_name: products[0].name,
+      product_image: products[0].images[0].url,
+      product_price: products[0]?.ProductVariants[0]?.price,
+      background: [
+        {
+          type: "solid",
+          color: "#F5F5F5",
+        },
+      ],
+      border: {
+        corner_radius: 10,
+      },
+      paddings: {
+        top: 10,
+        right: 10,
+        bottom: 10,
+        left: 10,
+      },
+      alignment_horizontal: "left",
+      alignment_vertical: "top",
+      margins: {
+        top: 148,
+        left: 99,
+      },
+      items: [
+        {
+          type: "image",
+          $image_url: "product_image",
+          width: {
+            type: "match_parent",
+            constrained: true,
+          },
+          border: {
+            $corner_radius: "image_corner_radius",
+          },
+          height: {
+            type: "fixed",
+            value: 175,
+          },
+          preload_required: true,
+        },
+        {
+          type: "text",
+          $text: "product_name",
+          $text_color: "product_name_color",
+          $font_size: "product_name_text_size",
+          width: {
+            type: "wrap_content",
+            constrained: true,
+          },
+          margins: {
+            top: 15,
+          },
+        },
+        {
+          type: "text",
+          $text: "product_price",
+          $text_color: "product_price_color",
+          $font_size: "product_price_text_size",
+          font_size: 15,
+          width: {
+            type: "wrap_content",
+            constrained: true,
+          },
+          margins: {
+            top: 10,
+          },
+        },
+      ],
+      content_alignment_horizontal: "center",
+      content_alignment_vertical: "center",
+    },
+
+    template: {
+      type: "container",
+      $product_id: "product_id",
+      background: [
+        {
+          type: "solid",
+          color: "F5F5F5",
+        },
+      ],
+      items: [
+        {
+          type: "image",
+          $image_url: "product_image",
+          width: {
+            type: "match_parent",
+            constrained: true,
+          },
+          border: {
+            $corner_radius: "image_corner_radius",
+          },
+          height: {
+            type: "fixed",
+            value: 175,
+          },
+          preload_required: true,
+        },
+        {
+          type: "text",
+          $text: "product_name",
+          $text_color: "product_name_color",
+          $font_size: "product_name_text_size",
+          width: {
+            type: "wrap_content",
+            constrained: true,
+          },
+          margins: {
+            top: 15,
+          },
+        },
+        {
+          type: "text",
+          $text: "product_price",
+          $text_color: "product_price_color",
+          $font_size: "product_price_text_size",
+          font_size: 15,
+          width: {
+            type: "wrap_content",
+            constrained: true,
+          },
+          margins: {
+            top: 10,
+          },
+        },
+      ],
     },
   },
 };

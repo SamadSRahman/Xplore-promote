@@ -1140,16 +1140,32 @@
 
   async function onDrop(event: DragEvent): Promise<void> {
   if ($readOnly) return;
+  console.log("event", event);
+  
+  //  const productJson = event.dataTransfer?.getData("application/json");
 
+  // if (productJson) {
+  //  try {
+  //     const product: Product = JSON.parse(productJson);
+  //     addProductLeaf(product);
+  //   } catch (_e) {
+  //     console.warn("Dropped data wasn’t a product:", _e);
+  //   }
+  //   return; // don’t run the rest of the asset/divnode logic
+  // }
   const campaignId = window.location.pathname.split("/")[2];
   const movedChildId = event.dataTransfer?.getData("application/divnode");
   const url = event.dataTransfer?.getData("text/uri-list");
-  console.log("movedChildId", url);
+
+
+  
+  console.log("movedChildId", movedChildId);
 
   if (!movedChildId) return;
   const movedChild = state.getChild(movedChildId);
   if (!movedChild) return;
-
+  console.log("movedChild", movedChild);
+  
   const childType = movedChild.props.json.type;
   const childId = movedChild.id;
 
@@ -1178,6 +1194,23 @@
       movedChild.props.json.gif_url = url;
     } else if (childType === "_template_lottie") {
       movedChild.props.json.lottie_params.lottie_url = url;
+    }
+  }
+
+    if(childType === "_template_product_card"){
+      const productData = JSON.parse(event.dataTransfer?.getData("text/plain")||"");
+      console.log("Product data", productData);
+        if(productData){
+      movedChild.props.json.product_name = productData.name
+      movedChild.props.json.product_image = productData.image
+      movedChild.props.json.product_price = `₹ ${productData.price}`
+      movedChild.props.json.product_id = productData.id
+      movedChild.props.json.actions = [
+        {
+          log_id:"product_card_action",
+          url:"xplore-promote://productCard?id="+productData.id,
+        }
+      ]
     }
   }
 

@@ -15,12 +15,15 @@ import QuizStyleInputPopup from '../../components/QuizStyleInputPopup';
 import PreviewScreen from '../../components/PreviewScreen';
 import { COMPONENT_PROPS } from '../../lib/data/componentProps';
 import useFonts from '../../lib/utils/useFonts';
+import useProducts from '../../lib/utils/useProducts';
+import { convertData } from '../../lib/utils/services';
 
 const EditorPage = () => {
   const { campaignId, page } = useParams();
   const { getAllFonts } = useFonts()
+  const { getAllProducts } = useProducts()
   const { getCampaignById, currentLayout, layoutId, } = useCampaign();
-  const { updateLayout,  getAllLayoutNames,  } = useLayout();
+  const { updateLayout, getAllLayoutNames, } = useLayout();
   const navigate = useNavigate();
   const [jsonContent, setJsonContent] = React.useState(null);
   const [editorInstance, setEditorInstance] = React.useState(null);
@@ -28,7 +31,7 @@ const EditorPage = () => {
   const [showQuizPopup, setShowQuizPopup] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
- 
+
   React.useEffect(() => {
     const token = localStorage.getItem('accessToken')
     if (!token) {
@@ -44,25 +47,51 @@ const EditorPage = () => {
     }
   }, [campaignId, page]);
   React.useEffect(() => {
-   localStorage.setItem("layoutId", layoutId)
+    localStorage.setItem("layoutId", layoutId)
   }, [layoutId])
   const handleFonts = async () => {
     let fontFamilyOptions: object[] | undefined = [];
     fontFamilyOptions = await getAllFonts() || [];
     console.log(fontFamilyOptions);
-    
+    console.log("line 53", COMPONENT_PROPS);
     const textProps = COMPONENT_PROPS.text.find(
       (item) => item.title === "textProps.title"
     );
-  
-const fontFamilyProp = textProps.list.find((item)=>item.name==="props.font_family")
-console.log("font family prop", fontFamilyProp);
+
+    const fontFamilyProp = textProps.list.find((item) => item.name === "props.font_family")
+    console.log("font family prop", fontFamilyProp);
     if (fontFamilyProp) {
       fontFamilyProp.options = fontFamilyOptions;
     }
   }
+  const handleProducts = async () => {
+    let productOptions: object[] | undefined = [];
+    let rawData: object[] | undefined = [];
+    rawData = await getAllProducts() || [];
+    productOptions = convertData(rawData)
+
+    console.log("line 69",productOptions);
+    console.log("line 53", COMPONENT_PROPS.productCard);
+    const productCardProps = COMPONENT_PROPS.productCard.find(
+      (item: any) => item.title === "productCardProps.title"
+    );
+
+    const productIdProp = productCardProps.list.find((item) => item.name === "props.product_id")
+    const productNameProp = productCardProps.list.find((item) => item.name === "props.product_name")
+    const productPriceProp = productCardProps.list.find((item) => item.name === "props.product_price")
+    const productImageProp = productCardProps.list.find((item) => item.name === "props.product_image")
+    console.log("product card prop", productIdProp);
+    if (productIdProp) {
+      productIdProp.options = productOptions;
+      productIdProp.default = productOptions[0]?.text;
+    }
+    if (productNameProp){
+      productNameProp.default = productOptions[0]?.text;
+    }
+  }
   React.useEffect(() => {
-    handleFonts()
+    handleFonts();
+    handleProducts();
   }, [])
 
   React.useEffect(() => {
@@ -84,7 +113,7 @@ console.log("font family prop", fontFamilyProp);
         {
           items: ['new-component', 'component-tree'],
           minWidth: leftRightWidth,
-          weight:2,
+          weight: 2,
         },
         {
           items: ['preview'],
@@ -96,7 +125,7 @@ console.log("font family prop", fontFamilyProp);
           minWidth: leftRightWidth,
         },
       ],
-      
+
       // actionLogUrlVariable: 'on_click_log_url',
       paletteEnabled: true,
       cardLocales: [

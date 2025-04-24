@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { createEventDispatcher, tick } from 'svelte';
+    import { createEventDispatcher, getContext, tick } from 'svelte';
     import { fly } from 'svelte/transition';
     import { popupClose, submit, suggestDown, suggestFirst, suggestLast, suggestUp } from '../utils/keybinder/shortcuts';
     import { encodeBackground } from '../utils/encodeBackground';
+  import { APP_CTX, type AppContext } from '../ctx/appContext';
 
     interface Item {
         value: string;
@@ -20,16 +21,18 @@
     export let multiple = false;
     
     const id = 'select' + Math.random();
+  
    
-    
+    console.log("items", items,  multiple);
     $: text = multiple 
         ? (Array.isArray(value) ? value.map(v => items.find(item => item.value === v)?.text).join(', ') : '')
         : (items.find(item => item.value === value)?.text || value || '');
     $: icon = items.find(item => item.value === value)?.icon;
   
-    
+   
     const dispatch = createEventDispatcher();
-
+    const { state } = getContext<AppContext>(APP_CTX);
+        const {selectedElem, selectedLeaf} = state;
     let toggled = false;
     let node: HTMLElement;
     let control: HTMLElement;
@@ -108,7 +111,7 @@
                 control?.focus();
             });
         } else {
-            console.log("val", val);
+            console.log("val", val, );
             
             value = val;
             Promise.resolve().then(() => dispatch('change', val));
